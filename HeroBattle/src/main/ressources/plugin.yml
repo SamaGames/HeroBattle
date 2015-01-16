@@ -1,0 +1,4 @@
+name: HeroBattle
+description: Dev Plugin
+main: net.lnfinity.HeroBattle.HeroBattle
+version: 0.1
