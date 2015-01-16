@@ -1,5 +1,7 @@
 package net.lnfinity.HeroBattle;
 
+import java.util.Collection;
+
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.GameMode;
@@ -16,6 +18,8 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class HBListener implements Listener {
 
@@ -58,7 +62,7 @@ public class HBListener implements Listener {
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
 			if (e.getCause() == DamageCause.FALL) {
-				plugin.getHBPlayer(p.getUniqueId()).setDoubleJump(2);;
+				plugin.getHBPlayer(p.getUniqueId()).setDoubleJump(2);
 				e.setCancelled(true);
 			} else {
 				e.setDamage(0);
@@ -82,13 +86,17 @@ public class HBListener implements Listener {
 		HBPlayer hbp = plugin.getHBPlayer(p.getUniqueId());
 
 		if (e.getItem().getType() == Material.RABBIT_FOOT) {
-			if(hbp.getDoubleJump() > 0) {
+			if (p.getLocation().getBlock().getRelative(BlockFace.DOWN)
+					.getType() != Material.AIR) {
+hbp.setDoubleJump(2);
+			}
+			if (hbp.getDoubleJump() > 0) {
 				hbp.setDoubleJump(hbp.getDoubleJump() - 1);
 				p.setVelocity(p.getVelocity().setY(1.0));
 
 			}
 		} else if (e.getItem().getType() == Material.SUGAR) {
-
+			p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1));
 		}
 	}
 

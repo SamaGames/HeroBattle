@@ -27,10 +27,8 @@ public class HBGame {
 					.getInt("locations.point" + loc + ".x"), p.getConfig()
 					.getInt("locations.point" + loc + ".y"), p.getConfig()
 					.getInt("locations.point" + loc + ".z")));
-			p.getLogger().info("ok");
 			ItemStack item = new ItemStack(Material.SUGAR, 1);
 			ItemMeta meta = item.getItemMeta();
-			p.getLogger().info("ok1");
 			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.BLUE
 					+ "Boost vitesse");
 			meta.setLore(Arrays.asList(ChatColor.GRAY
