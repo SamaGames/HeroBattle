@@ -1,20 +1,21 @@
 package net.lnfinity.HeroBattle;
 
-import java.util.Collection;
-
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -35,6 +36,10 @@ public class HBListener implements Listener {
 		Player p = ev.getPlayer();
 		p.getInventory().clear();
 		p.setGameMode(GameMode.ADVENTURE);
+		ev.getPlayer().teleport(new Location(ev.getPlayer().getWorld(), plugin.getConfig()
+				.getInt("locations.hub.x"), plugin.getConfig()
+				.getInt("locations.hub.y"), plugin.getConfig()
+				.getInt("locations.hub.z")));
 		ev.setJoinMessage(HeroBattle.NAME + ChatColor.YELLOW
 				+ p.getDisplayName() + ChatColor.YELLOW + " a rejoint l'arène "
 				+ ChatColor.DARK_GRAY + "[" + ChatColor.RED
@@ -62,11 +67,18 @@ public class HBListener implements Listener {
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
 			if (e.getCause() == DamageCause.FALL) {
-				plugin.getHBPlayer(p.getUniqueId()).setDoubleJump(2);
 				e.setCancelled(true);
+				plugin.getHBPlayer(p.getUniqueId()).setDoubleJump(2);
 			} else {
 				e.setDamage(0);
 			}
+		}
+	}
+	
+	@EventHandler
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+		if(e.getEntity() instanceof Player) {
+			
 		}
 	}
 
@@ -88,15 +100,20 @@ public class HBListener implements Listener {
 		if (e.getItem().getType() == Material.RABBIT_FOOT) {
 			if (p.getLocation().getBlock().getRelative(BlockFace.DOWN)
 					.getType() != Material.AIR) {
-hbp.setDoubleJump(2);
+				hbp.setDoubleJump(2);
 			}
 			if (hbp.getDoubleJump() > 0) {
 				hbp.setDoubleJump(hbp.getDoubleJump() - 1);
 				p.setVelocity(p.getVelocity().setY(1.0));
-
+				
 			}
 		} else if (e.getItem().getType() == Material.SUGAR) {
+			if(e.getItem().getEnchantments().size() >= 1) {
 			p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1));
+			new HBCouldown(plugin, p.getUniqueId(), 2, 5);
+			} else {
+				e.getPlayer().sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
+			}
 		}
 	}
 
@@ -104,6 +121,11 @@ hbp.setDoubleJump(2);
 	public boolean Foodlevel(FoodLevelChangeEvent event) {
 		event.setFoodLevel(100);
 		return true;
+	}
+	
+	@EventHandler
+    public void onItemDrop (PlayerDropItemEvent e) {
+        e.setCancelled(true);
 	}
 
 	public void setWaiting(boolean waiting) {

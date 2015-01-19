@@ -30,6 +30,9 @@ public class HeroBattle extends JavaPlugin {
 		listener = new HBListener(this);
 		timer = new HBTimer(this);
 		getServer().getPluginManager().registerEvents(listener, this);
+		for (Player player : getServer().getOnlinePlayers()) {
+			players.put(player.getUniqueId(), new HBPlayer());
+		}
 	}
 
 	public HBTimer getTimer() {

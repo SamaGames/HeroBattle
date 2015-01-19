@@ -1,4 +1,8 @@
 locations:
+    hub:
+        x: 0
+        y: 128
+        z: 0
     point1:
         x: 0
         y: 128
@@ -8,10 +12,10 @@ locations:
         y: 128
         z: 0
     point3:
-        x:
-        y:
-        z:
+        x: 0
+        y: 128
+        z: 0
     point4:
-        x:
-        y:
-        z:
+        x: 0
+        y: 128
+        z: 0

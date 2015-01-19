@@ -9,6 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class HBGame {
 
@@ -34,6 +36,7 @@ public class HBGame {
 			meta.setLore(Arrays.asList(ChatColor.GRAY
 					+ "Clic droit pour utiliser"));
 			item.setItemMeta(meta);
+			GlowEffect.addGlow(item);
 			player.getInventory().setItem(2, item);
 
 			item = new ItemStack(Material.RABBIT_FOOT, 1);
@@ -44,7 +47,8 @@ public class HBGame {
 					+ "Clic droit pour utiliser"));
 			item.setItemMeta(meta);
 			player.getInventory().setItem(1, item);
-
+			player.setMaxHealth(6);
+			
 			loc++;
 		}
 
