@@ -13,6 +13,7 @@ public class HeroBattle extends JavaPlugin {
 
 	private HBTimer timer;
 	private HBListener listener;
+	private HBGame g;
 	Map<UUID, HBPlayer> players = new HashMap<UUID, HBPlayer>();
 
 	// Global strings
@@ -29,6 +30,7 @@ public class HeroBattle extends JavaPlugin {
 		saveConfig();
 		listener = new HBListener(this);
 		timer = new HBTimer(this);
+		g = new HBGame(this);
 		getServer().getPluginManager().registerEvents(listener, this);
 		for (Player player : getServer().getOnlinePlayers()) {
 			players.put(player.getUniqueId(), new HBPlayer());
@@ -66,5 +68,9 @@ public class HeroBattle extends JavaPlugin {
 			count++;
 		}
 		return count;
+	}
+	
+	public HBGame getGame() {
+		return g;
 	}
 }

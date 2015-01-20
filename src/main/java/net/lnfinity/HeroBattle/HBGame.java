@@ -1,16 +1,17 @@
 package net.lnfinity.HeroBattle;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import net.md_5.bungee.api.ChatColor;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public class HBGame {
 
@@ -18,7 +19,6 @@ public class HBGame {
 
 	public HBGame(HeroBattle plugin) {
 		p = plugin;
-		teleportPlayers();
 	}
 
 	public void teleportPlayers() {
@@ -48,9 +48,45 @@ public class HBGame {
 			item.setItemMeta(meta);
 			player.getInventory().setItem(1, item);
 			player.setMaxHealth(6);
-			
+
 			loc++;
 		}
+	}
 
+	public void teleportHub(UUID id) {
+		Player player = p.getServer().getPlayer(id);
+		player.teleport(new Location(player.getWorld(), p.getConfig().getInt(
+				"locations.hub.x"), p.getConfig().getInt("locations.hub.y"), p
+				.getConfig().getInt("locations.hub.z")));
+	}
+
+	public void onPlayerKill(UUID id) {
+		Player player = p.getServer().getPlayer(id);
+		HBPlayer HBplayer = p.getHBPlayer(id);
+		Damageable d = (Damageable) player;
+		if (d.getHealth() > 2) {
+			HBplayer.setLives(HBplayer.getLives() - 1);
+			player.setHealth(HBplayer.getLives() * 2);
+			int loc = 1;
+			player.teleport(new Location(player.getWorld(), p.getConfig()
+					.getInt("locations.point" + loc + ".x"), p.getConfig()
+					.getInt("locations.point" + loc + ".y"), p.getConfig()
+					.getInt("locations.point" + loc + ".z")));
+		} else {
+			p.getServer().broadcastMessage(
+					HeroBattle.NAME + ChatColor.YELLOW
+							+ player.getDisplayName() + ChatColor.YELLOW
+							+ " a perdu ! " + ChatColor.DARK_GRAY + "["
+							+ ChatColor.RED + p.getPlayerCount()
+							+ ChatColor.DARK_GRAY + " joueurs restants"
+							+ ChatColor.DARK_GRAY + "]");
+			player.setGameMode(GameMode.SPECTATOR);
+			teleportHub(player.getUniqueId());
+		}
+
+	}
+
+	public void start() {
+		teleportPlayers();
 	}
 }

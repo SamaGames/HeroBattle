@@ -27,7 +27,7 @@ public class HBTimer {
 					p.getServer().getScheduler().cancelTask(task);
 					p.getListener().setWaiting(false);
 					// Attendre encore une seconde puis commencer
-					HBGame g = new HBGame(p);
+					p.getGame().start();
 				}
 				seconds--;
 			}

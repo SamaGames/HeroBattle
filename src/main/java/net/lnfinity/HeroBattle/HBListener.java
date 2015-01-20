@@ -12,12 +12,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -34,6 +36,7 @@ public class HBListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
+		plugin.addHBPlayer(p.getUniqueId());
 		p.getInventory().clear();
 		p.setGameMode(GameMode.ADVENTURE);
 		ev.getPlayer().teleport(new Location(ev.getPlayer().getWorld(), plugin.getConfig()
@@ -126,6 +129,18 @@ public class HBListener implements Listener {
 	@EventHandler
     public void onItemDrop (PlayerDropItemEvent e) {
         e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent e) {
+		if(e.getTo().getBlockY() <= 0) {
+			plugin.getGame().onPlayerKill(e.getPlayer().getUniqueId());
+		}
+	}
+	
+	@EventHandler
+	public void onEntityRegainHealthEvent(EntityRegainHealthEvent e) {
+		e.setCancelled(true);
 	}
 
 	public void setWaiting(boolean waiting) {
