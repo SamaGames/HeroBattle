@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import net.md_5.bungee.api.ChatColor;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +13,11 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 public class HBGame {
 
@@ -37,19 +43,37 @@ public class HBGame {
 					+ "Clic droit pour utiliser"));
 			item.setItemMeta(meta);
 			GlowEffect.addGlow(item);
-			player.getInventory().setItem(2, item);
-
-			item = new ItemStack(Material.RABBIT_FOOT, 1);
-			meta = item.getItemMeta();
-			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN
-					+ "Super Saut");
-			meta.setLore(Arrays.asList(ChatColor.GRAY
-					+ "Clic droit pour utiliser"));
-			item.setItemMeta(meta);
 			player.getInventory().setItem(1, item);
+
+			item = new ItemStack(Material.IRON_SWORD, 1);
+			meta = item.getItemMeta();
+			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.RED
+					+ "Épée repoussante");
+			meta.setLore(Arrays.asList(ChatColor.GRAY
+					+ "Frappez les joueurs pour les repousser"));
+			meta.spigot().setUnbreakable(true);
+			item.setItemMeta(meta);
+			player.getInventory().setItem(0, item);
+			player.setGameMode(GameMode.ADVENTURE);
 			player.setMaxHealth(6);
+			player.setHealth(6);
 
 			loc++;
+		}
+		ScoreboardManager manager = Bukkit.getScoreboardManager();
+		Scoreboard board = manager.getNewScoreboard();
+		 
+		Objective objective = board.registerNewObjective("percentage", "dummy");
+		objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+		objective.setDisplayName("%");
+		 
+		for(Player online : Bukkit.getOnlinePlayers()){
+		  Score score = objective.getScore(online);
+		  score.setScore(p.getHBPlayer(online.getUniqueId()).getPercentage());
+		}
+		 
+		for(Player online : Bukkit.getOnlinePlayers()){
+		online.setScoreboard(board);
 		}
 	}
 
@@ -73,15 +97,16 @@ public class HBGame {
 					.getInt("locations.point" + loc + ".y"), p.getConfig()
 					.getInt("locations.point" + loc + ".z")));
 		} else {
+			player.setGameMode(GameMode.SPECTATOR);
+			HBplayer.setPlaying(false);
+			teleportHub(player.getUniqueId());
 			p.getServer().broadcastMessage(
 					HeroBattle.NAME + ChatColor.YELLOW
 							+ player.getDisplayName() + ChatColor.YELLOW
 							+ " a perdu ! " + ChatColor.DARK_GRAY + "["
-							+ ChatColor.RED + p.getPlayerCount()
+							+ ChatColor.RED + p.getPlayingPlayerCount()
 							+ ChatColor.DARK_GRAY + " joueurs restants"
 							+ ChatColor.DARK_GRAY + "]");
-			player.setGameMode(GameMode.SPECTATOR);
-			teleportHub(player.getUniqueId());
 		}
 
 	}

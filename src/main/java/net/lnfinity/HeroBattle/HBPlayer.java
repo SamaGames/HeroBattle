@@ -5,6 +5,7 @@ public class HBPlayer {
 	private int doubleJump = 2;
 	private int percentage = 0;
 	private int lives = 3;
+	private boolean playing = true;
 
 	public HBPlayer() {
 
@@ -32,6 +33,14 @@ public class HBPlayer {
 
 	public void setLives(int lives) {
 		this.lives = lives;
+	}
+	
+	public boolean isPlaying() {
+		return playing;
+	}
+	
+	public void setPlaying(boolean bool) {
+		playing = bool;
 	}
 
 }

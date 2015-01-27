@@ -35,6 +35,9 @@ public class HeroBattle extends JavaPlugin {
 		for (Player player : getServer().getOnlinePlayers()) {
 			players.put(player.getUniqueId(), new HBPlayer());
 		}
+		if(getPlayerCount() == 4) {
+			timer.restartTimer();
+		}
 	}
 
 	public HBTimer getTimer() {
@@ -66,6 +69,16 @@ public class HeroBattle extends JavaPlugin {
 		int count = 0;
 		for (Player player : getServer().getOnlinePlayers()) {
 			count++;
+		}
+		return count;
+	}
+	
+	public int getPlayingPlayerCount() {
+		int count = 0;
+		for (Player player : getServer().getOnlinePlayers()) {
+			if(getHBPlayer(player.getUniqueId()).isPlaying()) {
+				count++;	
+			}
 		}
 		return count;
 	}
