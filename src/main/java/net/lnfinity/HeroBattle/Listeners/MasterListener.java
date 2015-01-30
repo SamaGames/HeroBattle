@@ -22,7 +22,7 @@ public class MasterListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
-		plugin.addHBPlayer(p.getUniqueId());
+		plugin.addGamePlayer(p);
 		p.getInventory().clear();
 		p.setExp(0);
 		p.setLevel(0);
@@ -37,7 +37,7 @@ public class MasterListener implements Listener {
 		if (plugin.getPlayerCount() == 2) {
 			plugin.getTimer().restartTimer();
 		}
-		plugin.getHBPlayer(p.getUniqueId()).setLives(6);
+		plugin.getGamePlayer(p).setLives(6);
 		p.setMaxHealth(6);
 		p.setHealth(6);
 		p.updateInventory();
@@ -48,6 +48,6 @@ public class MasterListener implements Listener {
 		if (plugin.getGame().isWaiting()) {
 			plugin.getTimer().cancelTimer();
 		}
-		plugin.removeHBPlayer(ev.getPlayer().getUniqueId());
+		plugin.removeGamePlayer(ev.getPlayer());
 	}
 }

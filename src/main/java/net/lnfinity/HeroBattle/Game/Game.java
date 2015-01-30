@@ -33,7 +33,7 @@ public class Game {
 	public void teleportPlayers() {
 		int loc = 1;
 		for (Player player : p.getServer().getOnlinePlayers()) {
-			p.addHBPlayer(player.getUniqueId());
+			p.addGamePlayer(player);
 			player.teleport(new Location(player.getWorld(), p.getConfig().getInt("locations.point" + loc + ".x"), p
 					.getConfig().getInt("locations.point" + loc + ".y"), p.getConfig().getInt(
 					"locations.point" + loc + ".z")));
@@ -78,7 +78,7 @@ public class Game {
 
 		for (Player online : Bukkit.getOnlinePlayers()) {
 			Score score = objective.getScore(online);
-			score.setScore(p.getHBPlayer(online.getUniqueId()).getPercentage());
+			score.setScore(p.getGamePlayer(online).getPercentage());
 		}
 
 		for (Player online : Bukkit.getOnlinePlayers()) {
@@ -91,18 +91,23 @@ public class Game {
 		player.teleport(new Location(player.getWorld(), p.getConfig().getInt("locations.hub.x"), p.getConfig().getInt(
 				"locations.hub.y"), p.getConfig().getInt("locations.hub.z")));
 	}
-
-	public void onPlayerKill(UUID id) {
+	
+	public void teleportRandomSpot(UUID id) {
 		Player player = p.getServer().getPlayer(id);
-		GamePlayer HBplayer = p.getHBPlayer(id);
+		int loc = (int) (Math.random() * ((4 - 1) + 1));
+		player.teleport(new Location(player.getWorld(), p.getConfig().getInt("locations.point" + loc + ".x"), p
+				.getConfig().getInt("locations.point" + loc + ".y"), p.getConfig().getInt(
+				"locations.point" + loc + ".z")));
+	}
+
+	public void onPlayerDeath(UUID id) {
+		Player player = p.getServer().getPlayer(id);
+		GamePlayer HBplayer = p.getGamePlayer(player);
 		Damageable d = (Damageable) player;
 		if (d.getHealth() > 2) {
 			HBplayer.setLives(HBplayer.getLives() - 1);
 			player.setHealth(HBplayer.getLives() * 2);
-			int loc = 1;
-			player.teleport(new Location(player.getWorld(), p.getConfig().getInt("locations.point" + loc + ".x"), p
-					.getConfig().getInt("locations.point" + loc + ".y"), p.getConfig().getInt(
-					"locations.point" + loc + ".z")));
+			teleportRandomSpot(player.getUniqueId());
 		} else {
 			player.setGameMode(GameMode.SPECTATOR);
 			HBplayer.setPlaying(false);
@@ -113,7 +118,6 @@ public class Game {
 							+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + p.getPlayingPlayerCount()
 							+ ChatColor.DARK_GRAY + " joueurs restants" + ChatColor.DARK_GRAY + "]");
 		}
-
 	}
 
 	public void start() {

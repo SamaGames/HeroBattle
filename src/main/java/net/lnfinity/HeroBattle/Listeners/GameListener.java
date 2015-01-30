@@ -15,13 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -48,7 +42,7 @@ public class GameListener implements Listener {
 			Player p = (Player) e.getEntity();
 			if (e.getCause() == DamageCause.FALL) {
 				e.setCancelled(true);
-				plugin.getHBPlayer(p.getUniqueId()).setDoubleJump(2);
+				plugin.getGamePlayer(p).setDoubleJump(2);
 			} else {
 				e.setDamage(0);
 			}
@@ -62,17 +56,17 @@ public class GameListener implements Listener {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
 		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player && plugin.getGame().isWaiting() == false) {
 			Player player = (Player) e.getEntity();
-			if (plugin.getHBPlayer(e.getDamager().getUniqueId()).hasDoubleDamages()) {
-				plugin.getHBPlayer(player.getUniqueId()).setPercentage(
-						plugin.getHBPlayer(player.getUniqueId()).getPercentage() + 2
+			if (plugin.getGamePlayer((Player) e.getDamager()).hasDoubleDamages()) {
+				plugin.getGamePlayer(player).setPercentage(
+						plugin.getGamePlayer(player).getPercentage() + 2
 								* (1 + (int) (Math.random() * ((8 - 1) + 1))));
 			} else {
-				plugin.getHBPlayer(player.getUniqueId()).setPercentage(
-						plugin.getHBPlayer(player.getUniqueId()).getPercentage() + 1
+				plugin.getGamePlayer(player).setPercentage(
+						plugin.getGamePlayer(player).getPercentage() + 1
 								+ (int) (Math.random() * ((8 - 1) + 1)));
 			}
 
-			player.setLevel(plugin.getHBPlayer(player.getUniqueId()).getPercentage());
+			player.setLevel(plugin.getGamePlayer(player).getPercentage());
 
 			ScoreboardManager manager = Bukkit.getScoreboardManager();
 			Scoreboard board = manager.getNewScoreboard();
@@ -83,7 +77,7 @@ public class GameListener implements Listener {
 
 			for (Player online : Bukkit.getOnlinePlayers()) {
 				Score score = objective.getScore(online);
-				score.setScore(plugin.getHBPlayer(online.getUniqueId()).getPercentage());
+				score.setScore(plugin.getGamePlayer(online).getPercentage());
 			}
 
 			for (Player online : Bukkit.getOnlinePlayers()) {
@@ -112,25 +106,15 @@ public class GameListener implements Listener {
 			double a = xc - e.getEntity().getLocation().getX();
 			double b = yc - e.getEntity().getLocation().getZ();
 			e.getEntity().setVelocity(
-					new Vector(a * plugin.getHBPlayer(player.getUniqueId()).getPercentage(), e.getEntity()
-							.getVelocity().getY(), b * plugin.getHBPlayer(player.getUniqueId()).getPercentage()));
+					new Vector(a * plugin.getGamePlayer(player).getPercentage(), e.getEntity()
+							.getVelocity().getY(), b * plugin.getGamePlayer(player).getPercentage()));
 		}
-	}
-
-	@EventHandler
-	public void onInventoryMoveItemEvent(InventoryMoveItemEvent e) {
-		e.setCancelled(true);
-	}
-
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent e) {
-		e.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		final Player p = e.getPlayer();
-		GamePlayer hbp = plugin.getHBPlayer(p.getUniqueId());
+		GamePlayer hbp = plugin.getGamePlayer(p);
 		if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (e.getItem().getType() == Material.IRON_SWORD) {
 				if (p.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
@@ -151,11 +135,11 @@ public class GameListener implements Listener {
 				if (e.getItem().getEnchantments().size() >= 1) {
 					new ItemCouldown(plugin, p.getUniqueId(), 2, 60);
 					p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 200, 9));
-					plugin.getHBPlayer(p.getUniqueId()).setDoubleDamages(true);
+					plugin.getGamePlayer(p).setDoubleDamages(true);
 					plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 						@Override
 						public void run() {
-							plugin.getHBPlayer(p.getUniqueId()).setDoubleDamages(false);
+							plugin.getGamePlayer(p).setDoubleDamages(false);
 						}
 					}, 200L);
 				} else {
@@ -164,28 +148,4 @@ public class GameListener implements Listener {
 			}
 		}
 	}
-
-	@EventHandler
-	public boolean Foodlevel(FoodLevelChangeEvent event) {
-		event.setFoodLevel(100);
-		return true;
-	}
-
-	@EventHandler
-	public void onItemDrop(PlayerDropItemEvent e) {
-		e.setCancelled(true);
-	}
-
-	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent e) {
-		if (e.getTo().getBlockY() <= 0) {
-			plugin.getGame().onPlayerKill(e.getPlayer().getUniqueId());
-		}
-	}
-
-	@EventHandler
-	public void onEntityRegainHealthEvent(EntityRegainHealthEvent e) {
-		e.setCancelled(true);
-	}
-	
 }

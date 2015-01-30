@@ -8,6 +8,7 @@ import net.lnfinity.HeroBattle.Game.Game;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Listeners.GameListener;
 import net.lnfinity.HeroBattle.Listeners.MasterListener;
+import net.lnfinity.HeroBattle.Listeners.SystemListener;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.md_5.bungee.api.ChatColor;
 
@@ -38,6 +39,8 @@ public class HeroBattle extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(masterListener, this);
 		GameListener gameListener = new GameListener(this);
 		getServer().getPluginManager().registerEvents(gameListener, this);
+		SystemListener systemListener = new SystemListener(this);
+		getServer().getPluginManager().registerEvents(systemListener, this);
 		
 		for (Player player : getServer().getOnlinePlayers()) {
 			players.put(player.getUniqueId(), new GamePlayer());
@@ -56,16 +59,16 @@ public class HeroBattle extends JavaPlugin {
 
 	}
 
-	public void addHBPlayer(UUID id) {
-		players.put(id, new GamePlayer());
+	public void addGamePlayer(Player p) {
+		players.put(p.getUniqueId(), new GamePlayer());
 	}
 
-	public void removeHBPlayer(UUID id) {
-		players.remove(id);
+	public void removeGamePlayer(Player p) {
+		players.remove(p.getUniqueId());
 	}
 
-	public GamePlayer getHBPlayer(UUID id) {
-		return players.get(id);
+	public GamePlayer getGamePlayer(Player p) {
+		return players.get(p.getUniqueId());
 	}
 
 	public int getPlayerCount() {
@@ -79,7 +82,7 @@ public class HeroBattle extends JavaPlugin {
 	public int getPlayingPlayerCount() {
 		int count = 0;
 		for (Player player : getServer().getOnlinePlayers()) {
-			if (getHBPlayer(player.getUniqueId()).isPlaying()) {
+			if (getGamePlayer(player).isPlaying()) {
 				count++;
 			}
 		}
