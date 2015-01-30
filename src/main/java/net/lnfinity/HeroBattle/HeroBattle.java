@@ -4,6 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import net.lnfinity.HeroBattle.Game.Game;
+import net.lnfinity.HeroBattle.Game.GamePlayer;
+import net.lnfinity.HeroBattle.Listeners.GameListener;
+import net.lnfinity.HeroBattle.Listeners.MasterListener;
+import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.entity.Player;
@@ -11,15 +16,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class HeroBattle extends JavaPlugin {
 
-	private HBTimer timer;
-	private HBListener listener;
-	private HBGame g;
-	Map<UUID, HBPlayer> players = new HashMap<UUID, HBPlayer>();
+	private CountdownTimer timer;
+	private Game g;
+	Map<UUID, GamePlayer> players = new HashMap<UUID, GamePlayer>();
 
 	// Global strings
-	public static String NAME = ChatColor.DARK_PURPLE + "["
-			+ ChatColor.LIGHT_PURPLE + "HeroBattle" + ChatColor.DARK_PURPLE
-			+ "] " + ChatColor.RESET;
+	public static String NAME = ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "HeroBattle"
+			+ ChatColor.DARK_PURPLE + "] " + ChatColor.RESET;
 
 	public HeroBattle() {
 
@@ -28,24 +31,24 @@ public class HeroBattle extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		saveConfig();
-		listener = new HBListener(this);
-		timer = new HBTimer(this);
-		g = new HBGame(this);
-		getServer().getPluginManager().registerEvents(listener, this);
+		timer = new CountdownTimer(this);
+		g = new Game(this);
+		
+		MasterListener masterListener = new MasterListener(this);
+		getServer().getPluginManager().registerEvents(masterListener, this);
+		GameListener gameListener = new GameListener(this);
+		getServer().getPluginManager().registerEvents(gameListener, this);
+		
 		for (Player player : getServer().getOnlinePlayers()) {
-			players.put(player.getUniqueId(), new HBPlayer());
+			players.put(player.getUniqueId(), new GamePlayer());
 		}
-		if(getPlayerCount() == 4) {
+		if (getPlayerCount() == 4) {
 			timer.restartTimer();
 		}
 	}
 
-	public HBTimer getTimer() {
+	public CountdownTimer getTimer() {
 		return timer;
-	}
-
-	public HBListener getListener() {
-		return listener;
 	}
 
 	@Override
@@ -54,14 +57,14 @@ public class HeroBattle extends JavaPlugin {
 	}
 
 	public void addHBPlayer(UUID id) {
-		players.put(id, new HBPlayer());
+		players.put(id, new GamePlayer());
 	}
 
 	public void removeHBPlayer(UUID id) {
 		players.remove(id);
 	}
 
-	public HBPlayer getHBPlayer(UUID id) {
+	public GamePlayer getHBPlayer(UUID id) {
 		return players.get(id);
 	}
 
@@ -72,18 +75,18 @@ public class HeroBattle extends JavaPlugin {
 		}
 		return count;
 	}
-	
+
 	public int getPlayingPlayerCount() {
 		int count = 0;
 		for (Player player : getServer().getOnlinePlayers()) {
-			if(getHBPlayer(player.getUniqueId()).isPlaying()) {
-				count++;	
+			if (getHBPlayer(player.getUniqueId()).isPlaying()) {
+				count++;
 			}
 		}
 		return count;
 	}
-	
-	public HBGame getGame() {
+
+	public Game getGame() {
 		return g;
 	}
 }

@@ -1,9 +1,9 @@
 /**
  * Classe réutilisée du plugin BelovedBlocks
  *  Auteur original: Amaury Carrade
-*/
+ */
 
-package net.lnfinity.HeroBattle;
+package net.lnfinity.HeroBattle.Utils;
 
 import java.lang.reflect.Field;
 
@@ -12,18 +12,17 @@ import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemStack;
 
-
 /**
  * A fake enchantment to add a glowing effect on any item.
  * 
  * @author Amaury Carrade
  */
 public class GlowEffect extends EnchantmentWrapper {
-	
+
 	private static Enchantment glow;
 	private final static int ENCHANTMENT_ID = 254;
 	private final static String ENCHANTMENT_NAME = "GlowEffect";
-	
+
 	public GlowEffect(int id) {
 		super(id);
 	}
@@ -62,7 +61,7 @@ public class GlowEffect extends EnchantmentWrapper {
 		if (glow != null) {
 			return glow;
 		}
-		
+
 		try {
 			// We change this to force Bukkit to accept a new enchantment.
 			// Thanks to Cybermaxke on BukkitDev.
@@ -76,18 +75,23 @@ public class GlowEffect extends EnchantmentWrapper {
 		try {
 			glow = new GlowEffect(ENCHANTMENT_ID);
 			Enchantment.registerEnchantment(glow);
-		} catch(IllegalArgumentException e) {
-			// If the enchantment is already registered - happens on server reload
-			glow = Enchantment.getById(ENCHANTMENT_ID); // getByID required - by name it doesn't work (returns null).
+		} catch (IllegalArgumentException e) {
+			// If the enchantment is already registered - happens on server
+			// reload
+			glow = Enchantment.getById(ENCHANTMENT_ID); // getByID required - by
+														// name it doesn't work
+														// (returns null).
 		}
-		
+
 		return glow;
 	}
 
 	public static void addGlow(ItemStack item) {
-		if(item == null) return;
-		
+		if (item == null)
+			return;
+
 		Enchantment glow = getGlow();
-		if(glow != null) item.addEnchantment(glow, 1);
+		if (glow != null)
+			item.addEnchantment(glow, 1);
 	}
 }

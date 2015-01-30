@@ -1,13 +1,14 @@
-package net.lnfinity.HeroBattle;
+package net.lnfinity.HeroBattle.Game;
 
-public class HBPlayer {
+public class GamePlayer {
 
 	private int doubleJump = 2;
 	private int percentage = 0;
 	private int lives = 3;
 	private boolean playing = true;
+	private boolean doubleDamages = false;
 
-	public HBPlayer() {
+	public GamePlayer() {
 
 	}
 
@@ -34,13 +35,21 @@ public class HBPlayer {
 	public void setLives(int lives) {
 		this.lives = lives;
 	}
-	
+
 	public boolean isPlaying() {
 		return playing;
 	}
-	
+
 	public void setPlaying(boolean bool) {
 		playing = bool;
+	}
+
+	public boolean hasDoubleDamages() {
+		return doubleDamages;
+	}
+
+	public void setDoubleDamages(boolean doubleDamages) {
+		this.doubleDamages = doubleDamages;
 	}
 
 }
