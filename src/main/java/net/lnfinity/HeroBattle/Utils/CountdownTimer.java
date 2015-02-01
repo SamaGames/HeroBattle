@@ -24,19 +24,19 @@ public class CountdownTimer {
 			public void run() {
 				if (seconds == 30) {
 					p.getServer().broadcastMessage(
-							p.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
+							HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
 									+ ChatColor.YELLOW + " secondes.");
 				} else if (seconds == 15) {
 					p.getServer().broadcastMessage(
-							p.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
+							HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
 									+ ChatColor.YELLOW + " secondes.");
 				} else if (seconds <= 5 && seconds != 1) {
 					p.getServer().broadcastMessage(
-							p.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
+							HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
 									+ ChatColor.YELLOW + " secondes.");
 				} else if (seconds == 1) {
 					p.getServer().broadcastMessage(
-							p.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
+							HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
 									+ ChatColor.YELLOW + " seconde.");
 				}
 				if (seconds <= 1) {
