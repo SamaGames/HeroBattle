@@ -1,4 +1,4 @@
-package net.lnfinity.Class;
+package net.lnfinity.HeroBattle.Class;
 
 import org.bukkit.inventory.ItemStack;
 

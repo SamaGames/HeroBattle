@@ -1,7 +1,7 @@
 package net.lnfinity.HeroBattle.Game;
 
-import net.lnfinity.Class.BruteClass;
-import net.lnfinity.Class.PlayerClass;
+import net.lnfinity.HeroBattle.Class.BruteClass;
+import net.lnfinity.HeroBattle.Class.PlayerClass;
 
 public class GamePlayer {
 

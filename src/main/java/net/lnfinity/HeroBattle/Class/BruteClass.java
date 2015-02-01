@@ -1,4 +1,4 @@
-package net.lnfinity.Class;
+package net.lnfinity.HeroBattle.Class;
 
 import java.util.Arrays;
 
