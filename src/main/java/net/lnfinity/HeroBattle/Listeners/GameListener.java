@@ -56,14 +56,16 @@ public class GameListener implements Listener {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
 		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player && plugin.getGame().isWaiting() == false) {
 			Player player = (Player) e.getEntity();
+			int min = plugin.getGamePlayer(player).getPlayerClass().getMinDamages();
+			int max = plugin.getGamePlayer(player).getPlayerClass().getMaxDamages();
 			if (plugin.getGamePlayer((Player) e.getDamager()).hasDoubleDamages()) {
 				plugin.getGamePlayer(player).setPercentage(
 						plugin.getGamePlayer(player).getPercentage() + 2
-								* (1 + (int) (Math.random() * ((8 - 1) + 1))));
+								* (min + (int) (Math.random() * ((max - min) + min))));
 			} else {
 				plugin.getGamePlayer(player).setPercentage(
-						plugin.getGamePlayer(player).getPercentage() + 1
-								+ (int) (Math.random() * ((8 - 1) + 1)));
+						plugin.getGamePlayer(player).getPercentage() + min
+								+ (int) (Math.random() * ((max - min) + min)));
 			}
 
 			player.setLevel(plugin.getGamePlayer(player).getPercentage());
@@ -115,7 +117,7 @@ public class GameListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		final Player p = e.getPlayer();
 		GamePlayer hbp = plugin.getGamePlayer(p);
-		if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) && e.getPlayer().getItemInHand().getType() != Material.AIR) {
 			if (e.getItem().getType() == Material.IRON_SWORD) {
 				if (p.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
 					hbp.setDoubleJump(2);

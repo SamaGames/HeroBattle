@@ -22,7 +22,7 @@ public class HeroBattle extends JavaPlugin {
 	Map<UUID, GamePlayer> players = new HashMap<UUID, GamePlayer>();
 
 	// Global strings
-	public static String NAME = ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "HeroBattle"
+	public final static String NAME = ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "HeroBattle"
 			+ ChatColor.DARK_PURPLE + "] " + ChatColor.RESET;
 
 	public HeroBattle() {

@@ -1,20 +1,15 @@
 package net.lnfinity.HeroBattle.Game;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.Utils.GlowEffect;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -38,30 +33,11 @@ public class Game {
 					.getConfig().getInt("locations.point" + loc + ".y"), p.getConfig().getInt(
 					"locations.point" + loc + ".z")));
 
-			ItemStack item = new ItemStack(Material.SUGAR, 1);
-			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.BLUE + "Boost vitesse");
-			meta.setLore(Arrays.asList(ChatColor.GRAY + "Clic droit pour utiliser"));
-			item.setItemMeta(meta);
-			GlowEffect.addGlow(item);
-			player.getInventory().setItem(1, item);
-
-			item = new ItemStack(Material.IRON_SWORD, 1);
-			meta = item.getItemMeta();
-			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.RED + "Épée repoussante");
-			meta.setLore(Arrays.asList(ChatColor.GRAY + "Frappez les joueurs pour les repousser", ChatColor.GRAY
-					+ "Clic droit pour faire un double saut"));
-			meta.spigot().setUnbreakable(true);
-			item.setItemMeta(meta);
-			player.getInventory().setItem(0, item);
-
-			item = new ItemStack(Material.BLAZE_POWDER, 1);
-			meta = item.getItemMeta();
-			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.DARK_RED + "Poudre de puissance");
-			meta.setLore(Arrays.asList(ChatColor.GRAY + "Clic droit pour utiliser"));
-			item.setItemMeta(meta);
-			GlowEffect.addGlow(item);
-			player.getInventory().setItem(2, item);
+			for (int i = 0; i <= 8; i++) {
+				if (p.getGamePlayer(player).getPlayerClass().getItem(i) != null) {
+					player.getInventory().setItem(i, p.getGamePlayer(player).getPlayerClass().getItem(i));
+				}
+			}
 
 			player.setGameMode(GameMode.ADVENTURE);
 			player.setMaxHealth(6);
@@ -91,7 +67,7 @@ public class Game {
 		player.teleport(new Location(player.getWorld(), p.getConfig().getInt("locations.hub.x"), p.getConfig().getInt(
 				"locations.hub.y"), p.getConfig().getInt("locations.hub.z")));
 	}
-	
+
 	public void teleportRandomSpot(UUID id) {
 		Player player = p.getServer().getPlayer(id);
 		int loc = (int) (Math.random() * ((4 - 1) + 1));

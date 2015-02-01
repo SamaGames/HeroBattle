@@ -21,12 +21,27 @@
       <id>spigot-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
+        <repository>
+            <id>geekpower14-repo</id>
+            <url>http://geekpower14.com/repo/maven</url>
+        </repository>
+        <repository>
+            <id>samagames-repo</id>
+            <url>http://maven.samagames.net/net/samagames/MasterBundle/</url>
+        </repository>
+        
    </repositories>
   <dependencies>
    <dependency>
     <groupId>org.spigotmc</groupId>
     <artifactId>spigot-api</artifactId>
     <version>1.8-R0.1-SNAPSHOT</version>
+   </dependency>
+   <dependency>
+    <groupId>net.samagames</groupId>
+    <artifactId>MasterBundle</artifactId>
+    <version>1.0.0</version>
+    <scope>provided</scope>
    </dependency>
   </dependencies>
 </project>
