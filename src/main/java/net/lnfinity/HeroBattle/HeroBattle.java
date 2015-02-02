@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import net.lnfinity.HeroBattle.Game.Game;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
+import net.lnfinity.HeroBattle.Listeners.ClassSelectorListener;
 import net.lnfinity.HeroBattle.Listeners.GameListener;
 import net.lnfinity.HeroBattle.Listeners.MasterListener;
 import net.lnfinity.HeroBattle.Listeners.SystemListener;
@@ -41,6 +42,8 @@ public class HeroBattle extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(gameListener, this);
 		SystemListener systemListener = new SystemListener(this);
 		getServer().getPluginManager().registerEvents(systemListener, this);
+		ClassSelectorListener classSelectorListener = new ClassSelectorListener(this);
+		getServer().getPluginManager().registerEvents(classSelectorListener, this);
 		
 		for (Player player : getServer().getOnlinePlayers()) {
 			players.put(player.getUniqueId(), new GamePlayer());

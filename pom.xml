@@ -27,7 +27,7 @@
         </repository>
         <repository>
             <id>samagames-repo</id>
-            <url>http://maven.samagames.net/net/samagames/MasterBundle/</url>
+            <url>http://maven.samagames.net</url>
         </repository>
         
    </repositories>

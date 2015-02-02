@@ -1,9 +1,13 @@
 package net.lnfinity.HeroBattle.Listeners;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Utils.ItemCouldown;
 import net.md_5.bungee.api.ChatColor;
+import net.samagames.utils.GlowEffect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,6 +20,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -28,7 +35,7 @@ import org.bukkit.util.Vector;
 public class GameListener implements Listener {
 
 	private HeroBattle plugin;
-	
+
 	public GameListener(HeroBattle p) {
 		plugin = p;
 	}
@@ -54,7 +61,8 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player && plugin.getGame().isWaiting() == false) {
+		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player
+				&& plugin.getGame().isWaiting() == false) {
 			Player player = (Player) e.getEntity();
 			int min = plugin.getGamePlayer(player).getPlayerClass().getMinDamages();
 			int max = plugin.getGamePlayer(player).getPlayerClass().getMaxDamages();
@@ -108,8 +116,8 @@ public class GameListener implements Listener {
 			double a = xc - e.getEntity().getLocation().getX();
 			double b = yc - e.getEntity().getLocation().getZ();
 			e.getEntity().setVelocity(
-					new Vector(a * plugin.getGamePlayer(player).getPercentage(), e.getEntity()
-							.getVelocity().getY(), b * plugin.getGamePlayer(player).getPercentage()));
+					new Vector(a * plugin.getGamePlayer(player).getPercentage(), e.getEntity().getVelocity().getY(), b
+							* plugin.getGamePlayer(player).getPercentage()));
 		}
 	}
 
@@ -117,7 +125,8 @@ public class GameListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		final Player p = e.getPlayer();
 		GamePlayer hbp = plugin.getGamePlayer(p);
-		if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) && e.getPlayer().getItemInHand().getType() != Material.AIR) {
+		if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
+				&& e.getPlayer().getItemInHand().getType() != Material.AIR) {
 			if (e.getItem().getType() == Material.IRON_SWORD) {
 				if (p.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
 					hbp.setDoubleJump(2);

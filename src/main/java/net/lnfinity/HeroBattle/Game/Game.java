@@ -33,6 +33,7 @@ public class Game {
 					.getConfig().getInt("locations.point" + loc + ".y"), p.getConfig().getInt(
 					"locations.point" + loc + ".z")));
 
+			player.getInventory().clear();
 			for (int i = 0; i <= 8; i++) {
 				if (p.getGamePlayer(player).getPlayerClass().getItem(i) != null) {
 					player.getInventory().setItem(i, p.getGamePlayer(player).getPlayerClass().getItem(i));
@@ -80,6 +81,10 @@ public class Game {
 		Player player = p.getServer().getPlayer(id);
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		Damageable d = (Damageable) player;
+		HBplayer.setPercentage(0);
+		player.setExp(0);
+		player.setLevel(0);
+		player.setTotalExperience(0);
 		if (d.getHealth() > 2) {
 			HBplayer.setLives(HBplayer.getLives() - 1);
 			player.setHealth(HBplayer.getLives() * 2);
