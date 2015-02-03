@@ -128,7 +128,7 @@ public class GameListener implements Listener {
 					p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1));
 					new ItemCouldown(plugin, p.getUniqueId(), 1, 20);
 				} else {
-					e.getPlayer().sendMessage(ChatColor.RED + "Vous �tes trop fatigu� pour r�utiliser �a maintenant");
+					e.getPlayer().sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 				}
 			} else if (e.getItem().getType() == Material.BLAZE_POWDER) {
 				if (e.getItem().getEnchantments().size() >= 1) {
@@ -142,7 +142,7 @@ public class GameListener implements Listener {
 						}
 					}, 200L);
 				} else {
-					e.getPlayer().sendMessage(ChatColor.RED + "Vous �tes trop fatigu� pour r�utiliser �a maintenant");
+					e.getPlayer().sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 				}
 			}
 		}
