@@ -17,11 +17,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 public class ClassSelectorListener implements Listener {
 
 	private HeroBattle p;
+
+	private final String TITLE_CLASS_SELECTOR = "Sélection de la classe";
+	private final String TITLE_CLASS_DETAILS  = "Détails de la classe ";
 
 	public ClassSelectorListener(HeroBattle plugin) {
 		p = plugin;
@@ -31,22 +35,30 @@ public class ClassSelectorListener implements Listener {
 	public void onInventoryClick(InventoryClickEvent e) {
 		if (e.getWhoClicked() instanceof Player) {
 			Player player = (Player) e.getWhoClicked();
-			if (e.getInventory().getName().equals("Sélection de la classe")) {
-				if (e.getClick().isLeftClick()) {
 
-					player.closeInventory();
-				} else if (e.getClick().isRightClick()) {
-					switch (e.getSlot()) {
-					case 0:
-						createDetails(player, new BruteClass());
-						break;
+			if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
+				PlayerClass clickedClass = p.getClassManager().getClassFromName(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+
+				if(clickedClass != null) {
+					if (e.getClick().isLeftClick()) {
+						p.getGamePlayer(player).setPlayerClass(clickedClass);
+						player.sendMessage(p.NAME + ChatColor.GREEN + "Vous avez choisi la classe " + ChatColor.DARK_GREEN + clickedClass.getName() + ChatColor.GREEN + " !");
+
+						player.closeInventory();
+
+					}
+					else if (e.getClick().isRightClick()) {
+						createDetails(player, clickedClass);
 					}
 				}
 				e.setCancelled(true);
-			} else if (e.getInventory().getName().startsWith("Détails de la classe ")) {
-				if (e.getSlot() == 8) {
+			}
+
+			else if (e.getInventory().getName().startsWith(TITLE_CLASS_DETAILS)) {
+				if (e.getCurrentItem().equals(getItemBackToClassesList())) { // Go back to the list
 					createSelector(player);
 				}
+
 				e.setCancelled(true);
 			}
 		}
@@ -63,7 +75,7 @@ public class ClassSelectorListener implements Listener {
 		Set<PlayerClass> classes = p.getClassManager().getAvailableClasses();
 		Integer inventorySize = (int) (Math.ceil(classes.size() / 9d) * 9);
 
-		Inventory inv = p.getServer().createInventory(player, inventorySize, "Sélection de la classe");
+		Inventory inv = p.getServer().createInventory(player, inventorySize, TITLE_CLASS_SELECTOR);
 
 		Integer i = 0;
 		for(PlayerClass theClass : classes) {
@@ -93,7 +105,7 @@ public class ClassSelectorListener implements Listener {
 	}
 
 	public void createDetails(Player player, PlayerClass classe) {
-		Inventory inv = p.getServer().createInventory(player, 9, "Détails de la classe " + classe.getName());
+		Inventory inv = p.getServer().createInventory(player, 9, TITLE_CLASS_DETAILS + classe.getName());
 		for (int i = 0; i <= 8; i++) {
 			if (classe.getItem(i) != null) {
 				inv.setItem(i, classe.getItem(i));
@@ -112,14 +124,8 @@ public class ClassSelectorListener implements Listener {
 		item.setItemMeta(meta);
 		inv.setItem(7, item);
 
-		item = new ItemStack(Material.WOOD_DOOR);
-		meta = item.getItemMeta();
-		ArrayList<String> loreLine = new ArrayList<String>();
-		loreLine.add(0, ChatColor.GRAY + "Clic droit pour revenir");
-		meta.setLore(loreLine);
-		meta.setDisplayName(ChatColor.RESET + "Revenir au choix des classes");
-		item.setItemMeta(meta);
-		inv.setItem(8, item);
+		inv.setItem(8, getItemBackToClassesList());
+
 		player.openInventory(inv);
 	}
 
@@ -164,6 +170,21 @@ public class ClassSelectorListener implements Listener {
 		}
 		str += ChatColor.RESET + "" + ChatColor.GRAY + " - " + name;
 		return str;
+	}
+
+	/**
+	 * Returns the item (door) who, when clicked, displays back the list of the classes.
+	 *
+	 * @return The item.
+	 */
+	private ItemStack getItemBackToClassesList() {
+		ItemStack item = new ItemStack(Material.WOOD_DOOR);
+		ItemMeta meta = item.getItemMeta();
+		meta.setLore(Arrays.asList(ChatColor.GRAY + "Clic droit pour revenir"));
+		meta.setDisplayName(ChatColor.RESET + "Revenir au choix des classes");
+		item.setItemMeta(meta);
+
+		return item;
 	}
 
 }

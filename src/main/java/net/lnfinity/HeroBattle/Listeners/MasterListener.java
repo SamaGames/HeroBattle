@@ -32,7 +32,7 @@ public class MasterListener implements Listener {
 				new Location(ev.getPlayer().getWorld(), plugin.getConfig().getInt("locations.hub.x"), plugin
 						.getConfig().getInt("locations.hub.y"), plugin.getConfig().getInt("locations.hub.z")));
 		ev.setJoinMessage(HeroBattle.NAME + ChatColor.YELLOW + p.getDisplayName() + ChatColor.YELLOW
-				+ " a rejoint l'arène " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + plugin.getPlayerCount()
+				+ " a rejoint l'arÃ¨ne " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + plugin.getPlayerCount()
 				+ ChatColor.DARK_GRAY + "/" + ChatColor.RED + "4" + ChatColor.DARK_GRAY + "]");
 		if (plugin.getPlayerCount() == 2) {
 			plugin.getTimer().restartTimer();

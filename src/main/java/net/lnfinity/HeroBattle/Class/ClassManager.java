@@ -29,4 +29,20 @@ public class ClassManager {
 	public Set<PlayerClass> getAvailableClasses() {
 		return availableClasses;
 	}
+
+	/**
+	 * Returns a player class from its name.
+	 *
+	 * @param name The name of the class.
+	 * @return The class; {@code null} if there isn't any class registered with this name.
+	 */
+	public PlayerClass getClassFromName(String name) {
+		for(PlayerClass theClass : availableClasses) {
+			if(theClass.getName().equals(name)) {
+				return theClass;
+			}
+		}
+
+		return null;
+	}
 }
