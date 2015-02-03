@@ -157,7 +157,7 @@ public class ClassSelectorListener implements Listener {
 	public String getBar(String name, int qty, int total) {
 		String str = ChatColor.RED + "" + ChatColor.BOLD;
 		for (int i = 1; i <= total; i++) {
-			str += "||";
+			str += "|| ";
 			if (qty == i) {
 				str += ChatColor.GRAY + "" + ChatColor.BOLD;
 			}
