@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import net.lnfinity.HeroBattle.Class.ClassManager;
 import net.lnfinity.HeroBattle.Game.Game;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Listeners.ClassSelectorListener;
@@ -20,22 +21,22 @@ public class HeroBattle extends JavaPlugin {
 
 	private CountdownTimer timer;
 	private Game g;
+
+	private ClassManager classManager;
+
 	Map<UUID, GamePlayer> players = new HashMap<UUID, GamePlayer>();
 
 	// Global strings
 	public final static String NAME = ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "HeroBattle"
 			+ ChatColor.DARK_PURPLE + "] " + ChatColor.RESET;
 
-	public HeroBattle() {
-
-	}
-
 	@Override
 	public void onEnable() {
 		saveConfig();
 		timer = new CountdownTimer(this);
 		g = new Game(this);
-		
+		classManager = new ClassManager();
+
 		MasterListener masterListener = new MasterListener(this);
 		getServer().getPluginManager().registerEvents(masterListener, this);
 		GameListener gameListener = new GameListener(this);
@@ -44,22 +45,13 @@ public class HeroBattle extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(systemListener, this);
 		ClassSelectorListener classSelectorListener = new ClassSelectorListener(this);
 		getServer().getPluginManager().registerEvents(classSelectorListener, this);
-		
+
 		for (Player player : getServer().getOnlinePlayers()) {
 			players.put(player.getUniqueId(), new GamePlayer());
 		}
 		if (getPlayerCount() == 4) {
 			timer.restartTimer();
 		}
-	}
-
-	public CountdownTimer getTimer() {
-		return timer;
-	}
-
-	@Override
-	public void onDisable() {
-
 	}
 
 	public void addGamePlayer(Player p) {
@@ -94,5 +86,13 @@ public class HeroBattle extends JavaPlugin {
 
 	public Game getGame() {
 		return g;
+	}
+
+	public CountdownTimer getTimer() {
+		return timer;
+	}
+
+	public ClassManager getClassManager() {
+		return classManager;
 	}
 }

@@ -8,7 +8,7 @@ public class GamePlayer {
 	private PlayerClass classe = new BruteClass();
 	private int doubleJump = 2;
 	private int percentage = 0;
-	private int lives = classe.getHearths();
+	private int lives = classe.getLives();
 	private boolean playing = true;
 	private boolean doubleDamages = false;
 

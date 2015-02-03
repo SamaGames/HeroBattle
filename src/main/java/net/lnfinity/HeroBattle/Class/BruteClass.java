@@ -1,13 +1,13 @@
 package net.lnfinity.HeroBattle.Class;
 
-import java.util.Arrays;
-
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
 import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class BruteClass extends PlayerClass {
 
@@ -45,6 +45,16 @@ public class BruteClass extends PlayerClass {
 	}
 
 	@Override
+	public ItemStack getIcon() {
+		return new ItemStack(Material.DIAMOND_CHESTPLATE);
+	}
+
+	@Override
+	public List<String> getDescription() {
+		return Arrays.asList("Pour le plaisir de faire des dégâts.");
+	}
+
+	@Override
 	public int getMinDamages() {
 		return 1;
 	}
@@ -55,7 +65,7 @@ public class BruteClass extends PlayerClass {
 	}
 
 	@Override
-	public int getHearths() {
+	public int getLives() {
 		return 3;
 	}
 
