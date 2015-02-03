@@ -68,6 +68,10 @@ public class HeroBattle extends JavaPlugin {
 		return players.get(p.getUniqueId());
 	}
 
+	public GamePlayer getGamePlayer(UUID id) {
+		return players.get(id);
+	}
+
 	public int getPlayerCount() {
 		int count = 0;
 		for (Player player : getServer().getOnlinePlayers()) {

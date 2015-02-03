@@ -53,6 +53,5 @@ public class MasterListener implements Listener {
 		if (plugin.getGame().isWaiting()) {
 			plugin.getTimer().cancelTimer();
 		}
-		plugin.removeGamePlayer(ev.getPlayer());
 	}
 }
