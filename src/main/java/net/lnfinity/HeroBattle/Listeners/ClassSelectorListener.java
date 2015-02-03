@@ -66,7 +66,7 @@ public class ClassSelectorListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		if (e.getItem() != null && e.getItem().getType() == Material.NETHER_STAR) {
+		if (e.hasItem() && e.getItem().getType() == Material.NETHER_STAR) {
 			createSelector(e.getPlayer());
 		}
 	}

@@ -2,6 +2,8 @@ package net.lnfinity.HeroBattle.Utils;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -13,6 +15,7 @@ public class ItemCouldown {
 	private int task;
 	private int slotId;
 	private UUID playerId;
+	private OfflinePlayer player;
 
 	public ItemCouldown(HeroBattle plugin, UUID id, int slot, int time) {
 		p = plugin;
@@ -21,26 +24,41 @@ public class ItemCouldown {
 		seconds = time;
 		slotId = slot;
 
-		if (p.getServer().getPlayer(playerId).getInventory().getItem(slotId) != null
-				&& p.getServer().getPlayer(playerId).getInventory().getItem(slotId).getType() != Material.AIR) {
-			p.getServer().getPlayer(playerId).getInventory().getItem(slotId).removeEnchantment(GlowEffect.getGlow());
-		}
+		player = p.getServer().getOfflinePlayer(playerId);
 
-		p.getServer().getPlayer(playerId).getInventory().getItem(slotId).setAmount(seconds);
-		p.getServer().getPlayer(playerId).updateInventory();
+		if(player.isOnline()) {
+			Player onlinePlayer = ((Player) player);
+
+			if (onlinePlayer.getInventory().getItem(slotId) != null
+					&& onlinePlayer.getInventory().getItem(slotId).getType() != Material.AIR) {
+
+				onlinePlayer.getInventory().getItem(slotId).removeEnchantment(GlowEffect.getGlow());
+
+			}
+
+			onlinePlayer.getInventory().getItem(slotId).setAmount(seconds);
+			onlinePlayer.updateInventory();
+		}
 
 		task = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
 			public void run() {
 				seconds--;
+
+				if(player == null || !player.isOnline()) {
+					return;
+				}
+
+				Player onlinePlayer = ((Player) player);
+
 				if (seconds == 0) {
 					p.getServer().getScheduler().cancelTask(task);
-					if (p.getServer().getPlayer(playerId).getInventory().getItem(slotId) != null
-							&& p.getServer().getPlayer(playerId).getInventory().getItem(slotId).getType() != Material.AIR) {
-						GlowEffect.addGlow(p.getServer().getPlayer(playerId).getInventory().getItem(slotId));
+					if (onlinePlayer.getInventory().getItem(slotId) != null
+							&& onlinePlayer.getInventory().getItem(slotId).getType() != Material.AIR) {
+						GlowEffect.addGlow(onlinePlayer.getInventory().getItem(slotId));
 					}
 				} else {
-					p.getServer().getPlayer(playerId).getInventory().getItem(slotId).setAmount(seconds);
-					p.getServer().getPlayer(playerId).updateInventory();
+					onlinePlayer.getInventory().getItem(slotId).setAmount(seconds);
+					onlinePlayer.updateInventory();
 				}
 			}
 		}, 20L, 20L).getTaskId();

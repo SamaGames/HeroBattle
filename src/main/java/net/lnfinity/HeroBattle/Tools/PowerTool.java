@@ -13,6 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 
 public class PowerTool extends PlayerTool {
@@ -58,10 +59,12 @@ public class PowerTool extends PlayerTool {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, EFFECT_DURATION * 20, 9));
 			p.getGamePlayer(player).setDoubleDamages(true);
 
+			final UUID playerID = player.getUniqueId();
+
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
-					p.getGamePlayer(player).setDoubleDamages(false);
+					p.getGamePlayer(playerID).setDoubleDamages(false);
 				}
 			}, EFFECT_DURATION * 20l);
 		}
