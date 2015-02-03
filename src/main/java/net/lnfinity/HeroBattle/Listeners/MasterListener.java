@@ -46,6 +46,8 @@ public class MasterListener implements Listener {
 		ev.getPlayer().getInventory().addItem(new ItemStack(Material.NETHER_STAR));
 
 		p.updateInventory();
+
+		plugin.getGame().start();
 	}
 
 	@EventHandler
