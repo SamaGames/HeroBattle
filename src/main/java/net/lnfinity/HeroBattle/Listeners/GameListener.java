@@ -1,14 +1,9 @@
 package net.lnfinity.HeroBattle.Listeners;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
+import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.ItemCouldown;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.utils.GlowEffect;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -20,16 +15,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.*;
 import org.bukkit.util.Vector;
 
 public class GameListener implements Listener {
@@ -62,7 +50,7 @@ public class GameListener implements Listener {
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
 		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player
-				&& plugin.getGame().isWaiting() == false) {
+				&& !plugin.getGame().isWaiting()) {
 			Player player = (Player) e.getEntity();
 			int min = plugin.getGamePlayer(player).getPlayerClass().getMinDamages();
 			int max = plugin.getGamePlayer(player).getPlayerClass().getMaxDamages();
@@ -140,7 +128,7 @@ public class GameListener implements Listener {
 					p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1));
 					new ItemCouldown(plugin, p.getUniqueId(), 1, 20);
 				} else {
-					e.getPlayer().sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
+					e.getPlayer().sendMessage(ChatColor.RED + "Vous ï¿½tes trop fatiguï¿½ pour rï¿½utiliser ï¿½a maintenant");
 				}
 			} else if (e.getItem().getType() == Material.BLAZE_POWDER) {
 				if (e.getItem().getEnchantments().size() >= 1) {
@@ -154,7 +142,7 @@ public class GameListener implements Listener {
 						}
 					}, 200L);
 				} else {
-					e.getPlayer().sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
+					e.getPlayer().sendMessage(ChatColor.RED + "Vous ï¿½tes trop fatiguï¿½ pour rï¿½utiliser ï¿½a maintenant");
 				}
 			}
 		}

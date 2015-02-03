@@ -15,7 +15,7 @@ public class BruteClass extends PlayerClass {
 		
 		ItemStack item = new ItemStack(Material.IRON_SWORD, 1);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.RESET + "" + ChatColor.RED + "Épée repoussante");
+		meta.setDisplayName(ChatColor.RESET + "" + ChatColor.RED + "Ã‰pÃ©e repoussante");
 		meta.setLore(Arrays.asList(ChatColor.GRAY + "Frappez les joueurs pour les repousser", ChatColor.GRAY
 				+ "Clic droit pour faire un double saut"));
 		meta.spigot().setUnbreakable(true);

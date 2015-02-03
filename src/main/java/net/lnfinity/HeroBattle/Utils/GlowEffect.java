@@ -1,6 +1,6 @@
 /**
- * Classe réutilisée du plugin BelovedBlocks
- *  Auteur original: Amaury Carrade
+ * Classe rÃ©utilisÃ©e du plugin BelovedBlocks
+ * Auteur original: Amaury Carrade
  */
 
 package net.lnfinity.HeroBattle.Utils;

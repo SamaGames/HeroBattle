@@ -5,3 +5,7 @@ target
 bin/
 nogit/
 *~
+
+# IntelliJ IDEA
+.idea/
+*.iml
