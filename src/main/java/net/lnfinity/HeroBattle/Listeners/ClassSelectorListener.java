@@ -42,7 +42,7 @@ public class ClassSelectorListener implements Listener {
 				if(clickedClass != null) {
 					if (e.getClick().isLeftClick()) {
 						p.getGamePlayer(player).setPlayerClass(clickedClass);
-						player.sendMessage(p.NAME + ChatColor.GREEN + "Vous avez choisi la classe " + ChatColor.DARK_GREEN + clickedClass.getName() + ChatColor.GREEN + " !");
+						player.sendMessage(HeroBattle.NAME + ChatColor.GREEN + "Vous avez choisi la classe " + ChatColor.DARK_GREEN + clickedClass.getName() + ChatColor.GREEN + " !");
 
 						player.closeInventory();
 
