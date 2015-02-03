@@ -33,7 +33,7 @@ public class ClassSelectorListener implements Listener {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
-		if (e.getWhoClicked() instanceof Player) {
+		if (e.getWhoClicked() instanceof Player && e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta()) {
 			Player player = (Player) e.getWhoClicked();
 
 			if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
