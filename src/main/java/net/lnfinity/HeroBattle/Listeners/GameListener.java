@@ -1,12 +1,9 @@
 package net.lnfinity.HeroBattle.Listeners;
 
-import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.Utils.ItemCouldown;
-import net.md_5.bungee.api.ChatColor;
+import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,8 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.*;
 import org.bukkit.util.Vector;
 
@@ -112,37 +108,20 @@ public class GameListener implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		final Player p = e.getPlayer();
-		GamePlayer hbp = plugin.getGamePlayer(p);
-		if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-				&& e.getPlayer().getItemInHand().getType() != Material.AIR) {
-			if (e.getItem().getType() == Material.IRON_SWORD) {
-				if (p.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
-					hbp.setDoubleJump(2);
-				}
-				if (hbp.getDoubleJump() > 0) {
-					hbp.setDoubleJump(hbp.getDoubleJump() - 1);
-					p.setVelocity(p.getVelocity().setY(1.5));
-				}
-			} else if (e.getItem().getType() == Material.SUGAR) {
-				if (e.getItem().getEnchantments().size() >= 1) {
-					p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1));
-					new ItemCouldown(plugin, p.getUniqueId(), 1, 20);
-				} else {
-					e.getPlayer().sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
-				}
-			} else if (e.getItem().getType() == Material.BLAZE_POWDER) {
-				if (e.getItem().getEnchantments().size() >= 1) {
-					new ItemCouldown(plugin, p.getUniqueId(), 2, 60);
-					p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 200, 9));
-					plugin.getGamePlayer(p).setDoubleDamages(true);
-					plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-						@Override
-						public void run() {
-							plugin.getGamePlayer(p).setDoubleDamages(false);
-						}
-					}, 200L);
-				} else {
-					e.getPlayer().sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
+
+		if(e.hasItem() && e.getItem().getType() != Material.AIR
+				&& e.getItem().hasItemMeta() && e.getItem().getItemMeta().hasDisplayName()) {
+
+			ItemStack item = e.getItem();
+			String toolName = item.getItemMeta().getDisplayName();
+
+			PlayerTool tool = plugin.getToolsManager().getToolByName(toolName);
+
+			if (tool != null) {
+				if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+					tool.onRightClick(p, item, e);
+				} else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+					tool.onLeftClick(p, item, e);
 				}
 			}
 		}

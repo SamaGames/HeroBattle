@@ -1,11 +1,11 @@
 package net.lnfinity.HeroBattle.Utils;
 
-import java.util.UUID;
-
 import net.lnfinity.HeroBattle.HeroBattle;
-
 import org.bukkit.Material;
 
+import java.util.UUID;
+
+// FIXME Use a reference to the tool class instead of the slot ID, with a cache tool<->slot.
 public class ItemCouldown {
 
 	private HeroBattle p;

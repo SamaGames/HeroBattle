@@ -1,9 +1,5 @@
 package net.lnfinity.HeroBattle;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import net.lnfinity.HeroBattle.Class.ClassManager;
 import net.lnfinity.HeroBattle.Game.Game;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
@@ -11,11 +7,15 @@ import net.lnfinity.HeroBattle.Listeners.ClassSelectorListener;
 import net.lnfinity.HeroBattle.Listeners.GameListener;
 import net.lnfinity.HeroBattle.Listeners.MasterListener;
 import net.lnfinity.HeroBattle.Listeners.SystemListener;
+import net.lnfinity.HeroBattle.Tools.ToolsManager;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class HeroBattle extends JavaPlugin {
 
@@ -23,6 +23,7 @@ public class HeroBattle extends JavaPlugin {
 	private Game g;
 
 	private ClassManager classManager;
+	private ToolsManager toolsManager;
 
 	Map<UUID, GamePlayer> players = new HashMap<UUID, GamePlayer>();
 
@@ -35,7 +36,8 @@ public class HeroBattle extends JavaPlugin {
 		saveConfig();
 		timer = new CountdownTimer(this);
 		g = new Game(this);
-		classManager = new ClassManager();
+		toolsManager = new ToolsManager(this);
+		classManager = new ClassManager(this);
 
 		MasterListener masterListener = new MasterListener(this);
 		getServer().getPluginManager().registerEvents(masterListener, this);
@@ -94,5 +96,9 @@ public class HeroBattle extends JavaPlugin {
 
 	public ClassManager getClassManager() {
 		return classManager;
+	}
+
+	public ToolsManager getToolsManager() {
+		return toolsManager;
 	}
 }

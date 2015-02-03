@@ -1,15 +1,21 @@
 package net.lnfinity.HeroBattle.Class;
 
+import net.lnfinity.HeroBattle.HeroBattle;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class ClassManager {
 
+	private HeroBattle p;
 	private Set<PlayerClass> availableClasses = new HashSet<PlayerClass>();
 
-	public ClassManager() {
+	public ClassManager(HeroBattle plugin) {
+
+		p = plugin;
+
 		// Registers classes
-		registerClass(new BruteClass());
+		registerClass(new BruteClass(p));
 	}
 
 	/**

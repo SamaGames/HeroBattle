@@ -2,14 +2,15 @@ package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class MasterListener implements Listener {
 
@@ -37,9 +38,13 @@ public class MasterListener implements Listener {
 		if (plugin.getPlayerCount() == 2) {
 			plugin.getTimer().restartTimer();
 		}
-		plugin.getGamePlayer(p).setLives(6);
-		p.setMaxHealth(6);
-		p.setHealth(6);
+
+		p.setMaxHealth(20);
+		p.setHealth(20);
+
+		// TODO Better display.
+		ev.getPlayer().getInventory().addItem(new ItemStack(Material.NETHER_STAR));
+
 		p.updateInventory();
 	}
 

@@ -1,14 +1,13 @@
 package net.lnfinity.HeroBattle.Game;
 
-import net.lnfinity.HeroBattle.Class.BruteClass;
 import net.lnfinity.HeroBattle.Class.PlayerClass;
 
 public class GamePlayer {
 
-	private PlayerClass classe = new BruteClass();
+	private PlayerClass classe = null;
 	private int doubleJump = 2;
 	private int percentage = 0;
-	private int lives = classe.getLives();
+	private int lives = 3;
 	private boolean playing = true;
 	private boolean doubleDamages = false;
 

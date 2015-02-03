@@ -1,5 +1,6 @@
 package net.lnfinity.HeroBattle.Class;
 
+import net.lnfinity.HeroBattle.HeroBattle;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -10,6 +11,11 @@ import java.util.List;
  * A fake player class to display a “not yet available” class in the selector.
  */
 public class NotYetAvailableClass extends PlayerClass {
+
+	public NotYetAvailableClass(HeroBattle plugin) {
+		super(plugin);
+	}
+
 	@Override
 	public String getName() {
 		return "¿¿¿";

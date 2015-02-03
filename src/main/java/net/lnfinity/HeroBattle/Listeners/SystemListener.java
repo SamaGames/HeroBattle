@@ -1,7 +1,6 @@
 package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-
 import org.bukkit.GameMode;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;

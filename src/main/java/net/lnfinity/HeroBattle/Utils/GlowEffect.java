@@ -5,12 +5,12 @@
 
 package net.lnfinity.HeroBattle.Utils;
 
-import java.lang.reflect.Field;
-
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemStack;
+
+import java.lang.reflect.Field;
 
 /**
  * A fake enchantment to add a glowing effect on any item.

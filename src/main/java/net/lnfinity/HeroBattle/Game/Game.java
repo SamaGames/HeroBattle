@@ -1,20 +1,16 @@
 package net.lnfinity.HeroBattle.Game;
 
-import java.util.UUID;
-
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.*;
+
+import java.util.UUID;
 
 public class Game {
 
@@ -34,18 +30,32 @@ public class Game {
 					"locations.point" + loc + ".z")));
 
 			player.getInventory().clear();
-			for (int i = 0; i <= 8; i++) {
+			/*for (int i = 0; i <= 8; i++) {
 				if (p.getGamePlayer(player).getPlayerClass().getItem(i) != null) {
 					player.getInventory().setItem(i, p.getGamePlayer(player).getPlayerClass().getItem(i));
 				}
+			}*/
+
+			GamePlayer hbPlayer = p.getGamePlayer(player);
+
+			if(hbPlayer.getPlayerClass() == null) {
+				// TODO Random class.
+				hbPlayer.setPlayerClass(p.getClassManager().getClassFromName("Brute"));
+			}
+
+			int i = 0;
+			for(PlayerTool tool : hbPlayer.getPlayerClass().getTools()) {
+				player.getInventory().setItem(i, tool.generateCompleteItem());
+				i++;
 			}
 
 			player.setGameMode(GameMode.ADVENTURE);
-			player.setMaxHealth(6);
-			player.setHealth(6);
+			player.setMaxHealth(hbPlayer.getPlayerClass().getLives() * 2);
+			player.setHealth(hbPlayer.getPlayerClass().getLives() * 2d);
 
 			loc++;
 		}
+
 		ScoreboardManager manager = Bukkit.getScoreboardManager();
 		Scoreboard board = manager.getNewScoreboard();
 

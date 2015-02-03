@@ -1,12 +1,20 @@
 package net.lnfinity.HeroBattle.Class;
 
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PlayerClass {
-	
-	protected ItemStack items[] = new ItemStack[9];
+
+	protected HeroBattle p;
+	protected List<PlayerTool> tools = new ArrayList<PlayerTool>();
+
+	public PlayerClass(HeroBattle plugin) {
+		p = plugin;
+	}
 
 	/**
 	 * Returns the name of the class.
@@ -54,9 +62,36 @@ public abstract class PlayerClass {
 	 */
 	public abstract int getLives();
 
-	public ItemStack getItem(int i) {
-		return items[i];
+
+	/**
+	 * Returns a list of the tools in this class.
+	 *
+	 * @return
+	 */
+	public List<PlayerTool> getTools() {
+		return tools;
 	}
+
+	/**
+	 * Adds a tool for this class.
+	 *
+	 * @param tool The tool.
+	 * @return {@code true} if already in the class.
+	 */
+	public boolean addTool(PlayerTool tool) {
+		return tools.add(tool);
+	}
+
+	/**
+	 * Removes a tool from this class.
+	 *
+	 * @param tool The tool.
+	 * @return {@code true} if the tool wasn't in the class.
+	 */
+	public boolean removeTool(PlayerTool tool) {
+		return tools.remove(tool);
+	}
+
 
 	@Override
 	public boolean equals(Object o) {

@@ -1,9 +1,9 @@
 package net.lnfinity.HeroBattle.Listeners;
 
-import net.lnfinity.HeroBattle.Class.BruteClass;
 import net.lnfinity.HeroBattle.Class.NotYetAvailableClass;
 import net.lnfinity.HeroBattle.Class.PlayerClass;
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
@@ -66,7 +66,7 @@ public class ClassSelectorListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		if (e.getItem().getType() == Material.NETHER_STAR) {
+		if (e.getItem() != null && e.getItem().getType() == Material.NETHER_STAR) {
 			createSelector(e.getPlayer());
 		}
 	}
@@ -80,14 +80,20 @@ public class ClassSelectorListener implements Listener {
 		Integer i = 0;
 		for(PlayerClass theClass : classes) {
 			// FIXME La logique de glow/pas glow ? C'est bien ça dans ton esprit ?
-			inv.addItem(createItem(theClass, p.getGamePlayer(player).getPlayerClass().equals(theClass)));
+			inv.addItem(
+					createItem(theClass,
+							p.getGamePlayer(player).getPlayerClass() != null
+									&& p.getGamePlayer(player).getPlayerClass().equals(theClass)
+					)
+			);
+
 			i++;
 		}
 
 		// Placeholder for the other cases
 		// FIXME À garder ? Ou non ?...
 		for(; i < inventorySize; i++) {
-			inv.setItem(i, createItem(new NotYetAvailableClass(), false));
+			inv.setItem(i, createItem(new NotYetAvailableClass(p), false));
 		}
 
 		// Contenu conservé pour son contenu (classes)
@@ -106,11 +112,11 @@ public class ClassSelectorListener implements Listener {
 
 	public void createDetails(Player player, PlayerClass classe) {
 		Inventory inv = p.getServer().createInventory(player, 9, TITLE_CLASS_DETAILS + classe.getName());
-		for (int i = 0; i <= 8; i++) {
-			if (classe.getItem(i) != null) {
-				inv.setItem(i, classe.getItem(i));
-			}
+
+		for(PlayerTool tool : classe.getTools()) {
+			inv.addItem(tool.generateCompleteItem());
 		}
+
 		ItemStack item = new ItemStack(Material.MAGMA_CREAM);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.RESET + classe.getName());
@@ -173,7 +179,7 @@ public class ClassSelectorListener implements Listener {
 	}
 
 	/**
-	 * Returns the item (door) who, when clicked, displays back the list of the classes.
+	 * Returns the item (door) which, when clicked, displays back the list of the classes.
 	 *
 	 * @return The item.
 	 */
