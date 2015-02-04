@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.Class;
+﻿package net.lnfinity.HeroBattle.Class;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tools.Tool;
@@ -17,6 +17,7 @@ public class BruteClass extends PlayerClass {
 		addTool(p.getToolsManager().getTool(Tool.SWORD));
 		addTool(p.getToolsManager().getTool(Tool.SPEED));
 		addTool(p.getToolsManager().getTool(Tool.POWER));
+		addTool(p.getToolsManager().getTool(Tool.EARTHQUAKE));
 	}
 
 	@Override

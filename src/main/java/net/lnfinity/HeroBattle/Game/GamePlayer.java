@@ -1,6 +1,10 @@
 package net.lnfinity.HeroBattle.Game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.lnfinity.HeroBattle.Class.PlayerClass;
+import net.lnfinity.HeroBattle.Tasks.Task;
 
 public class GamePlayer {
 
@@ -10,6 +14,7 @@ public class GamePlayer {
 	private int lives = 3;
 	private boolean playing = true;
 	private boolean doubleDamages = false;
+	private List<Task> tasks = new ArrayList<Task>();
 
 	public GamePlayer() {
 
@@ -61,6 +66,26 @@ public class GamePlayer {
 	
 	public void setPlayerClass(PlayerClass classe) {
 		this.classe = classe;
+	}
+	
+	public List<Task> getTasks() {
+		return tasks;
+	}
+	
+	public boolean playTask(Task t) {
+		boolean min = false;
+		for(int i = 0; i < tasks.size(); i++) {
+			if(tasks.get(i).getClass() == t.getClass()) {
+				tasks.get(i).playTask();
+				tasks.remove(i);
+				min = true;
+			}
+		}
+		return min;
+	}
+	
+	public void addTask(Task t) {
+		tasks.add(t);
 	}
 
 }

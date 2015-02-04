@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.Tools;
+﻿package net.lnfinity.HeroBattle.Tools;
 
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.HeroBattle;

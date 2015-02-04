@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.Tools;
+﻿package net.lnfinity.HeroBattle.Tools;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
@@ -50,9 +50,9 @@ public class SpeedTool extends PlayerTool {
 
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-		if(tool.getAmount() == 1) {
+		if(tool.containsEnchantment(GlowEffect.getGlow())) {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1));
-			new ItemCouldown(p, player.getUniqueId(), 1, COOLDOWN);
+			new ItemCouldown(p, player.getUniqueId(), player.getInventory().getHeldItemSlot(), COOLDOWN);
 		}
 		else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");

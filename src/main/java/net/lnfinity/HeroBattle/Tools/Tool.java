@@ -7,7 +7,8 @@ public enum Tool {
 
 	SWORD("tool.sword"),
 	SPEED("tool.speed"),
-	POWER("tool.power");
+	POWER("tool.power"),
+	EARTHQUAKE("tool.earthquake");
 
 	private final String toolID;
 

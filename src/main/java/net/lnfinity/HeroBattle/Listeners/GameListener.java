@@ -1,7 +1,9 @@
 package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Tasks.EarthquakeTask;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,7 +15,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.Vector;
 
 public class GameListener implements Listener {
@@ -33,14 +39,36 @@ public class GameListener implements Listener {
 			Player p = (Player) e.getEntity();
 			if (e.getCause() == DamageCause.FALL) {
 				e.setCancelled(true);
+				plugin.getGamePlayer(p).playTask(new EarthquakeTask(plugin, p));
+					
 				plugin.getGamePlayer(p).setDoubleJump(2);
 			} else {
 				e.setDamage(0);
+			}
+			p.setExp(0);
+			p.setTotalExperience(0);
+			p.setLevel(plugin.getGamePlayer(p).getPercentage());
+			
+			ScoreboardManager manager = Bukkit.getScoreboardManager();
+			Scoreboard board = manager.getNewScoreboard();
+
+			Objective objective = board.registerNewObjective("percentage", "dummy");
+			objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+			objective.setDisplayName("%");
+
+			for (Player online : Bukkit.getOnlinePlayers()) {
+				Score score = objective.getScore(online);
+				score.setScore(plugin.getGamePlayer(online).getPercentage());
+			}
+			for (Player online : Bukkit.getOnlinePlayers()) {
+				online.setScoreboard(board);
 			}
 		}
 		if (e.getCause() == DamageCause.ENTITY_ATTACK) {
 
 		}
+		
+		
 	}
 
 	@EventHandler

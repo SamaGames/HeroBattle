@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.Tools;
+﻿package net.lnfinity.HeroBattle.Tools;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
@@ -32,7 +32,7 @@ public class PowerTool extends PlayerTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.BLUE + "Poudre de puissance";
+		return ChatColor.DARK_RED + "Poudre de puissance";
 	}
 
 	@Override
@@ -53,8 +53,8 @@ public class PowerTool extends PlayerTool {
 
 	@Override
 	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
-		if(tool.getAmount() == 1) {
-			new ItemCouldown(p, player.getUniqueId(), 2, COOLDOWN);
+		if(tool.containsEnchantment(GlowEffect.getGlow())) {
+			new ItemCouldown(p, player.getUniqueId(), player.getInventory().getHeldItemSlot(), COOLDOWN);
 
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, EFFECT_DURATION * 20, 9));
 			p.getGamePlayer(player).setDoubleDamages(true);
@@ -66,7 +66,7 @@ public class PowerTool extends PlayerTool {
 				public void run() {
 					p.getGamePlayer(playerID).setDoubleDamages(false);
 				}
-			}, EFFECT_DURATION * 20l);
+			}, EFFECT_DURATION * 20L);
 		}
 		else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
