@@ -4,12 +4,14 @@ import net.lnfinity.HeroBattle.Class.ClassManager;
 import net.lnfinity.HeroBattle.Game.Game;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Listeners.ClassSelectorListener;
+import net.lnfinity.HeroBattle.Listeners.CommandListener;
 import net.lnfinity.HeroBattle.Listeners.GameListener;
 import net.lnfinity.HeroBattle.Listeners.MasterListener;
 import net.lnfinity.HeroBattle.Listeners.SystemListener;
 import net.lnfinity.HeroBattle.Tools.ToolsManager;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,6 +49,8 @@ public class HeroBattle extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(systemListener, this);
 		ClassSelectorListener classSelectorListener = new ClassSelectorListener(this);
 		getServer().getPluginManager().registerEvents(classSelectorListener, this);
+		
+		this.getCommand("start").setExecutor(new CommandListener(this));
 
 		for (Player player : getServer().getOnlinePlayers()) {
 			players.put(player.getUniqueId(), new GamePlayer());

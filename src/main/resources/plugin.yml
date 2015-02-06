@@ -2,3 +2,9 @@ name: HeroBattle
 description: Dev Plugin
 main: net.lnfinity.HeroBattle.HeroBattle
 version: 0.1
+
+commands:
+  start:
+    description: Force le jeu � d�marrer
+    aliases: [start]
+    usage: /start
