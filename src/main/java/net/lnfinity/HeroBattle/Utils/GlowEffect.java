@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Classe réutilisée du plugin BelovedBlocks
  * Auteur original: Amaury Carrade
  */

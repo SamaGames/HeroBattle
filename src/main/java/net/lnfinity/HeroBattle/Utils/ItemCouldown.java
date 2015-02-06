@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.Utils;
+﻿package net.lnfinity.HeroBattle.Utils;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import org.bukkit.Material;

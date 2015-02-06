@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.Listeners;
+﻿package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.Class.NotYetAvailableClass;
 import net.lnfinity.HeroBattle.Class.PlayerClass;

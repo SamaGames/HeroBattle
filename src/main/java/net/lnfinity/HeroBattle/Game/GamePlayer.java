@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.Game;
+﻿package net.lnfinity.HeroBattle.Game;
 
 import java.util.ArrayList;
 import java.util.List;

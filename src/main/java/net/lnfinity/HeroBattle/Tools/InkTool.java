@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.Tools;
+ï»¿package net.lnfinity.HeroBattle.Tools;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +39,7 @@ public class InkTool extends PlayerTool {
 	@Override
 	public List<String> getDescription() {
 		return Arrays.asList(ChatColor.GRAY + "Clic droit pour activer l'effet", ChatColor.DARK_GRAY
-				+ "Ne peut être utilisé que toutes les" + COOLDOWN + "secondes.");
+				+ "Ne peut Ãªtre utilisÃ© que toutes les" + COOLDOWN + "secondes.");
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class InkTool extends PlayerTool {
 				}
 			}
 		} else {
-			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
+			player.sendMessage(ChatColor.RED + "Vous Ãªtes trop fatiguÃ© pour rÃ©utiliser Ã§a maintenant");
 		}
 
 	}
