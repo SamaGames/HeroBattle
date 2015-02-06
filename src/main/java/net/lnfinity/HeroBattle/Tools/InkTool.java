@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
-import net.lnfinity.HeroBattle.Utils.ItemCouldown;
+import net.lnfinity.HeroBattle.Utils.ItemCooldown;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
@@ -53,7 +53,7 @@ public class InkTool extends PlayerTool {
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (tool.containsEnchantment(GlowEffect.getGlow())) {
 			player.playSound(player.getLocation(), Sound.SPLASH, 1, 1);
-			new ItemCouldown(p, player, this, COOLDOWN);
+			new ItemCooldown(p, player, this, COOLDOWN);
 
 			for (Entity e : player.getNearbyEntities(10, 10, 10)) {
 				if (e instanceof Player) {

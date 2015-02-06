@@ -7,7 +7,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 
-public class ItemCouldown {
+public class ItemCooldown {
 
 	private HeroBattle p;
 	private int seconds;
@@ -25,7 +25,7 @@ public class ItemCouldown {
 	 * @param tool The tool.
 	 * @param time The cooldown time, in seconds.
 	 */
-	public ItemCouldown(HeroBattle plugin, OfflinePlayer thePlayer, PlayerTool tool, int time) {
+	public ItemCooldown(HeroBattle plugin, OfflinePlayer thePlayer, PlayerTool tool, int time) {
 		p = plugin;
 		seconds = time;
 

@@ -6,7 +6,7 @@ import java.util.List;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tasks.EarthquakeTask;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
-import net.lnfinity.HeroBattle.Utils.ItemCouldown;
+import net.lnfinity.HeroBattle.Utils.ItemCooldown;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
@@ -50,7 +50,7 @@ public class EarthquakeTool extends PlayerTool {
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (tool.containsEnchantment(GlowEffect.getGlow())) {
-			new ItemCouldown(p, player, this, COOLDOWN);
+			new ItemCooldown(p, player, this, COOLDOWN);
 			if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
 				player.setVelocity(player.getVelocity().setY(-1));
 

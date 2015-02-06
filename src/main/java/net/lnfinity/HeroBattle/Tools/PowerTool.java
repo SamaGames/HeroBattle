@@ -2,7 +2,7 @@ package net.lnfinity.HeroBattle.Tools;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
-import net.lnfinity.HeroBattle.Utils.ItemCouldown;
+import net.lnfinity.HeroBattle.Utils.ItemCooldown;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Effect;
@@ -56,7 +56,7 @@ public class PowerTool extends PlayerTool {
 	@Override
 	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
 		if(tool.containsEnchantment(GlowEffect.getGlow())) {
-			new ItemCouldown(p, player, this, COOLDOWN);
+			new ItemCooldown(p, player, this, COOLDOWN);
 
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, EFFECT_DURATION * 20, 9));
 			p.getGamePlayer(player).setDoubleDamages(true);

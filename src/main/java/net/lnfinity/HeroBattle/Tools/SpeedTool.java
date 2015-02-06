@@ -2,7 +2,7 @@ package net.lnfinity.HeroBattle.Tools;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
-import net.lnfinity.HeroBattle.Utils.ItemCouldown;
+import net.lnfinity.HeroBattle.Utils.ItemCooldown;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -52,7 +52,7 @@ public class SpeedTool extends PlayerTool {
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if(tool.containsEnchantment(GlowEffect.getGlow())) {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1));
-			new ItemCouldown(p, player, this, COOLDOWN);
+			new ItemCooldown(p, player, this, COOLDOWN);
 		}
 		else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
