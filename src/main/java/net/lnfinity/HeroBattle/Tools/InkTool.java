@@ -53,11 +53,11 @@ public class InkTool extends PlayerTool {
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (tool.containsEnchantment(GlowEffect.getGlow())) {
 			player.playSound(player.getLocation(), Sound.SPLASH, 1, 1);
+			new ItemCouldown(p, player.getUniqueId(), player.getInventory().getHeldItemSlot(), COOLDOWN);
 			for (Entity e : player.getNearbyEntities(10, 10, 10)) {
 				if (e instanceof Player) {
 					Player pl = (Player) e;
 					pl.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, EFFECT_DURATION * 20, 0));
-					new ItemCouldown(p, player.getUniqueId(), player.getInventory().getHeldItemSlot(), COOLDOWN);
 					pl.playSound(pl.getLocation(), Sound.SPLASH, 1, 1);
 				}
 			}
