@@ -36,8 +36,11 @@ public class SpeedTool extends PlayerTool {
 	@Override
 	public List<String> getDescription() {
 		return Arrays.asList(
-				ChatColor.GRAY + "Clic droit pour activer l'effet.",
-				ChatColor.DARK_GRAY + "Ne peut être utilisé que toutes les " + COOLDOWN + " secondes.");
+				ChatColor.GRAY + "Vous offre un coup de boost pendant quelques secondes.",
+				"",
+				ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Clic droit pour activer l'effet.",
+				ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ne peut être utilisé que toutes les " + COOLDOWN + " secondes."
+		);
 	}
 
 	@Override

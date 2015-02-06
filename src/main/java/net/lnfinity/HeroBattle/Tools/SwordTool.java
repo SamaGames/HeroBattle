@@ -31,8 +31,10 @@ public class SwordTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList(ChatColor.GRAY + "Frappez les joueurs pour les repousser", ChatColor.GRAY
-				+ "Clic droit pour faire un double saut");
+		return Arrays.asList(
+				ChatColor.GRAY + "Frappez les joueurs pour les repousser.",
+				ChatColor.GRAY + "Cliquez droit pour faire un double saut."
+		);
 	}
 
 	@Override

@@ -40,8 +40,10 @@ public class PowerTool extends PlayerTool {
 	@Override
 	public List<String> getDescription() {
 		return Arrays.asList(
-				ChatColor.GRAY + "Clic droit pour activer l'effet.",
-				ChatColor.DARK_GRAY + "Ne peut être utilisé que toutes les " + COOLDOWN + " secondes."
+				ChatColor.GRAY + "Vous prendez bien un peu de puissance ?",
+				"",
+				ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Clic droit pour activer l'effet.",
+				ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ne peut être utilisé que toutes les " + COOLDOWN + " secondes."
 		);
 	}
 
