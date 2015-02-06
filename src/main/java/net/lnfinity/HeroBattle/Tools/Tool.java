@@ -1,4 +1,4 @@
-﻿package net.lnfinity.HeroBattle.Tools;
+package net.lnfinity.HeroBattle.Tools;
 
 /**
  * An enum to store the IDs of the tools (better access).

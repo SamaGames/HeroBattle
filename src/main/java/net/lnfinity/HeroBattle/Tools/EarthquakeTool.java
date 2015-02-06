@@ -1,4 +1,4 @@
-﻿package net.lnfinity.HeroBattle.Tools;
+package net.lnfinity.HeroBattle.Tools;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +21,6 @@ public class EarthquakeTool extends PlayerTool {
 
 	public EarthquakeTool(HeroBattle plugin) {
 		super(plugin);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -51,7 +50,7 @@ public class EarthquakeTool extends PlayerTool {
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (tool.containsEnchantment(GlowEffect.getGlow())) {
-			new ItemCouldown(p, player.getUniqueId(), player.getInventory().getHeldItemSlot(), COOLDOWN);
+			new ItemCouldown(p, player, this, COOLDOWN);
 			if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
 				player.setVelocity(player.getVelocity().setY(-1));
 

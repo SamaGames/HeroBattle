@@ -1,4 +1,4 @@
-﻿package net.lnfinity.HeroBattle.Tools;
+package net.lnfinity.HeroBattle.Tools;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
@@ -88,15 +88,29 @@ public abstract class PlayerTool {
 	 */
 	public ItemStack getInventoryItem(Player player) {
 		for(ItemStack tool : player.getInventory()) {
-			if(tool != null
-					&& tool.hasItemMeta()
-					&& tool.getItemMeta().hasDisplayName()
-					&& tool.getItemMeta().getDisplayName().equals(getName())) {
+			if(this.isRepresentation(tool)) {
 				return tool;
 			}
 		}
 
 		return null;
+	}
+
+	/**
+	 * Returns the item inside the inventory of the given player representing this tool.
+	 *
+	 * @param player The player.
+	 * @return The ItemStack representing the tool. {@code -1} if the player don't have this tool.
+	 */
+	public int getInventoryItemSlot(Player player) {
+		for(int slot = 0 ; slot < player.getInventory().getSize(); slot++) {
+			ItemStack tool = player.getInventory().getItem(slot);
+			if(this.isRepresentation(tool)) {
+				return slot;
+			}
+		}
+
+		return -1;
 	}
 
 	/**
@@ -122,6 +136,18 @@ public abstract class PlayerTool {
 		return item;
 	}
 
+	/**
+	 * Checks of the given ItemStack is a representation of this tool.
+	 *
+	 * @param item The ItemStack.
+	 * @return {@code true} if this item represents this tool in an inventory.
+	 */
+	public boolean isRepresentation(ItemStack item) {
+		return item != null
+				&& item.hasItemMeta()
+				&& item.getItemMeta().hasDisplayName()
+				&& item.getItemMeta().getDisplayName().equals(getName());
+	}
 
 	@Override
 	public boolean equals(Object o) {

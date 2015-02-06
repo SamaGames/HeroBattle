@@ -1,4 +1,4 @@
-﻿package net.lnfinity.HeroBattle.Listeners;
+package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;

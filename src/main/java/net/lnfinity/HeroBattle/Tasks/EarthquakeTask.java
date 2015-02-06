@@ -1,4 +1,4 @@
-﻿package net.lnfinity.HeroBattle.Tasks;
+package net.lnfinity.HeroBattle.Tasks;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 

@@ -1,4 +1,4 @@
-﻿package net.lnfinity.HeroBattle.Tools;
+package net.lnfinity.HeroBattle.Tools;
 
 import java.util.Arrays;
 import java.util.List;
@@ -53,7 +53,8 @@ public class InkTool extends PlayerTool {
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (tool.containsEnchantment(GlowEffect.getGlow())) {
 			player.playSound(player.getLocation(), Sound.SPLASH, 1, 1);
-			new ItemCouldown(p, player.getUniqueId(), player.getInventory().getHeldItemSlot(), COOLDOWN);
+			new ItemCouldown(p, player, this, COOLDOWN);
+
 			for (Entity e : player.getNearbyEntities(10, 10, 10)) {
 				if (e instanceof Player) {
 					Player pl = (Player) e;

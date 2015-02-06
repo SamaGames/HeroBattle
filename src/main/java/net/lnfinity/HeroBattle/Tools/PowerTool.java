@@ -1,4 +1,4 @@
-﻿package net.lnfinity.HeroBattle.Tools;
+package net.lnfinity.HeroBattle.Tools;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
@@ -56,7 +56,7 @@ public class PowerTool extends PlayerTool {
 	@Override
 	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
 		if(tool.containsEnchantment(GlowEffect.getGlow())) {
-			new ItemCouldown(p, player.getUniqueId(), player.getInventory().getHeldItemSlot(), COOLDOWN);
+			new ItemCouldown(p, player, this, COOLDOWN);
 
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, EFFECT_DURATION * 20, 9));
 			p.getGamePlayer(player).setDoubleDamages(true);
