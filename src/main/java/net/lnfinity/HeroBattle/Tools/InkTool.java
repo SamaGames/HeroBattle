@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.Tools;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
@@ -21,9 +22,14 @@ public class InkTool extends PlayerTool {
 
 	private final int COOLDOWN = 60; // seconds
 	private final int EFFECT_DURATION = 10; // seconds
+	private final double PROBABILITY_SENDER_HIT = 0.1;
+
+	private Random random = null;
 
 	public InkTool(HeroBattle plugin) {
 		super(plugin);
+
+		random = new Random();
 	}
 
 	@Override
@@ -33,13 +39,16 @@ public class InkTool extends PlayerTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.GRAY + "Jet d'encre";
+		return ChatColor.DARK_GRAY + "Jet d'encre";
 	}
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList(ChatColor.GRAY + "Clic droit pour activer l'effet", ChatColor.DARK_GRAY
-				+ "Ne peut être utilisé que toutes les" + COOLDOWN + "secondes.");
+		return Arrays.asList(ChatColor.GRAY + "Aveugle les joueurs proches.",
+				ChatColor.GRAY + "Attention, votre jet peut vous toucher...",
+				"",
+				ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Clic droit pour activer l'effet.",
+				ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ne peut être utilisé que toutes les " + COOLDOWN + " secondes.");
 	}
 
 	@Override
@@ -61,6 +70,10 @@ public class InkTool extends PlayerTool {
 					pl.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, EFFECT_DURATION * 20, 0));
 					pl.playSound(pl.getLocation(), Sound.SPLASH, 1, 1);
 				}
+			}
+
+			if(random.nextDouble() < PROBABILITY_SENDER_HIT) {
+				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, ((EFFECT_DURATION * 20) / 3) + random.nextInt(EFFECT_DURATION / 4), 0));
 			}
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
