@@ -4,6 +4,8 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
 import net.lnfinity.HeroBattle.Utils.ItemCouldown;
 import net.md_5.bungee.api.ChatColor;
+
+import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -60,13 +62,23 @@ public class PowerTool extends PlayerTool {
 			p.getGamePlayer(player).setDoubleDamages(true);
 
 			final UUID playerID = player.getUniqueId();
-
+			
+			final int taskId = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
+				@Override
+				public void run() {
+					player.getWorld().playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
+					player.getWorld().playEffect(player.getLocation(), Effect.LAVA_POP, 1);
+				}
+			}, 0, 5L).getTaskId();
+			
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
 					p.getGamePlayer(playerID).setDoubleDamages(false);
+					p.getServer().getScheduler().cancelTask(taskId);
 				}
 			}, EFFECT_DURATION * 20L);
+			
 		}
 		else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");

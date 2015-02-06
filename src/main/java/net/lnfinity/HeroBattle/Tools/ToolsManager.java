@@ -21,6 +21,7 @@ public class ToolsManager {
 		registerTool(new SpeedTool(p));
 		registerTool(new PowerTool(p));
 		registerTool(new EarthquakeTool(p));
+		registerTool(new InkTool(p));
 	}
 
 	/**

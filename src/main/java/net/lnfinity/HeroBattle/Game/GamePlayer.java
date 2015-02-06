@@ -87,5 +87,14 @@ public class GamePlayer {
 	public void addTask(Task t) {
 		tasks.add(t);
 	}
+	
+	public boolean hasTask(Task t) {
+		for(int i = 0; i < tasks.size(); i++) {
+			if(tasks.get(i).getClass() == t.getClass()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
