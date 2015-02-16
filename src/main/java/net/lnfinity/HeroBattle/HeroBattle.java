@@ -14,6 +14,7 @@ import net.lnfinity.HeroBattle.Listeners.GameListener;
 import net.lnfinity.HeroBattle.Listeners.MasterListener;
 import net.lnfinity.HeroBattle.Listeners.SystemListener;
 import net.lnfinity.HeroBattle.Tools.ToolsManager;
+import net.lnfinity.HeroBattle.Utils.ConfigAccessor;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.md_5.bungee.api.ChatColor;
 
@@ -30,6 +31,8 @@ public class HeroBattle extends JavaPlugin {
 
 	private ScoreboardManager scoreboardManager;
 
+	private ConfigAccessor config;
+
 	Map<UUID, GamePlayer> players = new HashMap<UUID, GamePlayer>();
 
 	// Global strings
@@ -38,7 +41,8 @@ public class HeroBattle extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		saveConfig();
+		initWorldConfig();
+
 		timer = new CountdownTimer(this);
 		g = new Game(this);
 		toolsManager = new ToolsManager(this);
@@ -53,7 +57,7 @@ public class HeroBattle extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(systemListener, this);
 		ClassSelectorListener classSelectorListener = new ClassSelectorListener(this);
 		getServer().getPluginManager().registerEvents(classSelectorListener, this);
-		
+
 		this.getCommand("start").setExecutor(new CommandListener(this));
 
 		for (Player player : getServer().getOnlinePlayers()) {
@@ -98,6 +102,12 @@ public class HeroBattle extends JavaPlugin {
 		return count;
 	}
 
+	public void initWorldConfig() {
+		config = new ConfigAccessor(this, this.getServer().getWorlds().get(0).getWorldFolder(), "config");
+
+		// TODO
+	}
+
 	public Game getGame() {
 		return g;
 	}
@@ -116,5 +126,9 @@ public class HeroBattle extends JavaPlugin {
 
 	public ScoreboardManager getScoreboardManager() {
 		return scoreboardManager;
+	}
+
+	public ConfigAccessor getWorldConfig() {
+		return config;
 	}
 }
