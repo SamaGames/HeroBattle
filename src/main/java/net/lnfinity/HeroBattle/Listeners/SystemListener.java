@@ -38,7 +38,11 @@ public class SystemListener implements Listener {
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
 		if (e.getTo().getBlockY() <= 0 && e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-			plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId());
+			if (plugin.getGamePlayer(e.getPlayer()).isPlaying()) {
+				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId());
+			} else {
+				plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
+			}
 		}
 	}
 
@@ -67,10 +71,10 @@ public class SystemListener implements Listener {
 			e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent e) {
-		if(e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+		if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
 			e.setCancelled(true);
 		}
 	}

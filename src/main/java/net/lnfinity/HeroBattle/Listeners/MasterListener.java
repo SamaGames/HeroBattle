@@ -35,7 +35,7 @@ public class MasterListener implements Listener {
 		ev.setJoinMessage(HeroBattle.NAME + ChatColor.YELLOW + p.getDisplayName() + ChatColor.YELLOW
 				+ " a rejoint l'arène " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + plugin.getPlayerCount()
 				+ ChatColor.DARK_GRAY + "/" + ChatColor.RED + "4" + ChatColor.DARK_GRAY + "]");
-		if (plugin.getPlayerCount() == 2) {
+		if (plugin.getPlayerCount() == 4) {
 			plugin.getTimer().restartTimer();
 		}
 

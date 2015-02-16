@@ -4,7 +4,6 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tasks.EarthquakeTask;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,11 +14,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.Vector;
 
 public class GameListener implements Listener {
@@ -51,10 +45,6 @@ public class GameListener implements Listener {
 			p.setLevel(plugin.getGamePlayer(p).getPercentage());
 
 			plugin.getScoreboardManager().update(p);
-		}
-
-		if (e.getCause() == DamageCause.ENTITY_ATTACK) {
-
 		}
 	}
 
