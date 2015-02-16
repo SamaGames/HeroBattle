@@ -39,6 +39,8 @@ public class MasterListener implements Listener {
 			plugin.getTimer().restartTimer();
 		}
 
+		p.setScoreboard(plugin.getScoreboardManager().getScoreboard());
+
 		p.setMaxHealth(20);
 		p.setHealth(20);
 

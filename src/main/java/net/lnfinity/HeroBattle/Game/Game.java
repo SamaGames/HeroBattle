@@ -55,22 +55,6 @@ public class Game {
 
 			loc++;
 		}
-
-		ScoreboardManager manager = Bukkit.getScoreboardManager();
-		Scoreboard board = manager.getNewScoreboard();
-
-		Objective objective = board.registerNewObjective("percentage", "dummy");
-		objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-		objective.setDisplayName("%");
-
-		for (Player online : Bukkit.getOnlinePlayers()) {
-			Score score = objective.getScore(online);
-			score.setScore(p.getGamePlayer(online).getPercentage());
-		}
-
-		for (Player online : Bukkit.getOnlinePlayers()) {
-			online.setScoreboard(board);
-		}
 	}
 
 	public void teleportHub(UUID id) {
@@ -112,6 +96,7 @@ public class Game {
 	}
 
 	public void start() {
+		p.getScoreboardManager().init();
 		teleportPlayers();
 	}
 

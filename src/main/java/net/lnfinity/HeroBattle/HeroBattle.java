@@ -3,6 +3,7 @@ package net.lnfinity.HeroBattle;
 import net.lnfinity.HeroBattle.Class.ClassManager;
 import net.lnfinity.HeroBattle.Game.Game;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
+import net.lnfinity.HeroBattle.Game.ScoreboardManager;
 import net.lnfinity.HeroBattle.Listeners.ClassSelectorListener;
 import net.lnfinity.HeroBattle.Listeners.CommandListener;
 import net.lnfinity.HeroBattle.Listeners.GameListener;
@@ -27,6 +28,8 @@ public class HeroBattle extends JavaPlugin {
 	private ClassManager classManager;
 	private ToolsManager toolsManager;
 
+	private ScoreboardManager scoreboardManager;
+
 	Map<UUID, GamePlayer> players = new HashMap<UUID, GamePlayer>();
 
 	// Global strings
@@ -40,6 +43,7 @@ public class HeroBattle extends JavaPlugin {
 		g = new Game(this);
 		toolsManager = new ToolsManager(this);
 		classManager = new ClassManager(this);
+		scoreboardManager = new ScoreboardManager(this);
 
 		MasterListener masterListener = new MasterListener(this);
 		getServer().getPluginManager().registerEvents(masterListener, this);
@@ -108,5 +112,9 @@ public class HeroBattle extends JavaPlugin {
 
 	public ToolsManager getToolsManager() {
 		return toolsManager;
+	}
+
+	public ScoreboardManager getScoreboardManager() {
+		return scoreboardManager;
 	}
 }

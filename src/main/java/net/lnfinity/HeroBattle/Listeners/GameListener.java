@@ -35,6 +35,7 @@ public class GameListener implements Listener {
 		if (plugin.getGame().isWaiting()) {
 			e.setCancelled(true);
 		}
+
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
 			if (e.getCause() == DamageCause.FALL) {
@@ -48,27 +49,13 @@ public class GameListener implements Listener {
 			p.setExp(0);
 			p.setTotalExperience(0);
 			p.setLevel(plugin.getGamePlayer(p).getPercentage());
-			
-			ScoreboardManager manager = Bukkit.getScoreboardManager();
-			Scoreboard board = manager.getNewScoreboard();
 
-			Objective objective = board.registerNewObjective("percentage", "dummy");
-			objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-			objective.setDisplayName("%");
-
-			for (Player online : Bukkit.getOnlinePlayers()) {
-				Score score = objective.getScore(online);
-				score.setScore(plugin.getGamePlayer(online).getPercentage());
-			}
-			for (Player online : Bukkit.getOnlinePlayers()) {
-				online.setScoreboard(board);
-			}
+			plugin.getScoreboardManager().update(p);
 		}
+
 		if (e.getCause() == DamageCause.ENTITY_ATTACK) {
 
 		}
-		
-		
 	}
 
 	@EventHandler
@@ -89,22 +76,7 @@ public class GameListener implements Listener {
 			}
 
 			player.setLevel(plugin.getGamePlayer(player).getPercentage());
-
-			ScoreboardManager manager = Bukkit.getScoreboardManager();
-			Scoreboard board = manager.getNewScoreboard();
-
-			Objective objective = board.registerNewObjective("percentage", "dummy");
-			objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-			objective.setDisplayName("%");
-
-			for (Player online : Bukkit.getOnlinePlayers()) {
-				Score score = objective.getScore(online);
-				score.setScore(plugin.getGamePlayer(online).getPercentage());
-			}
-
-			for (Player online : Bukkit.getOnlinePlayers()) {
-				online.setScoreboard(board);
-			}
+			plugin.getScoreboardManager().update(player);
 
 			double pw = 10;
 			double xa = e.getDamager().getLocation().getX();
