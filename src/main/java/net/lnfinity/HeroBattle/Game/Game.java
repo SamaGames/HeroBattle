@@ -1,6 +1,10 @@
 package net.lnfinity.HeroBattle.Game;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
@@ -25,8 +29,45 @@ public class Game implements GameArena {
 	private HeroBattle p;
 	private boolean waiting = true;
 
+	private Set<Location> spawnPoints = new HashSet<>();
+	private Location hub;
+
 	public Game(HeroBattle plugin) {
 		p = plugin;
+
+		// Loads the spawn points and the hub from the world config.
+
+		try {
+			hub = stringToLocation(p.getWorldConfig().getString("map.hub"));
+		} catch(IllegalArgumentException e) {
+			p.getLogger().log(Level.SEVERE, "Invalid hub in arena.yml! " + e.getMessage());
+		}
+
+		for (Object spawn : p.getWorldConfig().getList("map.spawns")) {
+			if(spawn instanceof String) {
+				try {
+					spawnPoints.add(stringToLocation((String) spawn));
+				} catch(IllegalArgumentException e) {
+					p.getLogger().log(Level.SEVERE, "Invalid spawn in arena.yml! " + e.getMessage());
+				}
+			}
+		}
+
+		if(spawnPoints.size() < getTotalMaxPlayers()) {
+			p.getLogger().severe("#==================[Fatal exception report]==================#");
+			p.getLogger().severe("# Not enough spawn points set in the configuration.          #");
+			p.getLogger().severe("# The plugin cannot load, please fix that.                   #");
+			p.getLogger().severe("#============================================================#");
+
+			p.getServer().getPluginManager().disablePlugin(p);
+		}
+	}
+
+	public void start() {
+		p.getScoreboardManager().init();
+		teleportPlayers();
+
+		GameAPI.getManager().sendArena();
 	}
 
 	public void teleportPlayers() {
@@ -155,19 +196,46 @@ public class Game implements GameArena {
 		}
 	}
 
-	public void start() {
-		p.getScoreboardManager().init();
-		teleportPlayers();
-
-		GameAPI.getManager().sendArena();
-	}
-
 	public boolean isWaiting() {
 		return waiting;
 	}
 
 	public void setWaiting(boolean waiting) {
 		this.waiting = waiting;
+	}
+
+	/**
+	 * Converts a string (in the config file) to a Location object.
+	 *
+	 * @param locationInConfig A string; format "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch".
+	 * @return The Location object, for the main world (first one).
+	 *
+	 * @throws IllegalArgumentException if the format is not good.
+	 */
+	private Location stringToLocation(String locationInConfig) {
+		String[] coords = locationInConfig.split(";");
+		if(coords.length < 3) {
+			throw new IllegalArgumentException("Invalid location: " + locationInConfig);
+		}
+
+		try {
+			Location location = new Location(p.getServer().getWorlds().get(0),
+					Double.valueOf(coords[0]),
+					Double.valueOf(coords[1]),
+					Double.valueOf(coords[2]));
+
+			if (coords.length >= 4) {
+				location.setYaw(Float.valueOf(coords[3]));
+
+				if (coords.length >= 5) {
+					location.setPitch(Float.valueOf(coords[4]));
+				}
+			}
+
+			return location;
+		} catch(NumberFormatException e) {
+			throw new IllegalArgumentException("Invalid location (NaN!): " + locationInConfig);
+		}
 	}
 
 
@@ -182,17 +250,17 @@ public class Game implements GameArena {
 
 	@Override
 	public int getMaxPlayers() {
-		return 84 - 21;
+		return p.getWorldConfig().getInt("map.maxPlayers");
 	}
 
 	@Override
 	public int getTotalMaxPlayers() {
-		return 84;
+		return getMaxPlayers() + getVIPSlots();
 	}
 
 	@Override
 	public int getVIPSlots() {
-		return 21;
+		return p.getWorldConfig().getInt("map.maxVIP");
 	}
 
 	@Override
@@ -212,7 +280,7 @@ public class Game implements GameArena {
 
 	@Override
 	public String getMapName() {
-		return p.getConfig().getString("mapName");
+		return p.getWorldConfig().getString("map.name");
 	}
 
 	@Override
