@@ -156,7 +156,7 @@ public class HeroBattle extends JavaPlugin {
 		return scoreboardManager;
 	}
 
-	public Configuration getWorldConfig() {
+	public Configuration getArenaConfig() {
 		return arenaConfig;
 	}
 }

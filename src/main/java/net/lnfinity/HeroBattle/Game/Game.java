@@ -35,12 +35,12 @@ public class Game implements GameArena {
 		// Loads the spawn points and the hub from the world config.
 
 		try {
-			hub = stringToLocation(p.getWorldConfig().getString("map.hub"));
+			hub = stringToLocation(p.getArenaConfig().getString("map.hub"));
 		} catch(IllegalArgumentException e) {
 			p.getLogger().log(Level.SEVERE, "Invalid hub in arena.yml! " + e.getMessage());
 		}
 
-		for (Object spawn : p.getWorldConfig().getList("map.spawns")) {
+		for (Object spawn : p.getArenaConfig().getList("map.spawns")) {
 			if(spawn instanceof String) {
 				try {
 					spawnPoints.add(stringToLocation((String) spawn));
@@ -246,7 +246,7 @@ public class Game implements GameArena {
 
 	@Override
 	public int getMaxPlayers() {
-		return p.getWorldConfig().getInt("map.maxPlayers");
+		return p.getArenaConfig().getInt("map.maxPlayers");
 	}
 
 	@Override
@@ -256,7 +256,7 @@ public class Game implements GameArena {
 
 	@Override
 	public int getVIPSlots() {
-		return p.getWorldConfig().getInt("map.maxVIP");
+		return p.getArenaConfig().getInt("map.maxVIP");
 	}
 
 	@Override
@@ -275,7 +275,7 @@ public class Game implements GameArena {
 
 	@Override
 	public String getMapName() {
-		return p.getWorldConfig().getString("map.name");
+		return p.getArenaConfig().getString("map.name");
 	}
 
 	@Override
