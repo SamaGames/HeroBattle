@@ -18,6 +18,7 @@ import net.lnfinity.HeroBattle.Utils.ConfigAccessor;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.md_5.bungee.api.ChatColor;
 
+import net.samagames.gameapi.GameAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -41,6 +42,7 @@ public class HeroBattle extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		saveDefaultConfig();
 		initWorldConfig();
 
 		timer = new CountdownTimer(this);
@@ -66,6 +68,8 @@ public class HeroBattle extends JavaPlugin {
 		if (getPlayerCount() == 4) {
 			timer.restartTimer();
 		}
+
+		GameAPI.registerGame(getConfig().getString("gameName"), g);
 	}
 
 	public void addGamePlayer(Player p) {

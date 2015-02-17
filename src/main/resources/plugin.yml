@@ -3,8 +3,12 @@ description: Dev Plugin
 main: net.lnfinity.HeroBattle.HeroBattle
 version: 0.1
 
+depend:
+ - MasterBundle
+
+
 commands:
   start:
-    description: Force le jeu � d�marrer
+    description: Force le jeu à démarrer
     aliases: [start]
     usage: /start

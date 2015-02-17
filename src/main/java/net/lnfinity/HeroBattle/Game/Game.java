@@ -7,12 +7,14 @@ import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.lnfinity.HeroBattle.Utils.WinnerFirework;
 import net.md_5.bungee.api.ChatColor;
 
+import net.samagames.gameapi.json.Status;
+import net.samagames.gameapi.types.GameArena;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 
-public class Game {
+public class Game implements GameArena {
 
 	private HeroBattle p;
 	private boolean waiting = true;
@@ -134,5 +136,56 @@ public class Game {
 
 	public void setWaiting(boolean waiting) {
 		this.waiting = waiting;
+	}
+
+
+	@Override
+	public int countGamePlayers() {
+		int count = 0;
+		for(Player player : p.getServer().getOnlinePlayers()) {
+			if(player.getGameMode() != GameMode.SPECTATOR) count++;
+		}
+		return count;
+	}
+
+	@Override
+	public int getMaxPlayers() {
+		return 84 - 21;
+	}
+
+	@Override
+	public int getTotalMaxPlayers() {
+		return 84;
+	}
+
+	@Override
+	public int getVIPSlots() {
+		return 21;
+	}
+
+	@Override
+	public Status getStatus() {
+		if(isWaiting()) {
+			return Status.Available;
+		}
+		else {
+			return Status.InGame;
+		}
+	}
+
+	@Override
+	public void setStatus(Status status) {
+
+	}
+
+	@Override
+	public String getMapName() {
+		return p.getConfig().getString("mapName");
+	}
+
+	@Override
+	public boolean hasPlayer(UUID uuid) {
+		Player player = p.getServer().getPlayer(uuid);
+		return player != null && player.getGameMode() != GameMode.SPECTATOR;
 	}
 }

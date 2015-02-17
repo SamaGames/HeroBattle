@@ -29,7 +29,6 @@
             <id>samagames-repo</id>
             <url>http://maven.samagames.net</url>
         </repository>
-        
    </repositories>
   <dependencies>
    <dependency>
@@ -40,7 +39,7 @@
    <dependency>
     <groupId>net.samagames</groupId>
     <artifactId>MasterBundle</artifactId>
-    <version>1.0.0</version>
+    <version>1.8-SNAPSHOT</version>
     <scope>provided</scope>
    </dependency>
   </dependencies>

@@ -2,6 +2,8 @@ package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
+import net.samagames.gameapi.GameAPI;
+import net.samagames.gameapi.events.FinishJoinPlayerEvent;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,21 +22,23 @@ public class MasterListener implements Listener {
 		plugin = p;
 	}
 
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent ev) {
-		Player p = ev.getPlayer();
+	@EventHandler(ignoreCancelled = true)
+	public void onPlayerJoin(FinishJoinPlayerEvent ev) {
+		Player p = plugin.getServer().getPlayer(ev.getPlayer());
 		plugin.addGamePlayer(p);
 		p.getInventory().clear();
 		p.setExp(0);
 		p.setLevel(0);
 		p.setTotalExperience(0);
 		p.setGameMode(GameMode.ADVENTURE);
-		ev.getPlayer().teleport(
-				new Location(ev.getPlayer().getWorld(), plugin.getConfig().getInt("locations.hub.x"), plugin
+
+		p.teleport(
+				new Location(p.getWorld(), plugin.getConfig().getInt("locations.hub.x"), plugin
 						.getConfig().getInt("locations.hub.y"), plugin.getConfig().getInt("locations.hub.z")));
-		ev.setJoinMessage(HeroBattle.NAME + ChatColor.YELLOW + p.getDisplayName() + ChatColor.YELLOW
+		p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + p.getDisplayName() + ChatColor.YELLOW
 				+ " a rejoint l'arène " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + plugin.getPlayerCount()
 				+ ChatColor.DARK_GRAY + "/" + ChatColor.RED + "4" + ChatColor.DARK_GRAY + "]");
+
 		if (plugin.getPlayerCount() == 4) {
 			plugin.getTimer().restartTimer();
 		}
@@ -45,9 +49,11 @@ public class MasterListener implements Listener {
 		p.setHealth(20);
 
 		// TODO Better display.
-		ev.getPlayer().getInventory().addItem(new ItemStack(Material.NETHER_STAR));
+		p.getInventory().addItem(new ItemStack(Material.NETHER_STAR));
 
 		p.updateInventory();
+
+		GameAPI.getManager().sendArena();
 	}
 
 	@EventHandler
@@ -55,5 +61,7 @@ public class MasterListener implements Listener {
 		if (plugin.getGame().isWaiting()) {
 			plugin.getTimer().cancelTimer();
 		}
+
+		GameAPI.getManager().sendArena();
 	}
 }
