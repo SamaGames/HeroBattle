@@ -1,9 +1,6 @@
 package net.lnfinity.HeroBattle.Game;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 import net.lnfinity.HeroBattle.HeroBattle;
@@ -29,7 +26,7 @@ public class Game implements GameArena {
 	private HeroBattle p;
 	private boolean waiting = true;
 
-	private Set<Location> spawnPoints = new HashSet<>();
+	private List<Location> spawnPoints = new LinkedList<>();
 	private Location hub;
 
 	public Game(HeroBattle plugin) {
@@ -71,20 +68,17 @@ public class Game implements GameArena {
 	}
 
 	public void teleportPlayers() {
-		int loc = 1;
+		List<Location> tempLocs = new LinkedList<>(spawnPoints);
+		Random rand = new Random();
+
 		for (Player player : p.getServer().getOnlinePlayers()) {
 			p.addGamePlayer(player);
-			player.teleport(new Location(player.getWorld(), p.getConfig().getInt("locations.point" + loc + ".x"), p
-					.getConfig().getInt("locations.point" + loc + ".y"), p.getConfig().getInt(
-					"locations.point" + loc + ".z")));
+
+			int index = rand.nextInt(tempLocs.size());
+			player.teleport(tempLocs.get(index));
+			tempLocs.remove(index);
 
 			player.getInventory().clear();
-			/*
-			 * for (int i = 0; i <= 8; i++) { if
-			 * (p.getGamePlayer(player).getPlayerClass().getItem(i) != null) {
-			 * player.getInventory().setItem(i,
-			 * p.getGamePlayer(player).getPlayerClass().getItem(i)); } }
-			 */
 
 			GamePlayer hbPlayer = p.getGamePlayer(player);
 
@@ -102,24 +96,16 @@ public class Game implements GameArena {
 			player.setGameMode(GameMode.ADVENTURE);
 			player.setMaxHealth(hbPlayer.getPlayerClass().getLives() * 2);
 			player.setHealth(hbPlayer.getPlayerClass().getLives() * 2d);
-
-			loc++;
 		}
 		waiting = false;
 	}
 
 	public void teleportHub(UUID id) {
-		Player player = p.getServer().getPlayer(id);
-		player.teleport(new Location(player.getWorld(), p.getConfig().getInt("locations.hub.x"), p.getConfig().getInt(
-				"locations.hub.y"), p.getConfig().getInt("locations.hub.z")));
+		p.getServer().getPlayer(id).teleport(hub);
 	}
 
 	public void teleportRandomSpot(UUID id) {
-		Player player = p.getServer().getPlayer(id);
-		int loc = (int) (Math.random() * ((4 - 1) + 1));
-		player.teleport(new Location(player.getWorld(), p.getConfig().getInt("locations.point" + loc + ".x"), p
-				.getConfig().getInt("locations.point" + loc + ".y"), p.getConfig().getInt(
-				"locations.point" + loc + ".z")));
+		p.getServer().getPlayer(id).teleport(spawnPoints.get((new Random()).nextInt(spawnPoints.size())));
 	}
 
 	public void onPlayerDeath(UUID id) {
