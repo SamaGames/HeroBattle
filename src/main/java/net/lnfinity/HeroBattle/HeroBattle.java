@@ -72,6 +72,12 @@ public class HeroBattle extends JavaPlugin {
 		GameAPI.registerGame(getConfig().getString("gameName"), g);
 	}
 
+	public void onDisable() {
+		// TODO g.setStatus(Status.Stopping)
+		// GameAPI.getManager().sendSync();
+		// GameAPI.getManager().disable();
+	}
+
 	public void addGamePlayer(Player p) {
 		players.put(p.getUniqueId(), new GamePlayer());
 	}

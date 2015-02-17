@@ -45,7 +45,7 @@ public class ItemCooldown {
 			public void run() {
 				seconds--;
 
-				if(player == null || !player.isOnline()) {
+				if (player == null || !player.isOnline()) {
 					return;
 				}
 
@@ -60,8 +60,11 @@ public class ItemCooldown {
 					}
 
 				} else {
-					onlinePlayer.getInventory().getItem(slotId).setAmount(seconds);
-					onlinePlayer.updateInventory();
+					// When the game is finished, the inventory is cleaned.
+					if (onlinePlayer.getInventory().getItem(slotId) != null) {
+						onlinePlayer.getInventory().getItem(slotId).setAmount(seconds);
+						onlinePlayer.updateInventory();
+					}
 				}
 			}
 		}, 20L, 20L).getTaskId();

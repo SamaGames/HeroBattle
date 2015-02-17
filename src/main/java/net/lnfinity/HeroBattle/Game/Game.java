@@ -7,8 +7,14 @@ import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.lnfinity.HeroBattle.Utils.WinnerFirework;
 import net.md_5.bungee.api.ChatColor;
 
+import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.types.GameArena;
+import net.zyuiop.MasterBundle.MasterBundle;
+import net.zyuiop.MasterBundle.StarsManager;
+import net.zyuiop.coinsManager.CoinsManager;
+import net.zyuiop.statsapi.StatsApi;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Damageable;
@@ -109,6 +115,8 @@ public class Game implements GameArena {
 				}
 			}
 		}
+
+		StatsApi.increaseStat(player, p.getName(), "deaths", 1);
 	}
 
 	public void onPlayerWin(UUID id) {
@@ -123,11 +131,35 @@ public class Game implements GameArena {
 				// p.getServer().shutdown();
 			}
 		}, 300L);
+
+		StarsManager.creditJoueur(player, 1, "Victoire !");
+		CoinsManager.creditJoueur(player.getUniqueId(), 5, true, true, "Victoire !");
+		StatsApi.increaseStat(player, p.getName(), "wins", 1);
+
+		if(MasterBundle.isDbEnabled) {
+			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
+				@Override
+				public void run() {
+					for(Player player : p.getServer().getOnlinePlayers()) {
+						player.kickPlayer("");
+					}
+				}
+			}, 25*20L);
+
+			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
+				@Override
+				public void run() {
+					Bukkit.shutdown();
+				}
+			}, 30*20L);
+		}
 	}
 
 	public void start() {
 		p.getScoreboardManager().init();
 		teleportPlayers();
+
+		GameAPI.getManager().sendArena();
 	}
 
 	public boolean isWaiting() {
