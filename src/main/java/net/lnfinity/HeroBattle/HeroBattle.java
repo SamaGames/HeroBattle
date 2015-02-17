@@ -17,8 +17,8 @@ import net.lnfinity.HeroBattle.Tools.ToolsManager;
 import net.lnfinity.HeroBattle.Utils.ConfigAccessor;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.md_5.bungee.api.ChatColor;
-
 import net.samagames.gameapi.GameAPI;
+
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 

@@ -1,6 +1,7 @@
 package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+
 import org.bukkit.GameMode;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -37,14 +38,12 @@ public class SystemListener implements Listener {
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
-		if (e.getTo().getBlockY() <= 0 && e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-			if (plugin.getGamePlayer(e.getPlayer()).isPlaying()) {
+		if (e.getTo().getBlockY() <= 0 && e.getPlayer().getGameMode() == GameMode.ADVENTURE && plugin.getGamePlayer(e.getPlayer()).isPlaying()) {
 				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId());
-			} else {
+			} else if(e.getTo().getBlockY() <= 0 && e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
 				plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
 			}
 		}
-	}
 
 	@EventHandler
 	public void onEntityRegainHealthEvent(EntityRegainHealthEvent e) {
