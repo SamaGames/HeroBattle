@@ -1,5 +1,7 @@
 package net.lnfinity.HeroBattle;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -14,11 +16,12 @@ import net.lnfinity.HeroBattle.Listeners.GameListener;
 import net.lnfinity.HeroBattle.Listeners.MasterListener;
 import net.lnfinity.HeroBattle.Listeners.SystemListener;
 import net.lnfinity.HeroBattle.Tools.ToolsManager;
-import net.lnfinity.HeroBattle.Utils.ConfigAccessor;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -32,9 +35,9 @@ public class HeroBattle extends JavaPlugin {
 
 	private ScoreboardManager scoreboardManager;
 
-	private ConfigAccessor config;
+	private Configuration arenaConfig;
 
-	Map<UUID, GamePlayer> players = new HashMap<UUID, GamePlayer>();
+	Map<UUID, GamePlayer> players = new HashMap<>();
 
 	// Global strings
 	public final static String NAME = ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "HeroBattle"
@@ -43,13 +46,27 @@ public class HeroBattle extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		saveDefaultConfig();
-		initWorldConfig();
 
-		timer = new CountdownTimer(this);
-		g = new Game(this);
-		toolsManager = new ToolsManager(this);
-		classManager = new ClassManager(this);
-		scoreboardManager = new ScoreboardManager(this);
+		File arenaFile = new File(getServer().getWorlds().get(0).getWorldFolder(), "arena.yml");
+		if (!arenaFile.exists()) {
+			getLogger().severe("#==================[Fatal exception report]==================#");
+			getLogger().severe("# The arena.yml description file was NOT FOUND.              #");
+			getLogger().severe("# The plugin cannot load without it, please create it.       #");
+			getLogger().severe("# The file path is the following :                           #");
+			getLogger().severe(arenaFile.getAbsolutePath());
+			getLogger().severe("#============================================================#");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+
+		arenaConfig = YamlConfiguration.loadConfiguration(arenaFile);
+
+		arenaConfig.addDefault("map.name", "HeroBattle");
+		arenaConfig.addDefault("map.maxPlayers", 10);
+		arenaConfig.addDefault("map.maxVIP", 2);
+		arenaConfig.addDefault("map.hub", "0;64;0");
+		arenaConfig.addDefault("map.spawns", Arrays.asList("0;64;0", "0;64;0"));
+		arenaConfig.addDefault("map.bottom", 0);
 
 		MasterListener masterListener = new MasterListener(this);
 		getServer().getPluginManager().registerEvents(masterListener, this);
@@ -63,11 +80,18 @@ public class HeroBattle extends JavaPlugin {
 		this.getCommand("start").setExecutor(new CommandListener(this));
 
 		for (Player player : getServer().getOnlinePlayers()) {
-			players.put(player.getUniqueId(), new GamePlayer());
+			addGamePlayer(player);
 		}
+
 		if (getPlayerCount() == 4) {
 			timer.restartTimer();
 		}
+
+		timer = new CountdownTimer(this);
+		g = new Game(this);
+		toolsManager = new ToolsManager(this);
+		classManager = new ClassManager(this);
+		scoreboardManager = new ScoreboardManager(this);
 
 		GameAPI.registerGame(getConfig().getString("gameName"), g);
 	}
@@ -96,7 +120,7 @@ public class HeroBattle extends JavaPlugin {
 
 	public int getPlayerCount() {
 		int count = 0;
-		for (Player player : getServer().getOnlinePlayers()) {
+		for (Player ignored : getServer().getOnlinePlayers()) {
 			count++;
 		}
 		return count;
@@ -110,12 +134,6 @@ public class HeroBattle extends JavaPlugin {
 			}
 		}
 		return count;
-	}
-
-	public void initWorldConfig() {
-		config = new ConfigAccessor(this, this.getServer().getWorlds().get(0).getWorldFolder(), "config");
-
-		// TODO
 	}
 
 	public Game getGame() {
@@ -138,7 +156,7 @@ public class HeroBattle extends JavaPlugin {
 		return scoreboardManager;
 	}
 
-	public ConfigAccessor getWorldConfig() {
-		return config;
+	public Configuration getWorldConfig() {
+		return arenaConfig;
 	}
 }

@@ -1,0 +1,19 @@
+# This is a template for the `world/arena.yml` file.
+# Locations format: "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch", where all coordinates are decimal numbers.
+map:
+    name: "HeroBattle"
+
+    maxPlayers: 10  # VIP(+) excluded
+    maxVIP: 2
+
+    hub: "0;64;0"   # "x;y;z"
+
+    # At least maxPlayers + maxVIP spawns
+    spawns:
+      - "0;64;0"
+      - "0;64;0"
+
+    # The altitude below which the players are killed when they fall.
+    # 0 if the map is bottomless.
+    # The altitude of the bottom else (like the water/lava level, etc.).
+    bottom: 0
