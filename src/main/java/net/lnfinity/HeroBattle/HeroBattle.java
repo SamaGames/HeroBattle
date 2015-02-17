@@ -1,24 +1,29 @@
 package net.lnfinity.HeroBattle;
 
-import net.lnfinity.HeroBattle.Class.ClassManager;
-import net.lnfinity.HeroBattle.Game.Game;
-import net.lnfinity.HeroBattle.Game.GamePlayer;
-import net.lnfinity.HeroBattle.Game.ScoreboardManager;
-import net.lnfinity.HeroBattle.Listeners.*;
-import net.lnfinity.HeroBattle.Tools.ToolsManager;
-import net.lnfinity.HeroBattle.Utils.CountdownTimer;
-import net.md_5.bungee.api.ChatColor;
-import net.samagames.gameapi.GameAPI;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import net.lnfinity.HeroBattle.Class.ClassManager;
+import net.lnfinity.HeroBattle.Game.Game;
+import net.lnfinity.HeroBattle.Game.GamePlayer;
+import net.lnfinity.HeroBattle.Game.ScoreboardManager;
+import net.lnfinity.HeroBattle.Listeners.ClassSelectorListener;
+import net.lnfinity.HeroBattle.Listeners.CommandListener;
+import net.lnfinity.HeroBattle.Listeners.GameListener;
+import net.lnfinity.HeroBattle.Listeners.MasterListener;
+import net.lnfinity.HeroBattle.Listeners.SystemListener;
+import net.lnfinity.HeroBattle.Tools.ToolsManager;
+import net.lnfinity.HeroBattle.Utils.CountdownTimer;
+import net.md_5.bungee.api.ChatColor;
+import net.samagames.gameapi.GameAPI;
+
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class HeroBattle extends JavaPlugin {
 

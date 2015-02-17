@@ -35,7 +35,7 @@ public class GameListener implements Listener {
 			if (e.getCause() == DamageCause.FALL) {
 				e.setCancelled(true);
 				plugin.getGamePlayer(p).playTask(new EarthquakeTask(plugin, p));
-					
+
 				plugin.getGamePlayer(p).setDoubleJump(2);
 			} else {
 				e.setDamage(0);
@@ -50,9 +50,8 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player
-				&& !plugin.getGame().isWaiting()) {
-			Player player = (Player) e.getEntity();
+		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player && !plugin.getGame().isWaiting()) {
+			final Player player = (Player) e.getEntity();
 			int min = plugin.getGamePlayer(player).getPlayerClass().getMinDamages();
 			int max = plugin.getGamePlayer(player).getPlayerClass().getMaxDamages();
 			if (plugin.getGamePlayer((Player) e.getDamager()).hasDoubleDamages()) {
@@ -92,6 +91,8 @@ public class GameListener implements Listener {
 			e.getEntity().setVelocity(
 					new Vector(a * plugin.getGamePlayer(player).getPercentage(), e.getEntity().getVelocity().getY(), b
 							* plugin.getGamePlayer(player).getPercentage()));
+
+			plugin.getGamePlayer(player).setLastDamager(e.getDamager().getUniqueId());
 		}
 	}
 
@@ -99,8 +100,8 @@ public class GameListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		final Player p = e.getPlayer();
 
-		if(e.hasItem() && e.getItem().getType() != Material.AIR
-				&& e.getItem().hasItemMeta() && e.getItem().getItemMeta().hasDisplayName()) {
+		if (e.hasItem() && e.getItem().getType() != Material.AIR && e.getItem().hasItemMeta()
+				&& e.getItem().getItemMeta().hasDisplayName()) {
 
 			ItemStack item = e.getItem();
 			String toolName = item.getItemMeta().getDisplayName();

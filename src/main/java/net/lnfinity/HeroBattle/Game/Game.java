@@ -7,7 +7,6 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.lnfinity.HeroBattle.Utils.WinnerFirework;
 import net.md_5.bungee.api.ChatColor;
-
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.types.GameArena;
@@ -15,6 +14,7 @@ import net.zyuiop.MasterBundle.MasterBundle;
 import net.zyuiop.MasterBundle.StarsManager;
 import net.zyuiop.coinsManager.CoinsManager;
 import net.zyuiop.statsapi.StatsApi;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -120,6 +120,12 @@ public class Game implements GameArena {
 			HBplayer.setLives(HBplayer.getLives() - 1);
 			player.setHealth(HBplayer.getLives() * 2);
 			teleportRandomSpot(player.getUniqueId());
+			if(HBplayer.getLastDamager() == null) {
+				p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " est tombé dans le vide"); 
+			} else {
+				p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par " + p.getServer().getPlayer(HBplayer.getLastDamager()).getName());
+			}
+			
 		} else {
 			player.setGameMode(GameMode.SPECTATOR);
 			HBplayer.setPlaying(false);
@@ -129,10 +135,16 @@ public class Game implements GameArena {
 			if (p.getPlayingPlayerCount() == 1) {
 				s = "";
 			}
+			if(HBplayer.getLastDamager() == null) {
+				p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " est tombé dans le vide"); 
+			} else {
+				p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par " + p.getServer().getPlayer(HBplayer.getLastDamager()).getName());
+			}
 			p.getServer().broadcastMessage(
 					HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
 							+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + p.getPlayingPlayerCount()
 							+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
+			StatsApi.increaseStat(player, p.getName(), "deaths", 1);
 			if (p.getPlayingPlayerCount() == 1) {
 				for (Player pl : p.getServer().getOnlinePlayers()) {
 					if (p.getGamePlayer(pl.getUniqueId()).isPlaying()) {
@@ -142,8 +154,6 @@ public class Game implements GameArena {
 				}
 			}
 		}
-
-		StatsApi.increaseStat(player, p.getName(), "deaths", 1);
 	}
 
 	public void onPlayerWin(UUID id) {
@@ -163,22 +173,22 @@ public class Game implements GameArena {
 		CoinsManager.creditJoueur(player.getUniqueId(), 5, true, true, "Victoire !");
 		StatsApi.increaseStat(player, p.getName(), "wins", 1);
 
-		if(MasterBundle.isDbEnabled) {
+		if (MasterBundle.isDbEnabled) {
 			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
-					for(Player player : p.getServer().getOnlinePlayers()) {
+					for (Player player : p.getServer().getOnlinePlayers()) {
 						player.kickPlayer("");
 					}
 				}
-			}, 25*20L);
+			}, 25 * 20L);
 
 			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
 					Bukkit.shutdown();
 				}
-			}, 30*20L);
+			}, 30 * 20L);
 		}
 	}
 
@@ -224,12 +234,12 @@ public class Game implements GameArena {
 		}
 	}
 
-
 	@Override
 	public int countGamePlayers() {
 		int count = 0;
-		for(Player player : p.getServer().getOnlinePlayers()) {
-			if(player.getGameMode() != GameMode.SPECTATOR) count++;
+		for (Player player : p.getServer().getOnlinePlayers()) {
+			if (player.getGameMode() != GameMode.SPECTATOR)
+				count++;
 		}
 		return count;
 	}
@@ -251,10 +261,9 @@ public class Game implements GameArena {
 
 	@Override
 	public Status getStatus() {
-		if(isWaiting()) {
+		if (isWaiting()) {
 			return Status.Available;
-		}
-		else {
+		} else {
 			return Status.InGame;
 		}
 	}
