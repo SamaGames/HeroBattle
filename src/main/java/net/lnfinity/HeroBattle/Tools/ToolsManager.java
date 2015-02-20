@@ -22,6 +22,7 @@ public class ToolsManager {
 		registerTool(new PowerTool(p));
 		registerTool(new EarthquakeTool(p));
 		registerTool(new InkTool(p));
+		registerTool(new NauseaTool(p));
 	}
 
 	/**
