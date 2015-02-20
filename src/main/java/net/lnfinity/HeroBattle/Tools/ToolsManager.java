@@ -24,6 +24,7 @@ public class ToolsManager {
 		registerTool(new InkTool(p));
 		registerTool(new NauseaTool(p));
 		registerTool(new ThunderTool(p));
+		registerTool(new SmokeTool(p));
 	}
 
 	/**
