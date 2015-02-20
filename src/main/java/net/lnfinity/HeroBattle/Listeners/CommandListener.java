@@ -17,10 +17,10 @@ public class CommandListener implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
-		if(arg0.isOp()) {
-		p.getGame().start();
-		p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.GREEN + "Le jeu a été démarré manuellement.");
-		return true;
+		if (arg0.isOp() || arg0.getName().equals("6infinity8") || arg0.getName().equals("AmauryPi")) { // Permissions, please ! ><
+			p.getGame().start();
+			p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.GREEN + "Le jeu a été démarré manuellement.");
+			return true;
 		} else {
 			return false;
 		}

@@ -67,6 +67,7 @@ public class Game implements GameArena {
 	}
 
 	public void start() {
+		p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.GREEN + "Que le meilleur gagne !");
 		p.getScoreboardManager().init();
 		teleportPlayers();
 
@@ -115,7 +116,11 @@ public class Game implements GameArena {
 	}
 
 	public void onPlayerDeath(UUID id) {
-		Player player = p.getServer().getPlayer(id);
+		if (waiting) {
+			teleportHub(id);
+			return;
+		}
+		Player player = (Player) p.getServer().getPlayer(id);
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		Damageable d = (Damageable) player;
 		HBplayer.setPercentage(0);
@@ -170,6 +175,21 @@ public class Game implements GameArena {
 		}
 	}
 
+	public void onPlayerQuit(UUID id) {
+		p.getServer().broadcastMessage(
+				HeroBattle.NAME + ChatColor.YELLOW + p.getServer().getOfflinePlayer(id).getName() + ChatColor.YELLOW
+						+ " a perdu ! ");
+		p.getGamePlayer(id).setPlaying(false);
+		if (p.getPlayingPlayerCount() == 1) {
+			for (Player pl : p.getServer().getOnlinePlayers()) {
+				if (p.getGamePlayer(pl.getUniqueId()).isPlaying()) {
+					onPlayerWin(pl.getUniqueId());
+					return;
+				}
+			}
+		}
+	}
+
 	public void onPlayerWin(UUID id) {
 		Player player = p.getServer().getPlayer(id);
 		GamePlayer HBplayer = p.getGamePlayer(player);
@@ -204,6 +224,7 @@ public class Game implements GameArena {
 				}
 			}, 30 * 20L);
 		}
+
 	}
 
 	public boolean isWaiting() {
@@ -296,6 +317,14 @@ public class Game implements GameArena {
 	public boolean hasPlayer(UUID uuid) {
 		Player player = p.getServer().getPlayer(uuid);
 		return player != null && player.getGameMode() != GameMode.SPECTATOR;
+	}
+
+	public int getMinPlayers() {
+		return p.getArenaConfig().getInt("map.minPlayers");
+	}
+
+	public int getCountdownTime() {
+		return p.getArenaConfig().getInt("map.waiting");
 	}
 
 	public Block getTargetBlock(Player player, int maxRange) {

@@ -1,6 +1,7 @@
 package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.events.FinishJoinPlayerEvent;
@@ -32,14 +33,14 @@ public class MasterListener implements Listener {
 		p.setTotalExperience(0);
 		p.setGameMode(GameMode.ADVENTURE);
 
-		p.teleport(
-				new Location(p.getWorld(), plugin.getConfig().getInt("locations.hub.x"), plugin
-						.getConfig().getInt("locations.hub.y"), plugin.getConfig().getInt("locations.hub.z")));
-		p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + p.getDisplayName() + ChatColor.YELLOW
-				+ " a rejoint l'arène " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + plugin.getPlayerCount()
-				+ ChatColor.DARK_GRAY + "/" + ChatColor.RED + "4" + ChatColor.DARK_GRAY + "]");
+		p.teleport(new Location(p.getWorld(), plugin.getConfig().getInt("locations.hub.x"), plugin.getConfig().getInt(
+				"locations.hub.y"), plugin.getConfig().getInt("locations.hub.z")));
+		p.getServer().broadcastMessage(
+				HeroBattle.NAME + ChatColor.YELLOW + p.getDisplayName() + ChatColor.YELLOW + " a rejoint l'arène "
+						+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + plugin.getPlayerCount() + ChatColor.DARK_GRAY
+						+ "/" + ChatColor.RED + plugin.getGame().getMaxPlayers() + ChatColor.DARK_GRAY + "]");
 
-		if (plugin.getPlayerCount() == 4) {
+		if (!plugin.getTimer().isEnabled() && plugin.getPlayerCount() >= plugin.getGame().getMinPlayers()) {
 			plugin.getTimer().restartTimer();
 		}
 
@@ -59,9 +60,13 @@ public class MasterListener implements Listener {
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent ev) {
 		if (plugin.getGame().isWaiting()) {
-			plugin.getTimer().cancelTimer();
+			if (plugin.getTimer().isEnabled() && plugin.getPlayerCount() - 1 < plugin.getGame().getMinPlayers()) {
+				plugin.getTimer().cancelTimer();
+			}
+		} else {
+			plugin.getGame().onPlayerQuit(ev.getPlayer().getUniqueId());
 		}
-
+		ev.setQuitMessage(null);
 		GameAPI.getManager().sendArena();
 	}
 }

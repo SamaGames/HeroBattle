@@ -1,10 +1,14 @@
-# This is a template for the `world/arena.yml` file.
+﻿# This is a template for the `world/arena.yml` file.
 # Locations format: "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch", where all coordinates are decimal numbers.
 map:
     name: "HeroBattle"
 
     maxPlayers: 10  # VIP(+) excluded
     maxVIP: 2
+
+    minPlayers: 4   # Minimum players to start the timer.
+
+    waiting: 30     # Time before begining
 
     hub: "0;64;0"   # "x;y;z"
 

@@ -12,6 +12,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -121,5 +122,13 @@ public class GameListener implements Listener {
 				}
 			}
 		}
+	}
+	
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent e) {
+		e.setDeathMessage(null);
+		e.getDrops().clear();
+		e.setDroppedExp(0);
+		plugin.getGame().onPlayerDeath(e.getEntity().getUniqueId());
 	}
 }
