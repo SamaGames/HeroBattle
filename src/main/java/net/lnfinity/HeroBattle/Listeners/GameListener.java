@@ -40,6 +40,11 @@ public class GameListener implements Listener {
 			} else {
 				e.setDamage(0);
 			}
+			if(e.getCause() == DamageCause.LIGHTNING) {
+				plugin.getGamePlayer(p).setPercentage(
+						plugin.getGamePlayer(p).getPercentage() + 20
+						+ (int) (Math.random() * ((50 - 20) + 20)));
+			}
 			p.setExp(0);
 			p.setTotalExperience(0);
 			p.setLevel(plugin.getGamePlayer(p).getPercentage());

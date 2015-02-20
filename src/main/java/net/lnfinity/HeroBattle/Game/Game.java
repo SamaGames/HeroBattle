@@ -1,6 +1,9 @@
 package net.lnfinity.HeroBattle.Game;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import net.lnfinity.HeroBattle.HeroBattle;
@@ -18,8 +21,11 @@ import net.zyuiop.statsapi.StatsApi;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class Game implements GameArena {
 
@@ -36,21 +42,21 @@ public class Game implements GameArena {
 
 		try {
 			hub = stringToLocation(p.getArenaConfig().getString("map.hub"));
-		} catch(IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			p.getLogger().log(Level.SEVERE, "Invalid hub in arena.yml! " + e.getMessage());
 		}
 
 		for (Object spawn : p.getArenaConfig().getList("map.spawns")) {
-			if(spawn instanceof String) {
+			if (spawn instanceof String) {
 				try {
 					spawnPoints.add(stringToLocation((String) spawn));
-				} catch(IllegalArgumentException e) {
+				} catch (IllegalArgumentException e) {
 					p.getLogger().log(Level.SEVERE, "Invalid spawn in arena.yml! " + e.getMessage());
 				}
 			}
 		}
 
-		if(spawnPoints.size() < getTotalMaxPlayers()) {
+		if (spawnPoints.size() < getTotalMaxPlayers()) {
 			p.getLogger().severe("#==================[Fatal exception report]==================#");
 			p.getLogger().severe("# Not enough spawn points set in the configuration.          #");
 			p.getLogger().severe("# The plugin cannot load, please fix that.                   #");
@@ -120,12 +126,16 @@ public class Game implements GameArena {
 			HBplayer.setLives(HBplayer.getLives() - 1);
 			player.setHealth(HBplayer.getLives() * 2);
 			teleportRandomSpot(player.getUniqueId());
-			if(HBplayer.getLastDamager() == null) {
-				p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " est tombé dans le vide"); 
+			if (HBplayer.getLastDamager() == null) {
+				p.getServer().broadcastMessage(
+						HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+								+ " est tombé dans le vide");
 			} else {
-				p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par " + p.getServer().getPlayer(HBplayer.getLastDamager()).getName());
+				p.getServer().broadcastMessage(
+						HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par "
+								+ p.getServer().getPlayer(HBplayer.getLastDamager()).getName());
 			}
-			
+
 		} else {
 			player.setGameMode(GameMode.SPECTATOR);
 			HBplayer.setPlaying(false);
@@ -135,10 +145,14 @@ public class Game implements GameArena {
 			if (p.getPlayingPlayerCount() == 1) {
 				s = "";
 			}
-			if(HBplayer.getLastDamager() == null) {
-				p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " est tombé dans le vide"); 
+			if (HBplayer.getLastDamager() == null) {
+				p.getServer().broadcastMessage(
+						HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+								+ " est tombé dans le vide");
 			} else {
-				p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par " + p.getServer().getPlayer(HBplayer.getLastDamager()).getName());
+				p.getServer().broadcastMessage(
+						HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par "
+								+ p.getServer().getPlayer(HBplayer.getLastDamager()).getName());
 			}
 			p.getServer().broadcastMessage(
 					HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
@@ -202,23 +216,23 @@ public class Game implements GameArena {
 
 	/**
 	 * Converts a string (in the config file) to a Location object.
-	 *
-	 * @param locationInConfig A string; format "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch".
+	 * 
+	 * @param locationInConfig
+	 *            A string; format "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch".
 	 * @return The Location object, for the main world (first one).
-	 *
-	 * @throws IllegalArgumentException if the format is not good.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the format is not good.
 	 */
 	private Location stringToLocation(String locationInConfig) {
 		String[] coords = locationInConfig.split(";");
-		if(coords.length < 3) {
+		if (coords.length < 3) {
 			throw new IllegalArgumentException("Invalid location: " + locationInConfig);
 		}
 
 		try {
-			Location location = new Location(p.getServer().getWorlds().get(0),
-					Double.valueOf(coords[0]),
-					Double.valueOf(coords[1]),
-					Double.valueOf(coords[2]));
+			Location location = new Location(p.getServer().getWorlds().get(0), Double.valueOf(coords[0]),
+					Double.valueOf(coords[1]), Double.valueOf(coords[2]));
 
 			if (coords.length >= 4) {
 				location.setYaw(Float.valueOf(coords[3]));
@@ -229,7 +243,7 @@ public class Game implements GameArena {
 			}
 
 			return location;
-		} catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Invalid location (NaN!): " + locationInConfig);
 		}
 	}
@@ -282,5 +296,23 @@ public class Game implements GameArena {
 	public boolean hasPlayer(UUID uuid) {
 		Player player = p.getServer().getPlayer(uuid);
 		return player != null && player.getGameMode() != GameMode.SPECTATOR;
+	}
+
+	public Block getTargetBlock(Player player, int maxRange) {
+		Block block;
+		Location loc = player.getEyeLocation().clone();
+		// Adapter au format joueur
+		Vector progress = loc.getDirection().normalize().clone().multiply(0.70);
+		maxRange = (100 * maxRange / 70);
+		int loop = 0;
+		while (loop < maxRange) {
+			loop++;
+			loc.add(progress);
+			block = loc.getBlock();
+			if (!block.getType().equals(Material.AIR)) {
+				return loc.getBlock();
+			}
+		}
+		return null;
 	}
 }

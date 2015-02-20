@@ -10,7 +10,8 @@ public enum Tool {
 	POWER("tool.power"),
 	EARTHQUAKE("tool.earthquake"),
 	INK("tool.ink"),
-	NAUSEA("tool.nausea");
+	NAUSEA("tool.nausea"),
+	THUNDER("tool.thunder");
 
 	private final String toolID;
 
