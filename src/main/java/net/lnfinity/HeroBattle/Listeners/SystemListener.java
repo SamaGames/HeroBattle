@@ -7,6 +7,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -38,12 +39,13 @@ public class SystemListener implements Listener {
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
-		if (e.getTo().getBlockY() <= 0 && e.getPlayer().getGameMode() == GameMode.ADVENTURE && plugin.getGamePlayer(e.getPlayer()).isPlaying()) {
-				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId());
-			} else if(e.getTo().getBlockY() <= 0 && e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-				plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
-			}
+		if (e.getTo().getBlockY() <= 0 && e.getPlayer().getGameMode() == GameMode.ADVENTURE
+				&& plugin.getGamePlayer(e.getPlayer()).isPlaying()) {
+			plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId());
+		} else if (e.getTo().getBlockY() <= 0 && e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+			plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
 		}
+	}
 
 	@EventHandler
 	public void onEntityRegainHealthEvent(EntityRegainHealthEvent e) {
@@ -74,6 +76,13 @@ public class SystemListener implements Listener {
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent e) {
 		if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+			e.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onCreatureSpawn(CreatureSpawnEvent e) {
+		if (e.getSpawnReason() != CreatureSpawnEvent.SpawnReason.NATURAL) {
 			e.setCancelled(true);
 		}
 	}

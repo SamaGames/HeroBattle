@@ -1,4 +1,4 @@
-name: HeroBattle
+﻿name: HeroBattle
 description: Dev Plugin
 main: net.lnfinity.HeroBattle.HeroBattle
 version: 0.1
@@ -9,6 +9,10 @@ depend:
 
 commands:
   start:
-    description: Force le jeu à démarrer
+    description: Force le démarrage du jeu.
     aliases: [start]
-    usage: /start
+    usage: Vous n'avez pas les permissions requises !
+  forcestop:
+    description: Force l'arrêt du jeu. Sachez ce que vous faites !
+    aliases: [forcestop]
+    usage: Vous n'avez pas les permissions requises !

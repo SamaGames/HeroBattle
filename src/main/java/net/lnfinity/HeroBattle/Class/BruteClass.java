@@ -18,7 +18,9 @@ public class BruteClass extends PlayerClass {
 		addTool(p.getToolsManager().getTool(Tool.SPEED));
 		addTool(p.getToolsManager().getTool(Tool.POWER));
 		addTool(p.getToolsManager().getTool(Tool.EARTHQUAKE));
-		addTool(p.getToolsManager().getTool(Tool.INK));
+		addTool(p.getToolsManager().getTool(Tool.THUNDER));
+		addTool(p.getToolsManager().getTool(Tool.NAUSEA));
+		addTool(p.getToolsManager().getTool(Tool.SMOKE));
 	}
 
 	@Override

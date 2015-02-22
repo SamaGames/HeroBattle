@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Class.PlayerClass;
 import net.lnfinity.HeroBattle.Tasks.Task;
 

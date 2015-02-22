@@ -10,6 +10,8 @@ map:
 
     waiting: 30     # Time before begining
 
+    dayTime: 6000   # Set the day period
+
     hub: "0;64;0"   # "x;y;z"
 
     # At least maxPlayers + maxVIP spawns

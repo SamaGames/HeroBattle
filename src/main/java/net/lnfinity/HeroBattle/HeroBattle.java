@@ -77,14 +77,12 @@ public class HeroBattle extends JavaPlugin {
 		ClassSelectorListener classSelectorListener = new ClassSelectorListener(this);
 		getServer().getPluginManager().registerEvents(classSelectorListener, this);
 
-		this.getCommand("start").setExecutor(new CommandListener(this));
+		CommandListener command = new CommandListener(this);
+		this.getCommand("start").setExecutor(command);
+		this.getCommand("forcestop").setExecutor(command);
 
 		for (Player player : getServer().getOnlinePlayers()) {
 			addGamePlayer(player);
-		}
-
-		if (getPlayerCount() == 4) {
-			timer.restartTimer();
 		}
 
 		timer = new CountdownTimer(this);
@@ -92,6 +90,8 @@ public class HeroBattle extends JavaPlugin {
 		toolsManager = new ToolsManager(this);
 		classManager = new ClassManager(this);
 		scoreboardManager = new ScoreboardManager(this);
+		
+		addOnlinePlayers();
 
 		GameAPI.registerGame(getConfig().getString("gameName"), g);
 	}
@@ -101,9 +101,17 @@ public class HeroBattle extends JavaPlugin {
 		// GameAPI.getManager().sendSync();
 		// GameAPI.getManager().disable();
 	}
+	
+	// For local debuging purpose only (/rl)
+	public void addOnlinePlayers() {
+		for (Player player : this.getServer().getOnlinePlayers()) {
+			this.addGamePlayer(player);
+		}
+	}
 
 	public void addGamePlayer(Player p) {
-		players.put(p.getUniqueId(), new GamePlayer());
+		GamePlayer player = new GamePlayer();
+		players.put(p.getUniqueId(), player);
 	}
 
 	public void removeGamePlayer(Player p) {

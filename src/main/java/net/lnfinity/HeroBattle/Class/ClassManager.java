@@ -2,7 +2,9 @@ package net.lnfinity.HeroBattle.Class;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ClassManager {

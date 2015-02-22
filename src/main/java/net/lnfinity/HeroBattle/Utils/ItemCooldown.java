@@ -2,8 +2,10 @@ package net.lnfinity.HeroBattle.Utils;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
+
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 
@@ -52,6 +54,7 @@ public class ItemCooldown {
 				Player onlinePlayer = ((Player) player);
 
 				if (seconds == 0) {
+					onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.NOTE_PIANO, (float) 1, (float) 1.5);
 					p.getServer().getScheduler().cancelTask(task);
 
 					if (onlinePlayer.getInventory().getItem(slotId) != null

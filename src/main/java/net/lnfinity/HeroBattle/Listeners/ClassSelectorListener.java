@@ -1,11 +1,16 @@
 package net.lnfinity.HeroBattle.Listeners;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Set;
+
+import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Class.NotYetAvailableClass;
 import net.lnfinity.HeroBattle.Class.PlayerClass;
-import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.lnfinity.HeroBattle.Utils.GlowEffect;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,16 +21,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Set;
-
 public class ClassSelectorListener implements Listener {
 
 	private HeroBattle p;
 
 	private final String TITLE_CLASS_SELECTOR = "Sélection de la classe";
-	private final String TITLE_CLASS_DETAILS  = "Détails de la classe ";
+	private final String TITLE_CLASS_DETAILS = "Détails de la classe ";
 
 	public ClassSelectorListener(HeroBattle plugin) {
 		p = plugin;
@@ -37,17 +38,17 @@ public class ClassSelectorListener implements Listener {
 			Player player = (Player) e.getWhoClicked();
 
 			if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
-				PlayerClass clickedClass = p.getClassManager().getClassFromName(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+				PlayerClass clickedClass = p.getClassManager().getClassFromName(
+						ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
 
-				if(clickedClass != null) {
+				if (clickedClass != null) {
 					if (e.getClick().isLeftClick()) {
 						p.getGamePlayer(player).setPlayerClass(clickedClass);
-						player.sendMessage(HeroBattle.NAME + ChatColor.GREEN + "Vous avez choisi la classe " + ChatColor.DARK_GREEN + clickedClass.getName() + ChatColor.GREEN + " !");
-
+						player.sendMessage(HeroBattle.NAME + ChatColor.GREEN + "Vous avez choisi la classe "
+								+ ChatColor.DARK_GREEN + clickedClass.getName() + ChatColor.GREEN + " !");
 						player.closeInventory();
 
-					}
-					else if (e.getClick().isRightClick()) {
+					} else if (e.getClick().isRightClick()) {
 						createDetails(player, clickedClass);
 					}
 				}
@@ -55,7 +56,11 @@ public class ClassSelectorListener implements Listener {
 			}
 
 			else if (e.getInventory().getName().startsWith(TITLE_CLASS_DETAILS)) {
-				if (e.getCurrentItem().equals(getItemBackToClassesList())) { // Go back to the list
+				if (e.getCurrentItem().equals(getItemBackToClassesList())) { // Go
+																				// back
+																				// to
+																				// the
+																				// list
 					createSelector(player);
 				}
 
@@ -78,34 +83,44 @@ public class ClassSelectorListener implements Listener {
 		Inventory inv = p.getServer().createInventory(player, inventorySize, TITLE_CLASS_SELECTOR);
 
 		Integer i = 0;
-		for(PlayerClass theClass : classes) {
-			// FIXME La logique de glow/pas glow ? C'est bien ça dans ton esprit ?
-			inv.addItem(
-					createItem(theClass,
-							p.getGamePlayer(player).getPlayerClass() != null
-									&& p.getGamePlayer(player).getPlayerClass().equals(theClass)
-					)
-			);
-
+		for (PlayerClass theClass : classes) {
+			// FIXME La logique de glow/pas glow ? C'est bien ça dans ton esprit
+			// ?
+			inv.addItem(createItem(theClass, p.getGamePlayer(player).getPlayerClass() != null
+					&& p.getGamePlayer(player).getPlayerClass().equals(theClass)));
 			i++;
 		}
 
 		// Placeholder for the other cases
-		// FIXME À garder ? Ou non ?...
-		for(; i < inventorySize; i++) {
+		for (; i < inventorySize; i++) {
 			inv.setItem(i, createItem(new NotYetAvailableClass(p), false));
 		}
 
+		ItemStack door = new ItemStack(Material.WOOD_DOOR);
+		ItemMeta meta = door.getItemMeta();
+		meta.setDisplayName(ChatColor.RESET + "" + ChatColor.RED + "Fermer");
+		door.setItemMeta(meta);
+		inv.setItem(inv.getSize() - 1, door);
+
 		// Contenu conservé pour son contenu (classes)
-//		inv.addItem(createItem(Material.DIAMOND_CHESTPLATE, "Brute", "Pour le plaisir de faire des dégâts.", true));
-//		inv.addItem(createItem(Material.IRON_SWORD, "Vaillant guerrier", "Réservé aux connaisseurs.", false));
-//		inv.addItem(createItem(Material.STONE_AXE, "Bûcheron sournois", "Surveillez vos arrières.", false));
-//		inv.addItem(createItem(Material.GOLD_HOE, "Faucheur maudit", "Il a tendance à disparaître la nuit...", false));
-//		inv.addItem(createItem(Material.FISHING_ROD, "Pêcheur adroit", "Ne le sous-estimez pas !", false));
-//		inv.addItem(createItem(Material.IRON_PICKAXE, "Mineur fou", "Le déranger pourrait l'enrager.", false));
-//		inv.addItem(createItem(Material.FLINT_AND_STEEL, "Pyrobarbare", "Le feu, il maitrise. Ou pas.", false));
-//		inv.setItem(7, createItem(Material.BARRIER, "???", "Bientôt disponible", false));
-//		inv.setItem(8, createItem(Material.BARRIER, "???", "Bientôt disponible", false));
+		// inv.addItem(createItem(Material.DIAMOND_CHESTPLATE, "Brute",
+		// "Pour le plaisir de faire des dégâts.", true));
+		// inv.addItem(createItem(Material.IRON_SWORD, "Vaillant guerrier",
+		// "Réservé aux connaisseurs.", false));
+		// inv.addItem(createItem(Material.STONE_AXE, "Bûcheron sournois",
+		// "Surveillez vos arrières.", false));
+		// inv.addItem(createItem(Material.GOLD_HOE, "Faucheur maudit",
+		// "Il a tendance à disparaître la nuit...", false));
+		// inv.addItem(createItem(Material.FISHING_ROD, "Pêcheur adroit",
+		// "Ne le sous-estimez pas !", false));
+		// inv.addItem(createItem(Material.IRON_PICKAXE, "Mineur fou",
+		// "Le déranger pourrait l'enrager.", false));
+		// inv.addItem(createItem(Material.FLINT_AND_STEEL, "Pyrobarbare",
+		// "Le feu, il maitrise. Ou pas.", false));
+		// inv.setItem(7, createItem(Material.BARRIER, "???",
+		// "Bientôt disponible", false));
+		// inv.setItem(8, createItem(Material.BARRIER, "???",
+		// "Bientôt disponible", false));
 
 		player.openInventory(inv);
 	}
@@ -113,7 +128,7 @@ public class ClassSelectorListener implements Listener {
 	public void createDetails(Player player, PlayerClass classe) {
 		Inventory inv = p.getServer().createInventory(player, 9, TITLE_CLASS_DETAILS + classe.getName());
 
-		for(PlayerTool tool : classe.getTools()) {
+		for (PlayerTool tool : classe.getTools()) {
 			inv.addItem(tool.generateCompleteItem());
 		}
 
@@ -147,7 +162,7 @@ public class ClassSelectorListener implements Listener {
 
 		ArrayList<String> lore = new ArrayList<String>();
 
-		for(String descriptionLine : theClass.getDescription()) {
+		for (String descriptionLine : theClass.getDescription()) {
 			lore.add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + descriptionLine);
 		}
 
@@ -179,8 +194,9 @@ public class ClassSelectorListener implements Listener {
 	}
 
 	/**
-	 * Returns the item (door) which, when clicked, displays back the list of the classes.
-	 *
+	 * Returns the item (door) which, when clicked, displays back the list of
+	 * the classes.
+	 * 
 	 * @return The item.
 	 */
 	private ItemStack getItemBackToClassesList() {
@@ -192,5 +208,4 @@ public class ClassSelectorListener implements Listener {
 
 		return item;
 	}
-
 }

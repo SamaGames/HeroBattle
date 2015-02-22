@@ -1,5 +1,8 @@
 package net.lnfinity.HeroBattle.Utils;
 
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
 
@@ -13,7 +16,7 @@ public class CountdownTimer {
 	public CountdownTimer(HeroBattle plugin) {
 		p = plugin;
 	}
-	
+
 	public boolean isEnabled() {
 		return isEnabled;
 	}
@@ -21,7 +24,6 @@ public class CountdownTimer {
 	public void cancelTimer() {
 		p.getServer().getScheduler().cancelTask(task);
 		isEnabled = false;
-		p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + "Il n'y a plus assez de joueurs pour commencer la partie !");
 	}
 
 	public void restartTimer() {
@@ -30,14 +32,21 @@ public class CountdownTimer {
 		seconds = p.getGame().getCountdownTime();
 		task = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
 			public void run() {
-				if (seconds == 120 || seconds == 60 || seconds == 30 || seconds == 15 || seconds == 10 || seconds <= 5 && seconds != 1) {
+				if (seconds == 120 || seconds == 60 || seconds == 30 || seconds == 15 || seconds == 10 || seconds <= 5
+						&& seconds != 1) {
 					p.getServer().broadcastMessage(
 							HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
 									+ ChatColor.YELLOW + " secondes");
+					for (Player player : p.getServer().getOnlinePlayers()) {
+						player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+					}
 				} else if (seconds == 1) {
 					p.getServer().broadcastMessage(
 							HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
 									+ ChatColor.YELLOW + " seconde");
+					for (Player player : p.getServer().getOnlinePlayers()) {
+						player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+					}
 				}
 				if (seconds <= 1) {
 					p.getServer().getScheduler().cancelTask(task);
@@ -45,6 +54,9 @@ public class CountdownTimer {
 					p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 						@Override
 						public void run() {
+							for (Player player : p.getServer().getOnlinePlayers()) {
+								player.playSound(player.getLocation(), Sound.GHAST_DEATH, 1, 1);
+							}
 							p.getGame().start();
 						}
 					}, 20L);

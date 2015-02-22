@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Class.PlayerClass;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.lnfinity.HeroBattle.Utils.WinnerFirework;
 import net.md_5.bungee.api.ChatColor;
@@ -79,7 +80,7 @@ public class Game implements GameArena {
 		Random rand = new Random();
 
 		for (Player player : p.getServer().getOnlinePlayers()) {
-			p.addGamePlayer(player);
+			//p.addGamePlayer(player);
 
 			int index = rand.nextInt(tempLocs.size());
 			player.teleport(tempLocs.get(index));
@@ -90,8 +91,7 @@ public class Game implements GameArena {
 			GamePlayer hbPlayer = p.getGamePlayer(player);
 
 			if (hbPlayer.getPlayerClass() == null) {
-				// TODO Random class.
-				hbPlayer.setPlayerClass(p.getClassManager().getClassFromName("Brute"));
+				chooseRandomClass(player);
 			}
 
 			int i = 0;
@@ -115,6 +115,21 @@ public class Game implements GameArena {
 		p.getServer().getPlayer(id).teleport(spawnPoints.get((new Random()).nextInt(spawnPoints.size())));
 	}
 
+	public void chooseRandomClass(Player player) {
+		Random rnd = new Random();
+		int r = rnd.nextInt(p.getClassManager().getAvailableClasses().size());
+		int i = 0;
+		for (PlayerClass classe : p.getClassManager().getAvailableClasses()) {
+			if (i == r) {
+				p.getGamePlayer(player).setPlayerClass(classe);
+				player.sendMessage(ChatColor.GREEN + "Vous n'avez pas choisi de classe, la classe "
+						+ ChatColor.DARK_GREEN + classe.getName() + ChatColor.GREEN + " vous a été attribuée !");
+				return;
+			}
+			i++;
+		}
+	}
+
 	public void onPlayerDeath(UUID id) {
 		if (waiting) {
 			teleportHub(id);
@@ -127,20 +142,21 @@ public class Game implements GameArena {
 		player.setExp(0);
 		player.setLevel(0);
 		player.setTotalExperience(0);
+		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + ((int) HBplayer.getLives() - 1) + ChatColor.DARK_GRAY + " vies)"; 
+		if (HBplayer.getLastDamager() == null) {
+			p.getServer().broadcastMessage(
+					HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+							+ " est tombé dans le vide" + lives);
+		} else {
+			p.getServer().broadcastMessage(
+					HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par "
+							+ p.getServer().getPlayer(HBplayer.getLastDamager()).getName() + lives);
+		}
+		
 		if (d.getHealth() > 2) {
 			HBplayer.setLives(HBplayer.getLives() - 1);
 			player.setHealth(HBplayer.getLives() * 2);
 			teleportRandomSpot(player.getUniqueId());
-			if (HBplayer.getLastDamager() == null) {
-				p.getServer().broadcastMessage(
-						HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
-								+ " est tombé dans le vide");
-			} else {
-				p.getServer().broadcastMessage(
-						HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par "
-								+ p.getServer().getPlayer(HBplayer.getLastDamager()).getName());
-			}
-
 		} else {
 			player.setGameMode(GameMode.SPECTATOR);
 			HBplayer.setPlaying(false);
@@ -149,15 +165,6 @@ public class Game implements GameArena {
 			String s = "s";
 			if (p.getPlayingPlayerCount() == 1) {
 				s = "";
-			}
-			if (HBplayer.getLastDamager() == null) {
-				p.getServer().broadcastMessage(
-						HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
-								+ " est tombé dans le vide");
-			} else {
-				p.getServer().broadcastMessage(
-						HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par "
-								+ p.getServer().getPlayer(HBplayer.getLastDamager()).getName());
 			}
 			p.getServer().broadcastMessage(
 					HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
@@ -176,9 +183,14 @@ public class Game implements GameArena {
 	}
 
 	public void onPlayerQuit(UUID id) {
+		String s = "s";
+		if (p.getPlayingPlayerCount() == 2) {
+			s = "";
+		}
 		p.getServer().broadcastMessage(
 				HeroBattle.NAME + ChatColor.YELLOW + p.getServer().getOfflinePlayer(id).getName() + ChatColor.YELLOW
-						+ " a perdu ! ");
+						+ " a perdu ! " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + ((int) p.getPlayingPlayerCount() - 1)
+						+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
 		p.getGamePlayer(id).setPlaying(false);
 		if (p.getPlayingPlayerCount() == 1) {
 			for (Player pl : p.getServer().getOnlinePlayers()) {
@@ -195,11 +207,12 @@ public class Game implements GameArena {
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		HBplayer.setPlaying(false);
 		p.getServer().broadcastMessage(
-				HeroBattle.NAME + ChatColor.YELLOW + player.getDisplayName() + " a remporté la partie !");
+				HeroBattle.NAME + ChatColor.GREEN + player.getDisplayName() + " remporte la partie !");
 		new WinnerFirework(p, 30, player);
 		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 			public void run() {
 				// p.getServer().shutdown();
+				// ^- c'est pour quoi ça déjà ?
 			}
 		}, 300L);
 
@@ -224,7 +237,6 @@ public class Game implements GameArena {
 				}
 			}, 30 * 20L);
 		}
-
 	}
 
 	public boolean isWaiting() {
@@ -330,7 +342,6 @@ public class Game implements GameArena {
 	public Block getTargetBlock(Player player, int maxRange) {
 		Block block;
 		Location loc = player.getEyeLocation().clone();
-		// Adapter au format joueur
 		Vector progress = loc.getDirection().normalize().clone().multiply(0.70);
 		maxRange = (100 * maxRange / 70);
 		int loop = 0;
