@@ -1,5 +1,7 @@
 package net.lnfinity.HeroBattle.Utils;
 
+import net.samagames.utils.Titles;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -32,36 +34,84 @@ public class CountdownTimer {
 		seconds = p.getGame().getCountdownTime();
 		task = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
 			public void run() {
-				if (seconds == 120 || seconds == 60 || seconds == 30 || seconds == 15 || seconds == 10 || seconds <= 5
-						&& seconds != 1) {
+				// Timer reduction if players count is high
+				int playersCount = p.getGame().countGamePlayers();
+				boolean changed = false;
+
+				// Half-full
+				if (playersCount == Math.max(p.getGame().getMinPlayers(), p.getGame().getTotalMaxPlayers() / 2)) {
+					seconds = 60;
+					changed = true;
+				}
+				// Full
+				else if (playersCount == p.getGame().getTotalMaxPlayers()) {
+					seconds = 15;
+					changed = true;
+				}
+
+				// Message if counter changed
+				if (changed) {
 					p.getServer().broadcastMessage(
-							HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
-									+ ChatColor.YELLOW + " secondes");
-					for (Player player : p.getServer().getOnlinePlayers()) {
-						player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+							HeroBattle.NAME + ChatColor.YELLOW + "Il y a désormais "
+									+ ChatColor.RED + playersCount
+									+ ChatColor.YELLOW + " joueurs en jeu : le compteur a été raccourci à "
+									+ ChatColor.RED + seconds + ChatColor.YELLOW + " secondes");
+				}
+
+
+				// Counter display (chat + title)
+				if (seconds == 120 || seconds == 60 || seconds == 30 || seconds == 15 || seconds == 10 || seconds <= 5) {
+
+					// Messages
+					if (seconds == 1) {
+						p.getServer().broadcastMessage(
+								HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans "
+										+ ChatColor.RED + seconds + ChatColor.YELLOW + " seconde");
+					} else {
+						p.getServer().broadcastMessage(
+								HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans "
+										+ ChatColor.RED + seconds + ChatColor.YELLOW + " secondes");
 					}
-				} else if (seconds == 1) {
-					p.getServer().broadcastMessage(
-							HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED + seconds
-									+ ChatColor.YELLOW + " seconde");
+
+					// Sound
+					if (seconds <= 10) {
+						for (Player player : p.getServer().getOnlinePlayers()) {
+							player.playSound(player.getLocation(), Sound.ARROW_HIT, 1, 1);
+						}
+					}
+
+					// Title
+					ChatColor color;
+					if (seconds >= 30) {
+						color = ChatColor.GREEN;
+					} else if (seconds >= 4) {
+						color = ChatColor.YELLOW;
+					} else {
+						color = ChatColor.RED;
+					}
+
 					for (Player player : p.getServer().getOnlinePlayers()) {
-						player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+						Titles.sendTitle(player, 50, 900, 50, color + "" + seconds, "");
 					}
 				}
-				if (seconds <= 1) {
+
+
+				if (seconds < 1) {
 					p.getServer().getScheduler().cancelTask(task);
 					p.getGame().setWaiting(false);
-					p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+
+					p.getGame().start();
+
+					Bukkit.getScheduler().runTaskLater(p, new Runnable() {
 						@Override
 						public void run() {
 							for (Player player : p.getServer().getOnlinePlayers()) {
 								player.playSound(player.getLocation(), Sound.GHAST_DEATH, 1, 1);
 							}
-							p.getGame().start();
 						}
-					}, 20L);
-
+					}, 1L);
 				}
+
 				seconds--;
 			}
 		}, 30L, 20L).getTaskId();

@@ -14,6 +14,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.types.GameArena;
+import net.samagames.utils.Titles;
 import net.zyuiop.MasterBundle.MasterBundle;
 import net.zyuiop.MasterBundle.StarsManager;
 import net.zyuiop.coinsManager.CoinsManager;
@@ -71,6 +72,10 @@ public class Game implements GameArena {
 		p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.GREEN + "Que le meilleur gagne !");
 		p.getScoreboardManager().init();
 		teleportPlayers();
+
+		for (Player player : p.getServer().getOnlinePlayers()) {
+			Titles.sendTitle(player, 50, 1800, 50, ChatColor.AQUA + "C'est parti !", "");
+		}
 
 		GameAPI.getManager().sendArena();
 	}
