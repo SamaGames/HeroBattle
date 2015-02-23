@@ -15,6 +15,7 @@ import net.lnfinity.HeroBattle.Listeners.CommandListener;
 import net.lnfinity.HeroBattle.Listeners.GameListener;
 import net.lnfinity.HeroBattle.Listeners.MasterListener;
 import net.lnfinity.HeroBattle.Listeners.SystemListener;
+import net.lnfinity.HeroBattle.Powerups.PowerupManager;
 import net.lnfinity.HeroBattle.Tools.ToolsManager;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.md_5.bungee.api.ChatColor;
@@ -32,6 +33,8 @@ public class HeroBattle extends JavaPlugin {
 
 	private ClassManager classManager;
 	private ToolsManager toolsManager;
+	
+	private PowerupManager powerupManager;
 
 	private ScoreboardManager scoreboardManager;
 
@@ -90,6 +93,7 @@ public class HeroBattle extends JavaPlugin {
 		toolsManager = new ToolsManager(this);
 		classManager = new ClassManager(this);
 		scoreboardManager = new ScoreboardManager(this);
+		powerupManager = new PowerupManager(this);
 		
 		addOnlinePlayers();
 
@@ -166,5 +170,9 @@ public class HeroBattle extends JavaPlugin {
 
 	public Configuration getArenaConfig() {
 		return arenaConfig;
+	}
+
+	public PowerupManager getPowerupManager() {
+		return powerupManager;
 	}
 }

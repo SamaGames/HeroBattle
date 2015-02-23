@@ -1,10 +1,21 @@
 package net.lnfinity.HeroBattle.Listeners;
 
+import java.util.Map;
+
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Powerups.Powerup;
 import net.lnfinity.HeroBattle.Tasks.EarthquakeTask;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
+import net.lnfinity.HeroBattle.Utils.Utils;
 
+import org.bukkit.Color;
+import org.bukkit.Effect;
+import org.bukkit.FireworkEffect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.FireworkEffect.Type;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +25,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.util.Vector;
 
 public class GameListener implements Listener {
@@ -41,16 +55,49 @@ public class GameListener implements Listener {
 			} else {
 				e.setDamage(0);
 			}
-			if(e.getCause() == DamageCause.LIGHTNING) {
+			if (e.getCause() == DamageCause.LIGHTNING) {
 				plugin.getGamePlayer(p).setPercentage(
-						plugin.getGamePlayer(p).getPercentage() + 20
-						+ (int) (Math.random() * ((50 - 20) + 20)));
+						plugin.getGamePlayer(p).getPercentage() + 20 + (int) (Math.random() * ((50 - 20) + 20)));
 			}
 			p.setExp(0);
 			p.setTotalExperience(0);
 			p.setLevel(plugin.getGamePlayer(p).getPercentage());
 
 			plugin.getScoreboardManager().update(p);
+
+			int R = 470 - plugin.getGamePlayer(p).getPercentage();
+			int G = 255 - plugin.getGamePlayer(p).getPercentage();
+			int B = 255 - plugin.getGamePlayer(p).getPercentage() * 2;
+			ItemStack helmet = new ItemStack(Material.LEATHER_HELMET, 1);
+			LeatherArmorMeta meta = (LeatherArmorMeta) helmet.getItemMeta();
+			if (R > 255) {
+				R = 255;
+			} else if (R < 0) {
+				R = 0;
+			}
+			if (G > 255) {
+				G = 255;
+			} else if (G < 0) {
+				G = 0;
+			}
+			if (B > 255) {
+				B = 255;
+			} else if (B < 0) {
+				B = 0;
+			}
+			meta.setColor(Color.fromRGB(R, G, B));
+			meta.spigot().setUnbreakable(true);
+			helmet.setItemMeta(meta);
+			p.getInventory().setHelmet(helmet);
+			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+			chest.setItemMeta(meta);
+			p.getInventory().setChestplate(chest);
+			ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+			leg.setItemMeta(meta);
+			p.getInventory().setLeggings(leg);
+			ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+			boots.setItemMeta(meta);
+			p.getInventory().setBoots(boots);
 		}
 	}
 
@@ -123,12 +170,28 @@ public class GameListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		e.setDeathMessage(null);
 		e.getDrops().clear();
 		e.setDroppedExp(0);
 		plugin.getGame().onPlayerDeath(e.getEntity().getUniqueId());
+	}
+
+	@EventHandler
+	public void onPlayerPickupItem(PlayerPickupItemEvent e) {
+		if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+			e.setCancelled(true);
+			for (Map.Entry<Location, Powerup> entry : plugin.getPowerupManager().getExistingPowerups().entrySet()) {
+
+				if (Utils.roundLocation(e.getItem().getLocation()).equals(entry.getKey())) {
+					plugin.getPowerupManager().getItem(entry.getKey())
+							.onPickup(e.getPlayer(), e.getItem().getItemStack());
+					e.getItem().remove();
+				}
+			}
+
+		}
 	}
 }

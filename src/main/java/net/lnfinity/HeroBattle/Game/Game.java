@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Class.PlayerClass;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
+import net.lnfinity.HeroBattle.Utils.Utils;
 import net.lnfinity.HeroBattle.Utils.WinnerFirework;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
@@ -20,12 +21,18 @@ import net.zyuiop.coinsManager.CoinsManager;
 import net.zyuiop.statsapi.StatsApi;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 public class Game implements GameArena {
@@ -42,7 +49,7 @@ public class Game implements GameArena {
 		// Loads the spawn points and the hub from the world config.
 
 		try {
-			hub = stringToLocation(p.getArenaConfig().getString("map.hub"));
+			hub = Utils.stringToLocation(p, p.getArenaConfig().getString("map.hub"));
 		} catch (IllegalArgumentException e) {
 			p.getLogger().log(Level.SEVERE, "Invalid hub in arena.yml! " + e.getMessage());
 		}
@@ -50,7 +57,7 @@ public class Game implements GameArena {
 		for (Object spawn : p.getArenaConfig().getList("map.spawns")) {
 			if (spawn instanceof String) {
 				try {
-					spawnPoints.add(stringToLocation((String) spawn));
+					spawnPoints.add(Utils.stringToLocation(p, (String) spawn));
 				} catch (IllegalArgumentException e) {
 					p.getLogger().log(Level.SEVERE, "Invalid spawn in arena.yml! " + e.getMessage());
 				}
@@ -71,6 +78,7 @@ public class Game implements GameArena {
 		p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.GREEN + "Que le meilleur gagne !");
 		p.getScoreboardManager().init();
 		teleportPlayers();
+		p.getPowerupManager().getSpawner().startTimer();
 
 		GameAPI.getManager().sendArena();
 	}
@@ -80,13 +88,28 @@ public class Game implements GameArena {
 		Random rand = new Random();
 
 		for (Player player : p.getServer().getOnlinePlayers()) {
-			//p.addGamePlayer(player);
 
 			int index = rand.nextInt(tempLocs.size());
 			player.teleport(tempLocs.get(index));
 			tempLocs.remove(index);
 
 			player.getInventory().clear();
+			
+			ItemStack helmet = new ItemStack(Material.LEATHER_HELMET, 1);
+			LeatherArmorMeta meta = (LeatherArmorMeta)helmet.getItemMeta();
+			meta.setColor(Color.fromRGB(255, 255, 255));
+			meta.spigot().setUnbreakable(true);
+			helmet.setItemMeta(meta);
+			player.getInventory().setHelmet(helmet);
+			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+			chest.setItemMeta(meta);
+			player.getInventory().setChestplate(chest);
+			ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+			leg.setItemMeta(meta);
+			player.getInventory().setLeggings(leg);
+			ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+			boots.setItemMeta(meta);
+			player.getInventory().setBoots(boots);
 
 			GamePlayer hbPlayer = p.getGamePlayer(player);
 
@@ -142,6 +165,8 @@ public class Game implements GameArena {
 		player.setExp(0);
 		player.setLevel(0);
 		player.setTotalExperience(0);
+		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 0));
+		player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 1, 1);
 		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + ((int) HBplayer.getLives() - 1) + ChatColor.DARK_GRAY + " vies)"; 
 		if (HBplayer.getLastDamager() == null) {
 			p.getServer().broadcastMessage(
@@ -162,6 +187,7 @@ public class Game implements GameArena {
 			HBplayer.setPlaying(false);
 			teleportHub(player.getUniqueId());
 			player.getInventory().clear();
+			player.getInventory().setArmorContents(null);
 			String s = "s";
 			if (p.getPlayingPlayerCount() == 1) {
 				s = "";
@@ -203,6 +229,7 @@ public class Game implements GameArena {
 	}
 
 	public void onPlayerWin(UUID id) {
+		p.getPowerupManager().getSpawner().stopTimer();
 		Player player = p.getServer().getPlayer(id);
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		HBplayer.setPlaying(false);
@@ -245,40 +272,6 @@ public class Game implements GameArena {
 
 	public void setWaiting(boolean waiting) {
 		this.waiting = waiting;
-	}
-
-	/**
-	 * Converts a string (in the config file) to a Location object.
-	 * 
-	 * @param locationInConfig
-	 *            A string; format "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch".
-	 * @return The Location object, for the main world (first one).
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if the format is not good.
-	 */
-	private Location stringToLocation(String locationInConfig) {
-		String[] coords = locationInConfig.split(";");
-		if (coords.length < 3) {
-			throw new IllegalArgumentException("Invalid location: " + locationInConfig);
-		}
-
-		try {
-			Location location = new Location(p.getServer().getWorlds().get(0), Double.valueOf(coords[0]),
-					Double.valueOf(coords[1]), Double.valueOf(coords[2]));
-
-			if (coords.length >= 4) {
-				location.setYaw(Float.valueOf(coords[3]));
-
-				if (coords.length >= 5) {
-					location.setPitch(Float.valueOf(coords[4]));
-				}
-			}
-
-			return location;
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("Invalid location (NaN!): " + locationInConfig);
-		}
 	}
 
 	@Override

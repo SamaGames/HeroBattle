@@ -1,7 +1,6 @@
 package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.events.FinishJoinPlayerEvent;
@@ -29,6 +28,7 @@ public class MasterListener implements Listener {
 		Player p = plugin.getServer().getPlayer(ev.getPlayer());
 		plugin.addGamePlayer(p);
 		p.getInventory().clear();
+		p.getInventory().setArmorContents(null);
 		p.setExp(0);
 		p.setLevel(0);
 		p.setTotalExperience(0);

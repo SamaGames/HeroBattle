@@ -36,7 +36,7 @@ public class CommandListener implements CommandExecutor {
 			}
 		} else if (command.equalsIgnoreCase("forcestop")) {
 			if (sender.isOp() || sender.getName().equals("6infinity8") || sender.getName().equals("AmauryPi")) {
-				p.getServer().broadcastMessage(p.NAME + ChatColor.RED + "Le jeu a été interrompu de force.");
+				p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.RED + "Le jeu a été interrompu de force.");
 				Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
 					@Override
 					public void run() {

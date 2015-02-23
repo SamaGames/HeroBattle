@@ -14,7 +14,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class SystemListener implements Listener {
@@ -69,13 +68,6 @@ public class SystemListener implements Listener {
 	@EventHandler
 	public void onWeatherChange(WeatherChangeEvent e) {
 		if (e.toWeatherState()) {
-			e.setCancelled(true);
-		}
-	}
-
-	@EventHandler
-	public void onPlayerPickupItem(PlayerPickupItemEvent e) {
-		if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
 			e.setCancelled(true);
 		}
 	}
