@@ -164,15 +164,20 @@ public class Game implements GameArena {
 			return;
 		}
 
-		Player player = p.getServer().getPlayer(id);
+		final Player player = p.getServer().getPlayer(id);
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		Damageable d = (Damageable) player;
 		HBplayer.setPercentage(0);
 		player.setExp(0);
 		player.setLevel(0);
 		player.setTotalExperience(0);
-		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 0));
-		player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 1, 1);
+		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 0));
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 1, 1);
+			}
+		}, 5);
 		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + (HBplayer.getLives() - 1) + ChatColor.DARK_GRAY + " vies)";
 		if (HBplayer.getLastDamager() == null) {
 			p.getServer().broadcastMessage(
@@ -188,6 +193,7 @@ public class Game implements GameArena {
 			HBplayer.setLives(HBplayer.getLives() - 1);
 			player.setHealth(HBplayer.getLives() * 2);
 			teleportRandomSpot(player.getUniqueId());
+			p.getScoreboardManager().update(player);
 		} else {
 			player.setGameMode(GameMode.SPECTATOR);
 			HBplayer.setPlaying(false);
@@ -202,6 +208,7 @@ public class Game implements GameArena {
 					HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
 							+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + p.getPlayingPlayerCount()
 							+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
+			p.getScoreboardManager().update(player);
 			StatsApi.increaseStat(player, p.getName(), "deaths", 1);
 			if (p.getPlayingPlayerCount() == 1) {
 				for (Player pl : p.getServer().getOnlinePlayers()) {

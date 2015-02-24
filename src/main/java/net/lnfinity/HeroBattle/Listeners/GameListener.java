@@ -7,16 +7,12 @@ import net.lnfinity.HeroBattle.Powerups.Powerup;
 import net.lnfinity.HeroBattle.Tasks.EarthquakeTask;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.lnfinity.HeroBattle.Utils.Utils;
-
 import net.samagames.gameapi.json.Status;
+
 import org.bukkit.Color;
-import org.bukkit.Effect;
-import org.bukkit.FireworkEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.FireworkEffect.Type;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +24,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.util.Vector;
 
@@ -142,10 +137,12 @@ public class GameListener implements Listener {
 			}
 			double a = xc - e.getEntity().getLocation().getX();
 			double b = yc - e.getEntity().getLocation().getZ();
+			
 			e.getEntity().setVelocity(
-					new Vector(a * plugin.getGamePlayer(player).getPercentage(), e.getEntity().getVelocity().getY(), b
-							* plugin.getGamePlayer(player).getPercentage()));
-
+					new Vector(a * plugin.getGamePlayer(player).getPercentage() / 200, e.getEntity().getVelocity().getY(), b
+							* plugin.getGamePlayer(player).getPercentage() / 200));
+			plugin.getLogger().info(a + " ; " + b);
+			plugin.getLogger().info(e.getEntity().getVelocity().getX() + " p");
 			plugin.getGamePlayer(player).setLastDamager(e.getDamager().getUniqueId());
 		}
 	}
