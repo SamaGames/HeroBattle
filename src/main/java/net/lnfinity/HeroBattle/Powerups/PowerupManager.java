@@ -35,16 +35,20 @@ public class PowerupManager {
 	}
 
 	public void registerLocations() {
-		for (Object powerSpawn : p.getArenaConfig().getList("map.powerups")) {
-			if (powerSpawn instanceof String) {
-				try {
-					locations.add(Utils.stringToLocation(p, (String) powerSpawn));
-				} catch (IllegalArgumentException e) {
-					p.getLogger().log(Level.SEVERE, "Invalid powerup location in arena.yml! " + e.getMessage());
+		List powerSpawns = p.getArenaConfig().getList("map.powerups");
+
+		if(powerSpawns != null) {
+			for (Object powerSpawn : powerSpawns) {
+				if (powerSpawn instanceof String) {
+					try {
+						locations.add(Utils.stringToLocation(p, (String) powerSpawn));
+					} catch (IllegalArgumentException e) {
+						p.getLogger().log(Level.SEVERE, "Invalid powerup location in arena.yml! " + e.getMessage());
+					}
 				}
 			}
+			powerups.add(new AddHeart(p, chooseRandomLocation()));
 		}
-		powerups.add(new AddHeart(p, chooseRandomLocation()));
 	}
 
 	public void addPowerup(Powerup powerup) {
