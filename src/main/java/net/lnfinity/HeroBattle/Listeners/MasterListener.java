@@ -7,6 +7,7 @@ import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.events.FinishJoinPlayerEvent;
 
 import net.samagames.gameapi.json.Status;
+import net.zyuiop.MasterBundle.MasterBundle;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -66,8 +67,8 @@ public class MasterListener implements Listener {
 				plugin.getTimer().cancelTimer();
 				plugin.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + "Il n'y a plus assez de joueurs pour commencer la partie !");
 			}
-		} else {
-			if (plugin.getPlayerCount() <= 1) {
+		} else if(plugin.getGame().getStatus() == Status.InGame) {
+			if (plugin.getPlayerCount() <= 1 && !MasterBundle.isDbEnabled) {
 				plugin.getGame().setStatus(Status.Stopping);
 				Bukkit.shutdown();
 			} else {
