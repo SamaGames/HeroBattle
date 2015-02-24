@@ -19,6 +19,11 @@ map:
       - "0;64;0"
       - "0;64;0"
 
+    # Can be empty
+    powerups:
+      - "2;64;0"
+      - "-2;64;0"
+
     # The altitude below which the players are killed when they fall.
     # 0 if the map is bottomless.
     # The altitude of the bottom else (like the water/lava level, etc.).
