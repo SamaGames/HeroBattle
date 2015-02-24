@@ -101,7 +101,12 @@ public class CountdownTimer {
 					}
 				}
 
+				// Seconds in XP
+				for (Player player : p.getServer().getOnlinePlayers()) {
+					player.setLevel(seconds);
+				}
 
+				// Start
 				if (seconds < 1) {
 					p.getServer().getScheduler().cancelTask(task);
 

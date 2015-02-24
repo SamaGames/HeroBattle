@@ -20,6 +20,7 @@ import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 
+import net.samagames.gameapi.json.Status;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -94,12 +95,14 @@ public class HeroBattle extends JavaPlugin {
 		addOnlinePlayers();
 
 		GameAPI.registerGame(getConfig().getString("gameName"), g);
+
+		g.setStatus(Status.Available);
 	}
 
 	public void onDisable() {
-		// TODO g.setStatus(Status.Stopping)
-		// GameAPI.getManager().sendSync();
-		// GameAPI.getManager().disable();
+		g.setStatus(Status.Stopping);
+		GameAPI.getManager().sendSync();
+		GameAPI.getManager().disable();
 	}
 	
 	// For local debuging purpose only (/rl)
