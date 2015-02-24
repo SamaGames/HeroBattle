@@ -32,7 +32,7 @@ import org.bukkit.util.Vector;
 public class Game implements GameArena {
 
 	private HeroBattle p;
-	private boolean waiting = true;
+	private Status status = Status.Idle;
 
 	private List<Location> spawnPoints = new LinkedList<>();
 	private Location hub;
@@ -77,7 +77,7 @@ public class Game implements GameArena {
 			Titles.sendTitle(player, 50, 1800, 50, ChatColor.AQUA + "C'est parti !", "");
 		}
 
-		GameAPI.getManager().sendArena();
+		setStatus(Status.InGame);
 	}
 
 	public void teleportPlayers() {
@@ -109,7 +109,6 @@ public class Game implements GameArena {
 			player.setMaxHealth(hbPlayer.getPlayerClass().getLives() * 2);
 			player.setHealth(hbPlayer.getPlayerClass().getLives() * 2d);
 		}
-		waiting = false;
 	}
 
 	public void teleportHub(UUID id) {
@@ -136,11 +135,12 @@ public class Game implements GameArena {
 	}
 
 	public void onPlayerDeath(UUID id) {
-		if (waiting) {
+		if (getStatus() != Status.InGame) {
 			teleportHub(id);
 			return;
 		}
-		Player player = (Player) p.getServer().getPlayer(id);
+
+		Player player = p.getServer().getPlayer(id);
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		Damageable d = (Damageable) player;
 		HBplayer.setPercentage(0);
@@ -244,14 +244,6 @@ public class Game implements GameArena {
 		}
 	}
 
-	public boolean isWaiting() {
-		return waiting;
-	}
-
-	public void setWaiting(boolean waiting) {
-		this.waiting = waiting;
-	}
-
 	/**
 	 * Converts a string (in the config file) to a Location object.
 	 * 
@@ -313,16 +305,13 @@ public class Game implements GameArena {
 
 	@Override
 	public Status getStatus() {
-		if (isWaiting()) {
-			return Status.Available;
-		} else {
-			return Status.InGame;
-		}
+		return status;
 	}
 
 	@Override
 	public void setStatus(Status status) {
-
+		this.status = status;
+		GameAPI.getManager().sendArena();
 	}
 
 	@Override

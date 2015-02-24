@@ -6,6 +6,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.events.FinishJoinPlayerEvent;
 
+import net.samagames.gameapi.json.Status;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -60,16 +61,17 @@ public class MasterListener implements Listener {
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent ev) {
-		if (plugin.getGame().isWaiting()) {
+		if (plugin.getGame().getStatus() == Status.Starting) {
 			if (plugin.getTimer().isEnabled() && plugin.getPlayerCount() - 1 < plugin.getGame().getMinPlayers()) {
 				plugin.getTimer().cancelTimer();
 				plugin.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + "Il n'y a plus assez de joueurs pour commencer la partie !");
 			}
 		} else {
 			if (plugin.getPlayerCount() <= 1) {
+				plugin.getGame().setStatus(Status.Stopping);
 				Bukkit.shutdown();
 			} else {
-			plugin.getGame().onPlayerQuit(ev.getPlayer().getUniqueId());
+				plugin.getGame().onPlayerQuit(ev.getPlayer().getUniqueId());
 			}
 		}
 		ev.setQuitMessage(null);

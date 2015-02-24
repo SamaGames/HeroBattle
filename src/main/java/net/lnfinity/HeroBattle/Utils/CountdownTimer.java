@@ -1,5 +1,6 @@
 package net.lnfinity.HeroBattle.Utils;
 
+import net.samagames.gameapi.json.Status;
 import net.samagames.utils.Titles;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -26,11 +27,16 @@ public class CountdownTimer {
 	public void cancelTimer() {
 		p.getServer().getScheduler().cancelTask(task);
 		isEnabled = false;
+
+		p.getGame().setStatus(Status.Available);
 	}
 
 	public void restartTimer() {
 		p.getServer().getScheduler().cancelTask(task);
 		isEnabled = true;
+
+		p.getGame().setStatus(Status.Starting);
+
 		seconds = p.getGame().getCountdownTime();
 		task = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
 			public void run() {
@@ -98,7 +104,6 @@ public class CountdownTimer {
 
 				if (seconds < 1) {
 					p.getServer().getScheduler().cancelTask(task);
-					p.getGame().setWaiting(false);
 
 					p.getGame().start();
 

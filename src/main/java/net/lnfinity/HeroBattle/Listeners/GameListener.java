@@ -4,6 +4,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tasks.EarthquakeTask;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
 
+import net.samagames.gameapi.json.Status;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,7 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onEntityDamageEvent(EntityDamageEvent e) {
-		if (plugin.getGame().isWaiting()) {
+		if (plugin.getGame().getStatus() != Status.InGame) {
 			e.setCancelled(true);
 		}
 
@@ -56,7 +57,7 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player && !plugin.getGame().isWaiting()) {
+		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player && plugin.getGame().getStatus() == Status.InGame) {
 			final Player player = (Player) e.getEntity();
 			int min = plugin.getGamePlayer(player).getPlayerClass().getMinDamages();
 			int max = plugin.getGamePlayer(player).getPlayerClass().getMaxDamages();
