@@ -45,12 +45,12 @@ public class CountdownTimer {
 				boolean changed = false;
 
 				// Half-full
-				if (playersCount == Math.max(p.getGame().getMinPlayers(), p.getGame().getTotalMaxPlayers() / 2)) {
+				if (playersCount == Math.max(p.getGame().getMinPlayers(), p.getGame().getTotalMaxPlayers() / 2) && seconds > 60) {
 					seconds = 60;
 					changed = true;
 				}
 				// Full
-				else if (playersCount == p.getGame().getTotalMaxPlayers()) {
+				else if (playersCount == p.getGame().getTotalMaxPlayers() && seconds > 15) {
 					seconds = 15;
 					changed = true;
 				}
@@ -82,7 +82,7 @@ public class CountdownTimer {
 					// Sound
 					if (seconds <= 10) {
 						for (Player player : p.getServer().getOnlinePlayers()) {
-							player.playSound(player.getLocation(), Sound.ARROW_HIT, 1, 1);
+							player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 1);
 						}
 					}
 
@@ -97,7 +97,7 @@ public class CountdownTimer {
 					}
 
 					for (Player player : p.getServer().getOnlinePlayers()) {
-						Titles.sendTitle(player, 50, 900, 50, color + "" + seconds, "");
+						Titles.sendTitle(player, 2, 16, 2, color + "" + seconds, "");
 					}
 				}
 

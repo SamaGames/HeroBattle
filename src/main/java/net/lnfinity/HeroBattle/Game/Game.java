@@ -74,7 +74,7 @@ public class Game implements GameArena {
 		teleportPlayers();
 
 		for (Player player : p.getServer().getOnlinePlayers()) {
-			Titles.sendTitle(player, 50, 1800, 50, ChatColor.AQUA + "C'est parti !", "");
+			Titles.sendTitle(player, 2, 38, 6, ChatColor.AQUA + "C'est parti !", "");
 		}
 
 		setStatus(Status.InGame);
@@ -147,7 +147,7 @@ public class Game implements GameArena {
 		player.setExp(0);
 		player.setLevel(0);
 		player.setTotalExperience(0);
-		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + ((int) HBplayer.getLives() - 1) + ChatColor.DARK_GRAY + " vies)"; 
+		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + (HBplayer.getLives() - 1) + ChatColor.DARK_GRAY + " vies)";
 		if (HBplayer.getLastDamager() == null) {
 			p.getServer().broadcastMessage(
 					HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
@@ -214,12 +214,6 @@ public class Game implements GameArena {
 		p.getServer().broadcastMessage(
 				HeroBattle.NAME + ChatColor.GREEN + player.getDisplayName() + " remporte la partie !");
 		new WinnerFirework(p, 30, player);
-		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-			public void run() {
-				// p.getServer().shutdown();
-				// ^- c'est pour quoi ça déjà ?
-			}
-		}, 300L);
 
 		StarsManager.creditJoueur(player, 1, "Victoire !");
 		CoinsManager.creditJoueur(player.getUniqueId(), 5, true, true, "Victoire !");
@@ -330,7 +324,7 @@ public class Game implements GameArena {
 	}
 
 	public int getCountdownTime() {
-		return p.getArenaConfig().getInt("map.waiting");
+		return p.getArenaConfig().getInt("map.waiting", 120);
 	}
 
 	public Block getTargetBlock(Player player, int maxRange) {
