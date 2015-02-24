@@ -92,6 +92,7 @@ public class Game implements GameArena {
 			tempLocs.remove(index);
 
 			player.getInventory().clear();
+			player.setLevel(0);
 
 			GamePlayer hbPlayer = p.getGamePlayer(player);
 

@@ -22,13 +22,13 @@ public class CommandListener implements CommandExecutor {
 		// Permissions, please ! ><
 		if (command.equalsIgnoreCase("start")) {
 			if (sender.isOp() || sender.getName().equals("6infinity8") || sender.getName().equals("AmauryPi")) {
-				if (p.getPlayerCount() > 1) {
+				if (p.getPlayerCount() >= p.getGame().getMinPlayers()) {
 					p.getServer().broadcastMessage(
 							HeroBattle.NAME + ChatColor.GREEN + "Le jeu a été démarré manuellement.");
 					p.getTimer().cancelTimer();
 					p.getGame().start();
 				} else {
-					sender.sendMessage(ChatColor.RED + "Vous devez être au moins deux joueurs !");
+					sender.sendMessage(ChatColor.RED + "Vous devez être au moins " + p.getGame().getMinPlayers() + " joueurs !");
 				}
 				return true;
 			} else {
@@ -36,7 +36,7 @@ public class CommandListener implements CommandExecutor {
 			}
 		} else if (command.equalsIgnoreCase("forcestop")) {
 			if (sender.isOp() || sender.getName().equals("6infinity8") || sender.getName().equals("AmauryPi")) {
-				p.getServer().broadcastMessage(p.NAME + ChatColor.RED + "Le jeu a été interrompu de force.");
+				p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.RED + "Le jeu a été interrompu de force.");
 				Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
 					@Override
 					public void run() {
