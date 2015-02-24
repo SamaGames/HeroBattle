@@ -66,7 +66,7 @@ public class CountdownTimer {
 
 
 				// Counter display (chat + title)
-				if (seconds == 120 || seconds == 60 || seconds == 30 || seconds == 15 || seconds == 10 || seconds <= 5) {
+				if (seconds == 120 || seconds == 60 || seconds == 30 || seconds == 15 || seconds == 10 || seconds <= 5 && seconds != 0) {
 
 					// Messages
 					if (seconds == 1) {
