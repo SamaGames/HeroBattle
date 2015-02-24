@@ -3,6 +3,7 @@ package net.lnfinity.HeroBattle.Game;
 import net.lnfinity.HeroBattle.HeroBattle;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -53,28 +54,39 @@ public class ScoreboardManager {
 		if (p.getGamePlayer(player).getPlayerClass() != null) {
 			maxLives = p.getGamePlayer(player).getPlayerClass().getLives();
 		}
-		if (p.getGamePlayer(player).isPlaying()) {
-			board.resetScores(heartsToString(lives + 1, maxLives) + ChatColor.WHITE + " " + player.getName());
+		if (player.getGameMode() == GameMode.ADVENTURE) {
 			percentageSidebar.getScore(heartsToString(lives, maxLives) + ChatColor.WHITE + " " + player.getName())
 					.setScore(percentage);
-		} else {
-			board.resetScores(heartsToString(lives, maxLives) + ChatColor.WHITE + " " + player.getName());
+		} else if(player.getGameMode() == GameMode.SPECTATOR) {
+			percentageSidebar.getScore(heartsToString(0, maxLives) + ChatColor.GRAY + " " + player.getName())
+			.setScore(-1);
 		}
+		
 
 		percentageBelowName.getScore(player.getName()).setScore(percentage);
 	}
 
 	private String heartsToString(int hearts, int maxHearts) {
-		String str = ChatColor.GRAY + "";
-		for (int i = maxHearts; i >= 1; i--) {
-			if (i > hearts) {
-				str = str + "❤";
+		String str = ChatColor.RED + "";
+		for (int i = 1; i <= maxHearts; i++) {
+			if (i <= hearts) {
+				str += "❤";
 			} else {
-				str = str + ChatColor.RED + "❤";
+				str += ChatColor.GRAY + "❤";
 			}
 		}
-
 		return str;
+	}
+
+	public void refresh() {
+		percentageSidebar.unregister();
+		percentageSidebar = board.registerNewObjective("perct_sidebar", "dummy");
+		percentageSidebar.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero" + ChatColor.LIGHT_PURPLE
+				+ "" + ChatColor.BOLD + "Battle");
+		percentageSidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
+		for (Player player : p.getServer().getOnlinePlayers()) {
+			update(player);
+		}
 	}
 
 	/**

@@ -193,7 +193,7 @@ public class Game implements GameArena {
 			HBplayer.setLives(HBplayer.getLives() - 1);
 			player.setHealth(HBplayer.getLives() * 2);
 			teleportRandomSpot(player.getUniqueId());
-			p.getScoreboardManager().update(player);
+			p.getScoreboardManager().refresh();
 		} else {
 			player.setGameMode(GameMode.SPECTATOR);
 			HBplayer.setPlaying(false);
@@ -208,7 +208,7 @@ public class Game implements GameArena {
 					HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
 							+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + p.getPlayingPlayerCount()
 							+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
-			p.getScoreboardManager().update(player);
+			p.getScoreboardManager().refresh();
 			StatsApi.increaseStat(player, p.getName(), "deaths", 1);
 			if (p.getPlayingPlayerCount() == 1) {
 				for (Player pl : p.getServer().getOnlinePlayers()) {
@@ -244,6 +244,7 @@ public class Game implements GameArena {
 	public void onPlayerWin(UUID id) {
 		p.getPowerupManager().getSpawner().stopTimer();
 		Player player = p.getServer().getPlayer(id);
+		player.getInventory().clear();
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		HBplayer.setPlaying(false);
 		p.getServer().broadcastMessage(
