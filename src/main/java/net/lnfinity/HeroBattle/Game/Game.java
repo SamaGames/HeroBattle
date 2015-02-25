@@ -211,6 +211,8 @@ public class Game implements GameArena {
 			p.getServer().broadcastMessage(
 					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par "
 							+ p.getServer().getPlayer(hbPlayer.getLastDamager()).getName() + lives);
+
+			StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
 		}
 
 
