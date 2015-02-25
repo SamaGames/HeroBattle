@@ -22,6 +22,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 
 import net.samagames.gameapi.json.Status;
+import net.samagames.gameapi.themachine.CoherenceMachine;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -29,23 +30,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class HeroBattle extends JavaPlugin {
 
+	// Displayed name with misc. formats
+	public final static String GAME_NAME_WHITE       = "HeroBattle";
+	public final static String GAME_NAME             = ChatColor.LIGHT_PURPLE + GAME_NAME_WHITE;
+	public final static String GAME_NAME_FORMATTED   = ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero" + ChatColor.LIGHT_PURPLE + "" + org.bukkit.ChatColor.BOLD + "Battle";
+	public final static String GAME_TAG              = ChatColor.DARK_PURPLE + "[" + GAME_NAME + ChatColor.DARK_PURPLE + "] " + ChatColor.RESET;
+
+	private static CoherenceMachine coherenceMachine = GameAPI.getCoherenceMachine(GAME_NAME_WHITE);
+	public  static String GAME_TAG_CM                = coherenceMachine.getGameTag();
+
+
 	private CountdownTimer timer;
 	private Game g;
 
 	private ClassManager classManager;
 	private ToolsManager toolsManager;
-	
 	private PowerupManager powerupManager;
 
 	private ScoreboardManager scoreboardManager;
 
 	private Configuration arenaConfig;
 
-	Map<UUID, GamePlayer> players = new HashMap<>();
-
-	// Global strings
-	public final static String NAME = ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "HeroBattle"
-			+ ChatColor.DARK_PURPLE + "] " + ChatColor.RESET;
+	private Map<UUID, GamePlayer> players = new HashMap<>();
 
 	@Override
 	public void onEnable() {
@@ -95,7 +101,7 @@ public class HeroBattle extends JavaPlugin {
 		classManager = new ClassManager(this);
 		scoreboardManager = new ScoreboardManager(this);
 		powerupManager = new PowerupManager(this);
-		
+
 		addOnlinePlayers();
 
 		GameAPI.registerGame(getConfig().getString("gameName"), g);
@@ -177,5 +183,9 @@ public class HeroBattle extends JavaPlugin {
 
 	public PowerupManager getPowerupManager() {
 		return powerupManager;
+	}
+
+	public CoherenceMachine getCoherenceMachine() {
+		return coherenceMachine;
 	}
 }

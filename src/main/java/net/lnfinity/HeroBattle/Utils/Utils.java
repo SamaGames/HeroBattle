@@ -2,8 +2,10 @@ package net.lnfinity.HeroBattle.Utils;
 
 import java.util.Random;
 
+import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.HeroBattle;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 public class Utils {
@@ -68,4 +70,23 @@ public class Utils {
 				* (loc1.getY() - loc2.getY()) + (loc1.getZ() - loc2.getZ()) * (loc1.getZ() - loc2.getZ()));
 	}
 
+	public static String heartsToString(GamePlayer player) {
+		if(player.getPlayerClass() == null) {
+			return "";
+		}
+
+		return heartsToString(player.getLives(), player.getPlayerClass().getLives());
+	}
+
+	public static String heartsToString(int hearts, int maxHearts) {
+		String str = ChatColor.RED + "";
+		for (int i = 1; i <= maxHearts; i++) {
+			if (i <= hearts) {
+				str += "❤";
+			} else {
+				str += ChatColor.GRAY + "❤";
+			}
+		}
+		return str;
+	}
 }

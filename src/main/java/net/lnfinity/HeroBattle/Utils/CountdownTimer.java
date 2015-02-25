@@ -58,7 +58,7 @@ public class CountdownTimer {
 				// Message if counter changed
 				if (changed) {
 					p.getServer().broadcastMessage(
-							HeroBattle.NAME + ChatColor.YELLOW + "Il y a désormais "
+							HeroBattle.GAME_TAG + ChatColor.YELLOW + "Il y a désormais "
 									+ ChatColor.RED + playersCount
 									+ ChatColor.YELLOW + " joueurs en jeu : le compteur a été raccourci à "
 									+ ChatColor.RED + seconds + ChatColor.YELLOW + " secondes");
@@ -71,11 +71,11 @@ public class CountdownTimer {
 					// Messages
 					if (seconds == 1) {
 						p.getServer().broadcastMessage(
-								HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans "
+								HeroBattle.GAME_TAG + ChatColor.YELLOW + "Le jeu commence dans "
 										+ ChatColor.RED + seconds + ChatColor.YELLOW + " seconde");
 					} else {
 						p.getServer().broadcastMessage(
-								HeroBattle.NAME + ChatColor.YELLOW + "Le jeu commence dans "
+								HeroBattle.GAME_TAG + ChatColor.YELLOW + "Le jeu commence dans "
 										+ ChatColor.RED + seconds + ChatColor.YELLOW + " secondes");
 					}
 
@@ -126,5 +126,4 @@ public class CountdownTimer {
 			}
 		}, 30L, 20L).getTaskId();
 	}
-
 }

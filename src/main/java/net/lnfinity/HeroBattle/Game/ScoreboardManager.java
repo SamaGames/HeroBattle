@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.Game;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 
+import net.lnfinity.HeroBattle.Utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -25,8 +26,7 @@ public class ScoreboardManager {
 		percentageBelowName.setDisplayName("%");
 
 		percentageSidebar = board.registerNewObjective("perct_sidebar", "dummy");
-		percentageSidebar.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero" + ChatColor.LIGHT_PURPLE
-				+ "" + ChatColor.BOLD + "Battle");
+		percentageSidebar.setDisplayName(HeroBattle.GAME_NAME_FORMATTED);
 	}
 
 	/**
@@ -48,34 +48,20 @@ public class ScoreboardManager {
 	 *            The player.
 	 */
 	public void update(Player player) {
-		int percentage = p.getGamePlayer(player).getPercentage();
-		int lives = p.getGamePlayer(player).getLives();
-		int maxLives = 3;
-		if (p.getGamePlayer(player).getPlayerClass() != null) {
-			maxLives = p.getGamePlayer(player).getPlayerClass().getLives();
-		}
+		GamePlayer hbPlayer = p.getGamePlayer(player);
+
+		int percentage = hbPlayer.getPercentage();
+
 		if (player.getGameMode() == GameMode.ADVENTURE) {
-			percentageSidebar.getScore(heartsToString(lives, maxLives) + ChatColor.WHITE + " " + player.getName())
+			percentageSidebar.getScore(Utils.heartsToString(hbPlayer) + ChatColor.WHITE + " " + player.getName())
 					.setScore(percentage);
-		} else if(player.getGameMode() == GameMode.SPECTATOR) {
-			percentageSidebar.getScore(heartsToString(0, maxLives) + ChatColor.GRAY + " " + player.getName())
+		}
+		else if(player.getGameMode() == GameMode.SPECTATOR) {
+			percentageSidebar.getScore(Utils.heartsToString(hbPlayer) + ChatColor.GRAY + " " + player.getName())
 			.setScore(-1);
 		}
-		
 
 		percentageBelowName.getScore(player.getName()).setScore(percentage);
-	}
-
-	private String heartsToString(int hearts, int maxHearts) {
-		String str = ChatColor.RED + "";
-		for (int i = 1; i <= maxHearts; i++) {
-			if (i <= hearts) {
-				str += "❤";
-			} else {
-				str += ChatColor.GRAY + "❤";
-			}
-		}
-		return str;
 	}
 
 	public void refresh() {
