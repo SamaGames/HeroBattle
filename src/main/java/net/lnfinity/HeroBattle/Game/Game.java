@@ -76,7 +76,7 @@ public class Game implements GameArena {
 	}
 
 	public void start() {
-		p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.GREEN + "Que le meilleur gagne !");
+		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Que le meilleur gagne !");
 		p.getScoreboardManager().init();
 		teleportPlayers();
 		p.getPowerupManager().getSpawner().startTimer();
@@ -181,11 +181,11 @@ public class Game implements GameArena {
 		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + (HBplayer.getLives() - 1) + ChatColor.DARK_GRAY + " vies)";
 		if (HBplayer.getLastDamager() == null) {
 			p.getServer().broadcastMessage(
-					HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
 							+ " est tombé dans le vide" + lives);
 		} else {
 			p.getServer().broadcastMessage(
-					HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par "
+					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par "
 							+ p.getServer().getPlayer(HBplayer.getLastDamager()).getName() + lives);
 		}
 		
@@ -205,7 +205,7 @@ public class Game implements GameArena {
 				s = "";
 			}
 			p.getServer().broadcastMessage(
-					HeroBattle.NAME + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
+					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
 							+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + p.getPlayingPlayerCount()
 							+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
 			p.getScoreboardManager().refresh();
@@ -227,7 +227,7 @@ public class Game implements GameArena {
 			s = "";
 		}
 		p.getServer().broadcastMessage(
-				HeroBattle.NAME + ChatColor.YELLOW + p.getServer().getOfflinePlayer(id).getName() + ChatColor.YELLOW
+				HeroBattle.GAME_TAG + ChatColor.YELLOW + p.getServer().getOfflinePlayer(id).getName() + ChatColor.YELLOW
 						+ " a perdu ! " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + ((int) p.getPlayingPlayerCount() - 1)
 						+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
 		p.getGamePlayer(id).setPlaying(false);
@@ -248,7 +248,7 @@ public class Game implements GameArena {
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		HBplayer.setPlaying(false);
 		p.getServer().broadcastMessage(
-				HeroBattle.NAME + ChatColor.GREEN + player.getDisplayName() + " remporte la partie !");
+				HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + " remporte la partie !");
 		new WinnerFirework(p, 30, player);
 
 		StarsManager.creditJoueur(player, 1, "Victoire !");

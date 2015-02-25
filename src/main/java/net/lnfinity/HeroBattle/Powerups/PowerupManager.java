@@ -66,7 +66,7 @@ public class PowerupManager {
 		Location loc = locations.get(Utils.randomNumber(0, locations.size() - 1));
 
 		if (!existingPowerups.containsKey(loc)) {
-			p.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.GREEN + "Un bonus vient de faire son apparition !");
+			p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Un bonus vient de faire son apparition !");
 
 			for (Player player : p.getServer().getOnlinePlayers()) {
 				player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 1);

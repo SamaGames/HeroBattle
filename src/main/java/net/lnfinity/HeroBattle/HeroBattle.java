@@ -44,8 +44,11 @@ public class HeroBattle extends JavaPlugin {
 	Map<UUID, GamePlayer> players = new HashMap<>();
 
 	// Global strings
-	public final static String NAME = ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + "HeroBattle"
-			+ ChatColor.DARK_PURPLE + "] " + ChatColor.RESET;
+	public final static String GAME_NAME = ChatColor.LIGHT_PURPLE + "HeroBattle";
+	public final static String GAME_NAME_FORMATTED = ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero"
+			+ ChatColor.LIGHT_PURPLE + "" + org.bukkit.ChatColor.BOLD + "Battle";
+
+	public final static String GAME_TAG = ChatColor.DARK_PURPLE + "[" + GAME_NAME + ChatColor.DARK_PURPLE + "] " + ChatColor.RESET;
 
 	@Override
 	public void onEnable() {

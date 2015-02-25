@@ -39,7 +39,7 @@ public class MasterListener implements Listener {
 		p.teleport(new Location(p.getWorld(), plugin.getConfig().getInt("locations.hub.x"), plugin.getConfig().getInt(
 				"locations.hub.y"), plugin.getConfig().getInt("locations.hub.z")));
 		p.getServer().broadcastMessage(
-				HeroBattle.NAME + ChatColor.YELLOW + p.getDisplayName() + ChatColor.YELLOW + " a rejoint l'arène "
+				HeroBattle.GAME_TAG + ChatColor.YELLOW + p.getDisplayName() + ChatColor.YELLOW + " a rejoint l'arène "
 						+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + plugin.getPlayerCount() + ChatColor.DARK_GRAY
 						+ "/" + ChatColor.RED + plugin.getGame().getMaxPlayers() + ChatColor.DARK_GRAY + "]");
 
@@ -65,7 +65,7 @@ public class MasterListener implements Listener {
 		if (plugin.getGame().getStatus() == Status.Starting) {
 			if (plugin.getTimer().isEnabled() && plugin.getPlayerCount() - 1 < plugin.getGame().getMinPlayers()) {
 				plugin.getTimer().cancelTimer();
-				plugin.getServer().broadcastMessage(HeroBattle.NAME + ChatColor.YELLOW + "Il n'y a plus assez de joueurs pour commencer la partie !");
+				plugin.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.YELLOW + "Il n'y a plus assez de joueurs pour commencer la partie !");
 			}
 		} else if(plugin.getGame().getStatus() == Status.InGame) {
 			if (plugin.getPlayerCount() <= 1 && !MasterBundle.isDbEnabled) {

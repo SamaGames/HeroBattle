@@ -25,8 +25,7 @@ public class ScoreboardManager {
 		percentageBelowName.setDisplayName("%");
 
 		percentageSidebar = board.registerNewObjective("perct_sidebar", "dummy");
-		percentageSidebar.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero" + ChatColor.LIGHT_PURPLE
-				+ "" + ChatColor.BOLD + "Battle");
+		percentageSidebar.setDisplayName(HeroBattle.GAME_NAME_FORMATTED);
 	}
 
 	/**
