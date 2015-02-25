@@ -60,7 +60,6 @@ public class ScoreboardManager {
 			percentageSidebar.getScore(heartsToString(0, maxLives) + ChatColor.GRAY + " " + player.getName())
 			.setScore(-1);
 		}
-		
 
 		percentageBelowName.getScore(player.getName()).setScore(percentage);
 	}

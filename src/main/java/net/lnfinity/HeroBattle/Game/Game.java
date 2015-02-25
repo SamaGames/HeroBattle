@@ -228,9 +228,11 @@ public class Game implements GameArena {
 		}
 		p.getServer().broadcastMessage(
 				HeroBattle.GAME_TAG + ChatColor.YELLOW + p.getServer().getOfflinePlayer(id).getName() + ChatColor.YELLOW
-						+ " a perdu ! " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + ((int) p.getPlayingPlayerCount() - 1)
+						+ " a perdu ! " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + (p.getPlayingPlayerCount() - 1)
 						+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
+
 		p.getGamePlayer(id).setPlaying(false);
+
 		if (p.getPlayingPlayerCount() == 1) {
 			for (Player pl : p.getServer().getOnlinePlayers()) {
 				if (p.getGamePlayer(pl.getUniqueId()).isPlaying()) {
@@ -247,8 +249,8 @@ public class Game implements GameArena {
 		player.getInventory().clear();
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		HBplayer.setPlaying(false);
-		p.getServer().broadcastMessage(
-				HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + " remporte la partie !");
+
+		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + " remporte la partie !");
 		new WinnerFirework(p, 30, player);
 
 		StarsManager.creditJoueur(player, 1, "Victoire !");

@@ -126,5 +126,4 @@ public class CountdownTimer {
 			}
 		}, 30L, 20L).getTaskId();
 	}
-
 }
