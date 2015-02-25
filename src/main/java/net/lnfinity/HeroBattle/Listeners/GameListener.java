@@ -64,8 +64,8 @@ public class GameListener implements Listener {
 			int R = 470 - plugin.getGamePlayer(p).getPercentage();
 			int G = 255 - plugin.getGamePlayer(p).getPercentage();
 			int B = 255 - plugin.getGamePlayer(p).getPercentage() * 2;
-			ItemStack helmet = new ItemStack(Material.LEATHER_HELMET, 1);
-			LeatherArmorMeta meta = (LeatherArmorMeta) helmet.getItemMeta();
+			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
 			if (R > 255) {
 				R = 255;
 			} else if (R < 0) {
@@ -83,9 +83,6 @@ public class GameListener implements Listener {
 			}
 			meta.setColor(Color.fromRGB(R, G, B));
 			meta.spigot().setUnbreakable(true);
-			helmet.setItemMeta(meta);
-			p.getInventory().setHelmet(helmet);
-			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
 			chest.setItemMeta(meta);
 			p.getInventory().setChestplate(chest);
 			ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS, 1);

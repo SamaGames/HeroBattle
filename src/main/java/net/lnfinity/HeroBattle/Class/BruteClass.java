@@ -53,4 +53,11 @@ public class BruteClass extends PlayerClass {
 		return 3;
 	}
 
+	@Override
+	public ItemStack getHat() {
+		ItemStack item = new ItemStack(Material.STAINED_GLASS);
+		item.setDurability((short) 14);
+		return item;
+	}
+
 }

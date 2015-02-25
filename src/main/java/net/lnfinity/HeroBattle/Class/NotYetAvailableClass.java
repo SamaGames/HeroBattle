@@ -45,4 +45,9 @@ public class NotYetAvailableClass extends PlayerClass {
 	public int getLives() {
 		return 0;
 	}
+
+	@Override
+	public ItemStack getHat() {
+		return new ItemStack(Material.BARRIER);
+	}
 }

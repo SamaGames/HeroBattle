@@ -39,6 +39,20 @@ public abstract class PlayerClass {
 	 *
 	 * @return A list of lines displayed in the lore.
 	 */
+	
+	
+	/**
+	 * Returns the hat the player will have.
+	 *
+	 * <p>
+	 *     The display name of this item stack is ignored.
+	 * </p>
+	 *
+	 * @return
+	 */
+	public abstract ItemStack getHat();
+	
+	
 	public abstract List<String> getDescription();
 
 	/**
