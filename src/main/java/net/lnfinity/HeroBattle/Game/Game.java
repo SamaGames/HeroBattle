@@ -140,7 +140,36 @@ public class Game implements GameArena {
 	}
 
 	public void teleportRandomSpot(UUID id) {
-		p.getServer().getPlayer(id).teleport(spawnPoints.get((new Random()).nextInt(spawnPoints.size())));
+		teleportRandomSpot(p.getServer().getPlayer(id));
+	}
+
+	public void teleportRandomSpot(Player player) {
+		player.teleport(spawnPoints.get((new Random()).nextInt(spawnPoints.size())));
+	}
+
+	public void spawnPlayer(Player player) {
+		GamePlayer hbPlayer = p.getGamePlayer(player);
+
+		hbPlayer.setPercentage(0);
+		player.setExp(0);
+		player.setLevel(0);
+		player.setTotalExperience(0);
+
+		player.setHealth(hbPlayer.getLives() * 2);
+
+		teleportRandomSpot(player);
+	}
+
+	public void enableSpectatorMode(Player player) {
+		GamePlayer hbPlayer = p.getGamePlayer(player);
+
+		hbPlayer.setPlaying(false);
+
+		player.setGameMode(GameMode.SPECTATOR);
+		player.getInventory().clear();
+		player.getInventory().setArmorContents(null);
+
+		teleportHub(player.getUniqueId());
 	}
 
 	public void chooseRandomClass(Player player) {
@@ -165,12 +194,9 @@ public class Game implements GameArena {
 		}
 
 		final Player player = p.getServer().getPlayer(id);
-		GamePlayer HBplayer = p.getGamePlayer(player);
-		Damageable d = (Damageable) player;
-		HBplayer.setPercentage(0);
-		player.setExp(0);
-		player.setLevel(0);
-		player.setTotalExperience(0);
+		GamePlayer hbPlayer = p.getGamePlayer(player);
+
+
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 0));
 		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 			@Override
@@ -178,28 +204,26 @@ public class Game implements GameArena {
 				player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 1, 1);
 			}
 		}, 5);
-		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + (HBplayer.getLives() - 1) + ChatColor.DARK_GRAY + " vies)";
-		if (HBplayer.getLastDamager() == null) {
+		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + (hbPlayer.getLives() - 1) + ChatColor.DARK_GRAY + " vies)";
+		if (hbPlayer.getLastDamager() == null) {
 			p.getServer().broadcastMessage(
 					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
 							+ " est tombé dans le vide" + lives);
 		} else {
 			p.getServer().broadcastMessage(
 					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par "
-							+ p.getServer().getPlayer(HBplayer.getLastDamager()).getName() + lives);
+							+ p.getServer().getPlayer(hbPlayer.getLastDamager()).getName() + lives);
 		}
-		
-		if (d.getHealth() > 2) {
-			HBplayer.setLives(HBplayer.getLives() - 1);
-			player.setHealth(HBplayer.getLives() * 2);
-			teleportRandomSpot(player.getUniqueId());
-			p.getScoreboardManager().refresh();
-		} else {
-			player.setGameMode(GameMode.SPECTATOR);
-			HBplayer.setPlaying(false);
-			teleportHub(player.getUniqueId());
-			player.getInventory().clear();
-			player.getInventory().setArmorContents(null);
+
+		hbPlayer.setLives(hbPlayer.getLives() - 1);
+
+		if (hbPlayer.getLives() >= 1) {
+			spawnPlayer(player);
+		}
+
+		else {
+			enableSpectatorMode(player);
+
 			String s = "s";
 			if (p.getPlayingPlayerCount() == 1) {
 				s = "";
@@ -208,8 +232,9 @@ public class Game implements GameArena {
 					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
 							+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + p.getPlayingPlayerCount()
 							+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
-			p.getScoreboardManager().refresh();
+
 			StatsApi.increaseStat(player, p.getName(), "deaths", 1);
+
 			if (p.getPlayingPlayerCount() == 1) {
 				for (Player pl : p.getServer().getOnlinePlayers()) {
 					if (p.getGamePlayer(pl.getUniqueId()).isPlaying()) {
@@ -219,19 +244,21 @@ public class Game implements GameArena {
 				}
 			}
 		}
+
+		p.getScoreboardManager().refresh();
 	}
 
 	public void onPlayerQuit(UUID id) {
-		String s = "s";
-		if (p.getPlayingPlayerCount() == 2) {
-			s = "";
-		}
-		p.getServer().broadcastMessage(
-				HeroBattle.GAME_TAG + ChatColor.YELLOW + p.getServer().getOfflinePlayer(id).getName() + ChatColor.YELLOW
-						+ " a perdu ! " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + (p.getPlayingPlayerCount() - 1)
-						+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
 
 		p.getGamePlayer(id).setPlaying(false);
+
+		String s = "s";
+		if (p.getPlayingPlayerCount() == 1) s = "";
+
+		p.getServer().broadcastMessage(
+				HeroBattle.GAME_TAG + ChatColor.YELLOW + p.getServer().getPlayer(id).getDisplayName() + ChatColor.YELLOW
+						+ " a perdu ! " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + (p.getPlayingPlayerCount() - 1)
+						+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
 
 		if (p.getPlayingPlayerCount() == 1) {
 			for (Player pl : p.getServer().getOnlinePlayers()) {
