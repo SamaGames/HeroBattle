@@ -202,7 +202,7 @@ public class Game implements GameArena {
 
 
 		// Broadcasts
-		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + (hbPlayer.getLives() - 1) + ChatColor.DARK_GRAY + " vies)";
+		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + hbPlayer.getLives() + ChatColor.DARK_GRAY + " vies)";
 		if (hbPlayer.getLastDamager() == null) {
 			p.getServer().broadcastMessage(
 					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
