@@ -49,7 +49,7 @@ public class ScoreboardManager {
 	public void update(Player player) {
 		int percentage = p.getGamePlayer(player).getPercentage();
 		int lives = p.getGamePlayer(player).getLives();
-		int maxLives = 3;
+		int maxLives = p.getGamePlayer(player).getPlayerClass().getLives();
 		if (p.getGamePlayer(player).getPlayerClass() != null) {
 			maxLives = p.getGamePlayer(player).getPlayerClass().getLives();
 		}
