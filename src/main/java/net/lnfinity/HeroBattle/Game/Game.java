@@ -191,7 +191,7 @@ public class Game implements GameArena {
 		}
 
 		final Player player = p.getServer().getPlayer(id);
-		GamePlayer hbPlayer = p.getGamePlayer(player);
+		final GamePlayer hbPlayer = p.getGamePlayer(player);
 
 		// Technical stuff
 		hbPlayer.setLives(hbPlayer.getLives() - 1);
@@ -224,10 +224,24 @@ public class Game implements GameArena {
 
 		// Death message
 		if(hbPlayer.getLives() >= 1) {
-			Titles.sendTitle(player, 3, 100, 8,  Utils.heartsToString(hbPlayer), ChatColor.RED + "Vous perdez une vie !");
+			
+			Titles.sendTitle(player, 3, 150, 10,  Utils.heartsToString(hbPlayer, true), ChatColor.RED + "Vous perdez une vie !");
+			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+				@Override
+				public void run() {
+					Titles.sendTitle(player, 15, 50, 8,  Utils.heartsToString(hbPlayer), ChatColor.RED + "Vous perdez une vie !");
+				}
+			}, 10L);
+			
 		}
 		else {
-			Titles.sendTitle(player, 3, 200, 18, Utils.heartsToString(hbPlayer), ChatColor.RED + "Vous êtes mort !");
+			Titles.sendTitle(player, 3, 150, 0, Utils.heartsToString(hbPlayer, true), ChatColor.RED + "Vous êtes mort !");
+			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+				@Override
+				public void run() {
+					Titles.sendTitle(player, 15, 100, 18, Utils.heartsToString(hbPlayer), ChatColor.RED + "Vous êtes mort !");
+				}
+			}, 10L);
 		}
 
 

@@ -71,11 +71,22 @@ public class Utils {
 	}
 
 	public static String heartsToString(GamePlayer player) {
-		if(player.getPlayerClass() == null) {
+		if (player.getPlayerClass() == null) {
 			return "";
 		}
 
 		return heartsToString(player.getLives(), player.getPlayerClass().getLives());
+	}
+
+	public static String heartsToString(GamePlayer player, boolean transition) {
+		if (player.getPlayerClass() == null) {
+			return "";
+		}
+		if (transition == false) {
+			return heartsToString(player.getLives(), player.getPlayerClass().getLives());
+		} else {
+			return heartsToString(player.getLives() + 1, player.getPlayerClass().getLives());
+		}
 	}
 
 	public static String heartsToString(int hearts, int maxHearts) {

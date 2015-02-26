@@ -2,6 +2,8 @@ package net.lnfinity.HeroBattle.Class;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tools.Tool;
+
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
