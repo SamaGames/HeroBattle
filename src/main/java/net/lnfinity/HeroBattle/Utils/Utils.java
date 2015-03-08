@@ -51,18 +51,15 @@ public class Utils {
 	}
 
 	public static Location blockLocation(Location loc) {
-		Location tempLoc = loc.clone();
-		tempLoc.setX(Math.floor(tempLoc.getX()) + 0.5);
-		tempLoc.setY(Math.floor(tempLoc.getY()) + 0.5);
-		tempLoc.setZ(Math.floor(tempLoc.getZ()) + 0.5);
-		return tempLoc;
+		Location blockLocation = loc.clone();
+		blockLocation.setX(blockLocation.getBlockX() + 0.5);
+		blockLocation.setY(blockLocation.getBlockY() + 0.5);
+		blockLocation.setZ(blockLocation.getBlockZ() + 0.5);
+		return blockLocation;
 	}
 
 	public static Location roundLocation(Location loc) {
-		int x = (int) Math.floor(loc.getX());
-		int y = (int) Math.floor(loc.getY());
-		int z = (int) Math.floor(loc.getZ());
-		return new Location(loc.getWorld(), x, y, z);
+		return new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
 	public static double distance(Location loc1, Location loc2) {
