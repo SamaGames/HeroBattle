@@ -2,8 +2,10 @@ package net.lnfinity.HeroBattle.Listeners;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
+import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Class.NotYetAvailableClass;
 import net.lnfinity.HeroBattle.Class.PlayerClass;
@@ -20,6 +22,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 public class ClassSelectorListener implements Listener {
 
@@ -38,12 +41,19 @@ public class ClassSelectorListener implements Listener {
 			Player player = (Player) e.getWhoClicked();
 
 			if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
+				if(e.getCurrentItem().equals(createExitItem())) {
+					player.closeInventory();
+					return;
+				}
+
 				PlayerClass clickedClass = p.getClassManager().getClassFromName(
 						ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
 
+				GamePlayer gPlayer = p.getGamePlayer(player);
+
 				if (clickedClass != null) {
 					if (e.getClick().isLeftClick()) {
-						p.getGamePlayer(player).setPlayerClass(clickedClass);
+						gPlayer.setPlayerClass(clickedClass);
 						player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
 								+ ChatColor.DARK_GREEN + clickedClass.getName() + ChatColor.GREEN + " !");
 						player.closeInventory();
@@ -51,16 +61,27 @@ public class ClassSelectorListener implements Listener {
 					} else if (e.getClick().isRightClick()) {
 						createDetails(player, clickedClass);
 					}
-				} else {
+				}
+				else if(e.getCurrentItem().getItemMeta().getDisplayName()
+						.equals(createItemRandom(gPlayer.getPlayerClass() == null).getItemMeta().getDisplayName())) {
+
+					gPlayer.setPlayerClass(null);
+					player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi une classe "
+							+ ChatColor.DARK_GREEN + "aléatoire" + ChatColor.GREEN + " !");
 					player.closeInventory();
 				}
+				else {
+					player.closeInventory();
+				}
+
 				e.setCancelled(true);
 			}
 
 			else if (e.getInventory().getName().startsWith(TITLE_CLASS_DETAILS)) {
-				if (e.getCurrentItem().equals(getItemBackToClassesList())) { // Go back to the menu
+				if (e.getCurrentItem().equals(createBackToListItem())) { // Go back to the menu
 					createSelector(player);
 				}
+
 				e.setCancelled(true);
 			}
 		}
@@ -75,28 +96,29 @@ public class ClassSelectorListener implements Listener {
 
 	public void createSelector(Player player) {
 		Set<PlayerClass> classes = p.getClassManager().getAvailableClasses();
-		Integer inventorySize = (int) (Math.ceil(classes.size() / 9d) * 9);
+		Integer inventorySize = (int) (Math.ceil(classes.size() / 9d) * 9) + 27;
 
 		Inventory inv = p.getServer().createInventory(player, inventorySize, TITLE_CLASS_SELECTOR);
 
-		Integer i = 0;
+		// Random
+
+		inv.setItem(4, createItemRandom(p.getGamePlayer(player).getPlayerClass() == null));
+
+
+		Integer i = 9;
 		for (PlayerClass theClass : classes) {
-			// FIXME La logique de glow/pas glow ? C'est bien ça dans ton esprit ?
-			inv.addItem(createItem(theClass, p.getGamePlayer(player).getPlayerClass() != null
+			inv.setItem(i, createItem(theClass, p.getGamePlayer(player).getPlayerClass() != null
 					&& p.getGamePlayer(player).getPlayerClass().equals(theClass)));
 			i++;
 		}
 
 		// Placeholder for the other cases
-		for (; i < inventorySize; i++) {
+		for (; i < inventorySize - 18; i++) {
 			inv.setItem(i, createItem(new NotYetAvailableClass(p), false));
 		}
 
-		ItemStack door = new ItemStack(Material.WOOD_DOOR);
-		ItemMeta meta = door.getItemMeta();
-		meta.setDisplayName(ChatColor.RESET + "" + ChatColor.RED + "Fermer");
-		door.setItemMeta(meta);
-		inv.setItem(inv.getSize() - 1, door);
+
+		inv.setItem(inv.getSize() - 1, createExitItem());
 
 		// Contenu conservé pour son contenu (classes)
 		// inv.addItem(createItem(Material.DIAMOND_CHESTPLATE, "Brute",
@@ -142,16 +164,16 @@ public class ClassSelectorListener implements Listener {
 		item.setItemMeta(meta);
 		inv.setItem(7, item);
 
-		inv.setItem(8, getItemBackToClassesList());
+		inv.setItem(8, createBackToListItem());
 
 		player.openInventory(inv);
 	}
 
-	public ItemStack createItem(PlayerClass theClass, boolean glow) {
+	public ItemStack createItem(PlayerClass theClass, boolean isEnabled) {
 		ItemStack item = new ItemStack(theClass.getIcon());
 		ItemMeta meta = item.getItemMeta();
 
-		if (glow) {
+		if (isEnabled) {
 			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + ChatColor.BOLD + "" + theClass.getName());
 		} else {
 			meta.setDisplayName(ChatColor.RESET + theClass.getName());
@@ -168,14 +190,48 @@ public class ClassSelectorListener implements Listener {
 		lore.add(ChatColor.GRAY + "• Clic gauche pour jouer avec cette classe");
 		lore.add(ChatColor.GRAY + "• Clic droit pour voir ses caractéristiques");
 
+		if(isEnabled) {
+			lore.add("");
+			lore.add(ChatColor.LIGHT_PURPLE + "Sélectionné");
+		}
+
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 
-		if (glow) {
+		if (isEnabled) {
 			GlowEffect.addGlow(item);
 		}
 
 		return item;
+	}
+
+	public ItemStack createItemRandom(boolean isEnabled) {
+		ItemStack randomClass = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+		SkullMeta randomMeta = (SkullMeta) randomClass.getItemMeta();
+
+		randomMeta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Classe aléatoire");
+
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Indécis ? Laissez le Destin choisir");
+		lore.add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "votre classe !");
+		lore.add("");
+		lore.add(ChatColor.GRAY + "• Clic gauche pour une classe aléatoire");
+
+		if(isEnabled) {
+			lore.add("");
+			lore.add(ChatColor.LIGHT_PURPLE + "Sélectionné");
+		}
+
+		randomMeta.setLore(lore);
+
+		randomMeta.setOwner("MHF_Question");
+		randomClass.setItemMeta(randomMeta);
+
+		if(isEnabled) {
+			GlowEffect.addGlow(randomClass);
+		}
+
+		return randomClass;
 	}
 
 	public String getBar(String name, int qty, int total) {
@@ -196,7 +252,7 @@ public class ClassSelectorListener implements Listener {
 	 * 
 	 * @return The item.
 	 */
-	private ItemStack getItemBackToClassesList() {
+	private ItemStack createBackToListItem() {
 		ItemStack item = new ItemStack(Material.WOOD_DOOR);
 		ItemMeta meta = item.getItemMeta();
 		meta.setLore(Arrays.asList(ChatColor.GRAY + "Clic droit pour revenir"));
@@ -204,5 +260,20 @@ public class ClassSelectorListener implements Listener {
 		item.setItemMeta(meta);
 
 		return item;
+	}
+
+	/**
+	 * Returns the item (door) which, when clicked, closes the selector.
+	 *
+	 * @return The item.
+	 */
+	public ItemStack createExitItem() {
+		ItemStack door = new ItemStack(Material.WOOD_DOOR);
+
+		ItemMeta meta = door.getItemMeta();
+		meta.setDisplayName(ChatColor.RED + "Fermer");
+		door.setItemMeta(meta);
+
+		return door;
 	}
 }

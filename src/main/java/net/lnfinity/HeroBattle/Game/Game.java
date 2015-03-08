@@ -178,8 +178,8 @@ public class Game implements GameArena {
 		for (PlayerClass classe : p.getClassManager().getAvailableClasses()) {
 			if (i == r) {
 				p.getGamePlayer(player).setPlayerClass(classe);
-				player.sendMessage(ChatColor.GREEN + "Vous n'avez pas choisi de classe, la classe "
-						+ ChatColor.DARK_GREEN + classe.getName() + ChatColor.GREEN + " vous a été attribuée !");
+				player.sendMessage(ChatColor.GREEN + "La classe "
+						+ ChatColor.DARK_GREEN + classe.getName() + ChatColor.GREEN + " vous a été attribuée suite à un complexe jeu de dés !");
 				return;
 			}
 			i++;
