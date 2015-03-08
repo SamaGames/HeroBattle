@@ -204,7 +204,7 @@ public class Game implements GameArena {
 
 
 		// Broadcasts
-		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + hbPlayer.getLives() + ChatColor.DARK_GRAY + " vies)";
+		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + hbPlayer.getLives() + ChatColor.DARK_GRAY + " vies restantes)";
 		if (hbPlayer.getLastDamager() == null) {
 			p.getServer().broadcastMessage(
 					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
@@ -215,6 +215,7 @@ public class Game implements GameArena {
 							+ p.getServer().getPlayer(hbPlayer.getLastDamager()).getName() + lives);
 
 			StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
+			CoinsManager.creditJoueur(player.getUniqueId(), 3, true, true, "Un joueur poussé !");
 		}
 
 
@@ -325,7 +326,7 @@ public class Game implements GameArena {
 		new WinnerFirework(p, 30, player);
 
 		StarsManager.creditJoueur(player, 1, "Victoire !");
-		CoinsManager.creditJoueur(player.getUniqueId(), 5, true, true, "Victoire !");
+		CoinsManager.creditJoueur(player.getUniqueId(), 8, true, true, "Victoire !");
 		StatsApi.increaseStat(player, p.getName(), "wins", 1);
 
 		if (MasterBundle.isDbEnabled) {
