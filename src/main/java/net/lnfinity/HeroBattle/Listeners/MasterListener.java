@@ -6,6 +6,7 @@ import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.events.FinishJoinPlayerEvent;
 
 import net.samagames.gameapi.json.Status;
+import net.samagames.utils.Titles;
 import net.zyuiop.MasterBundle.MasterBundle;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -31,7 +32,7 @@ public class MasterListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerJoin(FinishJoinPlayerEvent ev) {
-		Player p = plugin.getServer().getPlayer(ev.getPlayer());
+		final Player p = plugin.getServer().getPlayer(ev.getPlayer());
 		plugin.addGamePlayer(p);
 		p.getInventory().clear();
 		p.getInventory().setArmorContents(null);
@@ -42,6 +43,7 @@ public class MasterListener implements Listener {
 
 		plugin.getGame().teleportHub(p.getUniqueId());
 
+		plugin.getCoherenceMachine().getMessageManager().writeWelcomeInGameMessage(p);
 		plugin.getCoherenceMachine().getMessageManager().writePlayerJoinArenaMessage(p, plugin.getGame());
 
 /*
@@ -77,6 +79,22 @@ public class MasterListener implements Listener {
 		p.getInventory().setItem(8, plugin.getCoherenceMachine().getLeaveItem());
 
 		p.updateInventory();
+
+		if(plugin.getTimer().getSecondsLeft() > 10) {
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				@Override
+				public void run() {
+					Titles.sendTitle(p, 10, 80, 0, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "Bienvenue en " + HeroBattle.GAME_NAME);
+				}
+			}, 40l);
+
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				@Override
+				public void run() {
+					Titles.sendTitle(p, 0, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "N'oubliez pas de " + ChatColor.LIGHT_PURPLE + "choisir une classe" + ChatColor.WHITE + " !");
+				}
+			}, 120l);
+		}
 
 		GameAPI.getManager().sendArena();
 	}

@@ -126,4 +126,11 @@ public class CountdownTimer {
 			}
 		}, 30L, 20L).getTaskId();
 	}
+
+	/**
+	 * Returns the seconds left before the game.
+	 */
+	public int getSecondsLeft() {
+		return seconds;
+	}
 }

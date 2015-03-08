@@ -4,7 +4,6 @@ import net.lnfinity.HeroBattle.HeroBattle;
 
 import net.lnfinity.HeroBattle.Utils.Utils;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -26,7 +25,7 @@ public class ScoreboardManager {
 		percentageBelowName.setDisplayName("%");
 
 		percentageSidebar = board.registerNewObjective("perct_sidebar", "dummy");
-		percentageSidebar.setDisplayName(HeroBattle.GAME_NAME_FORMATTED);
+		percentageSidebar.setDisplayName(HeroBattle.GAME_NAME_BICOLOR_BOLD);
 	}
 
 	/**

@@ -31,12 +31,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class HeroBattle extends JavaPlugin {
 
 	// Displayed name with misc. formats
-	public final static String GAME_NAME_WHITE       = "HeroBattle";
-	public final static String GAME_NAME             = ChatColor.LIGHT_PURPLE + GAME_NAME_WHITE;
-	public final static String GAME_NAME_FORMATTED   = ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero" + ChatColor.LIGHT_PURPLE + "" + org.bukkit.ChatColor.BOLD + "Battle";
+	public final static String GAME_NAME_WHITE        = "HeroBattle";
+	public final static String GAME_NAME              = ChatColor.LIGHT_PURPLE + GAME_NAME_WHITE;
+	public final static String GAME_NAME_BICOLOR      = ChatColor.DARK_PURPLE + "Hero" + ChatColor.LIGHT_PURPLE + "Battle";
+	public final static String GAME_NAME_BICOLOR_BOLD = ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero" + ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Battle";
 
-	private static CoherenceMachine coherenceMachine = GameAPI.getCoherenceMachine(GAME_NAME_WHITE);
-	public  static String GAME_TAG                   = coherenceMachine.getGameTag();
+	private static CoherenceMachine coherenceMachine  = GameAPI.getCoherenceMachine(GAME_NAME_WHITE);
+	public final static String GAME_TAG               = coherenceMachine.getGameTag();
 
 
 	private CountdownTimer timer;
