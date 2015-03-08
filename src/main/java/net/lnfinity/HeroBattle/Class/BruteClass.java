@@ -2,6 +2,8 @@ package net.lnfinity.HeroBattle.Class;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tools.Tool;
+
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -51,6 +53,13 @@ public class BruteClass extends PlayerClass {
 	@Override
 	public int getLives() {
 		return 3;
+	}
+
+	@Override
+	public ItemStack getHat() {
+		ItemStack item = new ItemStack(Material.STAINED_GLASS);
+		item.setDurability((short) 14);
+		return item;
 	}
 
 }

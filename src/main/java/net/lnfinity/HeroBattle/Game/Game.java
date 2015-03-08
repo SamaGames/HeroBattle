@@ -94,6 +94,10 @@ public class Game implements GameArena {
 		Random rand = new Random();
 
 		for (Player player : p.getServer().getOnlinePlayers()) {
+			GamePlayer hbPlayer = p.getGamePlayer(player);
+			if (hbPlayer.getPlayerClass() == null) {
+				chooseRandomClass(player);
+			}
 
 			int index = rand.nextInt(tempLocs.size());
 			player.teleport(tempLocs.get(index));
@@ -102,13 +106,11 @@ public class Game implements GameArena {
 			player.getInventory().clear();
 			player.setLevel(0);
 			
-			ItemStack helmet = new ItemStack(Material.LEATHER_HELMET, 1);
-			LeatherArmorMeta meta = (LeatherArmorMeta)helmet.getItemMeta();
+			player.getInventory().setHelmet(hbPlayer.getPlayerClass().getHat());
+			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+			LeatherArmorMeta meta = (LeatherArmorMeta)chest.getItemMeta();
 			meta.setColor(Color.fromRGB(255, 255, 255));
 			meta.spigot().setUnbreakable(true);
-			helmet.setItemMeta(meta);
-			player.getInventory().setHelmet(helmet);
-			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
 			chest.setItemMeta(meta);
 			player.getInventory().setChestplate(chest);
 			ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS, 1);
@@ -117,12 +119,6 @@ public class Game implements GameArena {
 			ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
 			boots.setItemMeta(meta);
 			player.getInventory().setBoots(boots);
-
-			GamePlayer hbPlayer = p.getGamePlayer(player);
-
-			if (hbPlayer.getPlayerClass() == null) {
-				chooseRandomClass(player);
-			}
 
 			int i = 0;
 			for (PlayerTool tool : hbPlayer.getPlayerClass().getTools()) {
@@ -195,7 +191,7 @@ public class Game implements GameArena {
 		}
 
 		final Player player = p.getServer().getPlayer(id);
-		GamePlayer hbPlayer = p.getGamePlayer(player);
+		final GamePlayer hbPlayer = p.getGamePlayer(player);
 
 		// Technical stuff
 		hbPlayer.setLives(hbPlayer.getLives() - 1);
@@ -228,10 +224,24 @@ public class Game implements GameArena {
 
 		// Death message
 		if(hbPlayer.getLives() >= 1) {
-			Titles.sendTitle(player, 3, 100, 8,  Utils.heartsToString(hbPlayer), ChatColor.RED + "Vous perdez une vie !");
+			
+			Titles.sendTitle(player, 3, 150, 10,  Utils.heartsToString(hbPlayer, true), ChatColor.RED + "Vous perdez une vie !");
+			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+				@Override
+				public void run() {
+					Titles.sendTitle(player, 15, 50, 8,  Utils.heartsToString(hbPlayer), ChatColor.RED + "Vous perdez une vie !");
+				}
+			}, 10L);
+			
 		}
 		else {
-			Titles.sendTitle(player, 3, 200, 18, Utils.heartsToString(hbPlayer), ChatColor.RED + "Vous êtes mort !");
+			Titles.sendTitle(player, 3, 150, 0, Utils.heartsToString(hbPlayer, true), ChatColor.RED + "Vous êtes mort !");
+			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+				@Override
+				public void run() {
+					Titles.sendTitle(player, 15, 100, 18, Utils.heartsToString(hbPlayer), ChatColor.RED + "Vous êtes mort !");
+				}
+			}, 10L);
 		}
 
 

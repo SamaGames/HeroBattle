@@ -51,19 +51,16 @@ public class ClassSelectorListener implements Listener {
 					} else if (e.getClick().isRightClick()) {
 						createDetails(player, clickedClass);
 					}
+				} else {
+					player.closeInventory();
 				}
 				e.setCancelled(true);
 			}
 
 			else if (e.getInventory().getName().startsWith(TITLE_CLASS_DETAILS)) {
-				if (e.getCurrentItem().equals(getItemBackToClassesList())) { // Go
-																				// back
-																				// to
-																				// the
-																				// list
+				if (e.getCurrentItem().equals(getItemBackToClassesList())) { // Go back to the menu
 					createSelector(player);
 				}
-
 				e.setCancelled(true);
 			}
 		}
@@ -84,8 +81,7 @@ public class ClassSelectorListener implements Listener {
 
 		Integer i = 0;
 		for (PlayerClass theClass : classes) {
-			// FIXME La logique de glow/pas glow ? C'est bien ça dans ton esprit
-			// ?
+			// FIXME La logique de glow/pas glow ? C'est bien ça dans ton esprit ?
 			inv.addItem(createItem(theClass, p.getGamePlayer(player).getPlayerClass() != null
 					&& p.getGamePlayer(player).getPlayerClass().equals(theClass)));
 			i++;
@@ -132,7 +128,8 @@ public class ClassSelectorListener implements Listener {
 			inv.addItem(tool.generateCompleteItem());
 		}
 
-		ItemStack item = new ItemStack(Material.MAGMA_CREAM);
+		ItemStack item = new ItemStack(classe.getHat().getType());
+		item.setDurability(classe.getHat().getDurability());
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.RESET + classe.getName());
 		ArrayList<String> lore = new ArrayList<String>();
