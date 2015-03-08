@@ -34,10 +34,9 @@ public class HeroBattle extends JavaPlugin {
 	public final static String GAME_NAME_WHITE       = "HeroBattle";
 	public final static String GAME_NAME             = ChatColor.LIGHT_PURPLE + GAME_NAME_WHITE;
 	public final static String GAME_NAME_FORMATTED   = ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero" + ChatColor.LIGHT_PURPLE + "" + org.bukkit.ChatColor.BOLD + "Battle";
-	public final static String GAME_TAG              = ChatColor.DARK_PURPLE + "[" + GAME_NAME + ChatColor.DARK_PURPLE + "] " + ChatColor.RESET;
 
 	private static CoherenceMachine coherenceMachine = GameAPI.getCoherenceMachine(GAME_NAME_WHITE);
-	public  static String GAME_TAG_CM                = coherenceMachine.getGameTag();
+	public  static String GAME_TAG                   = coherenceMachine.getGameTag();
 
 
 	private CountdownTimer timer;
@@ -123,7 +122,7 @@ public class HeroBattle extends JavaPlugin {
 	}
 
 	public void addGamePlayer(Player p) {
-		GamePlayer player = new GamePlayer();
+		GamePlayer player = new GamePlayer(p.getUniqueId());
 		players.put(p.getUniqueId(), player);
 	}
 
@@ -139,6 +138,10 @@ public class HeroBattle extends JavaPlugin {
 		return players.get(id);
 	}
 
+	public Map<UUID, GamePlayer> getGamePlayers() {
+		return players;
+	}
+
 	public int getPlayerCount() {
 		int count = 0;
 		for (Player ignored : getServer().getOnlinePlayers()) {
@@ -149,8 +152,8 @@ public class HeroBattle extends JavaPlugin {
 
 	public int getPlayingPlayerCount() {
 		int count = 0;
-		for (Player player : getServer().getOnlinePlayers()) {
-			if (getGamePlayer(player).isPlaying()) {
+		for (GamePlayer player : players.values()) {
+			if (player.isPlaying()) {
 				count++;
 			}
 		}

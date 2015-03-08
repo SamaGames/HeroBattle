@@ -282,9 +282,9 @@ public class Game implements GameArena {
 						+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
 
 		if (p.getPlayingPlayerCount() == 1) {
-			for (Player pl : p.getServer().getOnlinePlayers()) {
-				if (p.getGamePlayer(pl.getUniqueId()).isPlaying()) {
-					onPlayerWin(pl.getUniqueId());
+			for (GamePlayer pl : p.getGamePlayers().values()) {
+				if (pl.isPlaying()) {
+					onPlayerWin(pl.getPlayerUniqueID());
 					return;
 				}
 			}

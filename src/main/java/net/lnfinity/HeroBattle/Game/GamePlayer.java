@@ -9,6 +9,8 @@ import net.lnfinity.HeroBattle.Tasks.Task;
 
 public class GamePlayer {
 
+	private UUID playerID;
+
 	private PlayerClass classe = null;
 	private int doubleJump = 2;
 	private int percentage = 0;
@@ -19,8 +21,8 @@ public class GamePlayer {
 	private UUID lastDamager = null;
 	private List<Task> tasks = new ArrayList<Task>();
 
-	public GamePlayer() {
-
+	public GamePlayer(UUID id) {
+		playerID = id;
 	}
 
 	public int getDoubleJump() {
@@ -81,6 +83,10 @@ public class GamePlayer {
 
 	public List<Task> getTasks() {
 		return tasks;
+	}
+
+	public UUID getPlayerUniqueID() {
+		return playerID;
 	}
 
 	public boolean playTask(Task t) {
