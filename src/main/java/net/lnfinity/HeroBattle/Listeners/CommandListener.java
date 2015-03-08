@@ -29,7 +29,7 @@ public class CommandListener implements CommandExecutor {
 					p.getTimer().cancelTimer();
 					p.getGame().start();
 				} else {
-					sender.sendMessage(ChatColor.RED + "Vous devez être au moins " + p.getGame().getMinPlayers() + " joueurs !");
+					sender.sendMessage(ChatColor.RED + "Vous devez être au moins deux joueurs !");
 				}
 				return true;
 			} else {
