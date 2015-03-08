@@ -312,6 +312,9 @@ public class Game implements GameArena {
 	}
 
 	public void onPlayerWin(UUID id) {
+
+		p.getScoreboardManager().refresh();
+
 		p.getPowerupManager().getSpawner().stopTimer();
 		Player player = p.getServer().getPlayer(id);
 		player.getInventory().clear();
@@ -324,8 +327,6 @@ public class Game implements GameArena {
 		StarsManager.creditJoueur(player, 1, "Victoire !");
 		CoinsManager.creditJoueur(player.getUniqueId(), 5, true, true, "Victoire !");
 		StatsApi.increaseStat(player, p.getName(), "wins", 1);
-
-		p.getScoreboardManager().refresh();
 
 		if (MasterBundle.isDbEnabled) {
 			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
