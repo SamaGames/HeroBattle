@@ -47,27 +47,37 @@ public class GameListener implements Listener {
 
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
+			GamePlayer gp = plugin.getGamePlayer(p);
+
 			if (e.getCause() == DamageCause.FALL) {
 				e.setCancelled(true);
-				plugin.getGamePlayer(p).playTask(new EarthquakeTask(plugin, p));
+				gp.playTask(new EarthquakeTask(plugin, p));
 
-				plugin.getGamePlayer(p).setDoubleJump(2);
+				// The double-jump is reset
+				gp.setDoubleJump(2);
+
+				// The player is on the ground, so the previous hitter is no longer
+				// the one who will punch it out of the map.
+				// ...only if the player is still inside the map of course.
+				if(p.getLocation().getY() > plugin.getGame().getBottomHeight()) {
+					gp.setLastDamager(null);
+				}
 			} else {
 				e.setDamage(0);
 			}
 			if (e.getCause() == DamageCause.LIGHTNING) {
-				plugin.getGamePlayer(p).setPercentage(
-						plugin.getGamePlayer(p).getPercentage() + 20 + (int) (Math.random() * ((50 - 20) + 20)));
+				gp.setPercentage(
+						gp.getPercentage() + 20 + (int) (Math.random() * ((50 - 20) + 20)));
 			}
 			p.setExp(0);
 			p.setTotalExperience(0);
-			p.setLevel(plugin.getGamePlayer(p).getPercentage());
+			p.setLevel(gp.getPercentage());
 
 			plugin.getScoreboardManager().update(p);
 
-			int R = 470 - plugin.getGamePlayer(p).getPercentage();
-			int G = 255 - plugin.getGamePlayer(p).getPercentage();
-			int B = 255 - plugin.getGamePlayer(p).getPercentage() * 2;
+			int R = 470 - gp.getPercentage();
+			int G = 255 - gp.getPercentage();
+			int B = 255 - gp.getPercentage() * 2;
 			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
 			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
 			if (R > 255) {
@@ -102,19 +112,20 @@ public class GameListener implements Listener {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
 		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player && plugin.getGame().getStatus() == Status.InGame) {
 			final Player player = (Player) e.getEntity();
-			int min = plugin.getGamePlayer(player).getPlayerClass().getMinDamages();
-			int max = plugin.getGamePlayer(player).getPlayerClass().getMaxDamages();
+			GamePlayer gPlayer = plugin.getGamePlayer(player);
+			int min = gPlayer.getPlayerClass().getMinDamages();
+			int max = gPlayer.getPlayerClass().getMaxDamages();
 			if (plugin.getGamePlayer((Player) e.getDamager()).hasDoubleDamages()) {
-				plugin.getGamePlayer(player).setPercentage(
-						plugin.getGamePlayer(player).getPercentage() + 2
+				gPlayer.setPercentage(
+						gPlayer.getPercentage() + 2
 								* (min + (int) (Math.random() * ((max - min) + min))));
 			} else {
-				plugin.getGamePlayer(player).setPercentage(
-						plugin.getGamePlayer(player).getPercentage() + min
+				gPlayer.setPercentage(
+						gPlayer.getPercentage() + min
 								+ (int) (Math.random() * ((max - min) + min)));
 			}
 
-			player.setLevel(plugin.getGamePlayer(player).getPercentage());
+			player.setLevel(gPlayer.getPercentage());
 			plugin.getScoreboardManager().update(player);
 
 			double pw = 10;
@@ -140,11 +151,10 @@ public class GameListener implements Listener {
 			double b = yc - e.getEntity().getLocation().getZ();
 			
 			e.getEntity().setVelocity(
-					new Vector(a * plugin.getGamePlayer(player).getPercentage() / 200, e.getEntity().getVelocity().getY(), b
-							* plugin.getGamePlayer(player).getPercentage() / 200));
-			plugin.getLogger().info(a + " ; " + b);
-			plugin.getLogger().info(e.getEntity().getVelocity().getX() + " p");
-			plugin.getGamePlayer(player).setLastDamager(e.getDamager().getUniqueId());
+					new Vector(a * gPlayer.getPercentage() / 200, e.getEntity().getVelocity().getY(), b
+							* gPlayer.getPercentage() / 200));
+
+ 			gPlayer.setLastDamager(e.getDamager().getUniqueId());
 		}
 	}
 
