@@ -20,7 +20,7 @@ public class AddHeart extends Powerup {
 
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
-		player.sendMessage(ChatColor.GREEN + "Quelle chance, vous gagnez " + ChatColor.DARK_GREEN + "1" + ChatColor.GREEN + " vie !");
+		player.sendMessage(ChatColor.GREEN + "Quelle chance, vous gagnez " + ChatColor.DARK_GREEN + "une" + ChatColor.GREEN + " vie !");
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		if(HBplayer.getLives() == HBplayer.getPlayerClass().getLives()) {
 			player.sendMessage(ChatColor.GREEN + "Vous êtes déjà en pleine forme !");
@@ -39,4 +39,11 @@ public class AddHeart extends Powerup {
 		return new Potion(PotionType.INSTANT_HEAL).toItemStack(1);
 	}
 
+	/**
+	 * The name of this powerup, displayed above.
+	 */
+	@Override
+	public String getName() {
+		return ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "SPEED";
+	}
 }

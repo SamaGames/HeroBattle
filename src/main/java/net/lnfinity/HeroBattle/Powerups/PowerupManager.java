@@ -15,8 +15,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.entity.Firework;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.util.Vector;
 
@@ -85,8 +84,7 @@ public class PowerupManager {
 
 			existingPowerups.put(loc, pw);
 
-			p.getServer().getWorlds().get(0).dropItem(Utils.blockLocation(loc), pw.getItem())
-					.setVelocity(new Vector(0, 0, 0));
+			loc.getWorld().dropItem(Utils.blockLocation(loc), pw.getItem()).setVelocity(new Vector(0, 0, 0));
 		}
 
 	}

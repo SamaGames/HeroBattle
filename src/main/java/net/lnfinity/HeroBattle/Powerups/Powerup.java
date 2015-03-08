@@ -17,8 +17,17 @@ public abstract class Powerup {
 	}
 	
 	public abstract void onPickup(Player player, ItemStack pickupItem);
-	
+
+	/**
+	 * The item used to represent this powerup.
+	 */
 	public abstract ItemStack getItem();
+
+	/**
+	 * The name of this powerup, displayed above.
+	 */
+	public abstract String getName();
+
 
 	public Location getLocation() {
 		return location;

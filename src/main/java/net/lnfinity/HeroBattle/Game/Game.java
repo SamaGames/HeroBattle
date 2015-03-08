@@ -87,6 +87,8 @@ public class Game implements GameArena {
 		}
 
 		setStatus(Status.InGame);
+
+		p.getPowerupManager().spawnPowerup();
 	}
 
 	public void teleportPlayers() {
@@ -105,10 +107,10 @@ public class Game implements GameArena {
 
 			player.getInventory().clear();
 			player.setLevel(0);
-			
+
 			player.getInventory().setHelmet(hbPlayer.getPlayerClass().getHat());
 			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-			LeatherArmorMeta meta = (LeatherArmorMeta)chest.getItemMeta();
+			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
 			meta.setColor(Color.fromRGB(255, 255, 255));
 			meta.spigot().setUnbreakable(true);
 			chest.setItemMeta(meta);
@@ -232,9 +234,8 @@ public class Game implements GameArena {
 					Titles.sendTitle(player, 15, 50, 8,  Utils.heartsToString(hbPlayer), ChatColor.RED + "Vous perdez une vie !");
 				}
 			}, 10L);
-			
-		}
-		else {
+
+		} else {
 			Titles.sendTitle(player, 3, 150, 0, Utils.heartsToString(hbPlayer, true), ChatColor.RED + "Vous êtes mort !");
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
