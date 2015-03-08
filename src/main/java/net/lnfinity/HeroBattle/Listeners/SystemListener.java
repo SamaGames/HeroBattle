@@ -25,7 +25,7 @@ public class SystemListener implements Listener {
 	}
 
 	@EventHandler
-	public boolean Foodlevel(FoodLevelChangeEvent event) {
+	public boolean onFoodLevelChange(FoodLevelChangeEvent event) {
 		event.setFoodLevel(100);
 		return true;
 	}
