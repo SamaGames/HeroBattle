@@ -32,7 +32,7 @@ public class ScoreboardManager {
 	 * To be called when the game starts.
 	 */
 	public void init() {
-		for (Player player : p.getServer().getOnlinePlayers()) {
+		for (GamePlayer player : p.getGamePlayers().values()) {
 			update(player);
 		}
 
@@ -42,27 +42,32 @@ public class ScoreboardManager {
 
 	/**
 	 * Updates the scoreboards for the given player.
-	 * 
-	 * @param player
-	 *            The player.
+	 *
+	 * @param player The player.
 	 */
 	public void update(Player player) {
-		GamePlayer hbPlayer = p.getGamePlayer(player);
+		update(p.getGamePlayer(player));
+	}
 
-		if(hbPlayer == null) return; // Not a real player (moderator maybe?).
+	/**
+	 * Updates the scoreboards for the given player.
+	 * 
+	 * @param player The player.
+	 */
+	public void update(GamePlayer player) {
 
-		int percentage = hbPlayer.getPercentage();
+		int percentage = player.getPercentage();
 
-		if (hbPlayer.isPlaying()) {
-			percentageSidebar.getScore(Utils.heartsToString(hbPlayer) + ChatColor.WHITE + " " + player.getName())
+		if (player.isPlaying()) {
+			percentageSidebar.getScore(Utils.heartsToString(player) + ChatColor.WHITE + " " + player.getPlayerName())
 					.setScore(percentage);
 		}
 		else {
-			percentageSidebar.getScore(Utils.heartsToString(hbPlayer) + ChatColor.GRAY + " " + player.getName())
+			percentageSidebar.getScore(Utils.heartsToString(player) + ChatColor.GRAY + " " + player.getPlayerName())
 			.setScore(-1);
 		}
 
-		percentageBelowName.getScore(player.getName()).setScore(percentage);
+		percentageBelowName.getScore(player.getPlayerName()).setScore(percentage);
 	}
 
 	public void refresh() {
@@ -71,7 +76,8 @@ public class ScoreboardManager {
 		percentageSidebar.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero" + ChatColor.LIGHT_PURPLE
 				+ "" + ChatColor.BOLD + "Battle");
 		percentageSidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
-		for (Player player : p.getServer().getOnlinePlayers()) {
+
+		for (GamePlayer player : p.getGamePlayers().values()) {
 			update(player);
 		}
 	}

@@ -42,6 +42,7 @@ public class GameListener implements Listener {
 	public void onEntityDamageEvent(EntityDamageEvent e) {
 		if (plugin.getGame().getStatus() != Status.InGame) {
 			e.setCancelled(true);
+			return;
 		}
 
 		if (e.getEntity() instanceof Player) {

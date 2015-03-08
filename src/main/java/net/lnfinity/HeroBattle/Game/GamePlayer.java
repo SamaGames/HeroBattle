@@ -6,10 +6,12 @@ import java.util.UUID;
 
 import net.lnfinity.HeroBattle.Class.PlayerClass;
 import net.lnfinity.HeroBattle.Tasks.Task;
+import org.bukkit.Bukkit;
 
 public class GamePlayer {
 
 	private UUID playerID;
+	private String playerName;
 
 	private PlayerClass classe = null;
 	private int doubleJump = 2;
@@ -23,6 +25,7 @@ public class GamePlayer {
 
 	public GamePlayer(UUID id) {
 		playerID = id;
+		playerName = Bukkit.getServer().getPlayer(id).getName();
 	}
 
 	public int getDoubleJump() {
@@ -87,6 +90,10 @@ public class GamePlayer {
 
 	public UUID getPlayerUniqueID() {
 		return playerID;
+	}
+
+	public String getPlayerName() {
+		return playerName;
 	}
 
 	public boolean playTask(Task t) {

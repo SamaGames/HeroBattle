@@ -87,8 +87,6 @@ public class Game implements GameArena {
 		}
 
 		setStatus(Status.InGame);
-
-		p.getPowerupManager().spawnPowerup();
 	}
 
 	public void teleportPlayers() {
