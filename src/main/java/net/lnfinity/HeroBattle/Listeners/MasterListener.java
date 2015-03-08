@@ -80,6 +80,8 @@ public class MasterListener implements Listener {
 
 		p.updateInventory();
 
+		p.getInventory().setHeldItemSlot(0);
+
 		if(plugin.getTimer().getSecondsLeft() > 10) {
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				@Override

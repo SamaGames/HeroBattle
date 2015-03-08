@@ -126,6 +126,9 @@ public class Game implements GameArena {
 				i++;
 			}
 
+			player.getInventory().setHeldItemSlot(0);
+			player.updateInventory();
+
 			player.setGameMode(GameMode.ADVENTURE);
 			player.setMaxHealth(hbPlayer.getPlayerClass().getLives() * 2);
 			player.setHealth(hbPlayer.getPlayerClass().getLives() * 2d);
