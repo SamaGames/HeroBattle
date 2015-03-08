@@ -28,7 +28,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -43,6 +42,8 @@ public class Game implements GameArena {
 
 	private List<Location> spawnPoints = new LinkedList<>();
 	private Location hub;
+
+	private Double bottomHeight = 0.0;
 
 	public Game(HeroBattle plugin) {
 		p = plugin;
@@ -73,6 +74,8 @@ public class Game implements GameArena {
 
 			p.getServer().getPluginManager().disablePlugin(p);
 		}
+
+		bottomHeight = p.getArenaConfig().getDouble("map.bottom", 0d);
 	}
 
 	public void start() {
@@ -315,7 +318,7 @@ public class Game implements GameArena {
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		HBplayer.setPlaying(false);
 
-		p.getCoherenceMachine().getMessageManager().writePlayerWinMessage(player);
+		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + " remporte la partie !");
 		new WinnerFirework(p, 30, player);
 
 		StarsManager.creditJoueur(player, 1, "Victoire !");
@@ -396,6 +399,13 @@ public class Game implements GameArena {
 
 	public int getCountdownTime() {
 		return p.getArenaConfig().getInt("map.waiting", 120);
+	}
+
+	/**
+	 * Below this height, the players are dead.
+	 */
+	public Double getBottomHeight() {
+		return bottomHeight;
 	}
 
 	public Block getTargetBlock(Player player, int maxRange) {

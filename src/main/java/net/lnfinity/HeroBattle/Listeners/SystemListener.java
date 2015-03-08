@@ -38,10 +38,15 @@ public class SystemListener implements Listener {
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
-		if (e.getTo().getBlockY() <= 0 && e.getPlayer().getGameMode() == GameMode.ADVENTURE
+		if (e.getTo().getBlockY() <= plugin.getGame().getBottomHeight()
+				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE
 				&& plugin.getGamePlayer(e.getPlayer()).isPlaying()) {
+
 			plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId());
-		} else if (e.getTo().getBlockY() <= 0 && e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+		}
+		else if (e.getTo().getBlockY() <= plugin.getGame().getBottomHeight()
+				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+
 			plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
 		}
 	}
