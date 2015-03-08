@@ -72,7 +72,7 @@ public class Utils {
 			return "";
 		}
 
-		return heartsToString(player.getLives(), player.getPlayerClass().getLives());
+		return heartsToString(player.isPlaying() ? player.getLives() : 0, player.getPlayerClass().getLives());
 	}
 
 	public static String heartsToString(int hearts, int maxHearts) {

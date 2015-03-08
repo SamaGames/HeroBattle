@@ -50,13 +50,15 @@ public class ScoreboardManager {
 	public void update(Player player) {
 		GamePlayer hbPlayer = p.getGamePlayer(player);
 
+		if(hbPlayer == null) return; // Not a real player (moderator maybe?).
+
 		int percentage = hbPlayer.getPercentage();
 
-		if (player.getGameMode() == GameMode.ADVENTURE) {
+		if (hbPlayer.isPlaying()) {
 			percentageSidebar.getScore(Utils.heartsToString(hbPlayer) + ChatColor.WHITE + " " + player.getName())
 					.setScore(percentage);
 		}
-		else if(player.getGameMode() == GameMode.SPECTATOR) {
+		else {
 			percentageSidebar.getScore(Utils.heartsToString(hbPlayer) + ChatColor.GRAY + " " + player.getName())
 			.setScore(-1);
 		}
