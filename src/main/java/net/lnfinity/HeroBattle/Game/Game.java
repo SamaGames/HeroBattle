@@ -270,17 +270,18 @@ public class Game implements GameArena {
 	}
 
 	public void onPlayerQuit(UUID id) {
+		GamePlayer gPlayer = p.getGamePlayer(id);
+		if(gPlayer.isPlaying()) {
+			gPlayer.setPlaying(false);
 
-		p.getGamePlayer(id).setPlaying(false);
+			String s = "s";
+			if (p.getPlayingPlayerCount() == 1) s = "";
 
-		String s = "s";
-		if (p.getPlayingPlayerCount() == 1) s = "";
-
-		p.getServer().broadcastMessage(
-				HeroBattle.GAME_TAG + ChatColor.YELLOW + p.getServer().getPlayer(id).getDisplayName() + ChatColor.YELLOW
-						+ " a perdu ! " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + (p.getPlayingPlayerCount() - 1)
-						+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
-
+			p.getServer().broadcastMessage(
+					HeroBattle.GAME_TAG + ChatColor.YELLOW + p.getServer().getPlayer(id).getDisplayName() + ChatColor.YELLOW
+							+ " a perdu ! " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + (p.getPlayingPlayerCount() - 1)
+							+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
+		}
 		if (p.getPlayingPlayerCount() == 1) {
 			for (GamePlayer pl : p.getGamePlayers().values()) {
 				if (pl.isPlaying()) {
@@ -321,40 +322,6 @@ public class Game implements GameArena {
 					Bukkit.shutdown();
 				}
 			}, 30 * 20L);
-		}
-	}
-
-	/**
-	 * Converts a string (in the config file) to a Location object.
-	 * 
-	 * @param locationInConfig
-	 *            A string; format "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch".
-	 * @return The Location object, for the main world (first one).
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if the format is not good.
-	 */
-	private Location stringToLocation(String locationInConfig) {
-		String[] coords = locationInConfig.split(";");
-		if (coords.length < 3) {
-			throw new IllegalArgumentException("Invalid location: " + locationInConfig);
-		}
-
-		try {
-			Location location = new Location(p.getServer().getWorlds().get(0), Double.valueOf(coords[0]),
-					Double.valueOf(coords[1]), Double.valueOf(coords[2]));
-
-			if (coords.length >= 4) {
-				location.setYaw(Float.valueOf(coords[3]));
-
-				if (coords.length >= 5) {
-					location.setPitch(Float.valueOf(coords[4]));
-				}
-			}
-
-			return location;
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("Invalid location (NaN!): " + locationInConfig);
 		}
 	}
 
