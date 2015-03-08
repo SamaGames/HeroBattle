@@ -293,7 +293,11 @@ public class Game implements GameArena {
 					HeroBattle.GAME_TAG + ChatColor.YELLOW + p.getServer().getPlayer(id).getDisplayName() + ChatColor.YELLOW
 							+ " a perdu ! " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + (p.getPlayingPlayerCount() - 1)
 							+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
+
+
+			p.getScoreboardManager().refresh();
 		}
+
 		if (p.getPlayingPlayerCount() == 1) {
 			for (GamePlayer pl : p.getGamePlayers().values()) {
 				if (pl.isPlaying()) {
@@ -311,12 +315,14 @@ public class Game implements GameArena {
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		HBplayer.setPlaying(false);
 
-		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + " remporte la partie !");
+		p.getCoherenceMachine().getMessageManager().writePlayerWinMessage(player);
 		new WinnerFirework(p, 30, player);
 
 		StarsManager.creditJoueur(player, 1, "Victoire !");
 		CoinsManager.creditJoueur(player.getUniqueId(), 5, true, true, "Victoire !");
 		StatsApi.increaseStat(player, p.getName(), "wins", 1);
+
+		p.getScoreboardManager().refresh();
 
 		if (MasterBundle.isDbEnabled) {
 			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
