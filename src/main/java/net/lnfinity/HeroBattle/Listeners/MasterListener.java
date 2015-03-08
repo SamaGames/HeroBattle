@@ -14,8 +14,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Arrays;
 
 public class MasterListener implements Listener {
 
@@ -56,8 +60,21 @@ public class MasterListener implements Listener {
 		p.setMaxHealth(20);
 		p.setHealth(20);
 
-		// TODO Better display.
-		p.getInventory().addItem(new ItemStack(Material.NETHER_STAR));
+
+		ItemStack classSelectorItem = new ItemStack(Material.NETHER_STAR);
+		ItemMeta classSelectorItemMeta = classSelectorItem.getItemMeta();
+		classSelectorItemMeta.setDisplayName(
+				ChatColor.LIGHT_PURPLE + "Choisissez une " +
+				ChatColor.DARK_PURPLE + "classe"
+		);
+		classSelectorItemMeta.setLore(Arrays.asList(
+				ChatColor.GRAY + "Cliquez-droit pour choisir la classe",
+				ChatColor.GRAY + "avec laquelle vous allez jouer."
+		));
+		classSelectorItem.setItemMeta(classSelectorItemMeta);
+		p.getInventory().setItem(0, classSelectorItem);
+
+		p.getInventory().setItem(8, plugin.getCoherenceMachine().getLeaveItem());
 
 		p.updateInventory();
 
@@ -87,5 +104,13 @@ public class MasterListener implements Listener {
 		}
 		ev.setQuitMessage(null);
 		GameAPI.getManager().sendArena();
+	}
+
+	@EventHandler
+	public void onPlayerInteract(PlayerInteractEvent e) {
+		if (plugin.getGame().getStatus() != Status.InGame
+				&& e.hasItem() && e.getItem().equals(plugin.getCoherenceMachine().getLeaveItem())) {
+			e.getPlayer().kickPlayer("Bye bye");
+		}
 	}
 }
