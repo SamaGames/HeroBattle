@@ -128,7 +128,7 @@ public class MasterListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		if (plugin.getGame().getStatus() != Status.InGame
 				&& e.hasItem() && e.getItem().equals(plugin.getCoherenceMachine().getLeaveItem())) {
-			e.getPlayer().kickPlayer("Bye bye");
+			e.getPlayer().kickPlayer("");
 		}
 	}
 }
