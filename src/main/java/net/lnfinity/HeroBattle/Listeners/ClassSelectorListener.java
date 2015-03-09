@@ -81,6 +81,7 @@ public class ClassSelectorListener implements Listener {
 				}
 				else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(createUseThisClassItem(null).getItemMeta().getDisplayName())) {
 					selectClass(player, p.getClassManager().getClassFromName(e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")));
+					player.closeInventory();
 				}
 
 				e.setCancelled(true);
