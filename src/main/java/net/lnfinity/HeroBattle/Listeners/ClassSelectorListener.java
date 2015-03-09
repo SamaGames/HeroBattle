@@ -31,6 +31,8 @@ public class ClassSelectorListener implements Listener {
 	private final String TITLE_CLASS_SELECTOR = "Sélection de la classe";
 	private final String TITLE_CLASS_DETAILS = "Détails de la classe ";
 
+	private final int COMING_SOON_CLASSES_COUNT = 6;
+
 	public ClassSelectorListener(HeroBattle plugin) {
 		p = plugin;
 	}
@@ -99,21 +101,36 @@ public class ClassSelectorListener implements Listener {
 
 		Inventory inv = p.getServer().createInventory(player, inventorySize, TITLE_CLASS_SELECTOR);
 
+		int classesCount = classes.size() + COMING_SOON_CLASSES_COUNT,
+			shift = calculateShiftNeededToCenter(classesCount);
+
+
 		// Random
 
 		inv.setItem(4, createItemRandom(p.getGamePlayer(player).getPlayerClass() == null));
 
-
+		// Available classes
 		Integer i = 9;
 		for (PlayerClass theClass : classes) {
-			inv.setItem(i, createItem(theClass, p.getGamePlayer(player).getPlayerClass() != null
-					&& p.getGamePlayer(player).getPlayerClass().equals(theClass)));
+			inv.setItem(
+					isOnLastLine(i - 9, classesCount) ? shift + i : i,
+					createItem(
+							theClass,
+							p.getGamePlayer(player).getPlayerClass() != null
+									&& p.getGamePlayer(player).getPlayerClass().equals(theClass)
+					)
+			);
+
 			i++;
 		}
 
 		// Placeholder for the other cases
-		for (; i < inventorySize - 18; i++) {
-			inv.setItem(i, createItem(new NotYetAvailableClass(p), false));
+		Integer notYetFinalIndex = i + COMING_SOON_CLASSES_COUNT;
+		for (; i < notYetFinalIndex; i++) {
+			inv.setItem(
+					isOnLastLine(i - 9, classesCount) ? shift + i : i,
+					createItem(new NotYetAvailableClass(p), false)
+			);
 		}
 
 
@@ -144,9 +161,13 @@ public class ClassSelectorListener implements Listener {
 
 	public void createDetails(Player player, PlayerClass classe) {
 		Inventory inv = p.getServer().createInventory(player, 36, TITLE_CLASS_DETAILS + classe.getName());
+		int i = 0,
+			toolsCount = classe.getTools().size(),
+			shift = calculateShiftNeededToCenter(toolsCount);
 
 		for (PlayerTool tool : classe.getTools()) {
-			inv.addItem(tool.generateCompleteItem());
+			inv.setItem(isOnLastLine(i, toolsCount) ? shift + i : i, tool.generateCompleteItem());
+			i++;
 		}
 
 		ItemStack item = new ItemStack(classe.getHat().getType());
@@ -303,6 +324,38 @@ public class ClassSelectorListener implements Listener {
 		door.setItemMeta(meta);
 
 		return door;
+	}
+
+	/**
+	 * Calculates the shift needed to center the items on the grid.
+	 *
+	 * @param itemsCount The count. If > 9, this will calculate the shift needed for the last line.
+	 *
+	 * @return The shift needed.
+	 */
+	public int calculateShiftNeededToCenter(int itemsCount) {
+		itemsCount %= 9;
+
+		switch(itemsCount) {
+			case 0:
+			case 1:
+				return 4;
+			case 2:
+			case 3:
+				return 3;
+			case 4:
+			case 5:
+				return 2;
+			case 6:
+			case 7:
+				return 1;
+			default:
+				return 0;
+		}
+	}
+
+	private boolean isOnLastLine(int index, int count) {
+		return index >= 9 * (Math.ceil(((double) count) / 9) - 1);
 	}
 
 	public void selectClass(Player player, PlayerClass theClass) {
