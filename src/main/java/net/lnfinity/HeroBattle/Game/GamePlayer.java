@@ -100,7 +100,7 @@ public class GamePlayer {
 	}
 
 	public void doubleJump() {
-		Bukkit.getLogger().info("JUMP!");
+		Bukkit.getLogger().info("JUMP");
 
 		Player player = Bukkit.getServer().getPlayer(playerID);
 		if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {

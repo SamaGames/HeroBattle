@@ -203,19 +203,21 @@ public class GameListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerDoubleJump(PlayerToggleFlightEvent e) {
-		e.setCancelled(true);
+		if(e.getPlayer().getGameMode() != GameMode.CREATIVE) {
+			e.setCancelled(true);
 
-		final GamePlayer gPlayer = plugin.getGamePlayer(e.getPlayer());
-		if(gPlayer != null && gPlayer.isPlaying()
-				&& plugin.getGame().getStatus() != Status.Starting
-				&& plugin.getGame().getStatus() != Status.Available) {
+			final GamePlayer gPlayer = plugin.getGamePlayer(e.getPlayer());
+			if (gPlayer != null && gPlayer.isPlaying()
+					&& plugin.getGame().getStatus() != Status.Starting
+					&& plugin.getGame().getStatus() != Status.Available) {
 
-			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-				@Override
-				public void run() {
-					gPlayer.doubleJump();
-				}
-			}, 2l);
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					@Override
+					public void run() {
+						gPlayer.doubleJump();
+					}
+				}, 3l);
+			}
 		}
 	}
 }
