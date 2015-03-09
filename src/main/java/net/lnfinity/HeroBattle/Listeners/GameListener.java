@@ -10,13 +10,11 @@ import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.lnfinity.HeroBattle.Utils.Utils;
 import net.samagames.gameapi.json.Status;
 
-import org.bukkit.Color;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -200,6 +198,24 @@ public class GameListener implements Listener {
 					e.getItem().remove();
 				}
 			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerDoubleJump(PlayerToggleFlightEvent e) {
+		e.setCancelled(true);
+
+		final GamePlayer gPlayer = plugin.getGamePlayer(e.getPlayer());
+		if(gPlayer != null && gPlayer.isPlaying()
+				&& plugin.getGame().getStatus() != Status.Starting
+				&& plugin.getGame().getStatus() != Status.Available) {
+
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				@Override
+				public void run() {
+					gPlayer.doubleJump();
+				}
+			}, 2l);
 		}
 	}
 }

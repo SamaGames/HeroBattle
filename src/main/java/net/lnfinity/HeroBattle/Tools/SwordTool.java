@@ -50,16 +50,7 @@ public class SwordTool extends PlayerTool {
 
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-		GamePlayer hbPlayer = p.getGamePlayer(player);
-
-		if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
-			hbPlayer.setDoubleJump(2);
-		}
-
-		if (hbPlayer.getDoubleJump() > 0) {
-			hbPlayer.setDoubleJump(hbPlayer.getDoubleJump() - 1);
-			player.setVelocity(player.getVelocity().setY(1.5));
-		}
+		p.getGamePlayer(player).doubleJump();
 	}
 
 	@Override

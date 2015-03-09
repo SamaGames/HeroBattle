@@ -41,6 +41,10 @@ public class MasterListener implements Listener {
 		p.setTotalExperience(0);
 		p.setGameMode(GameMode.ADVENTURE);
 
+		// Needed so the toggleFlight event is fired when the player double-jump.
+		// The event is always cancelled.
+		p.setAllowFlight(true);
+
 		plugin.getGame().teleportHub(p.getUniqueId());
 
 		plugin.getCoherenceMachine().getMessageManager().writeWelcomeInGameMessage(p);

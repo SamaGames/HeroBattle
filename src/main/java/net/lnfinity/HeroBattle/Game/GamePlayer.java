@@ -7,6 +7,9 @@ import java.util.UUID;
 import net.lnfinity.HeroBattle.Class.PlayerClass;
 import net.lnfinity.HeroBattle.Tasks.Task;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 
 public class GamePlayer {
 
@@ -94,6 +97,20 @@ public class GamePlayer {
 
 	public String getPlayerName() {
 		return playerName;
+	}
+
+	public void doubleJump() {
+		Bukkit.getLogger().info("JUMP!");
+
+		Player player = Bukkit.getServer().getPlayer(playerID);
+		if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
+			setDoubleJump(2);
+		}
+
+		if (getDoubleJump() > 0) {
+			setDoubleJump(getDoubleJump() - 1);
+			player.setVelocity(player.getVelocity().setY(1.5));
+		}
 	}
 
 	public boolean playTask(Task t) {
