@@ -103,7 +103,7 @@ public class ClassSelectorListener implements Listener {
 		Inventory inv = p.getServer().createInventory(player, inventorySize, TITLE_CLASS_SELECTOR);
 
 		int classesCount = classes.size() + COMING_SOON_CLASSES_COUNT,
-			shift = calculateShiftNeededToCenter(classesCount);
+		    shift = calculateShiftNeededToCenter(classesCount);
 
 
 		// Random
@@ -163,8 +163,8 @@ public class ClassSelectorListener implements Listener {
 	public void createDetails(Player player, PlayerClass classe) {
 		Inventory inv = p.getServer().createInventory(player, 36, TITLE_CLASS_DETAILS + classe.getName());
 		int i = 0,
-			toolsCount = classe.getTools().size(),
-			shift = calculateShiftNeededToCenter(toolsCount);
+		    toolsCount = classe.getTools().size(),
+		    shift = calculateShiftNeededToCenter(toolsCount);
 
 		for (PlayerTool tool : classe.getTools()) {
 			inv.setItem(isOnLastLine(i, toolsCount) ? shift + i : i, tool.generateCompleteItem());
