@@ -53,9 +53,7 @@ public class ClassSelectorListener implements Listener {
 
 				if (clickedClass != null) {
 					if (e.getClick().isLeftClick()) {
-						gPlayer.setPlayerClass(clickedClass);
-						player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
-								+ ChatColor.DARK_GREEN + clickedClass.getName() + ChatColor.GREEN + " !");
+						selectClass(player, clickedClass);
 						player.closeInventory();
 
 					} else if (e.getClick().isRightClick()) {
@@ -65,9 +63,7 @@ public class ClassSelectorListener implements Listener {
 				else if(e.getCurrentItem().getItemMeta().getDisplayName()
 						.equals(createItemRandom(gPlayer.getPlayerClass() == null).getItemMeta().getDisplayName())) {
 
-					gPlayer.setPlayerClass(null);
-					player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi une classe "
-							+ ChatColor.DARK_GREEN + "aléatoire" + ChatColor.GREEN + " !");
+					selectClass(player, null);
 					player.closeInventory();
 				}
 				else {
@@ -80,6 +76,9 @@ public class ClassSelectorListener implements Listener {
 			else if (e.getInventory().getName().startsWith(TITLE_CLASS_DETAILS)) {
 				if (e.getCurrentItem().equals(createBackToListItem())) { // Go back to the menu
 					createSelector(player);
+				}
+				else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(createUseThisClassItem(null).getItemMeta().getDisplayName())) {
+					selectClass(player, p.getClassManager().getClassFromName(e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")));
 				}
 
 				e.setCancelled(true);
@@ -144,7 +143,7 @@ public class ClassSelectorListener implements Listener {
 	}
 
 	public void createDetails(Player player, PlayerClass classe) {
-		Inventory inv = p.getServer().createInventory(player, 9, TITLE_CLASS_DETAILS + classe.getName());
+		Inventory inv = p.getServer().createInventory(player, 36, TITLE_CLASS_DETAILS + classe.getName());
 
 		for (PlayerTool tool : classe.getTools()) {
 			inv.addItem(tool.generateCompleteItem());
@@ -162,9 +161,11 @@ public class ClassSelectorListener implements Listener {
 		lore.add(getBar("Dégâts max.", classe.getMaxDamages() - 6, 6));
 		meta.setLore(lore);
 		item.setItemMeta(meta);
-		inv.setItem(7, item);
+		inv.setItem(20, item);
 
-		inv.setItem(8, createBackToListItem());
+		inv.setItem(22, createUseThisClassItem(classe));
+
+		inv.setItem(24, createBackToListItem());
 
 		player.openInventory(inv);
 	}
@@ -255,8 +256,35 @@ public class ClassSelectorListener implements Listener {
 	private ItemStack createBackToListItem() {
 		ItemStack item = new ItemStack(Material.WOOD_DOOR);
 		ItemMeta meta = item.getItemMeta();
-		meta.setLore(Arrays.asList(ChatColor.GRAY + "Clic droit pour revenir"));
+		meta.setLore(Arrays.asList(
+				"",
+				ChatColor.GRAY + "Clic droit pour revenir"
+		));
 		meta.setDisplayName(ChatColor.RESET + "Revenir au choix des classes");
+		item.setItemMeta(meta);
+
+		return item;
+	}
+
+	/**
+	 * Returns the item (door) which, when clicked, displays back the list of
+	 * the classes.
+	 *
+	 * @param theClass The class applied when this is clicked.
+	 *
+	 * @return The item.
+	 */
+	private ItemStack createUseThisClassItem(PlayerClass theClass) {
+		ItemStack item = new ItemStack(Material.EMERALD);
+		ItemMeta meta = item.getItemMeta();
+		if(theClass != null) {
+			meta.setLore(Arrays.asList(
+					"",
+					ChatColor.GRAY + "Clic droit pour sélectionner",
+					ChatColor.GRAY + "la classe " + theClass.getName()
+			));
+		}
+		meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Utiliser cette classe");
 		item.setItemMeta(meta);
 
 		return item;
@@ -275,5 +303,18 @@ public class ClassSelectorListener implements Listener {
 		door.setItemMeta(meta);
 
 		return door;
+	}
+
+	public void selectClass(Player player, PlayerClass theClass) {
+		p.getGamePlayer(player).setPlayerClass(theClass);
+
+		if(theClass != null) {
+			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
+					+ ChatColor.DARK_GREEN + theClass.getName() + ChatColor.GREEN + " !");
+		}
+		else {
+			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi une classe "
+					+ ChatColor.DARK_GREEN + "aléatoire" + ChatColor.GREEN + " !");
+		}
 	}
 }
