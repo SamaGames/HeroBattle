@@ -54,18 +54,18 @@ public class GameListener implements Listener {
 				// The double-jump is reset
 				gp.setDoubleJump(2);
 
-				// The player is on the ground, so the previous hitter is no longer
+				// The player is on the ground, so the previous hitter is no
+				// longer
 				// the one who will punch it out of the map.
 				// ...only if the player is still inside the map of course.
-				if(p.getLocation().getY() > plugin.getGame().getBottomHeight()) {
+				if (p.getLocation().getY() > plugin.getGame().getBottomHeight()) {
 					gp.setLastDamager(null);
 				}
 			} else {
 				e.setDamage(0);
 			}
 			if (e.getCause() == DamageCause.LIGHTNING) {
-				gp.setPercentage(
-						gp.getPercentage() + 20 + (int) (Math.random() * ((50 - 20) + 20)));
+				gp.setPercentage(gp.getPercentage() + 20 + (int) (Math.random() * ((50 - 20) + 20)));
 			}
 			p.setExp(0);
 			p.setTotalExperience(0);
@@ -109,50 +109,28 @@ public class GameListener implements Listener {
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
 		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player && plugin.getGame().getStatus() == Status.InGame) {
+			// Devrait *enfin* fonctionner !
+			final float reducer = 25.0F;
 			final Player player = (Player) e.getEntity();
-			GamePlayer gPlayer = plugin.getGamePlayer(player);
-			int min = gPlayer.getPlayerClass().getMinDamages();
-			int max = gPlayer.getPlayerClass().getMaxDamages();
-			if (plugin.getGamePlayer((Player) e.getDamager()).hasDoubleDamages()) {
-				gPlayer.setPercentage(
-						gPlayer.getPercentage() + 2
-								* (min + (int) (Math.random() * ((max - min) + min))));
-			} else {
-				gPlayer.setPercentage(
-						gPlayer.getPercentage() + min
-								+ (int) (Math.random() * ((max - min) + min)));
-			}
+			final GamePlayer gamePlayer = plugin.getGamePlayer(player);
+			final Player damager = (Player) e.getDamager();
+			final GamePlayer gameDamager = plugin.getGamePlayer(damager);
+			Vector v = player.getVelocity().add(
+					player.getLocation().toVector().subtract(damager.getLocation().toVector()).normalize()
+							.multiply(gamePlayer.getPercentage() / reducer));
+			v.setY(1);
+			e.getEntity().setVelocity(v);
 
-			player.setLevel(gPlayer.getPercentage());
+			int min = gameDamager.getPlayerClass().getMinDamages();
+			int max = gameDamager.getPlayerClass().getMaxDamages();
+			if (gameDamager.hasDoubleDamages()) {
+				gamePlayer.setPercentage(gamePlayer.getPercentage() + 2 * (min + (int) (Math.random() * ((max - min) + min))));
+			} else {
+				gamePlayer.setPercentage(gamePlayer.getPercentage() + min + (int) (Math.random() * ((max - min) + min)));
+			}
+			gamePlayer.setLastDamager(damager.getUniqueId());
+			player.setLevel(gamePlayer.getPercentage());
 			plugin.getScoreboardManager().update(player);
-
-			double pw = 10;
-			double xa = e.getDamager().getLocation().getX();
-			double ya = e.getDamager().getLocation().getZ();
-			double xb = e.getEntity().getLocation().getX();
-			double yb = e.getEntity().getLocation().getZ();
-			double m = (ya - yb) / (xa - xb);
-			double p = ya - m * xa;
-			double alpha = Math.atan(m * xa + p);
-			double xc1 = xb + pw * Math.cos(alpha);
-			double xc2 = xb - pw * Math.cos(alpha);
-			double yc;
-			double xc;
-			if (Math.abs(xa - xc1) > Math.abs(xa - xc2)) {
-				yc = m * xc1 + p;
-				xc = xc1;
-			} else {
-				yc = m * xc2 + p;
-				xc = xc2;
-			}
-			double a = xc - e.getEntity().getLocation().getX();
-			double b = yc - e.getEntity().getLocation().getZ();
-			
-			e.getEntity().setVelocity(
-					new Vector(a * gPlayer.getPercentage() / 200, e.getEntity().getVelocity().getY(), b
-							* gPlayer.getPercentage() / 200));
-
- 			gPlayer.setLastDamager(e.getDamager().getUniqueId());
 		}
 	}
 
@@ -203,12 +181,11 @@ public class GameListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerDoubleJump(PlayerToggleFlightEvent e) {
-		if(e.getPlayer().getGameMode() != GameMode.CREATIVE) {
+		if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
 			e.setCancelled(true);
 
 			final GamePlayer gPlayer = plugin.getGamePlayer(e.getPlayer());
-			if (gPlayer != null && gPlayer.isPlaying()
-					&& plugin.getGame().getStatus() != Status.Starting
+			if (gPlayer != null && gPlayer.isPlaying() && plugin.getGame().getStatus() != Status.Starting
 					&& plugin.getGame().getStatus() != Status.Available) {
 
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
