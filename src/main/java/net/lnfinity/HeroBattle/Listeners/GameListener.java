@@ -3,6 +3,7 @@ package net.lnfinity.HeroBattle.Listeners;
 import java.util.Map;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Game.DeathType;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Powerups.Powerup;
 import net.lnfinity.HeroBattle.Tasks.EarthquakeTask;
@@ -108,7 +109,8 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player && plugin.getGame().getStatus() == Status.InGame) {
+		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player
+				&& plugin.getGame().getStatus() == Status.InGame) {
 			// Devrait *enfin* fonctionner !
 			final float reducer = 25.0F;
 			final Player player = (Player) e.getEntity();
@@ -123,13 +125,24 @@ public class GameListener implements Listener {
 
 			int min = gameDamager.getPlayerClass().getMinDamages();
 			int max = gameDamager.getPlayerClass().getMaxDamages();
+			int damages;
 			if (gameDamager.hasDoubleDamages()) {
-				gamePlayer.setPercentage(gamePlayer.getPercentage() + 2 * (min + (int) (Math.random() * ((max - min) + min))));
+				damages = gamePlayer.getPercentage() + 2 * (min + (int) (Math.random() * ((max - min) + min)));
 			} else {
-				gamePlayer.setPercentage(gamePlayer.getPercentage() + min + (int) (Math.random() * ((max - min) + min)));
+				damages = gamePlayer.getPercentage() + min + (int) (Math.random() * ((max - min) + min));
 			}
+			if (damages >= gamePlayer.getMaxResistance()) {
+				damages = gamePlayer.getMaxResistance();
+				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+					@Override
+					public void run() {
+						plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
+					}
+				}, 20L);
+			}
+			gamePlayer.setPercentage(damages);
 			gamePlayer.setLastDamager(damager.getUniqueId());
-			player.setLevel(gamePlayer.getPercentage());
+			player.setLevel(damages);
 			plugin.getScoreboardManager().update(player);
 		}
 	}
@@ -158,10 +171,11 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
+		// Schould never happen ?
 		e.setDeathMessage(null);
 		e.getDrops().clear();
 		e.setDroppedExp(0);
-		plugin.getGame().onPlayerDeath(e.getEntity().getUniqueId());
+		plugin.getGame().onPlayerDeath(e.getEntity().getUniqueId(), DeathType.QUIT);
 	}
 
 	@EventHandler

@@ -20,6 +20,7 @@ public class GamePlayer {
 	private int doubleJump = 2;
 	private int percentage = 0;
 	private int lives = 3;
+	private int maxResistance = 250; // Défini par la classe ?
 	private boolean playing = true;
 	private boolean doubleDamages = false;
 	private boolean deathCooldown = false;
@@ -97,6 +98,10 @@ public class GamePlayer {
 
 	public String getPlayerName() {
 		return playerName;
+	}
+	
+	public int getMaxResistance() {
+		return this.maxResistance;
 	}
 
 	public void doubleJump() {

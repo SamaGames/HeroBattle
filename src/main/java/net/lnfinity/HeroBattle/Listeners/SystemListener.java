@@ -1,6 +1,7 @@
 package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Game.DeathType;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.HumanEntity;
@@ -42,7 +43,7 @@ public class SystemListener implements Listener {
 				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE
 				&& plugin.getGamePlayer(e.getPlayer()).isPlaying()) {
 
-			plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId());
+			plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.FALL);
 		}
 		else if (e.getTo().getBlockY() <= plugin.getGame().getBottomHeight()
 				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE) {

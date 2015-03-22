@@ -43,19 +43,12 @@ public class MasterListener implements Listener {
 
 		// Needed so the toggleFlight event is fired when the player double-jump.
 		// The event is always cancelled.
-		p.setAllowFlight(true);
+		p.setAllowFlight(false); // Temp disabled
 
 		plugin.getGame().teleportHub(p.getUniqueId());
 
-		plugin.getCoherenceMachine().getMessageManager().writeWelcomeInGameMessage(p);
 		plugin.getCoherenceMachine().getMessageManager().writePlayerJoinArenaMessage(p, plugin.getGame());
-
-/*
-		p.getServer().broadcastMessage(
-				HeroBattle.GAME_TAG + ChatColor.YELLOW + p.getDisplayName() + ChatColor.YELLOW + " a rejoint l'arène "
-						+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + plugin.getPlayerCount() + ChatColor.DARK_GRAY
-						+ "/" + ChatColor.RED + plugin.getGame().getMaxPlayers() + ChatColor.DARK_GRAY + "]");
-*/
+		plugin.getCoherenceMachine().getMessageManager().writeWelcomeInGameMessage(p);
 
 		if (!plugin.getTimer().isEnabled() && plugin.getPlayerCount() >= plugin.getGame().getMinPlayers()) {
 			plugin.getTimer().restartTimer();
