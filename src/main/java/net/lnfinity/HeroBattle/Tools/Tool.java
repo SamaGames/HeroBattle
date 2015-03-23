@@ -6,6 +6,8 @@ package net.lnfinity.HeroBattle.Tools;
 public enum Tool {
 
 	SWORD("tool.sword"),
+	SWORD_VARIANT1("tool.sword.variant1"),
+	SWORD_VARIANT2("tool.sword.variant2"),
 	SPEED("tool.speed"),
 	POWER("tool.power"),
 	EARTHQUAKE("tool.earthquake"),

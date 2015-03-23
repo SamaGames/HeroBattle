@@ -31,7 +31,7 @@ public class ClassSelectorListener implements Listener {
 	private final String TITLE_CLASS_SELECTOR = "Sélection de la classe";
 	private final String TITLE_CLASS_DETAILS = "Détails de la classe ";
 
-	private final int COMING_SOON_CLASSES_COUNT = 6;
+	private final int COMING_SOON_CLASSES_COUNT = 2;
 
 	public ClassSelectorListener(HeroBattle plugin) {
 		p = plugin;
@@ -181,6 +181,7 @@ public class ClassSelectorListener implements Listener {
 		lore.add(getBar("Vies", classe.getLives(), 6));
 		lore.add(getBar("Dégâts min.", classe.getMinDamages(), 6));
 		lore.add(getBar("Dégâts max.", classe.getMaxDamages() - 6, 6));
+		lore.add(getBar("Résistance", (classe.getMaxResistance() - 150) / 25, 6));
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		inv.setItem(20, item);
@@ -265,7 +266,7 @@ public class ClassSelectorListener implements Listener {
 				str += ChatColor.GRAY + "" + ChatColor.BOLD;
 			}
 		}
-		str += ChatColor.RESET + "" + ChatColor.GRAY + " - " + name;
+		str += ChatColor.RESET + "" + ChatColor.GRAY + " " + name;
 		return str;
 	}
 

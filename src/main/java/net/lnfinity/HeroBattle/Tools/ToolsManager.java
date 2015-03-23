@@ -18,6 +18,8 @@ public class ToolsManager {
 
 		// Registers the tools
 		registerTool(new SwordTool(p));
+		registerTool(new SwordVariant1Tool(p));
+		registerTool(new SwordVariant2Tool(p));
 		registerTool(new SpeedTool(p));
 		registerTool(new PowerTool(p));
 		registerTool(new EarthquakeTool(p));

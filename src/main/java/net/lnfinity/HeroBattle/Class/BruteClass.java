@@ -18,11 +18,7 @@ public class BruteClass extends PlayerClass {
 
 		addTool(p.getToolsManager().getTool(Tool.SWORD));
 		addTool(p.getToolsManager().getTool(Tool.SPEED));
-		addTool(p.getToolsManager().getTool(Tool.POWER));
 		addTool(p.getToolsManager().getTool(Tool.EARTHQUAKE));
-		addTool(p.getToolsManager().getTool(Tool.THUNDER));
-		addTool(p.getToolsManager().getTool(Tool.NAUSEA));
-		addTool(p.getToolsManager().getTool(Tool.SMOKE));
 	}
 
 	@Override
@@ -64,7 +60,7 @@ public class BruteClass extends PlayerClass {
 
 	@Override
 	public int getMaxResistance() {
-		return 250;
+		return 200;
 	}
 
 }

@@ -104,16 +104,16 @@ public class GameListener implements Listener {
 			}
 			if (damages >= gamePlayer.getPlayerClass().getMaxResistance()) {
 				damages = gamePlayer.getPlayerClass().getMaxResistance();
-				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-					@Override
-					public void run() {
-						player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
-						plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
-					}
-				}, 20L);
+				
+				gamePlayer.setPercentage(damages);
+				gamePlayer.setLastDamager(damager.getUniqueId());
+
+				player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
+				plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
+			} else {
+				gamePlayer.setPercentage(damages);
+				gamePlayer.setLastDamager(damager.getUniqueId());
 			}
-			gamePlayer.setPercentage(damages);
-			gamePlayer.setLastDamager(damager.getUniqueId());
 			player.setLevel(damages);
 			plugin.getScoreboardManager().update(player);
 		}

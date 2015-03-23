@@ -16,6 +16,8 @@ public class ClassManager {
 
 		// Registers classes
 		registerClass(new BruteClass(p));
+		registerClass(new GuerrierClass(p));
+		registerClass(new MageClass(p));
 	}
 
 	/**
