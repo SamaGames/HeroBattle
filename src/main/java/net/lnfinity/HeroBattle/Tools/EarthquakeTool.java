@@ -5,9 +5,9 @@ import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tasks.EarthquakeTask;
-import net.lnfinity.HeroBattle.Utils.GlowEffect;
 import net.lnfinity.HeroBattle.Utils.ItemCooldown;
 import net.md_5.bungee.api.ChatColor;
+import net.samagames.utils.GlowEffect;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;

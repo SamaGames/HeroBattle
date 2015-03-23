@@ -62,4 +62,9 @@ public class BruteClass extends PlayerClass {
 		return item;
 	}
 
+	@Override
+	public int getMaxResistance() {
+		return 250;
+	}
+
 }

@@ -74,36 +74,7 @@ public class GameListener implements Listener {
 
 			plugin.getScoreboardManager().update(p);
 
-			int R = 470 - gp.getPercentage();
-			int G = 255 - gp.getPercentage();
-			int B = 255 - gp.getPercentage() * 2;
-			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
-			if (R > 255) {
-				R = 255;
-			} else if (R < 0) {
-				R = 0;
-			}
-			if (G > 255) {
-				G = 255;
-			} else if (G < 0) {
-				G = 0;
-			}
-			if (B > 255) {
-				B = 255;
-			} else if (B < 0) {
-				B = 0;
-			}
-			meta.setColor(Color.fromRGB(R, G, B));
-			meta.spigot().setUnbreakable(true);
-			chest.setItemMeta(meta);
-			p.getInventory().setChestplate(chest);
-			ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS, 1);
-			leg.setItemMeta(meta);
-			p.getInventory().setLeggings(leg);
-			ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
-			boots.setItemMeta(meta);
-			p.getInventory().setBoots(boots);
+			plugin.getGame().updatePlayerArmor(p);
 		}
 	}
 
@@ -131,11 +102,12 @@ public class GameListener implements Listener {
 			} else {
 				damages = gamePlayer.getPercentage() + min + (int) (Math.random() * ((max - min) + min));
 			}
-			if (damages >= gamePlayer.getMaxResistance()) {
-				damages = gamePlayer.getMaxResistance();
+			if (damages >= gamePlayer.getPlayerClass().getMaxResistance()) {
+				damages = gamePlayer.getPlayerClass().getMaxResistance();
 				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 					@Override
 					public void run() {
+						player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
 						plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
 					}
 				}, 20L);

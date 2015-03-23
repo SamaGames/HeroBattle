@@ -109,19 +109,7 @@ public class Game implements GameArena {
 			player.getInventory().clear();
 			player.setLevel(0);
 
-			player.getInventory().setHelmet(hbPlayer.getPlayerClass().getHat());
-			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
-			meta.setColor(Color.fromRGB(255, 255, 255));
-			meta.spigot().setUnbreakable(true);
-			chest.setItemMeta(meta);
-			player.getInventory().setChestplate(chest);
-			ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS, 1);
-			leg.setItemMeta(meta);
-			player.getInventory().setLeggings(leg);
-			ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
-			boots.setItemMeta(meta);
-			player.getInventory().setBoots(boots);
+			p.getGame().updatePlayerArmor(player);
 
 			int i = 0;
 			for (PlayerTool tool : hbPlayer.getPlayerClass().getTools()) {
@@ -147,6 +135,7 @@ public class Game implements GameArena {
 	}
 
 	public void teleportRandomSpot(Player player) {
+		p.getGame().updatePlayerArmor(player);
 		player.teleport(spawnPoints.get((new Random()).nextInt(spawnPoints.size())));
 	}
 
@@ -241,7 +230,7 @@ public class Game implements GameArena {
 				break;
 			case KO:
 				p.getServer().broadcastMessage(
-						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été mis hors-service par "
+						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été mis K.O. par "
 								+ p.getServer().getPlayer(hbPlayer.getLastDamager()).getName() + lives);
 				StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
 				CoinsManager.creditJoueur(player.getUniqueId(), 3, true, true, "Un joueur K.O. !");
@@ -457,5 +446,40 @@ public class Game implements GameArena {
 			}
 		}
 		return null;
+	}
+	
+	public void updatePlayerArmor(Player player) {
+		GamePlayer gamePlayer = p.getGamePlayer(player);
+		player.getInventory().setHelmet(gamePlayer.getPlayerClass().getHat());
+		ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+		LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
+		int R = 470 - gamePlayer.getPercentage();
+		int G = 255 - gamePlayer.getPercentage();
+		int B = 255 - gamePlayer.getPercentage() * 2;
+		if (R > 255) {
+			R = 255;
+		} else if (R < 0) {
+			R = 0;
+		}
+		if (G > 255) {
+			G = 255;
+		} else if (G < 0) {
+			G = 0;
+		}
+		if (B > 255) {
+			B = 255;
+		} else if (B < 0) {
+			B = 0;
+		}
+		meta.setColor(Color.fromRGB(255, 255, 255));
+		meta.spigot().setUnbreakable(true);
+		chest.setItemMeta(meta);
+		player.getInventory().setChestplate(chest);
+		ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+		leg.setItemMeta(meta);
+		player.getInventory().setLeggings(leg);
+		ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+		boots.setItemMeta(meta);
+		player.getInventory().setBoots(boots);
 	}
 }

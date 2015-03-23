@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.Utils;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
+import net.samagames.utils.GlowEffect;
 
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;

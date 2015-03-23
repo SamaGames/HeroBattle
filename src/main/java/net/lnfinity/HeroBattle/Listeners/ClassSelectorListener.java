@@ -5,13 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Class.NotYetAvailableClass;
 import net.lnfinity.HeroBattle.Class.PlayerClass;
+import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
-import net.lnfinity.HeroBattle.Utils.GlowEffect;
 import net.md_5.bungee.api.ChatColor;
+import net.samagames.utils.GlowEffect;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

@@ -1,18 +1,19 @@
 package net.lnfinity.HeroBattle.Tools;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.Utils.GlowEffect;
 import net.lnfinity.HeroBattle.Utils.ItemCooldown;
 import net.md_5.bungee.api.ChatColor;
+import net.samagames.utils.GlowEffect;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 public class SpeedTool extends PlayerTool {

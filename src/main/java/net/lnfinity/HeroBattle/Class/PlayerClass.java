@@ -70,6 +70,12 @@ public abstract class PlayerClass {
 	public abstract int getMaxDamages();
 
 	/**
+	 * Returns the maximum damages a player can bear.
+	 *
+	 * @return
+	 */
+	public abstract int getMaxResistance();
+	/**
 	 * Returns the lives a player with this class have.
 	 *
 	 * @return

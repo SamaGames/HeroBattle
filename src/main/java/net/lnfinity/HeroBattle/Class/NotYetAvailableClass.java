@@ -50,4 +50,9 @@ public class NotYetAvailableClass extends PlayerClass {
 	public ItemStack getHat() {
 		return new ItemStack(Material.BARRIER);
 	}
+
+	@Override
+	public int getMaxResistance() {
+		return 0;
+	}
 }
