@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import net.lnfinity.HeroBattle.Class.PlayerClass;
 import net.lnfinity.HeroBattle.Tasks.Task;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -84,6 +85,7 @@ public class GamePlayer {
 
 	public void setPlayerClass(PlayerClass classe) {
 		this.classe = classe;
+		lives = classe.getLives();
 	}
 
 	public List<Task> getTasks() {

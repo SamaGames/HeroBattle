@@ -11,8 +11,11 @@ import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.lnfinity.HeroBattle.Utils.Utils;
 import net.samagames.gameapi.json.Status;
 
-import org.bukkit.*;
-import org.bukkit.block.BlockFace;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,7 +29,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.util.Vector;
 
 public class GameListener implements Listener {
@@ -109,12 +111,18 @@ public class GameListener implements Listener {
 				gamePlayer.setLastDamager(damager.getUniqueId());
 
 				player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
+				
+				// Très important ! Sinon le joueur conserve sa vélocité
+				player.setVelocity(player.getVelocity().zero());
+				
 				plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
+				
+				player.setLevel(0);
 			} else {
 				gamePlayer.setPercentage(damages);
 				gamePlayer.setLastDamager(damager.getUniqueId());
+				player.setLevel(damages);
 			}
-			player.setLevel(damages);
 			plugin.getScoreboardManager().update(player);
 		}
 	}

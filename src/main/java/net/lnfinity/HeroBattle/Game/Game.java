@@ -42,6 +42,8 @@ public class Game implements GameArena {
 
 	private List<Location> spawnPoints = new LinkedList<>();
 	private Location hub;
+	
+	private Random random = new Random();
 
 	private Double bottomHeight = 0.0;
 
@@ -136,7 +138,7 @@ public class Game implements GameArena {
 
 	public void teleportRandomSpot(Player player) {
 		p.getGame().updatePlayerArmor(player);
-		player.teleport(spawnPoints.get((new Random()).nextInt(spawnPoints.size())));
+		player.teleport(spawnPoints.get(random.nextInt(spawnPoints.size())));
 	}
 
 	public void spawnPlayer(Player player) {
@@ -216,8 +218,9 @@ public class Game implements GameArena {
 			switch (death) {
 			case FALL:
 				p.getServer().broadcastMessage(
-						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été poussé par "
-								+ p.getServer().getPlayer(hbPlayer.getLastDamager()).getName() + lives);
+						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+								+ " a été poussé par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+								+ lives);
 				StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
 				CoinsManager.creditJoueur(player.getUniqueId(), 3, true, true, "Un joueur poussé !");
 				break;
@@ -230,8 +233,9 @@ public class Game implements GameArena {
 				break;
 			case KO:
 				p.getServer().broadcastMessage(
-						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a été mis K.O. par "
-								+ p.getServer().getPlayer(hbPlayer.getLastDamager()).getName() + lives);
+						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+								+ " a été mis K.O. par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+								+ lives);
 				StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
 				CoinsManager.creditJoueur(player.getUniqueId(), 3, true, true, "Un joueur K.O. !");
 				break;
@@ -447,7 +451,7 @@ public class Game implements GameArena {
 		}
 		return null;
 	}
-	
+
 	public void updatePlayerArmor(Player player) {
 		GamePlayer gamePlayer = p.getGamePlayer(player);
 		player.getInventory().setHelmet(gamePlayer.getPlayerClass().getHat());

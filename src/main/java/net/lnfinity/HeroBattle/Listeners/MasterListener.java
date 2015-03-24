@@ -1,16 +1,17 @@
 package net.lnfinity.HeroBattle.Listeners;
 
+import java.util.Arrays;
+
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.events.FinishJoinPlayerEvent;
-
 import net.samagames.gameapi.json.Status;
 import net.samagames.utils.Titles;
 import net.zyuiop.MasterBundle.MasterBundle;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,8 +20,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.Arrays;
 
 public class MasterListener implements Listener {
 
