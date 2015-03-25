@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class GamePlayer {
 
@@ -108,7 +109,9 @@ public class GamePlayer {
 
 		if (getDoubleJump() > 0) {
 			setDoubleJump(getDoubleJump() - 1);
-			player.setVelocity(player.getVelocity().setY(1.5));
+			Vector direction = player.getLocation().getDirection().multiply(0.5);
+			Vector vector = new Vector(direction.getX(), 1.5, direction.getZ());
+			player.setVelocity(vector);
 		}
 	}
 

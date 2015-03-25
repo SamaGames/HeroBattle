@@ -475,7 +475,7 @@ public class Game implements GameArena {
 		} else if (B < 0) {
 			B = 0;
 		}
-		meta.setColor(Color.fromRGB(255, 255, 255));
+		meta.setColor(Color.fromRGB(R, G, B));
 		meta.spigot().setUnbreakable(true);
 		chest.setItemMeta(meta);
 		player.getInventory().setChestplate(chest);
