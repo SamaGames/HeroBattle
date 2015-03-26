@@ -33,7 +33,7 @@ public class ThunderTool extends PlayerTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.DARK_PURPLE + "Colère de Zeus";
+		return ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Colère de Zeus";
 	}
 
 	@Override

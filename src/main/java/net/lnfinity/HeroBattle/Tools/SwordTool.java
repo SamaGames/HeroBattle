@@ -25,7 +25,7 @@ public class SwordTool extends PlayerTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.RED + "Épée repoussante";
+		return ChatColor.RED + "" + ChatColor.BOLD + "Épée en fer forgé";
 	}
 
 	@Override

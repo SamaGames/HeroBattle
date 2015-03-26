@@ -30,7 +30,7 @@ public class EarthquakeTool extends PlayerTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.BLACK + "Tremblement de terre";
+		return ChatColor.BLACK + "" + ChatColor.BOLD + "Tremblement de terre";
 	}
 
 	@Override

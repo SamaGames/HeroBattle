@@ -33,7 +33,7 @@ public class SmokeTool extends PlayerTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.DARK_GRAY + "Bombe fumigène";
+		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Bombe fumigène";
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class SmokeTool extends PlayerTool {
 	}
 
 	@Override
-	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
+	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (tool.containsEnchantment(GlowEffect.getGlow())) {
 			new ItemCooldown(p, player, this, COOLDOWN);
 			for (int i = 0; i <= 100; i++) {
@@ -61,8 +61,17 @@ public class SmokeTool extends PlayerTool {
 				loc.setZ(loc.getZ() + 5 - ((int) (Math.random() * ((10 - 0) + 0))));
 				player.getWorld().playEffect(loc, Effect.EXPLOSION_HUGE, 10, 10);
 			}
-			player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 5 * 20, 0, false, false));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 8 * 20, 0, false, false));
 			player.getWorld().playSound(player.getLocation(), Sound.BAT_LOOP, 1, 2);
+			p.getGamePlayer(player).setInvisible(true);
+			p.getGame().updatePlayerArmor(player);
+			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+				@Override
+				public void run() {
+					p.getGamePlayer(player).setInvisible(false);
+					p.getGame().updatePlayerArmor(player);
+				}
+			}, 8 * 20L);
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}

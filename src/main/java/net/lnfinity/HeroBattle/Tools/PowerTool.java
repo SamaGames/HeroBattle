@@ -34,7 +34,7 @@ public class PowerTool extends PlayerTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.DARK_RED + "Poudre de puissance";
+		return ChatColor.DARK_RED + "" + ChatColor.BOLD + "Poudre de puissance";
 	}
 
 	@Override

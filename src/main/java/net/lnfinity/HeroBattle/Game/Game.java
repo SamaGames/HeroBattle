@@ -42,7 +42,7 @@ public class Game implements GameArena {
 
 	private List<Location> spawnPoints = new LinkedList<>();
 	private Location hub;
-	
+
 	private Random random = new Random();
 
 	private Double bottomHeight = 0.0;
@@ -453,37 +453,41 @@ public class Game implements GameArena {
 	}
 
 	public void updatePlayerArmor(Player player) {
-		GamePlayer gamePlayer = p.getGamePlayer(player);
-		player.getInventory().setHelmet(gamePlayer.getPlayerClass().getHat());
-		ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-		LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
-		int R = 470 - gamePlayer.getPercentage();
-		int G = 255 - gamePlayer.getPercentage();
-		int B = 255 - gamePlayer.getPercentage() * 2;
-		if (R > 255) {
-			R = 255;
-		} else if (R < 0) {
-			R = 0;
+		if (p.getGamePlayer(player).isInvisible()) {
+			player.getInventory().setArmorContents(null);
+		} else {
+			GamePlayer gamePlayer = p.getGamePlayer(player);
+			player.getInventory().setHelmet(gamePlayer.getPlayerClass().getHat());
+			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
+			int R = 470 - gamePlayer.getPercentage();
+			int G = 255 - gamePlayer.getPercentage();
+			int B = 255 - gamePlayer.getPercentage() * 2;
+			if (R > 255) {
+				R = 255;
+			} else if (R < 0) {
+				R = 0;
+			}
+			if (G > 255) {
+				G = 255;
+			} else if (G < 0) {
+				G = 0;
+			}
+			if (B > 255) {
+				B = 255;
+			} else if (B < 0) {
+				B = 0;
+			}
+			meta.setColor(Color.fromRGB(R, G, B));
+			meta.spigot().setUnbreakable(true);
+			chest.setItemMeta(meta);
+			player.getInventory().setChestplate(chest);
+			ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+			leg.setItemMeta(meta);
+			player.getInventory().setLeggings(leg);
+			ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+			boots.setItemMeta(meta);
+			player.getInventory().setBoots(boots);
 		}
-		if (G > 255) {
-			G = 255;
-		} else if (G < 0) {
-			G = 0;
-		}
-		if (B > 255) {
-			B = 255;
-		} else if (B < 0) {
-			B = 0;
-		}
-		meta.setColor(Color.fromRGB(R, G, B));
-		meta.spigot().setUnbreakable(true);
-		chest.setItemMeta(meta);
-		player.getInventory().setChestplate(chest);
-		ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS, 1);
-		leg.setItemMeta(meta);
-		player.getInventory().setLeggings(leg);
-		ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
-		boots.setItemMeta(meta);
-		player.getInventory().setBoots(boots);
 	}
 }

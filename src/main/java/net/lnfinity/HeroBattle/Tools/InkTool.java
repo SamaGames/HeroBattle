@@ -39,7 +39,7 @@ public class InkTool extends PlayerTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.DARK_GRAY + "Jet d'encre";
+		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Jet d'encre";
 	}
 
 	@Override

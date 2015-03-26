@@ -20,7 +20,7 @@ public class SwordVariant1Tool extends SwordTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.RED + "Poignard";
+		return ChatColor.RED + "" + ChatColor.BOLD + "Poignard";
 	}
 
 	@Override

@@ -1,14 +1,13 @@
 package net.lnfinity.HeroBattle.Class;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Tools.Tool;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class BruteClass extends PlayerClass {
 
@@ -17,8 +16,8 @@ public class BruteClass extends PlayerClass {
 		super(plugin);
 
 		addTool(p.getToolsManager().getTool(Tool.SWORD));
-		addTool(p.getToolsManager().getTool(Tool.SPEED));
 		addTool(p.getToolsManager().getTool(Tool.EARTHQUAKE));
+		addTool(p.getToolsManager().getTool(Tool.NAUSEA));
 	}
 
 	@Override

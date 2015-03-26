@@ -31,7 +31,7 @@ public class SpeedTool extends PlayerTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.BLUE + "Boost de vitesse";
+		return ChatColor.BLUE + "" + ChatColor.BOLD + "Boost de vitesse";
 	}
 
 	@Override

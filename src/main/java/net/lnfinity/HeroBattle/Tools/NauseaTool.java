@@ -40,7 +40,7 @@ public class NauseaTool extends PlayerTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.GREEN + "Crachat de vomi";
+		return ChatColor.GREEN + "" + ChatColor.BOLD + "Crachat de vomi";
 	}
 
 	@Override

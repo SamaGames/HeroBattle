@@ -16,6 +16,10 @@ import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -69,9 +73,9 @@ public class GameListener implements Listener {
 			}
 			if (e.getCause() == DamageCause.LIGHTNING) {
 				gp.setPercentage(gp.getPercentage() + 20 + (int) (Math.random() * ((50 - 20) + 20)));
-			} else if(e.getCause() == DamageCause.FIRE) {
+			} else if (e.getCause() == DamageCause.FIRE) {
 				gp.setPercentage(gp.getPercentage() + 2);
-			} else if(e.getCause() == DamageCause.WITHER) {
+			} else if (e.getCause() == DamageCause.WITHER) {
 				gp.setPercentage(gp.getPercentage() + 3);
 			}
 			p.setLevel(0);
@@ -86,51 +90,95 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player
-				&& plugin.getGame().getStatus() == Status.InGame) {
-			// Devrait *enfin* fonctionner !
-			final float reducer = 25.0F;
+		// A condenser
+		if (e.getEntity() instanceof Player && plugin.getGame().getStatus() == Status.InGame) {
 			final Player player = (Player) e.getEntity();
 			final GamePlayer gamePlayer = plugin.getGamePlayer(player);
-			final Player damager = (Player) e.getDamager();
-			final GamePlayer gameDamager = plugin.getGamePlayer(damager);
-			Vector v = player.getVelocity().add(
-					player.getLocation().toVector().subtract(damager.getLocation().toVector()).normalize()
-							.multiply(gamePlayer.getPercentage() / reducer));
-			v.setY(1);
-			e.getEntity().setVelocity(v);
+			if (e.getDamager() instanceof Player) {
+				// Devrait *enfin* fonctionner !
+				final float reducer = 25.0F;
+				final Player damager = (Player) e.getDamager();
+				final GamePlayer gameDamager = plugin.getGamePlayer(damager);
+				Vector v = player.getVelocity().add(
+						player.getLocation().toVector().subtract(damager.getLocation().toVector()).normalize()
+								.multiply(gamePlayer.getPercentage() / reducer));
+				v.setY(1);
+				e.getEntity().setVelocity(v);
 
-			int min = gameDamager.getPlayerClass().getMinDamages();
-			int max = gameDamager.getPlayerClass().getMaxDamages();
-			int damages;
-			if (gameDamager.hasDoubleDamages()) {
-				damages = gamePlayer.getPercentage() + 2 * (min + (int) (Math.random() * ((max - min) + min)));
-			} else {
-				damages = gamePlayer.getPercentage() + min + (int) (Math.random() * ((max - min) + min));
-			}
-			if(damager.getInventory().getHeldItemSlot() != 0) {
-				damages = gamePlayer.getPercentage() + 1;
-			}
-			if (damages >= gamePlayer.getPlayerClass().getMaxResistance()) {
-				damages = gamePlayer.getPlayerClass().getMaxResistance();
-				
-				gamePlayer.setPercentage(damages);
-				gamePlayer.setLastDamager(damager.getUniqueId());
+				int min = gameDamager.getPlayerClass().getMinDamages();
+				int max = gameDamager.getPlayerClass().getMaxDamages();
+				int damages;
+				if (gameDamager.hasDoubleDamages()) {
+					damages = gamePlayer.getPercentage() + 2 * (min + (int) (Math.random() * ((max - min) + min)));
+				} else {
+					damages = gamePlayer.getPercentage() + min + (int) (Math.random() * ((max - min) + min));
+				}
+				if (damager.getInventory().getHeldItemSlot() != 0) {
+					damages = gamePlayer.getPercentage() + 1;
+				}
+				if (damages >= gamePlayer.getPlayerClass().getMaxResistance()) {
+					damages = gamePlayer.getPlayerClass().getMaxResistance();
 
-				player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
+					gamePlayer.setPercentage(damages);
+					gamePlayer.setLastDamager(damager.getUniqueId());
+
+					player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
+
+					// Très important ! Sinon le joueur conserve sa vélocité
+					player.setVelocity(player.getVelocity().zero());
+
+					plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
+
+					player.setLevel(0);
+				} else {
+					gamePlayer.setPercentage(damages);
+					gamePlayer.setLastDamager(damager.getUniqueId());
+					player.setLevel(damages);
+				}
+				plugin.getScoreboardManager().update(player);
 				
-				// Très important ! Sinon le joueur conserve sa vélocité
-				player.setVelocity(player.getVelocity().zero());
-				
-				plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
-				
-				player.setLevel(0);
-			} else {
-				gamePlayer.setPercentage(damages);
-				gamePlayer.setLastDamager(damager.getUniqueId());
-				player.setLevel(damages);
+			} else if (e.getDamager() instanceof Arrow) {
+				Arrow arrow = (Arrow) e.getDamager();
+				int damages;
+				if (arrow.getShooter().equals(e.getEntity())) {
+					e.setCancelled(true);
+					return;
+				}
+				if (arrow.getCustomName() != null && arrow.getCustomName().equals(" ")) {
+					arrow.getWorld().playEffect(arrow.getLocation(), Effect.EXPLOSION_HUGE, 1);
+					arrow.getWorld().playSound(arrow.getLocation(), Sound.EXPLODE, 1L, 1L);
+					damages = 20 + (int) (Math.random() * ((40 - 20) + 20));
+					
+					// TODO Damage this entities
+					for(Entity entity : player.getNearbyEntities(3, 3, 3)) {
+						if(entity instanceof Player) {
+							((Player) entity).damage(0);
+						}
+					}
+				} else {
+					damages = 8 + (int) (Math.random() * ((20 - 8) + 8));
+				}
+				if (damages >= gamePlayer.getPlayerClass().getMaxResistance()) {
+					damages = gamePlayer.getPlayerClass().getMaxResistance();
+
+					gamePlayer.setPercentage(damages);
+					gamePlayer.setLastDamager(((Player) arrow.getShooter()).getUniqueId());
+
+					player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
+					
+					// Très important ! Sinon le joueur conserve sa vélocité
+					player.setVelocity(player.getVelocity().zero());
+
+					plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
+
+					player.setLevel(0);
+				} else {
+					gamePlayer.setPercentage(damages);
+					gamePlayer.setLastDamager(((Player) arrow.getShooter()).getUniqueId());
+					player.setLevel(damages);
+				}
+				plugin.getScoreboardManager().update(player);
 			}
-			plugin.getScoreboardManager().update(player);
 		}
 	}
 

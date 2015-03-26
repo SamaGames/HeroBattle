@@ -3,7 +3,6 @@ package net.lnfinity.HeroBattle.Listeners;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Class.NotYetAvailableClass;
@@ -30,8 +29,9 @@ public class ClassSelectorListener implements Listener {
 
 	private final String TITLE_CLASS_SELECTOR = "Sélection de la classe";
 	private final String TITLE_CLASS_DETAILS = "Détails de la classe ";
+	private final String TITLE_TUTORIAL = "Tutoriel";
 
-	private final int COMING_SOON_CLASSES_COUNT = 2;
+	private final int COMING_SOON_CLASSES_COUNT = 3;
 
 	public ClassSelectorListener(HeroBattle plugin) {
 		p = plugin;
@@ -43,7 +43,7 @@ public class ClassSelectorListener implements Listener {
 			Player player = (Player) e.getWhoClicked();
 
 			if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
-				if(e.getCurrentItem().equals(createExitItem())) {
+				if (e.getCurrentItem().equals(createExitItem())) {
 					player.closeInventory();
 					return;
 				}
@@ -61,14 +61,14 @@ public class ClassSelectorListener implements Listener {
 					} else if (e.getClick().isRightClick()) {
 						createDetails(player, clickedClass);
 					}
-				}
-				else if(e.getCurrentItem().getItemMeta().getDisplayName()
+				} else if (e.getCurrentItem().getItemMeta().getDisplayName()
 						.equals(createItemRandom(gPlayer.getPlayerClass() == null).getItemMeta().getDisplayName())) {
 
 					selectClass(player, null);
 					player.closeInventory();
-				}
-				else {
+				} else if (e.getCurrentItem().equals(createTutorialItem())) {
+					createTutorial(player);
+				} else {
 					player.closeInventory();
 				}
 
@@ -76,15 +76,24 @@ public class ClassSelectorListener implements Listener {
 			}
 
 			else if (e.getInventory().getName().startsWith(TITLE_CLASS_DETAILS)) {
-				if (e.getCurrentItem().equals(createBackToListItem())) { // Go back to the menu
+				if (e.getCurrentItem().equals(createBackToListItem())) {
+					// Go back to the menu
 					createSelector(player);
-				}
-				else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(createUseThisClassItem(null).getItemMeta().getDisplayName())) {
-					selectClass(player, p.getClassManager().getClassFromName(e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")));
+				} else if (e.getCurrentItem().getItemMeta().getDisplayName()
+						.equals(createUseThisClassItem(null).getItemMeta().getDisplayName())) {
+					selectClass(
+							player,
+							p.getClassManager().getClassFromName(
+									e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")));
 					player.closeInventory();
 				}
 
 				e.setCancelled(true);
+			} else if(e.getInventory().getName().equals(TITLE_TUTORIAL)) {
+				if (e.getCurrentItem().equals(createBackToListItem())) {
+					// Go back to the menu
+					createSelector(player);
+				}
 			}
 		}
 	}
@@ -97,14 +106,12 @@ public class ClassSelectorListener implements Listener {
 	}
 
 	public void createSelector(Player player) {
-		Set<PlayerClass> classes = p.getClassManager().getAvailableClasses();
+		ArrayList<PlayerClass> classes = p.getClassManager().getAvailableClasses();
 		Integer inventorySize = (int) (Math.ceil(classes.size() / 9d) * 9) + 27;
 
 		Inventory inv = p.getServer().createInventory(player, inventorySize, TITLE_CLASS_SELECTOR);
 
-		int classesCount = classes.size() + COMING_SOON_CLASSES_COUNT,
-		    shift = calculateShiftNeededToCenter(classesCount);
-
+		int classesCount = classes.size() + COMING_SOON_CLASSES_COUNT, shift = calculateShiftNeededToCenter(classesCount);
 
 		// Random
 
@@ -115,12 +122,8 @@ public class ClassSelectorListener implements Listener {
 		for (PlayerClass theClass : classes) {
 			inv.setItem(
 					isOnLastLine(i - 9, classesCount) ? shift + i : i,
-					createItem(
-							theClass,
-							p.getGamePlayer(player).getPlayerClass() != null
-									&& p.getGamePlayer(player).getPlayerClass().equals(theClass)
-					)
-			);
+					createItem(theClass, p.getGamePlayer(player).getPlayerClass() != null
+							&& p.getGamePlayer(player).getPlayerClass().equals(theClass)));
 
 			i++;
 		}
@@ -128,14 +131,12 @@ public class ClassSelectorListener implements Listener {
 		// Placeholder for the other cases
 		Integer notYetFinalIndex = i + COMING_SOON_CLASSES_COUNT;
 		for (; i < notYetFinalIndex; i++) {
-			inv.setItem(
-					isOnLastLine(i - 9, classesCount) ? shift + i : i,
-					createItem(new NotYetAvailableClass(p), false)
-			);
+			inv.setItem(isOnLastLine(i - 9, classesCount) ? shift + i : i,
+					createItem(new NotYetAvailableClass(p), false));
 		}
 
-
 		inv.setItem(inv.getSize() - 1, createExitItem());
+		inv.setItem(inv.getSize() - 9, createTutorialItem());
 
 		// Contenu conservé pour son contenu (classes)
 		// inv.addItem(createItem(Material.DIAMOND_CHESTPLATE, "Brute",
@@ -162,9 +163,7 @@ public class ClassSelectorListener implements Listener {
 
 	public void createDetails(Player player, PlayerClass classe) {
 		Inventory inv = p.getServer().createInventory(player, 36, TITLE_CLASS_DETAILS + classe.getName());
-		int i = 0,
-		    toolsCount = classe.getTools().size(),
-		    shift = calculateShiftNeededToCenter(toolsCount);
+		int i = 0, toolsCount = classe.getTools().size(), shift = calculateShiftNeededToCenter(toolsCount);
 
 		for (PlayerTool tool : classe.getTools()) {
 			inv.setItem(isOnLastLine(i, toolsCount) ? shift + i : i, tool.generateCompleteItem());
@@ -174,13 +173,13 @@ public class ClassSelectorListener implements Listener {
 		ItemStack item = new ItemStack(classe.getHat().getType());
 		item.setDurability(classe.getHat().getDurability());
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.RESET + classe.getName());
+		meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Classe " + classe.getName());
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("");
 
 		lore.add(getBar("Vies", classe.getLives(), 6));
 		lore.add(getBar("Dégâts min.", classe.getMinDamages(), 6));
-		lore.add(getBar("Dégâts max.", classe.getMaxDamages() - 6, 6));
+		lore.add(getBar("Dégâts max.", classe.getMaxDamages() - 3, 6));
 		lore.add(getBar("Résistance", (classe.getMaxResistance() - 150) / 25, 6));
 		meta.setLore(lore);
 		item.setItemMeta(meta);
@@ -190,6 +189,16 @@ public class ClassSelectorListener implements Listener {
 
 		inv.setItem(24, createBackToListItem());
 
+		player.openInventory(inv);
+	}
+
+	public void createTutorial(Player player) {
+		// TODO Fill this with items containing lores etc.
+		
+		Inventory inv = p.getServer().createInventory(player, 27, TITLE_TUTORIAL);
+		
+		inv.setItem(inv.getSize() - 1, createBackToListItem());
+		
 		player.openInventory(inv);
 	}
 
@@ -214,7 +223,7 @@ public class ClassSelectorListener implements Listener {
 		lore.add(ChatColor.GRAY + "• Clic gauche pour jouer avec cette classe");
 		lore.add(ChatColor.GRAY + "• Clic droit pour voir ses caractéristiques");
 
-		if(isEnabled) {
+		if (isEnabled) {
 			lore.add("");
 			lore.add(ChatColor.LIGHT_PURPLE + "Sélectionné");
 		}
@@ -241,7 +250,7 @@ public class ClassSelectorListener implements Listener {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "• Clic gauche pour une classe aléatoire");
 
-		if(isEnabled) {
+		if (isEnabled) {
 			lore.add("");
 			lore.add(ChatColor.LIGHT_PURPLE + "Sélectionné");
 		}
@@ -251,7 +260,7 @@ public class ClassSelectorListener implements Listener {
 		randomMeta.setOwner("MHF_Question");
 		randomClass.setItemMeta(randomMeta);
 
-		if(isEnabled) {
+		if (isEnabled) {
 			GlowEffect.addGlow(randomClass);
 		}
 
@@ -279,10 +288,7 @@ public class ClassSelectorListener implements Listener {
 	private ItemStack createBackToListItem() {
 		ItemStack item = new ItemStack(Material.WOOD_DOOR);
 		ItemMeta meta = item.getItemMeta();
-		meta.setLore(Arrays.asList(
-				"",
-				ChatColor.GRAY + "Clic droit pour revenir"
-		));
+		meta.setLore(Arrays.asList("", ChatColor.GRAY + "Clic droit pour revenir"));
 		meta.setDisplayName(ChatColor.RESET + "Revenir au choix des classes");
 		item.setItemMeta(meta);
 
@@ -292,20 +298,18 @@ public class ClassSelectorListener implements Listener {
 	/**
 	 * Returns the item (door) which, when clicked, displays back the list of
 	 * the classes.
-	 *
-	 * @param theClass The class applied when this is clicked.
-	 *
+	 * 
+	 * @param theClass
+	 *            The class applied when this is clicked.
+	 * 
 	 * @return The item.
 	 */
 	private ItemStack createUseThisClassItem(PlayerClass theClass) {
 		ItemStack item = new ItemStack(Material.EMERALD);
 		ItemMeta meta = item.getItemMeta();
-		if(theClass != null) {
-			meta.setLore(Arrays.asList(
-					"",
-					ChatColor.GRAY + "Clic droit pour sélectionner",
-					ChatColor.GRAY + "la classe " + theClass.getName()
-			));
+		if (theClass != null) {
+			meta.setLore(Arrays.asList("", ChatColor.GRAY + "Clic droit pour sélectionner", ChatColor.GRAY
+					+ "la classe " + theClass.getName()));
 		}
 		meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Utiliser cette classe");
 		item.setItemMeta(meta);
@@ -315,7 +319,7 @@ public class ClassSelectorListener implements Listener {
 
 	/**
 	 * Returns the item (door) which, when clicked, closes the selector.
-	 *
+	 * 
 	 * @return The item.
 	 */
 	public ItemStack createExitItem() {
@@ -328,31 +332,44 @@ public class ClassSelectorListener implements Listener {
 		return door;
 	}
 
+	public ItemStack createTutorialItem() {
+		ItemStack book = new ItemStack(Material.BOOK);
+
+		ItemMeta meta = book.getItemMeta();
+		meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Tutoriel");
+		book.setItemMeta(meta);
+		GlowEffect.addGlow(book);
+		
+		return book;
+	}
+
 	/**
 	 * Calculates the shift needed to center the items on the grid.
-	 *
-	 * @param itemsCount The count. If > 9, this will calculate the shift needed for the last line.
-	 *
+	 * 
+	 * @param itemsCount
+	 *            The count. If > 9, this will calculate the shift needed for
+	 *            the last line.
+	 * 
 	 * @return The shift needed.
 	 */
 	public int calculateShiftNeededToCenter(int itemsCount) {
 		itemsCount %= 9;
 
-		switch(itemsCount) {
-			case 0:
-			case 1:
-				return 4;
-			case 2:
-			case 3:
-				return 3;
-			case 4:
-			case 5:
-				return 2;
-			case 6:
-			case 7:
-				return 1;
-			default:
-				return 0;
+		switch (itemsCount) {
+		case 0:
+		case 1:
+			return 4;
+		case 2:
+		case 3:
+			return 3;
+		case 4:
+		case 5:
+			return 2;
+		case 6:
+		case 7:
+			return 1;
+		default:
+			return 0;
 		}
 	}
 
@@ -363,11 +380,10 @@ public class ClassSelectorListener implements Listener {
 	public void selectClass(Player player, PlayerClass theClass) {
 		p.getGamePlayer(player).setPlayerClass(theClass);
 
-		if(theClass != null) {
+		if (theClass != null) {
 			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
 					+ ChatColor.DARK_GREEN + theClass.getName() + ChatColor.GREEN + " !");
-		}
-		else {
+		} else {
 			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi une classe "
 					+ ChatColor.DARK_GREEN + "aléatoire" + ChatColor.GREEN + " !");
 		}

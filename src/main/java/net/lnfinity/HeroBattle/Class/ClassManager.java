@@ -1,14 +1,13 @@
 package net.lnfinity.HeroBattle.Class;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 
 public class ClassManager {
 
 	private HeroBattle p;
-	private Set<PlayerClass> availableClasses = new HashSet<PlayerClass>();
+	private ArrayList<PlayerClass> availableClasses = new ArrayList<PlayerClass>();
 
 	public ClassManager(HeroBattle plugin) {
 
@@ -17,6 +16,7 @@ public class ClassManager {
 		// Registers classes
 		registerClass(new BruteClass(p));
 		registerClass(new GuerrierClass(p));
+		registerClass(new ArcherClass(p));
 		registerClass(new MageClass(p));
 	}
 
@@ -34,7 +34,7 @@ public class ClassManager {
 	 * Returns the classes currently registered in the game.
 	 * @return
 	 */
-	public Set<PlayerClass> getAvailableClasses() {
+	public ArrayList<PlayerClass> getAvailableClasses() {
 		return availableClasses;
 	}
 

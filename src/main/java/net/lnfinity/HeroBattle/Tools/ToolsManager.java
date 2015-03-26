@@ -20,6 +20,7 @@ public class ToolsManager {
 		registerTool(new SwordTool(p));
 		registerTool(new SwordVariant1Tool(p));
 		registerTool(new SwordVariant2Tool(p));
+		registerTool(new SwordVariant3Tool(p));
 		registerTool(new SpeedTool(p));
 		registerTool(new PowerTool(p));
 		registerTool(new EarthquakeTool(p));
@@ -27,6 +28,7 @@ public class ToolsManager {
 		registerTool(new NauseaTool(p));
 		registerTool(new ThunderTool(p));
 		registerTool(new SmokeTool(p));
+		registerTool(new ArrowsTool(p));
 	}
 
 	/**

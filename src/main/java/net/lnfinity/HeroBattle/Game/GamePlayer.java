@@ -24,6 +24,7 @@ public class GamePlayer {
 	private int lives = 3;
 	private boolean playing = true;
 	private boolean doubleDamages = false;
+	private boolean isInvisible = false;
 	private UUID lastDamager = null;
 	private List<Task> tasks = new ArrayList<Task>();
 
@@ -70,6 +71,14 @@ public class GamePlayer {
 
 	public void setDoubleDamages(boolean doubleDamages) {
 		this.doubleDamages = doubleDamages;
+	}
+
+	public boolean isInvisible() {
+		return isInvisible;
+	}
+
+	public void setInvisible(boolean isInvisible) {
+		this.isInvisible = isInvisible;
 	}
 
 	public UUID getLastDamager() {
