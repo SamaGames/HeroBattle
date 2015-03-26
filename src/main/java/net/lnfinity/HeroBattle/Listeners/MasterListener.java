@@ -46,7 +46,11 @@ public class MasterListener implements Listener {
 
 		plugin.getGame().teleportHub(p.getUniqueId());
 
-		plugin.getCoherenceMachine().getMessageManager().writePlayerJoinArenaMessage(p, plugin.getGame());
+		if(p.getName().equals("6infinity8") || p.getName().equals("AmauryPi")) {
+			plugin.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.RED + ChatColor.MAGIC + "iii " + ChatColor.GREEN + ChatColor.BOLD + p.getName() + ChatColor.RED + ChatColor.MAGIC + " iii" + ChatColor.YELLOW + " a rejoint la partie !");
+		} else {
+			plugin.getCoherenceMachine().getMessageManager().writePlayerJoinArenaMessage(p, plugin.getGame());
+		}
 		plugin.getCoherenceMachine().getMessageManager().writeWelcomeInGameMessage(p);
 
 		if (!plugin.getTimer().isEnabled() && plugin.getPlayerCount() >= plugin.getGame().getMinPlayers()) {
@@ -100,7 +104,11 @@ public class MasterListener implements Listener {
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent ev) {
 		if(plugin.getGame().getStatus() == Status.Available || plugin.getGame().getStatus() == Status.Starting) {
+			if(ev.getPlayer().getName().equals("6infinity8") || ev.getPlayer().getName().equals("AmauryPi")) {
+				plugin.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.RED + ChatColor.MAGIC + "iii " + ChatColor.GREEN + ChatColor.BOLD + ev.getPlayer().getName() + ChatColor.RED + ChatColor.MAGIC + " iii" + ChatColor.YELLOW + " s'est déconnecté");
+			} else {
 			plugin.getServer().broadcastMessage(HeroBattle.GAME_TAG + ev.getPlayer().getDisplayName() + ChatColor.YELLOW + " s'est déconnecté");
+			}
 		}
 
 		if (plugin.getGame().getStatus() == Status.Starting) {
