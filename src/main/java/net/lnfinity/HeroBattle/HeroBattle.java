@@ -18,11 +18,12 @@ import net.lnfinity.HeroBattle.Listeners.SystemListener;
 import net.lnfinity.HeroBattle.Powerups.PowerupManager;
 import net.lnfinity.HeroBattle.Tools.ToolsManager;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
+import net.lnfinity.HeroBattle.Utils.GameTimer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
-
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.themachine.CoherenceMachine;
+
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -40,8 +41,10 @@ public class HeroBattle extends JavaPlugin {
 	public final static String GAME_TAG               = coherenceMachine.getGameTag();
 
 
-	private CountdownTimer timer;
 	private Game g;
+	
+	private CountdownTimer timer;
+	private GameTimer gameTimer;
 
 	private ClassManager classManager;
 	private ToolsManager toolsManager;
@@ -97,6 +100,7 @@ public class HeroBattle extends JavaPlugin {
 
 		timer = new CountdownTimer(this);
 		g = new Game(this);
+		gameTimer = new GameTimer(this, this.getArenaConfig().getInt("map.gameTime"));
 		toolsManager = new ToolsManager(this);
 		classManager = new ClassManager(this);
 		scoreboardManager = new ScoreboardManager(this);
@@ -167,6 +171,10 @@ public class HeroBattle extends JavaPlugin {
 
 	public CountdownTimer getTimer() {
 		return timer;
+	}
+	
+	public GameTimer getGameTimer() {
+		return gameTimer;
 	}
 
 	public ClassManager getClassManager() {

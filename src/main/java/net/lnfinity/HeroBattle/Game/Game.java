@@ -84,6 +84,7 @@ public class Game implements GameArena {
 		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Que le meilleur gagne !");
 		teleportPlayers();
 
+		p.getGameTimer().startTimer();
 		p.getScoreboardManager().init();
 		p.getPowerupManager().getSpawner().startTimer();
 
@@ -337,7 +338,7 @@ public class Game implements GameArena {
 	}
 
 	public void onPlayerWin(UUID id) {
-
+		p.getGameTimer().pauseTimer();
 		p.getScoreboardManager().refresh();
 
 		p.getPowerupManager().getSpawner().stopTimer();

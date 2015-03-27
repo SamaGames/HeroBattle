@@ -6,9 +6,11 @@ map:
     maxPlayers: 10  # VIP(+) excluded
     maxVIP: 2
 
-    minPlayers: 4   # Minimum players to start the timer.
+    minPlayers: 4   # Minimum players to start the timer
 
     waiting: 30     # Time before begining
+
+    gameTime: 15    # Maximum time the game should last (in minutes)
 
     dayTime: 6000   # Set the day period
 
