@@ -11,8 +11,10 @@ import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
+import net.samagames.utils.Titles;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,9 +31,9 @@ public class ClassSelectorListener implements Listener {
 
 	private final String TITLE_CLASS_SELECTOR = "Sélection de la classe";
 	private final String TITLE_CLASS_DETAILS = "Détails de la classe ";
-	private final String TITLE_TUTORIAL = "Tutoriel";
 
 	private final int COMING_SOON_CLASSES_COUNT = 3;
+	private int tutorialTask = -1;
 
 	public ClassSelectorListener(HeroBattle plugin) {
 		p = plugin;
@@ -67,7 +69,12 @@ public class ClassSelectorListener implements Listener {
 					selectClass(player, null);
 					player.closeInventory();
 				} else if (e.getCurrentItem().equals(createTutorialItem())) {
-					createTutorial(player);
+					if (!p.getGamePlayer(player).isWatchingTutorial()) {
+						playTutorial(player);
+					} else {
+						player.sendMessage(ChatColor.RED + "Vous assistez déjà à une présentation !");
+					}
+					player.closeInventory();
 				} else {
 					player.closeInventory();
 				}
@@ -89,11 +96,6 @@ public class ClassSelectorListener implements Listener {
 				}
 
 				e.setCancelled(true);
-			} else if(e.getInventory().getName().equals(TITLE_TUTORIAL)) {
-				if (e.getCurrentItem().equals(createBackToListItem())) {
-					// Go back to the menu
-					createSelector(player);
-				}
 			}
 		}
 	}
@@ -136,7 +138,9 @@ public class ClassSelectorListener implements Listener {
 		}
 
 		inv.setItem(inv.getSize() - 1, createExitItem());
-		inv.setItem(inv.getSize() - 9, createTutorialItem());
+		if (p.getGame().getTutorialLocations() != null) {
+			inv.setItem(inv.getSize() - 9, createTutorialItem());
+		}
 
 		// Contenu conservé pour son contenu (classes)
 		// inv.addItem(createItem(Material.DIAMOND_CHESTPLATE, "Brute",
@@ -189,16 +193,6 @@ public class ClassSelectorListener implements Listener {
 
 		inv.setItem(24, createBackToListItem());
 
-		player.openInventory(inv);
-	}
-
-	public void createTutorial(Player player) {
-		// TODO Fill this with items containing lores etc.
-		
-		Inventory inv = p.getServer().createInventory(player, 27, TITLE_TUTORIAL);
-		
-		inv.setItem(inv.getSize() - 1, createBackToListItem());
-		
 		player.openInventory(inv);
 	}
 
@@ -336,11 +330,20 @@ public class ClassSelectorListener implements Listener {
 		ItemStack book = new ItemStack(Material.BOOK);
 
 		ItemMeta meta = book.getItemMeta();
-		meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Tutoriel");
+		meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Voir le Tutoriel");
+		meta.setLore(Arrays.asList("", ChatColor.GRAY + "Assistez à un tutoriel interactif !"));
 		book.setItemMeta(meta);
 		GlowEffect.addGlow(book);
-		
+
 		return book;
+	}
+
+	public ItemStack createViewTutorialItem() {
+		ItemStack animation = new ItemStack(Material.ITEM_FRAME);
+		ItemMeta meta = animation.getItemMeta();
+		meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Voir le tutoriel animé");
+		animation.setItemMeta(meta);
+		return animation;
 	}
 
 	/**
@@ -387,5 +390,90 @@ public class ClassSelectorListener implements Listener {
 			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi une classe "
 					+ ChatColor.DARK_GREEN + "aléatoire" + ChatColor.GREEN + " !");
 		}
+	}
+
+	public void playTutorial(final Player player) {
+		if (p.getTimer().getSecondsLeft() <= 36) {
+			player.sendMessage(ChatColor.RED + "La partie va bientôt commencer !");
+			return;
+		}
+		p.getGamePlayer(player).setWatchingTutorial(true);
+		this.tutorialTask = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
+			private int loop = 0;
+
+			@Override
+			public void run() {
+				switch (loop) {
+				case 0:
+					Titles.sendTitle(player, 10, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.GOLD
+							+ "Comment jouer ?");
+					break;
+				case 1:
+					player.teleport(p.getGame().getTutorialLocations().get(0));
+					player.playSound(player.getLocation(), Sound.LEVEL_UP, 1L, 2L);
+					Titles.sendTitle(player, 10, 80, 10, ChatColor.AQUA + "I. " + ChatColor.GOLD + "Gameplay",
+							"Chaque joueur possède une jauge de pourcentage");
+					break;
+				case 2:
+					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "I. " + ChatColor.GOLD + "Gameplay",
+							"Elle définit les dommages du joueur");
+					break;
+				case 3:
+					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "I. " + ChatColor.GOLD + "Gameplay",
+							"Plus il est élevé, plus les dégâts le feront reculer");
+					break;
+				case 4:
+					player.teleport(p.getGame().getTutorialLocations().get(1));
+					player.playSound(player.getLocation(), Sound.LEVEL_UP, 1L, 2L);
+					Titles.sendTitle(player, 10, 80, 0, ChatColor.AQUA + "II. " + ChatColor.GOLD + "But du Jeu",
+							"Faites tomber vos adversaires dans le vide ou mettez les K.O.");
+					break;
+				case 5:
+					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "II. " + ChatColor.GOLD + "But du Jeu",
+							"Remportez la partie en étant le dernier en lice");
+					break;
+				case 6:
+					player.teleport(p.getGame().getTutorialLocations().get(2));
+					player.playSound(player.getLocation(), Sound.LEVEL_UP, 1L, 2L);
+					Titles.sendTitle(player, 10, 80, 0, ChatColor.AQUA + "III. " + ChatColor.GOLD + "Classes",
+							"Choisissez votre classe au début du jeu");
+					break;
+				case 7:
+					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "III. " + ChatColor.GOLD + "Classes",
+							"Chacune possède ses spécificités");
+					break;
+				case 8:
+					player.teleport(p.getGame().getTutorialLocations().get(3));
+					player.playSound(player.getLocation(), Sound.LEVEL_UP, 1L, 2L);
+					Titles.sendTitle(player, 10, 80, 0, ChatColor.AQUA + "IV. " + ChatColor.GOLD + "Objets Spéciaux",
+							"Chaque classe possède des objets différents");
+					break;
+				case 9:
+					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "IV. " + ChatColor.GOLD + "Objets Spéciaux",
+							"Ils permettent d'éxecuter des actions spéciales");
+					break;
+				case 10:
+					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "IV. " + ChatColor.GOLD + "Objets Spéciaux",
+							ChatColor.RED + "Attention" + ChatColor.WHITE
+									+ ", ils possèdent un cooldown après chaque utilisation");
+					break;
+				case 11:
+					Titles.sendTitle(player, 10, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.GOLD
+							+ "Bon jeu et bonne chance !");
+					p.getServer().getScheduler().cancelTask(tutorialTask);
+					p.getGame().teleportHub(player.getUniqueId());
+					p.getGamePlayer(player).setWatchingTutorial(false);
+					for (Player pl : p.getServer().getOnlinePlayers()) {
+						player.showPlayer(pl);
+						pl.showPlayer(player);
+					}
+					break;
+				}
+				loop++;
+			}
+		}, 20L, 3 * 20L).getTaskId();
+
+		// Titles.sendTitle(p, 10, 80, 0, HeroBattle.GAME_NAME_BICOLOR,
+		// ChatColor.WHITE + "Bienvenue en " + HeroBattle.GAME_NAME);
 	}
 }

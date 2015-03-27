@@ -40,14 +40,18 @@ public class MasterListener implements Listener {
 		p.setTotalExperience(0);
 		p.setGameMode(GameMode.ADVENTURE);
 
-		// Needed so the toggleFlight event is fired when the player double-jump.
+		// Needed so the toggleFlight event is fired when the player
+		// double-jump.
 		// The event is always cancelled.
 		p.setAllowFlight(false); // Temp disabled
 
 		plugin.getGame().teleportHub(p.getUniqueId());
 
-		if(p.getName().equals("6infinity8") || p.getName().equals("AmauryPi")) {
-			plugin.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.RED + ChatColor.MAGIC + "iii " + ChatColor.GREEN + ChatColor.BOLD + p.getName() + ChatColor.RED + ChatColor.MAGIC + " iii" + ChatColor.YELLOW + " a rejoint la partie !");
+		if (p.getName().equals("6infinity8") || p.getName().equals("AmauryPi")) {
+			plugin.getServer().broadcastMessage(
+					HeroBattle.GAME_TAG + ChatColor.RED + ChatColor.MAGIC + "iii " + ChatColor.GREEN + ChatColor.BOLD
+							+ p.getName() + ChatColor.RED + ChatColor.MAGIC + " iii" + ChatColor.YELLOW
+							+ " a rejoint la partie !");
 		} else {
 			plugin.getCoherenceMachine().getMessageManager().writePlayerJoinArenaMessage(p, plugin.getGame());
 		}
@@ -62,17 +66,12 @@ public class MasterListener implements Listener {
 		p.setMaxHealth(20);
 		p.setHealth(20);
 
-
 		ItemStack classSelectorItem = new ItemStack(Material.NETHER_STAR);
 		ItemMeta classSelectorItemMeta = classSelectorItem.getItemMeta();
-		classSelectorItemMeta.setDisplayName(
-				ChatColor.LIGHT_PURPLE + "Choisissez une " +
-				ChatColor.DARK_PURPLE + "classe"
-		);
-		classSelectorItemMeta.setLore(Arrays.asList(
-				ChatColor.GRAY + "Cliquez-droit pour choisir la classe",
-				ChatColor.GRAY + "avec laquelle vous allez jouer."
-		));
+		classSelectorItemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Choisissez une " + ChatColor.DARK_PURPLE
+				+ "classe");
+		classSelectorItemMeta.setLore(Arrays.asList(ChatColor.GRAY + "Cliquez-droit pour choisir la classe",
+				ChatColor.GRAY + "avec laquelle vous allez jouer."));
 		classSelectorItem.setItemMeta(classSelectorItemMeta);
 		p.getInventory().setItem(0, classSelectorItem);
 
@@ -82,20 +81,28 @@ public class MasterListener implements Listener {
 
 		p.getInventory().setHeldItemSlot(0);
 
-		if(plugin.getTimer().getSecondsLeft() > 10) {
+		if (plugin.getTimer().getSecondsLeft() > 10) {
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				@Override
 				public void run() {
-					Titles.sendTitle(p, 10, 80, 0, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "Bienvenue en " + HeroBattle.GAME_NAME);
+					Titles.sendTitle(p, 10, 80, 0, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "Bienvenue en "
+							+ HeroBattle.GAME_NAME);
 				}
 			}, 40l);
 
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				@Override
 				public void run() {
-					Titles.sendTitle(p, 0, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "N'oubliez pas de " + ChatColor.LIGHT_PURPLE + "choisir une classe" + ChatColor.WHITE + " !");
+					Titles.sendTitle(p, 0, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "N'oubliez pas de "
+							+ ChatColor.LIGHT_PURPLE + "choisir une classe" + ChatColor.WHITE + " !");
 				}
 			}, 120l);
+		}
+		for (Player player : p.getServer().getOnlinePlayers()) {
+			if (plugin.getGamePlayer(player).isWatchingTutorial() && !player.equals(p)) {
+				player.hidePlayer(p);
+				p.hidePlayer(player);
+			}
 		}
 
 		GameAPI.getManager().sendArena();
@@ -103,22 +110,29 @@ public class MasterListener implements Listener {
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent ev) {
-		if(plugin.getGame().getStatus() == Status.Available || plugin.getGame().getStatus() == Status.Starting) {
-			if(ev.getPlayer().getName().equals("6infinity8") || ev.getPlayer().getName().equals("AmauryPi")) {
-				plugin.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.RED + ChatColor.MAGIC + "iii " + ChatColor.GREEN + ChatColor.BOLD + ev.getPlayer().getName() + ChatColor.RED + ChatColor.MAGIC + " iii" + ChatColor.YELLOW + " s'est déconnecté");
+		if (plugin.getGame().getStatus() == Status.Available || plugin.getGame().getStatus() == Status.Starting) {
+			if (ev.getPlayer().getName().equals("6infinity8") || ev.getPlayer().getName().equals("AmauryPi")) {
+				plugin.getServer().broadcastMessage(
+						HeroBattle.GAME_TAG + ChatColor.RED + ChatColor.MAGIC + "iii " + ChatColor.GREEN
+								+ ChatColor.BOLD + ev.getPlayer().getName() + ChatColor.RED + ChatColor.MAGIC + " iii"
+								+ ChatColor.YELLOW + " s'est déconnecté");
 			} else {
-			plugin.getServer().broadcastMessage(HeroBattle.GAME_TAG + ev.getPlayer().getDisplayName() + ChatColor.YELLOW + " s'est déconnecté");
+				plugin.getServer().broadcastMessage(
+						HeroBattle.GAME_TAG + ChatColor.YELLOW + ev.getPlayer().getName() + ChatColor.YELLOW
+								+ " s'est déconnecté");
 			}
 		}
 
 		if (plugin.getGame().getStatus() == Status.Starting) {
 			if (plugin.getTimer().isEnabled() && plugin.getPlayerCount() - 1 < plugin.getGame().getMinPlayers()) {
 				plugin.getTimer().cancelTimer();
-				plugin.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.YELLOW + "Il n'y a plus assez de joueurs pour commencer la partie !");
+				plugin.getServer().broadcastMessage(
+						HeroBattle.GAME_TAG + ChatColor.YELLOW
+								+ "Il n'y a plus assez de joueurs pour commencer la partie !");
 			}
 		}
 
-		else if(plugin.getGame().getStatus() == Status.InGame) {
+		else if (plugin.getGame().getStatus() == Status.InGame) {
 			if (plugin.getPlayerCount() == 0 && MasterBundle.isDbEnabled) {
 				plugin.getGame().setStatus(Status.Stopping);
 				Bukkit.shutdown();
@@ -127,13 +141,19 @@ public class MasterListener implements Listener {
 			}
 		}
 		ev.setQuitMessage(null);
+		
+		for (Player player : plugin.getServer().getOnlinePlayers()) {
+				player.showPlayer(ev.getPlayer());
+				ev.getPlayer().showPlayer(player);
+		}
+		
 		GameAPI.getManager().sendArena();
 	}
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		if (plugin.getGame().getStatus() != Status.InGame
-				&& e.hasItem() && e.getItem().equals(plugin.getCoherenceMachine().getLeaveItem())) {
+		if (plugin.getGame().getStatus() != Status.InGame && e.hasItem()
+				&& e.getItem().equals(plugin.getCoherenceMachine().getLeaveItem())) {
 			e.getPlayer().kickPlayer("");
 		}
 	}

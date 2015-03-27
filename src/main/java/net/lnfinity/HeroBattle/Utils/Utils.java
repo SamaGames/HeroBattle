@@ -29,8 +29,8 @@ public class Utils {
 		}
 
 		try {
-			Location location = new Location(p.getServer().getWorlds().get(0), Double.valueOf(coords[0]),
-					Double.valueOf(coords[1]), Double.valueOf(coords[2]));
+			Location location = new Location(p.getServer().getWorlds().get(0), Double.valueOf(coords[0]) + 0.5,
+					Double.valueOf(coords[1]), Double.valueOf(coords[2]) + 0.5);
 
 			if (coords.length >= 4) {
 				location.setYaw(Float.valueOf(coords[3]));

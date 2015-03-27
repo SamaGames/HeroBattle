@@ -1,5 +1,6 @@
 package net.lnfinity.HeroBattle.Game;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -43,6 +44,8 @@ public class Game implements GameArena {
 	private List<Location> spawnPoints = new LinkedList<>();
 	private Location hub;
 
+	private ArrayList<Location> tutorialLocations = new ArrayList<Location>();
+
 	private Random random = new Random();
 
 	private Double bottomHeight = 0.0;
@@ -78,9 +81,33 @@ public class Game implements GameArena {
 		}
 
 		bottomHeight = p.getArenaConfig().getDouble("map.bottom", 0d);
+
+		try {
+			for (Object location : p.getArenaConfig().getList("map.tutorial")) {
+				if (location instanceof String) {
+					try {
+						tutorialLocations.add(Utils.stringToLocation(p, (String) location));
+					} catch (IllegalArgumentException e) {
+						p.getLogger().log(Level.SEVERE, "Invalid tutorial locations in arena.yml! " + e.getMessage());
+					}
+				}
+			}
+			if (tutorialLocations != null) {
+				if (tutorialLocations.size() != 4) {
+					p.getLogger().warning("Not enough / too many tutorial locations in arena.yml, disabling tutorial.");
+					tutorialLocations = null;
+				}
+			}
+		} catch (Exception ex) {
+			p.getLogger().warning("No tutorial locations set in arena.yml");
+		}
+		if (tutorialLocations != null) {
+			setTutorialBlocks();
+		}
 	}
 
 	public void start() {
+		removeTutorialBlocks();
 		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Que le meilleur gagne !");
 		teleportPlayers();
 
@@ -489,6 +516,46 @@ public class Game implements GameArena {
 			ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
 			boots.setItemMeta(meta);
 			player.getInventory().setBoots(boots);
+		}
+	}
+
+	public ArrayList<Location> getTutorialLocations() {
+		return tutorialLocations;
+	}
+
+	public void setTutorialBlocks() {
+		for (Location location : tutorialLocations) {
+			location.clone().add(0L, -1L, 0L).getBlock().setType(Material.BARRIER);
+
+			location.clone().add(1L, 0L, 0L).getBlock().setType(Material.BARRIER);
+			location.clone().add(0L, 0L, 1L).getBlock().setType(Material.BARRIER);
+			location.clone().add(-1L, 0L, 0L).getBlock().setType(Material.BARRIER);
+			location.clone().add(0L, 0L, -1L).getBlock().setType(Material.BARRIER);
+
+			location.clone().add(1L, 1L, 0L).getBlock().setType(Material.BARRIER);
+			location.clone().add(0L, 1L, 1L).getBlock().setType(Material.BARRIER);
+			location.clone().add(-1L, 1L, 0L).getBlock().setType(Material.BARRIER);
+			location.clone().add(0L, 1L, -1L).getBlock().setType(Material.BARRIER);
+
+			location.clone().add(0L, 2L, 0L).getBlock().setType(Material.BARRIER);
+		}
+	}
+
+	public void removeTutorialBlocks() {
+		for (Location location : tutorialLocations) {
+			location.clone().add(0L, -1L, 0L).getBlock().setType(Material.AIR);
+
+			location.clone().add(1L, 0L, 0L).getBlock().setType(Material.AIR);
+			location.clone().add(0L, 0L, 1L).getBlock().setType(Material.AIR);
+			location.clone().add(-1L, 0L, 0L).getBlock().setType(Material.AIR);
+			location.clone().add(0L, 0L, -1L).getBlock().setType(Material.AIR);
+
+			location.clone().add(1L, 1L, 0L).getBlock().setType(Material.AIR);
+			location.clone().add(0L, 1L, 1L).getBlock().setType(Material.AIR);
+			location.clone().add(-1L, 1L, 0L).getBlock().setType(Material.AIR);
+			location.clone().add(0L, 1L, -1L).getBlock().setType(Material.AIR);
+
+			location.clone().add(0L, 2L, 0L).getBlock().setType(Material.AIR);
 		}
 	}
 }

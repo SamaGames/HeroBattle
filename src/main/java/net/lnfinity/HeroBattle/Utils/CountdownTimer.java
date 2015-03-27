@@ -45,7 +45,8 @@ public class CountdownTimer {
 				boolean changed = false;
 
 				// Half-full
-				if (playersCount == Math.max(p.getGame().getMinPlayers(), p.getGame().getTotalMaxPlayers() / 2) && seconds > 60) {
+				if (playersCount == Math.max(p.getGame().getMinPlayers(), p.getGame().getTotalMaxPlayers() / 2)
+						&& seconds > 60) {
 					seconds = 60;
 					changed = true;
 				}
@@ -58,25 +59,24 @@ public class CountdownTimer {
 				// Message if counter changed
 				if (changed) {
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + "Il y a désormais "
-									+ ChatColor.RED + playersCount
+							HeroBattle.GAME_TAG + ChatColor.YELLOW + "Il y a désormais " + ChatColor.RED + playersCount
 									+ ChatColor.YELLOW + " joueurs en jeu : le compteur a été raccourci à "
 									+ ChatColor.RED + seconds + ChatColor.YELLOW + " secondes");
 				}
 
-
 				// Counter display (chat + title)
-				if (seconds == 120 || seconds == 60 || seconds == 30 || seconds == 15 || seconds == 10 || seconds <= 5 && seconds != 0) {
+				if (seconds == 120 || seconds == 60 || seconds == 30 || seconds == 15 || seconds == 10 || seconds <= 5
+						&& seconds != 0) {
 
 					// Messages
 					if (seconds == 1) {
 						p.getServer().broadcastMessage(
-								HeroBattle.GAME_TAG + ChatColor.YELLOW + "Le jeu commence dans "
-										+ ChatColor.RED + seconds + ChatColor.YELLOW + " seconde");
+								HeroBattle.GAME_TAG + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED
+										+ seconds + ChatColor.YELLOW + " seconde");
 					} else {
 						p.getServer().broadcastMessage(
-								HeroBattle.GAME_TAG + ChatColor.YELLOW + "Le jeu commence dans "
-										+ ChatColor.RED + seconds + ChatColor.YELLOW + " secondes");
+								HeroBattle.GAME_TAG + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED
+										+ seconds + ChatColor.YELLOW + " secondes");
 					}
 
 					// Sound
@@ -97,7 +97,9 @@ public class CountdownTimer {
 					}
 
 					for (Player player : p.getServer().getOnlinePlayers()) {
-						Titles.sendTitle(player, 2, 16, 2, color + "" + seconds, "");
+						if (!p.getGamePlayer(player).isWatchingTutorial()) {
+							Titles.sendTitle(player, 2, 16, 2, color + "" + seconds, "");
+						}
 					}
 				}
 

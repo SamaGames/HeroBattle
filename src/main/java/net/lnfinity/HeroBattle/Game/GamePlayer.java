@@ -17,6 +17,8 @@ public class GamePlayer {
 
 	private UUID playerID;
 	private String playerName;
+	
+	private boolean watchingTutorial = false;
 
 	private PlayerClass classe = null;
 	private int doubleJump = 2;
@@ -108,6 +110,14 @@ public class GamePlayer {
 
 	public String getPlayerName() {
 		return playerName;
+	}
+
+	public boolean isWatchingTutorial() {
+		return watchingTutorial;
+	}
+
+	public void setWatchingTutorial(boolean watchingTutorial) {
+		this.watchingTutorial = watchingTutorial;
 	}
 
 	public void doubleJump() {

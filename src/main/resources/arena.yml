@@ -26,6 +26,15 @@ map:
       - "2;64;0"
       - "-2;64;0"
 
+    # Can be empty
+    # Total should be exactly equals to 4
+    # (recommended to add a pitch)
+    tutorial:
+      - "0;70;0"
+      - "0;70;0"
+      - "0;70;0"
+      - "0;70;0"
+
     # The altitude below which the players are killed when they fall.
     # 0 if the map is bottomless.
     # The altitude of the bottom else (like the water/lava level, etc.).
