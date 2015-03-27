@@ -24,6 +24,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class ClassSelectorListener implements Listener {
 
@@ -398,11 +400,15 @@ public class ClassSelectorListener implements Listener {
 			return;
 		}
 		p.getGamePlayer(player).setWatchingTutorial(true);
+		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 15), true);
 		this.tutorialTask = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
 			private int loop = 0;
 
 			@Override
 			public void run() {
+				if(!player.isOnline()) {
+					return;
+				}
 				switch (loop) {
 				case 0:
 					Titles.sendTitle(player, 10, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.GOLD
@@ -463,6 +469,7 @@ public class ClassSelectorListener implements Listener {
 					p.getServer().getScheduler().cancelTask(tutorialTask);
 					p.getGame().teleportHub(player.getUniqueId());
 					p.getGamePlayer(player).setWatchingTutorial(false);
+					player.removePotionEffect(PotionEffectType.INVISIBILITY);
 					for (Player pl : p.getServer().getOnlinePlayers()) {
 						player.showPlayer(pl);
 						pl.showPlayer(player);

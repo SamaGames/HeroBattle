@@ -25,7 +25,7 @@ public class ScoreboardManager {
 		percentageBelowName.setDisplayName("%");
 
 		percentageSidebar = board.registerNewObjective("perct_sidebar", "dummy");
-		percentageSidebar.setDisplayName(HeroBattle.GAME_NAME_BICOLOR_BOLD + ChatColor.DARK_GRAY + " │ " + ChatColor.WHITE + p.getGameTimer().getFormattedTime());
+		percentageSidebar.setDisplayName("  " + HeroBattle.GAME_NAME_BICOLOR_BOLD + ChatColor.DARK_GRAY + " │ " + ChatColor.GRAY + p.getGameTimer().getFormattedTime());
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class ScoreboardManager {
 	public void refresh() {
 		percentageSidebar.unregister();
 		percentageSidebar = board.registerNewObjective("perct_sidebar", "dummy");
-		percentageSidebar.setDisplayName(HeroBattle.GAME_NAME_BICOLOR_BOLD + ChatColor.WHITE + " | " + ChatColor.GRAY + p.getGameTimer().getFormattedTime());
+		percentageSidebar.setDisplayName("  " + HeroBattle.GAME_NAME_BICOLOR_BOLD + ChatColor.DARK_GRAY + " │ " + ChatColor.GRAY + p.getGameTimer().getFormattedTime());
 		percentageSidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
 
 		for (GamePlayer player : p.getGamePlayers().values()) {
