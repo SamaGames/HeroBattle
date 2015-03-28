@@ -17,7 +17,7 @@ public class GamePlayer {
 
 	private UUID playerID;
 	private String playerName;
-	
+
 	private boolean watchingTutorial = false;
 
 	private PlayerClass classe = null;
@@ -97,7 +97,11 @@ public class GamePlayer {
 
 	public void setPlayerClass(PlayerClass classe) {
 		this.classe = classe;
-		lives = classe.getLives();
+		if (classe != null) {
+			lives = classe.getLives();
+		} else {
+			lives = 3;
+		}
 	}
 
 	public List<Task> getTasks() {
