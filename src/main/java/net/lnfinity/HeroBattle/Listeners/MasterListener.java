@@ -67,14 +67,7 @@ public class MasterListener implements Listener {
 		p.setMaxHealth(20);
 		p.setHealth(20);
 
-		ItemStack classSelectorItem = new ItemStack(Material.NETHER_STAR);
-		ItemMeta classSelectorItemMeta = classSelectorItem.getItemMeta();
-		classSelectorItemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Choisissez une " + ChatColor.DARK_PURPLE
-				+ "classe");
-		classSelectorItemMeta.setLore(Arrays.asList(ChatColor.GRAY + "Cliquez-droit pour choisir la classe",
-				ChatColor.GRAY + "avec laquelle vous allez jouer."));
-		classSelectorItem.setItemMeta(classSelectorItemMeta);
-		p.getInventory().setItem(0, classSelectorItem);
+		plugin.getGame().equipPlayer(p);
 
 		p.getInventory().setItem(8, plugin.getCoherenceMachine().getLeaveItem());
 
@@ -94,8 +87,16 @@ public class MasterListener implements Listener {
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				@Override
 				public void run() {
-					Titles.sendTitle(p, 0, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "N'oubliez pas de "
+					Titles.sendTitle(p, 0, 80, 0, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "N'oubliez pas de "
 							+ ChatColor.LIGHT_PURPLE + "choisir une classe" + ChatColor.WHITE + " !");
+				}
+			}, 120l);
+			
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				@Override
+				public void run() {
+					Titles.sendTitle(p, 0, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "Un "
+							+ ChatColor.GOLD + "tutoriel" + ChatColor.WHITE + " est mis à disposition !");
 				}
 			}, 120l);
 		}

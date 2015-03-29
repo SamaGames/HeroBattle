@@ -10,6 +10,7 @@ import net.lnfinity.HeroBattle.Class.PlayerClass;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.md_5.bungee.api.ChatColor;
+import net.samagames.gameapi.json.Status;
 import net.samagames.utils.GlowEffect;
 import net.samagames.utils.Titles;
 
@@ -399,14 +400,28 @@ public class ClassSelectorListener implements Listener {
 			player.sendMessage(ChatColor.RED + "La partie va bientôt commencer !");
 			return;
 		}
+		player.sendMessage(ChatColor.GREEN + "La présentation va bientôt vous être jouée !");
 		p.getGamePlayer(player).setWatchingTutorial(true);
 		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 15), true);
+		player.getInventory().clear();
 		this.tutorialTask = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
 			private int loop = 0;
 
 			@Override
 			public void run() {
 				if(!player.isOnline()) {
+					p.getServer().getScheduler().cancelTask(tutorialTask);
+					return;
+				}
+				if(p.getGame().getStatus() == Status.InGame) {
+					p.getServer().getScheduler().cancelTask(tutorialTask);
+					p.getGamePlayer(player).setWatchingTutorial(false);
+					player.removePotionEffect(PotionEffectType.INVISIBILITY);
+					for (Player pl : p.getServer().getOnlinePlayers()) {
+						player.showPlayer(pl);
+						pl.showPlayer(player);
+					}
+					player.sendMessage(ChatColor.RED + "La partie a été démarrée de force, le tutoriel a donc été interrompu !");
 					return;
 				}
 				switch (loop) {
@@ -469,6 +484,7 @@ public class ClassSelectorListener implements Listener {
 					p.getServer().getScheduler().cancelTask(tutorialTask);
 					p.getGame().teleportHub(player.getUniqueId());
 					p.getGamePlayer(player).setWatchingTutorial(false);
+					p.getGame().equipPlayer(player);
 					player.removePotionEffect(PotionEffectType.INVISIBILITY);
 					for (Player pl : p.getServer().getOnlinePlayers()) {
 						player.showPlayer(pl);

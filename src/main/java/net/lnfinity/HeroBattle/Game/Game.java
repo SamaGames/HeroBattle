@@ -1,6 +1,7 @@
 package net.lnfinity.HeroBattle.Game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -31,6 +32,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -365,13 +367,15 @@ public class Game implements GameArena {
 	}
 
 	public void onPlayerWin(UUID id) {
+		Player player = p.getServer().getPlayer(id);
+		GamePlayer HBplayer = p.getGamePlayer(player);
 		p.getGameTimer().pauseTimer();
+		HBplayer.setPlaying(true);
 		p.getScoreboardManager().refresh();
 
 		p.getPowerupManager().getSpawner().stopTimer();
-		Player player = p.getServer().getPlayer(id);
 		player.getInventory().clear();
-		GamePlayer HBplayer = p.getGamePlayer(player);
+		
 		HBplayer.setPlaying(false);
 
 		p.getServer().broadcastMessage(
@@ -557,5 +561,16 @@ public class Game implements GameArena {
 
 			location.clone().add(0L, 2L, 0L).getBlock().setType(Material.AIR);
 		}
+	}
+	
+	public void equipPlayer(Player player) {
+		ItemStack classSelectorItem = new ItemStack(Material.NETHER_STAR);
+		ItemMeta classSelectorItemMeta = classSelectorItem.getItemMeta();
+		classSelectorItemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Choisissez une " + ChatColor.DARK_PURPLE
+				+ "classe");
+		classSelectorItemMeta.setLore(Arrays.asList(ChatColor.GRAY + "Cliquez-droit pour choisir la classe",
+				ChatColor.GRAY + "avec laquelle vous allez jouer."));
+		classSelectorItem.setItemMeta(classSelectorItemMeta);
+		player.getInventory().setItem(0, classSelectorItem);
 	}
 }
