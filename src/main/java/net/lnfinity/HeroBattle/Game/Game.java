@@ -530,6 +530,8 @@ public class Game implements GameArena {
 	
 	public void equipPlayer(Player player) {
 
+		player.getInventory().clear();
+
 		// Class selector
 		ItemStack classSelectorItem = new ItemStack(Material.NETHER_STAR);
 		ItemMeta classSelectorItemMeta = classSelectorItem.getItemMeta();

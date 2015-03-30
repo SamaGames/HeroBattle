@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.Tutorial;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -143,8 +144,8 @@ public class TutorialDisplayer {
 			other.hidePlayer(player);
 		}
 
-		// It's ugly without that. PERFECTIONIST IN THE PLACE.
-		player.getInventory().setHeldItemSlot(2);
+		// The book is removed
+		player.getInventory().remove(Material.BOOK);
 
 
 		// The tutorial is started
@@ -181,8 +182,8 @@ public class TutorialDisplayer {
 			// The player is teleported back to the Hub
 			p.getGame().teleportHub(id);
 
-			// See start()
-			player.getInventory().setHeldItemSlot(0);
+			// The book is restored
+			p.getGame().equipPlayer(player);
 		}
 
 		try {
