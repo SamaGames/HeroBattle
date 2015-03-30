@@ -127,6 +127,8 @@ public class TutorialDisplayer {
 			player.sendMessage(ChatColor.RED + "La partie va bientôt commencer !");
 
 			// TODO text-only version of the tutorial
+
+			return;
 		}
 
 
