@@ -52,7 +52,7 @@ public class TutorialDisplayer {
 				Arrays.asList(
 						"Chaque joueur possède une jauge de pourcentage",
 						"Elle définit les dommages du joueur",
-						"Plus il est élevé, plus les dégâts le feront reculer"
+						"Plus elle est élevée, plus les dégâts le feront reculer"
 				)
 		));
 
