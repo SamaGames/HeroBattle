@@ -53,9 +53,11 @@ public class MasterListener implements Listener {
 
 		if (p.getName().equals("6infinity8") || p.getName().equals("AmauryPi")) {
 			plugin.getServer().broadcastMessage(
-					HeroBattle.GAME_TAG + ChatColor.RED + ChatColor.MAGIC + "iii " + ChatColor.GREEN + ChatColor.BOLD
-							+ p.getName() + ChatColor.RED + ChatColor.MAGIC + " iii" + ChatColor.YELLOW
-							+ " a rejoint la partie !");
+					HeroBattle.GAME_TAG
+							+ ChatColor.RED + ChatColor.MAGIC + "|||"
+							+ ChatColor.GREEN + ChatColor.BOLD + " " + p.getName() + " "
+							+ ChatColor.RED + ChatColor.MAGIC + "|||"
+							+ ChatColor.YELLOW + " a rejoint la partie !");
 		} else {
 			plugin.getCoherenceMachine().getMessageManager().writePlayerJoinArenaMessage(p, plugin.getGame());
 		}
@@ -119,8 +121,10 @@ public class MasterListener implements Listener {
 		if (plugin.getGame().getStatus() == Status.Available || plugin.getGame().getStatus() == Status.Starting) {
 			if (ev.getPlayer().getName().equals("6infinity8") || ev.getPlayer().getName().equals("AmauryPi")) {
 				plugin.getServer().broadcastMessage(
-						HeroBattle.GAME_TAG + ChatColor.RED + ChatColor.MAGIC + "iii " + ChatColor.GREEN
-								+ ChatColor.BOLD + ev.getPlayer().getName() + ChatColor.RED + ChatColor.MAGIC + " iii"
+						HeroBattle.GAME_TAG
+								+ ChatColor.RED + ChatColor.MAGIC + "|||"
+								+ ChatColor.GREEN + ChatColor.BOLD + " " + ev.getPlayer().getName() + " "
+								+ ChatColor.RED + ChatColor.MAGIC + "|||"
 								+ ChatColor.YELLOW + " s'est déconnecté");
 			} else {
 				plugin.getServer().broadcastMessage(
