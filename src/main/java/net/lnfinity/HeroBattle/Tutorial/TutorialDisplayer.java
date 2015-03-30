@@ -123,7 +123,7 @@ public class TutorialDisplayer {
 
 
 		// Sufficient time left?
-		if(p.getTimer().getSecondsLeft() * 20 <= timeNeededToPlayThisTutorial) {
+		if(p.getTimer().isEnabled() && p.getTimer().getSecondsLeft() * 20 <= timeNeededToPlayThisTutorial) {
 			player.sendMessage(ChatColor.RED + "Il ne reste pas assez de temps pour consulter le tutoriel...");
 			player.sendMessage(ChatColor.RED + "La partie va bientôt commencer !");
 
