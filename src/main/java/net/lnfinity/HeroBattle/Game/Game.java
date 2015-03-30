@@ -367,6 +367,7 @@ public class Game implements GameArena {
 	}
 
 	public void onPlayerWin(UUID id) {
+		this.setStatus(Status.Stopping);
 		Player player = p.getServer().getPlayer(id);
 		GamePlayer HBplayer = p.getGamePlayer(player);
 		p.getGameTimer().pauseTimer();

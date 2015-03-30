@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Game.DeathType;
+import net.samagames.gameapi.json.Status;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.HumanEntity;
@@ -40,12 +41,12 @@ public class SystemListener implements Listener {
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
 		if (e.getTo().getBlockY() <= plugin.getGame().getBottomHeight()
-				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE
-				&& plugin.getGamePlayer(e.getPlayer()).isPlaying()) {
+				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE && plugin.getGamePlayer(e.getPlayer()).isPlaying()) {
 
-			plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.FALL);
-		}
-		else if (e.getTo().getBlockY() <= plugin.getGame().getBottomHeight()
+			if (plugin.getGame().getStatus() == Status.InGame) {
+				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.FALL);
+			}
+		} else if (e.getTo().getBlockY() <= plugin.getGame().getBottomHeight()
 				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
 
 			plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
