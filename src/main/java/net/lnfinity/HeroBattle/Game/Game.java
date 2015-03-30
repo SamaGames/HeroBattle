@@ -103,13 +103,12 @@ public class Game implements GameArena {
 		} catch (Exception ex) {
 			p.getLogger().warning("No tutorial locations set in arena.yml");
 		}
-		if (tutorialLocations != null) {
-			setTutorialBlocks();
-		}
 	}
 
 	public void start() {
-		removeTutorialBlocks();
+
+		p.getTutorialDisplayer().stopForAll("Le jeu démarre...");
+
 		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Que le meilleur gagne !");
 		teleportPlayers();
 
@@ -525,42 +524,6 @@ public class Game implements GameArena {
 
 	public ArrayList<Location> getTutorialLocations() {
 		return tutorialLocations;
-	}
-
-	public void setTutorialBlocks() {
-		for (Location location : tutorialLocations) {
-			location.clone().add(0L, -1L, 0L).getBlock().setType(Material.BARRIER);
-
-			location.clone().add(1L, 0L, 0L).getBlock().setType(Material.BARRIER);
-			location.clone().add(0L, 0L, 1L).getBlock().setType(Material.BARRIER);
-			location.clone().add(-1L, 0L, 0L).getBlock().setType(Material.BARRIER);
-			location.clone().add(0L, 0L, -1L).getBlock().setType(Material.BARRIER);
-
-			location.clone().add(1L, 1L, 0L).getBlock().setType(Material.BARRIER);
-			location.clone().add(0L, 1L, 1L).getBlock().setType(Material.BARRIER);
-			location.clone().add(-1L, 1L, 0L).getBlock().setType(Material.BARRIER);
-			location.clone().add(0L, 1L, -1L).getBlock().setType(Material.BARRIER);
-
-			location.clone().add(0L, 2L, 0L).getBlock().setType(Material.BARRIER);
-		}
-	}
-
-	public void removeTutorialBlocks() {
-		for (Location location : tutorialLocations) {
-			location.clone().add(0L, -1L, 0L).getBlock().setType(Material.AIR);
-
-			location.clone().add(1L, 0L, 0L).getBlock().setType(Material.AIR);
-			location.clone().add(0L, 0L, 1L).getBlock().setType(Material.AIR);
-			location.clone().add(-1L, 0L, 0L).getBlock().setType(Material.AIR);
-			location.clone().add(0L, 0L, -1L).getBlock().setType(Material.AIR);
-
-			location.clone().add(1L, 1L, 0L).getBlock().setType(Material.AIR);
-			location.clone().add(0L, 1L, 1L).getBlock().setType(Material.AIR);
-			location.clone().add(-1L, 1L, 0L).getBlock().setType(Material.AIR);
-			location.clone().add(0L, 1L, -1L).getBlock().setType(Material.AIR);
-
-			location.clone().add(0L, 2L, 0L).getBlock().setType(Material.AIR);
-		}
 	}
 	
 	public void equipPlayer(Player player) {

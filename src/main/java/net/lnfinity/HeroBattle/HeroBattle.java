@@ -10,6 +10,7 @@ import net.lnfinity.HeroBattle.Class.ClassManager;
 import net.lnfinity.HeroBattle.Game.Game;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Game.ScoreboardManager;
+import net.lnfinity.HeroBattle.Tutorial.TutorialDisplayer;
 import net.lnfinity.HeroBattle.Listeners.ClassSelectorListener;
 import net.lnfinity.HeroBattle.Listeners.CommandListener;
 import net.lnfinity.HeroBattle.Listeners.GameListener;
@@ -51,6 +52,8 @@ public class HeroBattle extends JavaPlugin {
 	private PowerupManager powerupManager;
 
 	private ScoreboardManager scoreboardManager;
+
+	private TutorialDisplayer tutorialDisplayer;
 
 	private Configuration arenaConfig;
 
@@ -105,6 +108,7 @@ public class HeroBattle extends JavaPlugin {
 		classManager = new ClassManager(this);
 		scoreboardManager = new ScoreboardManager(this);
 		powerupManager = new PowerupManager(this);
+		tutorialDisplayer = new TutorialDisplayer(this);
 
 		addOnlinePlayers();
 
@@ -195,6 +199,10 @@ public class HeroBattle extends JavaPlugin {
 
 	public PowerupManager getPowerupManager() {
 		return powerupManager;
+	}
+
+	public TutorialDisplayer getTutorialDisplayer() {
+		return tutorialDisplayer;
 	}
 
 	public CoherenceMachine getCoherenceMachine() {

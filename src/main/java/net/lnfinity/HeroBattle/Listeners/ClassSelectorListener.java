@@ -72,11 +72,7 @@ public class ClassSelectorListener implements Listener {
 					selectClass(player, null);
 					player.closeInventory();
 				} else if (e.getCurrentItem().equals(createTutorialItem())) {
-					if (!p.getGamePlayer(player).isWatchingTutorial()) {
-						playTutorial(player);
-					} else {
-						player.sendMessage(ChatColor.RED + "Vous assistez déjà à une présentation !");
-					}
+					p.getTutorialDisplayer().start(player.getUniqueId());
 					player.closeInventory();
 				} else {
 					player.closeInventory();
@@ -305,8 +301,11 @@ public class ClassSelectorListener implements Listener {
 		ItemStack item = new ItemStack(Material.EMERALD);
 		ItemMeta meta = item.getItemMeta();
 		if (theClass != null) {
-			meta.setLore(Arrays.asList("", ChatColor.GRAY + "Clic droit pour sélectionner", ChatColor.GRAY
-					+ "la classe " + theClass.getName()));
+			meta.setLore(Arrays.asList(
+					"",
+					ChatColor.GRAY + "Clic droit pour sélectionner",
+					ChatColor.GRAY + "la classe " + theClass.getName()
+			));
 		}
 		meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Utiliser cette classe");
 		item.setItemMeta(meta);
@@ -393,110 +392,5 @@ public class ClassSelectorListener implements Listener {
 			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi une classe "
 					+ ChatColor.DARK_GREEN + "aléatoire" + ChatColor.GREEN + " !");
 		}
-	}
-
-	public void playTutorial(final Player player) {
-		if (p.getTimer().getSecondsLeft() <= 36) {
-			player.sendMessage(ChatColor.RED + "La partie va bientôt commencer !");
-			return;
-		}
-		player.sendMessage(ChatColor.GREEN + "La présentation va bientôt vous être jouée !");
-		p.getGamePlayer(player).setWatchingTutorial(true);
-		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 15), true);
-		player.getInventory().clear();
-		this.tutorialTask = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
-			private int loop = 0;
-
-			@Override
-			public void run() {
-				if(!player.isOnline()) {
-					p.getServer().getScheduler().cancelTask(tutorialTask);
-					return;
-				}
-				if(p.getGame().getStatus() == Status.InGame) {
-					p.getServer().getScheduler().cancelTask(tutorialTask);
-					p.getGamePlayer(player).setWatchingTutorial(false);
-					player.removePotionEffect(PotionEffectType.INVISIBILITY);
-					for (Player pl : p.getServer().getOnlinePlayers()) {
-						player.showPlayer(pl);
-						pl.showPlayer(player);
-					}
-					player.sendMessage(ChatColor.RED + "La partie a été démarrée de force, le tutoriel a donc été interrompu !");
-					return;
-				}
-				switch (loop) {
-				case 0:
-					Titles.sendTitle(player, 10, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.GOLD
-							+ "Comment jouer ?");
-					break;
-				case 1:
-					player.teleport(p.getGame().getTutorialLocations().get(0));
-					player.playSound(player.getLocation(), Sound.LEVEL_UP, 1L, 2L);
-					Titles.sendTitle(player, 10, 80, 10, ChatColor.AQUA + "I. " + ChatColor.GOLD + "Gameplay",
-							"Chaque joueur possède une jauge de pourcentage");
-					break;
-				case 2:
-					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "I. " + ChatColor.GOLD + "Gameplay",
-							"Elle définit les dommages du joueur");
-					break;
-				case 3:
-					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "I. " + ChatColor.GOLD + "Gameplay",
-							"Plus il est élevé, plus les dégâts le feront reculer");
-					break;
-				case 4:
-					player.teleport(p.getGame().getTutorialLocations().get(1));
-					player.playSound(player.getLocation(), Sound.LEVEL_UP, 1L, 2L);
-					Titles.sendTitle(player, 10, 80, 0, ChatColor.AQUA + "II. " + ChatColor.GOLD + "But du Jeu",
-							"Faites tomber vos adversaires dans le vide ou mettez les K.O.");
-					break;
-				case 5:
-					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "II. " + ChatColor.GOLD + "But du Jeu",
-							"Remportez la partie en étant le dernier en lice");
-					break;
-				case 6:
-					player.teleport(p.getGame().getTutorialLocations().get(2));
-					player.playSound(player.getLocation(), Sound.LEVEL_UP, 1L, 2L);
-					Titles.sendTitle(player, 10, 80, 0, ChatColor.AQUA + "III. " + ChatColor.GOLD + "Classes",
-							"Choisissez votre classe au début du jeu");
-					break;
-				case 7:
-					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "III. " + ChatColor.GOLD + "Classes",
-							"Chacune possède ses spécificités");
-					break;
-				case 8:
-					player.teleport(p.getGame().getTutorialLocations().get(3));
-					player.playSound(player.getLocation(), Sound.LEVEL_UP, 1L, 2L);
-					Titles.sendTitle(player, 10, 80, 0, ChatColor.AQUA + "IV. " + ChatColor.GOLD + "Objets Spéciaux",
-							"Chaque classe possède des objets différents");
-					break;
-				case 9:
-					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "IV. " + ChatColor.GOLD + "Objets Spéciaux",
-							"Ils permettent d'éxecuter des actions spéciales");
-					break;
-				case 10:
-					Titles.sendTitle(player, 0, 80, 0, ChatColor.AQUA + "IV. " + ChatColor.GOLD + "Objets Spéciaux",
-							ChatColor.RED + "Attention" + ChatColor.WHITE
-									+ ", ils possèdent un cooldown après chaque utilisation");
-					break;
-				case 11:
-					Titles.sendTitle(player, 10, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.GOLD
-							+ "Bon jeu et bonne chance !");
-					p.getServer().getScheduler().cancelTask(tutorialTask);
-					p.getGame().teleportHub(player.getUniqueId());
-					p.getGamePlayer(player).setWatchingTutorial(false);
-					p.getGame().equipPlayer(player);
-					player.removePotionEffect(PotionEffectType.INVISIBILITY);
-					for (Player pl : p.getServer().getOnlinePlayers()) {
-						player.showPlayer(pl);
-						pl.showPlayer(player);
-					}
-					break;
-				}
-				loop++;
-			}
-		}, 20L, 3 * 20L).getTaskId();
-
-		// Titles.sendTitle(p, 10, 80, 0, HeroBattle.GAME_NAME_BICOLOR,
-		// ChatColor.WHITE + "Bienvenue en " + HeroBattle.GAME_NAME);
 	}
 }

@@ -41,6 +41,9 @@ public class MasterListener implements Listener {
 		p.setTotalExperience(0);
 		p.setGameMode(GameMode.ADVENTURE);
 
+		// If the player left during a tutorial, this value may be set to 0f.
+		p.setFlySpeed(0.1f);
+
 		// Needed so the toggleFlight event is fired when the player
 		// double-jump.
 		// The event is always cancelled.
@@ -75,33 +78,40 @@ public class MasterListener implements Listener {
 
 		p.getInventory().setHeldItemSlot(0);
 
-		if (plugin.getTimer().getSecondsLeft() > 10) {
+		if (plugin.getTimer().getSecondsLeft() > 15) {
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				@Override
 				public void run() {
-					Titles.sendTitle(p, 10, 80, 0, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "Bienvenue en "
-							+ HeroBattle.GAME_NAME);
+					if(!plugin.getTutorialDisplayer().isWatchingTutorial(p.getUniqueId())) {
+						Titles.sendTitle(p, 10, 80, 0, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "Bienvenue en "
+								+ HeroBattle.GAME_NAME);
+					}
 				}
 			}, 40l);
 
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				@Override
 				public void run() {
-					Titles.sendTitle(p, 0, 80, 0, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "N'oubliez pas de "
-							+ ChatColor.LIGHT_PURPLE + "choisir une classe" + ChatColor.WHITE + " !");
+					if(!plugin.getTutorialDisplayer().isWatchingTutorial(p.getUniqueId())) {
+						Titles.sendTitle(p, 0, 80, 0, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "N'oubliez pas de "
+								+ ChatColor.LIGHT_PURPLE + "choisir une classe" + ChatColor.WHITE + " !");
+					}
 				}
 			}, 120l);
 			
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				@Override
 				public void run() {
-					Titles.sendTitle(p, 0, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "Un "
-							+ ChatColor.GOLD + "tutoriel" + ChatColor.WHITE + " est mis à disposition !");
+					if(!plugin.getTutorialDisplayer().isWatchingTutorial(p.getUniqueId())) {
+						Titles.sendTitle(p, 0, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "Un "
+								+ ChatColor.GOLD + "tutoriel" + ChatColor.WHITE + " est mis à disposition !");
+					}
 				}
-			}, 120l);
+			}, 200l);
 		}
+
 		for (Player player : p.getServer().getOnlinePlayers()) {
-			if (plugin.getGamePlayer(player).isWatchingTutorial() && !player.equals(p)) {
+			if (plugin.getTutorialDisplayer().isWatchingTutorial(player.getUniqueId()) && !player.equals(p)) {
 				player.hidePlayer(p);
 				p.hidePlayer(player);
 			}

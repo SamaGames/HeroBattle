@@ -97,7 +97,7 @@ public class CountdownTimer {
 					}
 
 					for (Player player : p.getServer().getOnlinePlayers()) {
-						if (!p.getGamePlayer(player).isWatchingTutorial()) {
+						if (!p.getTutorialDisplayer().isWatchingTutorial(player.getUniqueId())) {
 							Titles.sendTitle(player, 2, 16, 2, color + "" + seconds, "");
 						}
 					}

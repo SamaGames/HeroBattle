@@ -246,4 +246,11 @@ public class GameListener implements Listener {
 			}
 		}
 	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerToggleFly(PlayerToggleFlightEvent e) {
+		if (plugin.getTutorialDisplayer().isWatchingTutorial(e.getPlayer().getUniqueId())) {
+			e.setCancelled(true);
+		}
+	}
 }
