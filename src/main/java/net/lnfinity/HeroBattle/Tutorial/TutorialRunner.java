@@ -68,9 +68,10 @@ public class TutorialRunner implements Runnable {
 		);
 
 		// Chat version
-		if(currentText == 0) player.sendMessage(tutorialInChatPrefix + chapter.getTitle());
-		player.sendMessage(tutorialInChatPrefix + chapter.getContent().get(currentText));
-
+		if(chapter.isDisplayedInChat()) {
+			if (currentText == 0) player.sendMessage(tutorialInChatPrefix + chapter.getTitle());
+			player.sendMessage(tutorialInChatPrefix + chapter.getContent().get(currentText));
+		}
 
 		// Next one?
 		currentText++;

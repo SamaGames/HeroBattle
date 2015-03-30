@@ -19,6 +19,8 @@ public class TutorialChapter {
 	private String title;
 	private List<String> content = new LinkedList<>();
 
+	private boolean displayInChat = true;
+
 
 	/**
 	 * @param location The watching point of the chapter.
@@ -29,6 +31,17 @@ public class TutorialChapter {
 		this.location = location;
 		this.title = title;
 		this.content = content;
+	}
+
+	/**
+	 * @param location The watching point of the chapter.
+	 * @param title The title of this chapter.
+	 * @param content The content of this chapter.
+	 */
+	public TutorialChapter(Location location, String title, List<String> content, boolean displayInChat) {
+		this(location, title, content);
+
+		this.displayInChat = displayInChat;
 	}
 
 
@@ -66,5 +79,13 @@ public class TutorialChapter {
 	 */
 	public List<String> getContent() {
 		return content;
+	}
+
+	/**
+	 * Returns true if this has to be displayed in the chat.
+	 * @return
+	 */
+	public boolean isDisplayedInChat() {
+		return displayInChat;
 	}
 }

@@ -41,7 +41,8 @@ public class TutorialDisplayer {
 				HeroBattle.GAME_NAME_BICOLOR,
 				Arrays.asList(
 						"Comment jouer ?"
-				)
+				),
+				false
 		));
 
 		content.add(new TutorialChapter(
@@ -87,7 +88,8 @@ public class TutorialDisplayer {
 				HeroBattle.GAME_NAME_BICOLOR,
 				Arrays.asList(
 						"Bon jeu et bonne chance !"
-				)
+				),
+				false
 		));
 
 
