@@ -49,7 +49,7 @@ public class TutorialRunner implements Runnable {
 		// Delays of fade-in, fade-out and display
 		int fadeIn      = (currentText == 0) ? 10 : 0;
 		int fadeOut     = (currentText == chapter.getContent().size() - 1) ? 10 : 0;
-		int readingTime = (int) ((fadeIn == 10 || fadeOut == 10) ? TutorialDisplayer.READING_TIME - 10 : TutorialDisplayer.READING_TIME);
+		int readingTime = (int) (fadeOut == 10 ? TutorialDisplayer.READING_TIME - 10 : TutorialDisplayer.READING_TIME + 5);
 
 
 		// New chapter, new location
