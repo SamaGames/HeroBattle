@@ -74,7 +74,7 @@ public class MasterListener implements Listener {
 
 		plugin.getGame().equipPlayer(p);
 
-		if (plugin.getTimer().getSecondsLeft() > 15) {
+		if (!plugin.getTimer().isEnabled() || plugin.getTimer().getSecondsLeft() > 15) {
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				@Override
 				public void run() {
