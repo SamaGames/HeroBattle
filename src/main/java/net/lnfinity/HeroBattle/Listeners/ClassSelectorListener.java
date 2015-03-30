@@ -71,9 +71,6 @@ public class ClassSelectorListener implements Listener {
 
 					selectClass(player, null);
 					player.closeInventory();
-				} else if (e.getCurrentItem().equals(createTutorialItem())) {
-					p.getTutorialDisplayer().start(player.getUniqueId());
-					player.closeInventory();
 				} else {
 					player.closeInventory();
 				}
@@ -101,8 +98,13 @@ public class ClassSelectorListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		if (e.hasItem() && e.getItem().getType() == Material.NETHER_STAR) {
-			createSelector(e.getPlayer());
+		if (e.hasItem()) {
+			if (e.getItem().getType() == Material.NETHER_STAR) {
+				createSelector(e.getPlayer());
+			}
+			else if(e.getItem().getType() == Material.BOOK) {
+				p.getTutorialDisplayer().start(e.getPlayer().getUniqueId());
+			}
 		}
 	}
 
@@ -137,9 +139,6 @@ public class ClassSelectorListener implements Listener {
 		}
 
 		inv.setItem(inv.getSize() - 1, createExitItem());
-		if (p.getGame().getTutorialLocations() != null) {
-			inv.setItem(inv.getSize() - 9, createTutorialItem());
-		}
 
 		// Contenu conservé pour son contenu (classes)
 		// inv.addItem(createItem(Material.DIAMOND_CHESTPLATE, "Brute",
@@ -326,26 +325,6 @@ public class ClassSelectorListener implements Listener {
 		door.setItemMeta(meta);
 
 		return door;
-	}
-
-	public ItemStack createTutorialItem() {
-		ItemStack book = new ItemStack(Material.BOOK);
-
-		ItemMeta meta = book.getItemMeta();
-		meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Voir le Tutoriel");
-		meta.setLore(Arrays.asList("", ChatColor.GRAY + "Assistez à un tutoriel interactif !"));
-		book.setItemMeta(meta);
-		GlowEffect.addGlow(book);
-
-		return book;
-	}
-
-	public ItemStack createViewTutorialItem() {
-		ItemStack animation = new ItemStack(Material.ITEM_FRAME);
-		ItemMeta meta = animation.getItemMeta();
-		meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Voir le tutoriel animé");
-		animation.setItemMeta(meta);
-		return animation;
 	}
 
 	/**

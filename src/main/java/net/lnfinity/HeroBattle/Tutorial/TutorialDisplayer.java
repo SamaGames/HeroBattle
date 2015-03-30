@@ -95,8 +95,6 @@ public class TutorialDisplayer {
 		for(TutorialChapter chapter : content) {
 			timeNeededToPlayThisTutorial += READING_TIME * chapter.getContent().size();
 		}
-
-		p.getLogger().info("Time needed to display the tutorial: " + timeNeededToPlayThisTutorial + " ticks (" + ((int) (timeNeededToPlayThisTutorial / 20)) + " seconds).");
 	}
 
 	/**
@@ -143,6 +141,9 @@ public class TutorialDisplayer {
 			other.hidePlayer(player);
 		}
 
+		// It's ugly without that. PERFECTIONIST IN THE PLACE.
+		player.getInventory().setHeldItemSlot(2);
+
 
 		// The tutorial is started
 		viewers.put(
@@ -177,6 +178,9 @@ public class TutorialDisplayer {
 
 			// The player is teleported back to the Hub
 			p.getGame().teleportHub(id);
+
+			// See start()
+			player.getInventory().setHeldItemSlot(0);
 		}
 
 		try {

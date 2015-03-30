@@ -72,12 +72,6 @@ public class MasterListener implements Listener {
 
 		plugin.getGame().equipPlayer(p);
 
-		p.getInventory().setItem(8, plugin.getCoherenceMachine().getLeaveItem());
-
-		p.updateInventory();
-
-		p.getInventory().setHeldItemSlot(0);
-
 		if (plugin.getTimer().getSecondsLeft() > 15) {
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				@Override

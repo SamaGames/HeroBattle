@@ -17,6 +17,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.types.GameArena;
+import net.samagames.utils.GlowEffect;
 import net.samagames.utils.Titles;
 import net.zyuiop.MasterBundle.MasterBundle;
 import net.zyuiop.MasterBundle.StarsManager;
@@ -527,13 +528,36 @@ public class Game implements GameArena {
 	}
 	
 	public void equipPlayer(Player player) {
+
+		// Class selector
 		ItemStack classSelectorItem = new ItemStack(Material.NETHER_STAR);
 		ItemMeta classSelectorItemMeta = classSelectorItem.getItemMeta();
-		classSelectorItemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Choisissez une " + ChatColor.DARK_PURPLE
-				+ "classe");
-		classSelectorItemMeta.setLore(Arrays.asList(ChatColor.GRAY + "Cliquez-droit pour choisir la classe",
-				ChatColor.GRAY + "avec laquelle vous allez jouer."));
+			classSelectorItemMeta.setDisplayName(
+					ChatColor.LIGHT_PURPLE + "Choisissez une " + ChatColor.DARK_PURPLE + "classe"
+			);
+			classSelectorItemMeta.setLore(Arrays.asList(
+					ChatColor.GRAY + "Cliquez-droit pour choisir la classe",
+					ChatColor.GRAY + "avec laquelle vous allez jouer."
+			));
 		classSelectorItem.setItemMeta(classSelectorItemMeta);
 		player.getInventory().setItem(0, classSelectorItem);
+
+
+		// Tutorial
+		ItemStack tutorialItem = new ItemStack(Material.BOOK);
+		ItemMeta meta = tutorialItem.getItemMeta();
+			meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Voir le Tutoriel");
+			meta.setLore(Arrays.asList("", ChatColor.GRAY + "Assistez à un tutoriel interactif !"));
+		tutorialItem.setItemMeta(meta);
+		GlowEffect.addGlow(tutorialItem);
+		player.getInventory().setItem(4, tutorialItem);
+
+		// Leave item
+		player.getInventory().setItem(8, p.getCoherenceMachine().getLeaveItem());
+
+
+		player.updateInventory();
+		player.getInventory().setHeldItemSlot(0);
+
 	}
 }
