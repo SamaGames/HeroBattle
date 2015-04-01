@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.Tools.Tool;
+import net.lnfinity.HeroBattle.Tools.SmokeTool;
+import net.lnfinity.HeroBattle.Tools.SwordVariant2Tool;
+import net.lnfinity.HeroBattle.Tools.ThunderTool;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -15,9 +17,9 @@ public class MageClass extends PlayerClass {
 
 		super(plugin);
 		
-		addTool(p.getToolsManager().getTool(Tool.SWORD_VARIANT2));
-		addTool(p.getToolsManager().getTool(Tool.SMOKE));
-		addTool(p.getToolsManager().getTool(Tool.THUNDER));
+		addTool(new SwordVariant2Tool(p));
+		addTool(new SmokeTool(p, 30, 8));
+		addTool(new ThunderTool(p, 120));
 	}
 
 	@Override

@@ -26,6 +26,7 @@ public class GamePlayer {
 	private boolean doubleDamages = false;
 	private boolean isInvisible = false;
 	private UUID lastDamager = null;
+	private List<PlayerClass> avaible = new ArrayList<PlayerClass>();
 	private List<Task> tasks = new ArrayList<Task>();
 
 	public GamePlayer(UUID id) {
@@ -151,5 +152,13 @@ public class GamePlayer {
 			}
 		}
 		return false;
+	}
+
+	public List<PlayerClass> getAvaibleClasses() {
+		return avaible;
+	}
+
+	public void setAvaibleClasses(List<PlayerClass> avaible) {
+		this.avaible = avaible;
 	}
 }

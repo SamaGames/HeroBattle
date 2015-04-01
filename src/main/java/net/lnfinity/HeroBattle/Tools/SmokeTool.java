@@ -20,10 +20,13 @@ import org.bukkit.potion.PotionEffectType;
 
 public class SmokeTool extends PlayerTool {
 
-	private final int COOLDOWN = 30;
+	private final int COOLDOWN;
+	private final int EFFECT_DURATION;
 
-	public SmokeTool(HeroBattle p) {
+	public SmokeTool(HeroBattle p, int cooldown, int duration) {
 		super(p);
+		COOLDOWN = cooldown;
+		EFFECT_DURATION = duration;
 	}
 
 	@Override
@@ -61,7 +64,7 @@ public class SmokeTool extends PlayerTool {
 				loc.setZ(loc.getZ() + 5 - ((int) (Math.random() * ((10 - 0) + 0))));
 				player.getWorld().playEffect(loc, Effect.EXPLOSION_HUGE, 10, 10);
 			}
-			player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 8 * 20, 0, false, false));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, EFFECT_DURATION * 20, 0, false, false));
 			player.getWorld().playSound(player.getLocation(), Sound.BAT_LOOP, 1, 2);
 			p.getGamePlayer(player).setInvisible(true);
 			p.getGame().updatePlayerArmor(player);

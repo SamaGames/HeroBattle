@@ -19,12 +19,14 @@ import org.bukkit.util.Vector;
 
 public class ArrowsTool extends PlayerTool {
 
-	private final int COOLDOWN = 45; // seconds
-	private final int ARROWS_TO_FIRE = 3;
+	private final int COOLDOWN; // seconds
+	private final int ARROWS_TO_FIRE;
 	private int taskId;
 
-	public ArrowsTool(HeroBattle plugin) {
+	public ArrowsTool(HeroBattle plugin, int cooldown, int count) {
 		super(plugin);
+		COOLDOWN = cooldown;
+		ARROWS_TO_FIRE = count;
 	}
 
 	@Override

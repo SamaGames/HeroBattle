@@ -20,15 +20,18 @@ import org.bukkit.potion.PotionEffectType;
 
 public class InkTool extends PlayerTool {
 
-	private final int COOLDOWN = 60; // seconds
-	private final int EFFECT_DURATION = 10; // seconds
-	private final double PROBABILITY_SENDER_HIT = 0.1;
+	private final int COOLDOWN; // seconds
+	private final int EFFECT_DURATION; // seconds
+	private final double PROBABILITY_SENDER_HIT;
 
 	private Random random = null;
 
-	public InkTool(HeroBattle plugin) {
+	public InkTool(HeroBattle plugin, int cooldown, int duration, double probability) {
 		super(plugin);
-
+		COOLDOWN = cooldown;
+		EFFECT_DURATION = duration;
+		PROBABILITY_SENDER_HIT = probability;
+		
 		random = new Random();
 	}
 

@@ -10,14 +10,13 @@ import net.lnfinity.HeroBattle.Class.ClassManager;
 import net.lnfinity.HeroBattle.Game.Game;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Game.ScoreboardManager;
-import net.lnfinity.HeroBattle.Tutorial.TutorialDisplayer;
 import net.lnfinity.HeroBattle.Listeners.ClassSelectorListener;
 import net.lnfinity.HeroBattle.Listeners.CommandListener;
 import net.lnfinity.HeroBattle.Listeners.GameListener;
 import net.lnfinity.HeroBattle.Listeners.MasterListener;
 import net.lnfinity.HeroBattle.Listeners.SystemListener;
 import net.lnfinity.HeroBattle.Powerups.PowerupManager;
-import net.lnfinity.HeroBattle.Tools.ToolsManager;
+import net.lnfinity.HeroBattle.Tutorial.TutorialDisplayer;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.lnfinity.HeroBattle.Utils.GameTimer;
 import net.md_5.bungee.api.ChatColor;
@@ -48,7 +47,6 @@ public class HeroBattle extends JavaPlugin {
 	private GameTimer gameTimer;
 
 	private ClassManager classManager;
-	private ToolsManager toolsManager;
 	private PowerupManager powerupManager;
 
 	private ScoreboardManager scoreboardManager;
@@ -104,7 +102,6 @@ public class HeroBattle extends JavaPlugin {
 		timer = new CountdownTimer(this);
 		g = new Game(this);
 		gameTimer = new GameTimer(this, this.getArenaConfig().getInt("map.gameTime"));
-		toolsManager = new ToolsManager(this);
 		classManager = new ClassManager(this);
 		scoreboardManager = new ScoreboardManager(this);
 		powerupManager = new PowerupManager(this);
@@ -183,10 +180,6 @@ public class HeroBattle extends JavaPlugin {
 
 	public ClassManager getClassManager() {
 		return classManager;
-	}
-
-	public ToolsManager getToolsManager() {
-		return toolsManager;
 	}
 
 	public ScoreboardManager getScoreboardManager() {

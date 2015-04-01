@@ -17,10 +17,11 @@ import org.bukkit.inventory.ItemStack;
 
 public class EarthquakeTool extends PlayerTool {
 
-	public final int COOLDOWN = 30;
+	public final int COOLDOWN;
 
-	public EarthquakeTool(HeroBattle plugin) {
+	public EarthquakeTool(HeroBattle plugin, int cooldown) {
 		super(plugin);
+		COOLDOWN = cooldown;
 	}
 
 	@Override

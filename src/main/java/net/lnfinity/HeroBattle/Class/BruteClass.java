@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.Tools.Tool;
+import net.lnfinity.HeroBattle.Tools.EarthquakeTool;
+import net.lnfinity.HeroBattle.Tools.NauseaTool;
+import net.lnfinity.HeroBattle.Tools.SwordTool;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -15,9 +17,9 @@ public class BruteClass extends PlayerClass {
 
 		super(plugin);
 
-		addTool(p.getToolsManager().getTool(Tool.SWORD));
-		addTool(p.getToolsManager().getTool(Tool.EARTHQUAKE));
-		addTool(p.getToolsManager().getTool(Tool.NAUSEA));
+		addTool(new SwordTool(p));
+		addTool(new EarthquakeTool(p, 30));
+		addTool(new NauseaTool(p, 60, 10, 0.1));
 	}
 
 	@Override

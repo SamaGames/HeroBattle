@@ -185,20 +185,18 @@ public class GameListener implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		final Player p = e.getPlayer();
+		final GamePlayer gamePlayer = plugin.getGamePlayer(p);
 
 		if (e.hasItem() && e.getItem().getType() != Material.AIR && e.getItem().hasItemMeta()
 				&& e.getItem().getItemMeta().hasDisplayName()) {
 
 			ItemStack item = e.getItem();
-			String toolName = item.getItemMeta().getDisplayName();
 
-			PlayerTool tool = plugin.getToolsManager().getToolByName(toolName);
-
-			if (tool != null) {
+			if (item != null && plugin.getGame().getStatus() == Status.InGame) {
 				if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-					tool.onRightClick(p, item, e);
+					gamePlayer.getPlayerClass().getTool(p.getInventory().getHeldItemSlot()).onRightClick(p, item, e);
 				} else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-					tool.onLeftClick(p, item, e);
+					gamePlayer.getPlayerClass().getTool(p.getInventory().getHeldItemSlot()).onLeftClick(p, item, e);
 				}
 			}
 		}

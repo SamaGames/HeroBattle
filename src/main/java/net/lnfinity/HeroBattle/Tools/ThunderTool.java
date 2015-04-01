@@ -18,12 +18,11 @@ public class ThunderTool extends PlayerTool {
 
 	HeroBattle p;
 
-	private final int COOLDOWN = 120; // seconds
+	private final int COOLDOWN; // seconds
 
-	public ThunderTool(HeroBattle plugin) {
+	public ThunderTool(HeroBattle plugin, int cooldown) {
 		super(plugin);
-
-		p = plugin;
+		COOLDOWN = cooldown;
 	}
 
 	@Override

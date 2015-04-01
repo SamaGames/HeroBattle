@@ -18,10 +18,13 @@ import org.bukkit.potion.PotionEffectType;
 
 public class SpeedTool extends PlayerTool {
 
-	private final int COOLDOWN = 20; // seconds
+	private final int COOLDOWN; // seconds
+	private final int EFFECT_DURATION;
 
-	public SpeedTool(HeroBattle plugin) {
+	public SpeedTool(HeroBattle plugin, int cooldown, int duration) {
 		super(plugin);
+		COOLDOWN = cooldown;
+		EFFECT_DURATION = duration;
 	}
 
 	@Override
@@ -55,7 +58,7 @@ public class SpeedTool extends PlayerTool {
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if(tool.containsEnchantment(GlowEffect.getGlow())) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, EFFECT_DURATION * 20, 1));
 			new ItemCooldown(p, player, this, COOLDOWN);
 		}
 		else {

@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.Tools.Tool;
+import net.lnfinity.HeroBattle.Tools.ArrowsTool;
+import net.lnfinity.HeroBattle.Tools.SpeedTool;
+import net.lnfinity.HeroBattle.Tools.SwordVariant3Tool;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -14,9 +16,9 @@ public class ArcherClass extends PlayerClass {
 	public ArcherClass(HeroBattle plugin) {
 		super(plugin);
 
-		addTool(p.getToolsManager().getTool(Tool.SWORD_VARIANT3));
-		addTool(p.getToolsManager().getTool(Tool.SPEED));
-		addTool(p.getToolsManager().getTool(Tool.ARROWS));
+		addTool(new SwordVariant3Tool(p));
+		addTool(new SpeedTool(p, 20, 5));
+		addTool(new ArrowsTool(p, 45, 3));
 	}
 
 	@Override

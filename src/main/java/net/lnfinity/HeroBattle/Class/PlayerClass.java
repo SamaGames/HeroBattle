@@ -91,6 +91,10 @@ public abstract class PlayerClass {
 	public List<PlayerTool> getTools() {
 		return tools;
 	}
+	
+	public PlayerTool getTool(int i) {
+		return tools.get(i);
+	}
 
 	/**
 	 * Adds a tool for this class.

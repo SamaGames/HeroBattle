@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.Tools.Tool;
+import net.lnfinity.HeroBattle.Tools.PowerTool;
+import net.lnfinity.HeroBattle.Tools.SpeedTool;
+import net.lnfinity.HeroBattle.Tools.SwordVariant1Tool;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -15,9 +17,9 @@ public class GuerrierClass extends PlayerClass {
 
 		super(plugin);
 		
-		addTool(p.getToolsManager().getTool(Tool.SWORD_VARIANT1));
-		addTool(p.getToolsManager().getTool(Tool.SPEED));
-		addTool(p.getToolsManager().getTool(Tool.POWER));
+		addTool(new SwordVariant1Tool(p));
+		addTool(new SpeedTool(p, 30, 20));
+		addTool(new PowerTool(p, 60, 10));
 	}
 
 	@Override

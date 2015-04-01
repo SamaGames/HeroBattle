@@ -20,11 +20,13 @@ import org.bukkit.potion.PotionEffectType;
 
 public class PowerTool extends PlayerTool {
 
-	private final int COOLDOWN = 60; // seconds
-	private final int EFFECT_DURATION = 10; // seconds
+	private final int COOLDOWN; // seconds
+	private final int EFFECT_DURATION; // seconds
 
-	public PowerTool(HeroBattle plugin) {
+	public PowerTool(HeroBattle plugin, int cooldown, int duration) {
 		super(plugin);
+		COOLDOWN = cooldown;
+		EFFECT_DURATION = duration;
 	}
 
 	@Override
