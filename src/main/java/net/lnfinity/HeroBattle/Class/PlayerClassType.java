@@ -5,7 +5,8 @@ public enum PlayerClassType {
 	BRUTE("brute"),
 	GUERRIER("guerrier"),
 	ARCHER("archer"),
-	MAGE("mage");
+	MAGE("mage"),
+	DRUIDE("druide");
 	
 	private final String id;
 	

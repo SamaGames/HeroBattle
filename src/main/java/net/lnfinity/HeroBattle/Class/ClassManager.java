@@ -32,11 +32,13 @@ public class ClassManager {
 		registerClass(new GuerrierClass(p));
 		registerClass(new ArcherClass(p));
 		registerClass(new MageClass(p));
+		registerClass(new DruideClass(p));
 
 		totalClasses.add(PlayerClassType.BRUTE);
 		totalClasses.add(PlayerClassType.GUERRIER);
 		totalClasses.add(PlayerClassType.ARCHER);
 		totalClasses.add(PlayerClassType.MAGE);
+		totalClasses.add(PlayerClassType.DRUIDE);
 	}
 
 	/**
@@ -137,6 +139,8 @@ public class ClassManager {
 			return new ArcherClass(p, arg1, arg2, arg3);
 		case MAGE:
 			return new MageClass(p, arg1, arg2, arg3);
+		case DRUIDE:
+			return new DruideClass(p, arg1, arg2, arg3);
 		}
 		return null;
 	}
@@ -151,7 +155,7 @@ public class ClassManager {
 
 	public boolean playerHasClass(GamePlayer gamePlayer, PlayerClassType type) {
 		for (int i = 0; i < gamePlayer.getAvaibleClasses().size(); ++i) {
-			if (gamePlayer.getAvaibleClasses().get(i).getType() == type) {
+			if (gamePlayer.getAvaibleClasses() != null && gamePlayer.getAvaibleClasses().get(i).getType() == type) {
 				return true;
 			}
 		}
