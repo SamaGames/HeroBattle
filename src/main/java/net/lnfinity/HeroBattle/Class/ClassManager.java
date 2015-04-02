@@ -86,15 +86,19 @@ public class ClassManager {
 	public void addPlayerClasses(final Player player) {
 		// TODO Warning, this may cause problems if the request is lost (somehow)
 		p.getServer().getScheduler().runTaskAsynchronously(p, new Runnable() {
+			private final String DEF = "{\"brute\":[\"0\",\"0\",\"0\"],\"guerrier\":[\"0\",\"0\",\"0\"],\"archer\":[\"0\",\"0\",\"0\"],\"mage\":[\"0\",\"0\",\"0\"]}";
 			@Override
 			public void run() {
 				GamePlayer gamePlayer = p.getGamePlayer(player);
 				String json;
 				if (MasterBundle.isDbEnabled) {
 					json = MasterBundle.jedis().hget("herobattle:playerdatas", player.getUniqueId().toString());
+					if(json == null || json == "" || json == "0") {
+						MasterBundle.jedis().set("herobattle:playerdatas", DEF);
+					}
 				} else {
 					// Default
-					json = "{\"brute\":[\"0\",\"0\",\"0\"],\"guerrier\":[\"3\",\"3\",\"0\"],\"archer\":[\"0\",\"0\",\"0\"],\"mage\":[\"0\",\"0\",\"0\"]}";
+					json = DEF;
 				}
 
 				JSONParser parser = new JSONParser();
