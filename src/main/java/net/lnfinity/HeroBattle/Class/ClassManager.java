@@ -68,13 +68,18 @@ public class ClassManager {
 	 * @return The class; {@code null} if there isn't any class registered with
 	 *         this name.
 	 */
-	public PlayerClass getClassFromName(String name) {
-		for (PlayerClass theClass : availableClasses) {
+	public PlayerClass getClassFromName(Player player, String name) {
+		GamePlayer gamePlayer = p.getGamePlayer(player);
+		for (PlayerClass theClass : gamePlayer.getAvaibleClasses()) {
 			if (theClass.getName().equals(name)) {
 				return theClass;
 			}
 		}
-
+		for (PlayerClass theClass : this.availableClasses) {
+			if (theClass.getName().equals(name)) {
+				return theClass;
+			}
+		}
 		return null;
 	}
 
@@ -89,7 +94,7 @@ public class ClassManager {
 					json = MasterBundle.jedis().hget("herobattle:playerdatas", player.getUniqueId().toString());
 				} else {
 					// Default
-					json = "{\"brute\":[\"0\",\"0\",\"0\"],\"guerrier\":[\"0\",\"0\",\"0\"],\"archer\":[\"0\",\"0\",\"0\"],\"mage\":[\"0\",\"0\",\"0\"]}";
+					json = "{\"brute\":[\"0\",\"0\",\"0\"],\"guerrier\":[\"3\",\"3\",\"0\"],\"archer\":[\"0\",\"0\",\"0\"],\"mage\":[\"0\",\"0\",\"0\"]}";
 				}
 
 				JSONParser parser = new JSONParser();

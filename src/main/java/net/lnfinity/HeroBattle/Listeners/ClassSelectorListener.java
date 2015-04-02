@@ -52,11 +52,10 @@ public class ClassSelectorListener implements Listener {
 					player.closeInventory();
 					return;
 				}
-
-				PlayerClass clickedClass = p.getClassManager().getClassFromName(
-						ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
-
 				GamePlayer gPlayer = p.getGamePlayer(player);
+				
+				PlayerClass clickedClass = p.getClassManager().getClassFromName(player, 
+						ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
 
 				if (clickedClass != null) {
 					if (e.getClick().isLeftClick()) {
@@ -88,8 +87,8 @@ public class ClassSelectorListener implements Listener {
 					createSelector(player);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName()
 						.equals(createUseThisClassItem(null).getItemMeta().getDisplayName())) {
-					if(p.getClassManager().playerHasClass(gamePlayer, p.getClassManager().getClassFromName(e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")).getType())) {
-						selectClass(player, p.getClassManager().getClassFromName(e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")));
+					if(p.getClassManager().playerHasClass(gamePlayer, p.getClassManager().getClassFromName(player, e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")).getType())) {
+						selectClass(player, p.getClassManager().getClassFromName(player, e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")));
 					} else {
 						player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
 					}

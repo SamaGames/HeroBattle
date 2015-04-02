@@ -21,8 +21,8 @@ public class MageClass extends PlayerClass {
 		super(plugin);
 
 		addTool(new SwordVariant2Tool(p));
-		addTool(new SmokeTool(p, 30, 8));
-		addTool(new ThunderTool(p, 120));
+		addTool(new SmokeTool(p, 30 - arg1 * 2, 8 + arg2));
+		addTool(new ThunderTool(p, 120 - arg1 * 4));
 	}
 
 	@Override

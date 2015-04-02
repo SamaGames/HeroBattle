@@ -21,8 +21,8 @@ public class GuerrierClass extends PlayerClass {
 		super(plugin);
 
 		addTool(new SwordVariant1Tool(p));
-		addTool(new SpeedTool(p, 30, 20));
-		addTool(new PowerTool(p, 60, 10));
+		addTool(new SpeedTool(p, 30 -  arg1 * 2, 8 + arg2));
+		addTool(new PowerTool(p, 60 - arg2 * 4, 10 + arg2));
 	}
 
 	@Override

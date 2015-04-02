@@ -21,8 +21,8 @@ public class BruteClass extends PlayerClass {
 		super(plugin);
 
 		addTool(new SwordTool(p));
-		addTool(new EarthquakeTool(p, 30));
-		addTool(new NauseaTool(p, 60, 10, 0.1));
+		addTool(new EarthquakeTool(p, 30 - arg1 * 2));
+		addTool(new NauseaTool(p, 60 - arg1 * 4, 10 + arg2, 0.25 - arg2 * 0.05));
 	}
 
 	@Override
