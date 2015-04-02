@@ -15,7 +15,7 @@ public abstract class PlayerClass {
 	public PlayerClass(HeroBattle plugin) {
 		p = plugin;
 	}
-
+	
 	/**
 	 * Returns the name of the class.
 	 *
@@ -115,6 +115,8 @@ public abstract class PlayerClass {
 	public boolean removeTool(PlayerTool tool) {
 		return tools.remove(tool);
 	}
+	
+	public abstract PlayerClassType getType();
 
 
 	@Override

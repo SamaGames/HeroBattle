@@ -14,9 +14,12 @@ import org.bukkit.inventory.ItemStack;
 public class GuerrierClass extends PlayerClass {
 
 	public GuerrierClass(HeroBattle plugin) {
+		this(plugin, 0, 0, 0);
+	}
 
+	public GuerrierClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
 		super(plugin);
-		
+
 		addTool(new SwordVariant1Tool(p));
 		addTool(new SpeedTool(p, 30, 20));
 		addTool(new PowerTool(p, 60, 10));
@@ -62,6 +65,11 @@ public class GuerrierClass extends PlayerClass {
 	@Override
 	public int getLives() {
 		return 4;
+	}
+
+	@Override
+	public PlayerClassType getType() {
+		return PlayerClassType.GUERRIER;
 	}
 
 }

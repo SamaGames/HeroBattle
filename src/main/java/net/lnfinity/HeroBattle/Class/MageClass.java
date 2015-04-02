@@ -14,9 +14,12 @@ import org.bukkit.inventory.ItemStack;
 public class MageClass extends PlayerClass {
 
 	public MageClass(HeroBattle plugin) {
+		this(plugin, 0, 0, 0);
+	}
 
+	public MageClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
 		super(plugin);
-		
+
 		addTool(new SwordVariant2Tool(p));
 		addTool(new SmokeTool(p, 30, 8));
 		addTool(new ThunderTool(p, 120));
@@ -62,6 +65,11 @@ public class MageClass extends PlayerClass {
 	@Override
 	public int getLives() {
 		return 3;
+	}
+
+	@Override
+	public PlayerClassType getType() {
+		return PlayerClassType.MAGE;
 	}
 
 }

@@ -50,6 +50,8 @@ public class MasterListener implements Listener {
 		p.setAllowFlight(false); // Temp disabled
 
 		plugin.getGame().teleportHub(p.getUniqueId());
+		
+		plugin.getClassManager().addPlayerClasses(p);
 
 		if (p.getName().equals("6infinity8") || p.getName().equals("AmauryPi")) {
 			plugin.getServer().broadcastMessage(

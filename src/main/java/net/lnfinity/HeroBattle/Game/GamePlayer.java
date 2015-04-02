@@ -161,4 +161,8 @@ public class GamePlayer {
 	public void setAvaibleClasses(List<PlayerClass> avaible) {
 		this.avaible = avaible;
 	}
+	
+	public void addAvaibleClass(PlayerClass theClass) {
+		this.avaible.add(theClass);
+	}
 }

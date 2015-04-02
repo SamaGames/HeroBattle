@@ -46,7 +46,7 @@ public class ClassSelectorListener implements Listener {
 	public void onInventoryClick(InventoryClickEvent e) {
 		if (e.getWhoClicked() instanceof Player && e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta()) {
 			Player player = (Player) e.getWhoClicked();
-
+			GamePlayer gamePlayer = p.getGamePlayer(player);
 			if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
 				if (e.getCurrentItem().equals(createExitItem())) {
 					player.closeInventory();
@@ -60,7 +60,11 @@ public class ClassSelectorListener implements Listener {
 
 				if (clickedClass != null) {
 					if (e.getClick().isLeftClick()) {
-						selectClass(player, clickedClass);
+						if(p.getClassManager().playerHasClass(gamePlayer, clickedClass.getType())) {
+							selectClass(player, clickedClass);
+						} else {
+							player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
+						}
 						player.closeInventory();
 
 					} else if (e.getClick().isRightClick()) {
@@ -84,10 +88,13 @@ public class ClassSelectorListener implements Listener {
 					createSelector(player);
 				} else if (e.getCurrentItem().getItemMeta().getDisplayName()
 						.equals(createUseThisClassItem(null).getItemMeta().getDisplayName())) {
-					selectClass(
-							player,
-							p.getClassManager().getClassFromName(
-									e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")));
+					if(p.getClassManager().playerHasClass(gamePlayer, p.getClassManager().getClassFromName(e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")).getType())) {
+						selectClass(player, p.getClassManager().getClassFromName(e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")));
+					} else {
+						player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
+					}
+					player.closeInventory();
+					
 					player.closeInventory();
 				}
 
@@ -109,7 +116,8 @@ public class ClassSelectorListener implements Listener {
 	}
 
 	public void createSelector(Player player) {
-		ArrayList<PlayerClass> classes = p.getClassManager().getAvailableClasses();
+		GamePlayer gamePlayer = p.getGamePlayer(player);
+		List<PlayerClass> classes = p.getClassManager().getAvailableClasses();
 		Integer inventorySize = (int) (Math.ceil(classes.size() / 9d) * 9) + 27;
 
 		Inventory inv = p.getServer().createInventory(player, inventorySize, TITLE_CLASS_SELECTOR);
@@ -123,10 +131,16 @@ public class ClassSelectorListener implements Listener {
 		// Available classes
 		Integer i = 9;
 		for (PlayerClass theClass : classes) {
-			inv.setItem(
-					isOnLastLine(i - 9, classesCount) ? shift + i : i,
-					createItem(theClass, p.getGamePlayer(player).getPlayerClass() != null
-							&& p.getGamePlayer(player).getPlayerClass().equals(theClass)));
+			if(p.getClassManager().playerHasClass(gamePlayer, theClass.getType())) {
+				inv.setItem(isOnLastLine(i - 9, classesCount) ? shift + i : i,
+						createItem(theClass, p.getGamePlayer(player).getPlayerClass() != null
+								&& p.getGamePlayer(player).getPlayerClass().equals(theClass)));
+			} else {
+				inv.setItem(isOnLastLine(i - 9, classesCount) ? shift + i : i,
+						createItem(theClass, p.getGamePlayer(player).getPlayerClass() != null
+								&& p.getGamePlayer(player).getPlayerClass().equals(theClass), false));
+			}
+			
 
 			i++;
 		}
@@ -135,7 +149,7 @@ public class ClassSelectorListener implements Listener {
 		Integer notYetFinalIndex = i + COMING_SOON_CLASSES_COUNT;
 		for (; i < notYetFinalIndex; i++) {
 			inv.setItem(isOnLastLine(i - 9, classesCount) ? shift + i : i,
-					createItem(new NotYetAvailableClass(p), false));
+					createItem(new NotYetAvailableClass(p), false, false));
 		}
 
 		inv.setItem(inv.getSize() - 1, createExitItem());
@@ -195,11 +209,17 @@ public class ClassSelectorListener implements Listener {
 	}
 
 	public ItemStack createItem(PlayerClass theClass, boolean isEnabled) {
+		return createItem(theClass, isEnabled, true);	
+	}
+	
+	public ItemStack createItem(PlayerClass theClass, boolean isEnabled, boolean avaible) {
 		ItemStack item = new ItemStack(theClass.getIcon());
 		ItemMeta meta = item.getItemMeta();
 
 		if (isEnabled) {
 			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + ChatColor.BOLD + "" + theClass.getName());
+		} else if(!avaible){
+			meta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + theClass.getName());
 		} else {
 			meta.setDisplayName(ChatColor.RESET + theClass.getName());
 		}

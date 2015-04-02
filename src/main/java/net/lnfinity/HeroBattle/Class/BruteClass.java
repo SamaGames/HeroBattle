@@ -14,7 +14,10 @@ import org.bukkit.inventory.ItemStack;
 public class BruteClass extends PlayerClass {
 
 	public BruteClass(HeroBattle plugin) {
+		this(plugin, 0, 0, 0);
+	}
 
+	public BruteClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
 		super(plugin);
 
 		addTool(new SwordTool(p));
@@ -62,6 +65,11 @@ public class BruteClass extends PlayerClass {
 	@Override
 	public int getMaxResistance() {
 		return 200;
+	}
+
+	@Override
+	public PlayerClassType getType() {
+		return PlayerClassType.BRUTE;
 	}
 
 }

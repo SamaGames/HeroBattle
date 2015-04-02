@@ -14,6 +14,10 @@ import org.bukkit.inventory.ItemStack;
 public class ArcherClass extends PlayerClass {
 
 	public ArcherClass(HeroBattle plugin) {
+		this(plugin, 0, 0, 0);
+	}
+
+	public ArcherClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
 		super(plugin);
 
 		addTool(new SwordVariant3Tool(p));
@@ -61,6 +65,11 @@ public class ArcherClass extends PlayerClass {
 	@Override
 	public int getLives() {
 		return 4;
+	}
+
+	@Override
+	public PlayerClassType getType() {
+		return PlayerClassType.ARCHER;
 	}
 
 }

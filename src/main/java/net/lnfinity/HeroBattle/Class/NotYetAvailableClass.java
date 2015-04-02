@@ -55,4 +55,9 @@ public class NotYetAvailableClass extends PlayerClass {
 	public int getMaxResistance() {
 		return 0;
 	}
+
+	@Override
+	public PlayerClassType getType() {
+		return null;
+	}
 }

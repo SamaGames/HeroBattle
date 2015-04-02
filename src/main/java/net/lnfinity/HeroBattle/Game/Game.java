@@ -197,10 +197,11 @@ public class Game implements GameArena {
 	}
 
 	public void chooseRandomClass(Player player) {
+		GamePlayer gamePlayer = p.getGamePlayer(player);
 		Random rnd = new Random();
-		int r = rnd.nextInt(p.getClassManager().getAvailableClasses().size());
+		int r = rnd.nextInt(gamePlayer.getAvaibleClasses().size());
 		int i = 0;
-		for (PlayerClass classe : p.getClassManager().getAvailableClasses()) {
+		for (PlayerClass classe : gamePlayer.getAvaibleClasses()) {
 			if (i == r) {
 				p.getGamePlayer(player).setPlayerClass(classe);
 				player.sendMessage(ChatColor.GREEN + "La classe " + ChatColor.DARK_GREEN + classe.getName()
