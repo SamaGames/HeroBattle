@@ -73,10 +73,12 @@ public class GameListener implements Listener {
 			}
 			if (e.getCause() == DamageCause.LIGHTNING) {
 				gp.setPercentage(gp.getPercentage() + 20 + (int) (Math.random() * ((50 - 20) + 20)));
-			} else if (e.getCause() == DamageCause.FIRE) {
+			} else if (e.getCause() == DamageCause.FIRE_TICK) {
 				gp.setPercentage(gp.getPercentage() + 2);
-			} else if (e.getCause() == DamageCause.WITHER) {
+			} else if (e.getCause() == DamageCause.POISON) {
 				gp.setPercentage(gp.getPercentage() + 3);
+			} else if (e.getCause() == DamageCause.WITHER) {
+				gp.setPercentage(gp.getPercentage() + 4);
 			}
 			p.setLevel(0);
 			p.setTotalExperience(0);

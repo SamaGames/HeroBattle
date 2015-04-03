@@ -39,6 +39,7 @@ public class ClassManager {
 		totalClasses.add(PlayerClassType.ARCHER);
 		totalClasses.add(PlayerClassType.MAGE);
 		totalClasses.add(PlayerClassType.DRUIDE);
+
 	}
 
 	/**

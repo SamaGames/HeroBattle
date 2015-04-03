@@ -10,6 +10,7 @@ import net.lnfinity.HeroBattle.Class.ClassManager;
 import net.lnfinity.HeroBattle.Game.Game;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Game.ScoreboardManager;
+import net.lnfinity.HeroBattle.Listeners.ClassSelectionCommand;
 import net.lnfinity.HeroBattle.Listeners.ClassSelectorListener;
 import net.lnfinity.HeroBattle.Listeners.CommandListener;
 import net.lnfinity.HeroBattle.Listeners.GameListener;
@@ -95,6 +96,8 @@ public class HeroBattle extends JavaPlugin {
 		CommandListener command = new CommandListener(this);
 		this.getCommand("start").setExecutor(command);
 		this.getCommand("forcestop").setExecutor(command);
+		
+		this.getCommand("classe").setExecutor(new ClassSelectionCommand(this));
 
 		for (Player player : getServer().getOnlinePlayers()) {
 			addGamePlayer(player);
@@ -125,6 +128,7 @@ public class HeroBattle extends JavaPlugin {
 	public void addOnlinePlayers() {
 		for (Player player : this.getServer().getOnlinePlayers()) {
 			this.addGamePlayer(player);
+			getClassManager().addPlayerClasses(player);
 		}
 	}
 

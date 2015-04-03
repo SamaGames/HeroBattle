@@ -16,3 +16,7 @@ commands:
     description: Force l'arrêt du jeu. Sachez ce que vous faites !
     aliases: [forcestop]
     usage: Vous n'avez pas les permissions requises !
+  classe:
+    description: Permet de choisir une classe.
+    aliases: [classe]
+    usage: /classe <classe>
