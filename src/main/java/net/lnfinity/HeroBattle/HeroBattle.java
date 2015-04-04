@@ -123,18 +123,6 @@ public class HeroBattle extends JavaPlugin {
 		g.setStatus(Status.Stopping);
 		GameAPI.getManager().sendSync();
 
-		// Saving Elos
-		this.getLogger().info("Trying to save players ELOs...");
-
-		if (MasterBundle.isDbEnabled) {
-			for (final GamePlayer gamePlayer : this.getGamePlayers().values()) {
-						int old = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo");
-						StatsApi.increaseStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo", gamePlayer.getElo() - old);
-			}
-		}
-
-		this.getLogger().info("Players ELO succefully syncronized !");
-
 		GameAPI.getManager().disable();
 	}
 

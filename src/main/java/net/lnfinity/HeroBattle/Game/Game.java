@@ -253,14 +253,14 @@ public class Game implements GameArena {
 								+ " a été poussé par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 								+ lives);
 				StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-				CoinsManager.creditJoueur(player.getUniqueId(), 3, true, true, "Un joueur poussé !");
+				CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur poussé !");
 				break;
 			case QUIT:
 				p.getServer().broadcastMessage(
 						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
 								+ " a quitté la partie");
 				StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-				CoinsManager.creditJoueur(player.getUniqueId(), 3, true, true, "Un froussard !");
+				CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un froussard !");
 				break;
 			case KO:
 				p.getServer().broadcastMessage(
@@ -268,7 +268,7 @@ public class Game implements GameArena {
 								+ " a été mis K.O. par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 								+ lives);
 				StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-				CoinsManager.creditJoueur(player.getUniqueId(), 3, true, true, "Un joueur K.O. !");
+				CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur K.O. !");
 				break;
 			}
 		}
@@ -391,6 +391,13 @@ public class Game implements GameArena {
 		StatsApi.increaseStat(player, p.getName(), "wins", 1);
 
 		calculateElos(id);
+		
+		if (MasterBundle.isDbEnabled) {
+			for (final GamePlayer gamePlayer : p.getGamePlayers().values()) {
+				int old = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo");
+				StatsApi.increaseStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo", gamePlayer.getElo() - old);
+			}
+		}
 		
 		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 			@Override
