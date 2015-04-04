@@ -128,13 +128,8 @@ public class HeroBattle extends JavaPlugin {
 
 		if (MasterBundle.isDbEnabled) {
 			for (final GamePlayer gamePlayer : this.getGamePlayers().values()) {
-				this.getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
-					@Override
-					public void run() {
 						int old = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo");
 						StatsApi.increaseStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo", gamePlayer.getElo() - old);
-					}
-				});
 			}
 		}
 

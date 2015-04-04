@@ -383,7 +383,7 @@ public class Game implements GameArena {
 		HBplayer.setPlaying(false);
 
 		p.getServer().broadcastMessage(
-				HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + " remporte la partie !");
+				HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + ChatColor.GREEN + ChatColor.BOLD + " remporte la partie !");
 		new WinnerFirework(p, 30, player);
 
 		StarsManager.creditJoueur(player, 1, "Victoire !");
@@ -397,8 +397,10 @@ public class Game implements GameArena {
 			public void run() {
 				for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
 					Player player = p.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
-					player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez désormais " + ChatColor.DARK_GREEN + gamePlayer.getElo() + ChatColor.GREEN + " points !");
-				}
+					if(player != null) {
+						player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez désormais " + ChatColor.DARK_GREEN + gamePlayer.getElo() + ChatColor.GREEN + " points !");
+					}
+				}	
 			}
 		}, 3 * 20l);
 		
