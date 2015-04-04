@@ -8,7 +8,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
-public class Utils {
+public final class Utils {
 
 	static Random rnd = new Random();
 
@@ -96,5 +96,9 @@ public class Utils {
 			}
 		}
 		return str;
+	}
+	
+	public static double logb(double a, double b) {
+			return Math.log(a) / Math.log(b);
 	}
 }

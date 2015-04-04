@@ -1,8 +1,7 @@
 package net.lnfinity.HeroBattle.Listeners;
 
-import java.util.Arrays;
-
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.events.FinishJoinPlayerEvent;
@@ -12,15 +11,11 @@ import net.zyuiop.MasterBundle.MasterBundle;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffectType;
 
 public class MasterListener implements Listener {
 
@@ -114,6 +109,33 @@ public class MasterListener implements Listener {
 				p.hidePlayer(player);
 			}
 		}
+		
+		final GamePlayer gamePlayer = plugin.getGamePlayer(p);
+		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+			@Override
+			public void run() {
+				int elo = 2000;
+				if (MasterBundle.isDbEnabled) {
+					elo = Integer.parseInt(MasterBundle.jedis().hget("herobattle:elo", p.getUniqueId().toString()));
+				} else {
+					// Default
+					elo = 2000;
+				}
+				if(elo < 1000) {
+					elo = 2000;
+				}
+				if(elo > 10000) {
+					elo = 10000;
+				}
+				gamePlayer.setElo(elo);
+				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+					@Override
+					public void run() {
+						p.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre niveau est actuellement de " + ChatColor.DARK_GREEN + gamePlayer.getElo());
+					}
+				}, 20L);
+			}
+		});
 
 		GameAPI.getManager().sendArena();
 	}
@@ -157,6 +179,10 @@ public class MasterListener implements Listener {
 		for (Player player : plugin.getServer().getOnlinePlayers()) {
 				player.showPlayer(ev.getPlayer());
 				ev.getPlayer().showPlayer(player);
+		}
+		
+		if(plugin.getGame().getStatus() != Status.InGame && plugin.getGame().getStatus() != Status.Stopping) {
+			plugin.removeGamePlayer(ev.getPlayer());
 		}
 		
 		GameAPI.getManager().sendArena();

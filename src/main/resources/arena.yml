@@ -39,3 +39,9 @@ map:
     # 0 if the map is bottomless.
     # The altitude of the bottom else (like the water/lava level, etc.).
     bottom: 0
+
+game:
+
+    # If value set to true, all games will be ranked and players Elo will change
+    # Should always be true
+    ranked: true

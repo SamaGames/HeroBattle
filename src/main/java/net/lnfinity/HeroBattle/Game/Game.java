@@ -390,6 +390,18 @@ public class Game implements GameArena {
 		CoinsManager.creditJoueur(player.getUniqueId(), 8, true, true, "Victoire !");
 		StatsApi.increaseStat(player, p.getName(), "wins", 1);
 
+		calculateElos(id);
+		
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
+					Player player = p.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
+					player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez désormais " + ChatColor.DARK_GREEN + gamePlayer.getElo() + ChatColor.GREEN + " points !");
+				}
+			}
+		}, 3 * 20l);
+		
 		if (MasterBundle.isDbEnabled) {
 			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
@@ -406,6 +418,49 @@ public class Game implements GameArena {
 					Bukkit.shutdown();
 				}
 			}, 30 * 20L);
+		}
+	}
+	
+	public void calculateElos(UUID winner) {
+		double total = 0; // Total
+		for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
+			if(gamePlayer.getElo() < 1000) { // Pour les nouveaux joueurs
+				gamePlayer.setElo(2000);
+			}
+			if(gamePlayer.getElo() > 10000) { // Ne devrait jamais arriver
+				gamePlayer.setElo(10000);
+			}
+			total += gamePlayer.getElo();
+		}
+		
+		for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
+			double esp = (gamePlayer.getElo() / total); // Espérance de gain pour gamePlayer
+			double k = 16;
+
+			if(gamePlayer.getPlayerUniqueID() == winner) { // Le joueur a gagné
+				int elo = gamePlayer.getElo();
+				k = 40 * ((total / p.getGamePlayers().size()) / elo);
+				int elo1 = (int) (k * (1 - esp));
+				double mult = 1;
+
+				mult = 1 / Utils.logb((elo + 1000)/1000, 2);
+				gamePlayer.setElo((int) (mult * elo1 + elo));
+				if(gamePlayer.getElo() > 10000) {
+					gamePlayer.setElo(10000);
+				}
+				
+			} else { // Le joueur n'a pas gagné
+				int elo = gamePlayer.getElo();
+				k = 40 * elo / (total / p.getGamePlayers().size());
+				int elo1 = (int) (k * - esp);
+				double mult = 1;
+
+				mult = Utils.logb((elo + 1000)/1000, 2);
+				gamePlayer.setElo((int) (mult * elo1 + elo));
+				if(gamePlayer.getElo() < 1000) {
+					gamePlayer.setElo(1000);
+				}
+			}
 		}
 	}
 

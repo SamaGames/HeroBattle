@@ -14,7 +14,7 @@ public class ItemCooldown {
 
 	private HeroBattle p;
 	private int seconds;
-	private int task;
+	private final int task;
 	private int slotId;
 	private OfflinePlayer player;
 

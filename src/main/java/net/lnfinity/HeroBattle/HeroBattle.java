@@ -21,10 +21,13 @@ import net.lnfinity.HeroBattle.Tutorial.TutorialDisplayer;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.lnfinity.HeroBattle.Utils.GameTimer;
 import net.md_5.bungee.api.ChatColor;
+import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.stats.StatsManager;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.themachine.CoherenceMachine;
 import net.samagames.shops.ShopsManager;
+import net.zyuiop.MasterBundle.MasterBundle;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -34,17 +37,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class HeroBattle extends JavaPlugin {
 
 	// Displayed name with misc. formats
-	public final static String GAME_NAME_WHITE        = "HeroBattle";
-	public final static String GAME_NAME              = ChatColor.LIGHT_PURPLE + GAME_NAME_WHITE;
-	public final static String GAME_NAME_BICOLOR      = ChatColor.DARK_PURPLE + "Hero" + ChatColor.LIGHT_PURPLE + "Battle";
-	public final static String GAME_NAME_BICOLOR_BOLD = ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero" + ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Battle";
+	public final static String GAME_NAME_WHITE = "HeroBattle";
+	public final static String GAME_NAME = ChatColor.LIGHT_PURPLE + GAME_NAME_WHITE;
+	public final static String GAME_NAME_BICOLOR = ChatColor.DARK_PURPLE + "Hero" + ChatColor.LIGHT_PURPLE + "Battle";
+	public final static String GAME_NAME_BICOLOR_BOLD = ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero"
+			+ ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Battle";
 
-	private static CoherenceMachine coherenceMachine  = GameAPI.getCoherenceMachine(GAME_NAME_WHITE);
-	public final static String GAME_TAG               = coherenceMachine.getGameTag();
-
+	private static CoherenceMachine coherenceMachine = GameAPI.getCoherenceMachine(GAME_NAME_WHITE);
+	public final static String GAME_TAG = coherenceMachine.getGameTag();
 
 	private Game g;
-	
+
 	private CountdownTimer timer;
 	private GameTimer gameTimer;
 
@@ -56,6 +59,8 @@ public class HeroBattle extends JavaPlugin {
 	private TutorialDisplayer tutorialDisplayer;
 
 	private Configuration arenaConfig;
+
+	private StatsManager statsManager;
 
 	private Map<UUID, GamePlayer> players = new HashMap<>();
 
@@ -96,7 +101,7 @@ public class HeroBattle extends JavaPlugin {
 		CommandListener command = new CommandListener(this);
 		this.getCommand("start").setExecutor(command);
 		this.getCommand("forcestop").setExecutor(command);
-		
+
 		this.getCommand("classe").setExecutor(new ClassSelectionCommand(this));
 
 		for (Player player : getServer().getOnlinePlayers()) {
@@ -115,15 +120,35 @@ public class HeroBattle extends JavaPlugin {
 
 		GameAPI.registerGame(getConfig().getString("gameName"), g);
 
+		if(MasterBundle.isDbEnabled)
+			statsManager = SamaGamesAPI.get().getStatsManager("herobattle");
+
 		g.setStatus(Status.Available);
 	}
 
 	public void onDisable() {
 		g.setStatus(Status.Stopping);
 		GameAPI.getManager().sendSync();
+
+		// Saving Elos
+		this.getLogger().info("Trying to save players ELOs...");
+
+		if (MasterBundle.isDbEnabled) {
+			for (final GamePlayer gamePlayer : this.getGamePlayers().values()) {
+				this.getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
+					@Override
+					public void run() {
+						statsManager.setValue(gamePlayer.getPlayerUniqueID(), "elo", gamePlayer.getElo());
+					}
+				});
+			}
+		}
+
+		this.getLogger().info("Players ELO succefully syncronized !");
+
 		GameAPI.getManager().disable();
 	}
-	
+
 	// For local debuging purpose only (/rl)
 	public void addOnlinePlayers() {
 		for (Player player : this.getServer().getOnlinePlayers()) {
@@ -178,7 +203,7 @@ public class HeroBattle extends JavaPlugin {
 	public CountdownTimer getTimer() {
 		return timer;
 	}
-	
+
 	public GameTimer getGameTimer() {
 		return gameTimer;
 	}
@@ -205,5 +230,9 @@ public class HeroBattle extends JavaPlugin {
 
 	public CoherenceMachine getCoherenceMachine() {
 		return coherenceMachine;
+	}
+
+	public StatsManager getStatsManager() {
+		return statsManager;
 	}
 }

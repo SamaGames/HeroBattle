@@ -17,6 +17,8 @@ public class GamePlayer {
 
 	private UUID playerID;
 	private String playerName;
+	
+	private int Elo = 0;
 
 	private PlayerClass classe = null;
 	private int doubleJump = 2;
@@ -124,7 +126,7 @@ public class GamePlayer {
 		if (getDoubleJump() > 0) {
 			setDoubleJump(getDoubleJump() - 1);
 			Vector direction = player.getLocation().getDirection().multiply(0.5);
-			Vector vector = new Vector(direction.getX(), 1.5, direction.getZ());
+			Vector vector = new Vector(direction.getX(), 1.3, direction.getZ());
 			player.setVelocity(vector);
 		}
 	}
@@ -164,5 +166,13 @@ public class GamePlayer {
 	
 	public void addAvaibleClass(PlayerClass theClass) {
 		this.avaible.add(theClass);
+	}
+
+	public int getElo() {
+		return Elo;
+	}
+
+	public void setElo(int elo) {
+		Elo = elo;
 	}
 }

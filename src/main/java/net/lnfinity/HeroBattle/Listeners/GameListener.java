@@ -186,6 +186,7 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
+		e.setCancelled(true);
 		final Player p = e.getPlayer();
 		final GamePlayer gamePlayer = plugin.getGamePlayer(p);
 
