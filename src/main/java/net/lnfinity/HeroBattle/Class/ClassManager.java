@@ -14,6 +14,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import redis.clients.jedis.ShardedJedis;
+
 public class ClassManager {
 
 	private HeroBattle p;
@@ -95,10 +97,13 @@ public class ClassManager {
 				GamePlayer gamePlayer = p.getGamePlayer(player);
 				String json;
 				if (MasterBundle.isDbEnabled) {
-					json = MasterBundle.jedis().hget("herobattle:playerdatas", player.getUniqueId().toString());
+					ShardedJedis jedis = MasterBundle.jedis();
+					json = jedis.hget("herobattle:playerdatas", player.getUniqueId().toString());
 					if(json == null || json == "" || json == "0") {
-						MasterBundle.jedis().set("herobattle:playerdatas", DEF);
+						MasterBundle.jedis().hset("herobattle:playerdatas",  player.getUniqueId().toString(), DEF);
+						json = DEF;
 					}
+					jedis.close();
 				} else {
 					// Default
 					json = DEF;

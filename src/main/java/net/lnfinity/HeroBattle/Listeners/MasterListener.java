@@ -8,6 +8,7 @@ import net.samagames.gameapi.events.FinishJoinPlayerEvent;
 import net.samagames.gameapi.json.Status;
 import net.samagames.utils.Titles;
 import net.zyuiop.MasterBundle.MasterBundle;
+import net.zyuiop.statsapi.StatsApi;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -116,7 +117,7 @@ public class MasterListener implements Listener {
 			public void run() {
 				int elo = 2000;
 				if (MasterBundle.isDbEnabled) {
-					elo = Integer.parseInt(MasterBundle.jedis().hget("herobattle:elo", p.getUniqueId().toString()));
+					elo = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo");
 				} else {
 					// Default
 					elo = 2000;

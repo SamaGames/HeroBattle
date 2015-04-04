@@ -21,13 +21,11 @@ import net.lnfinity.HeroBattle.Tutorial.TutorialDisplayer;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
 import net.lnfinity.HeroBattle.Utils.GameTimer;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.api.SamaGamesAPI;
-import net.samagames.api.stats.StatsManager;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.themachine.CoherenceMachine;
-import net.samagames.shops.ShopsManager;
 import net.zyuiop.MasterBundle.MasterBundle;
+import net.zyuiop.statsapi.StatsApi;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -59,8 +57,6 @@ public class HeroBattle extends JavaPlugin {
 	private TutorialDisplayer tutorialDisplayer;
 
 	private Configuration arenaConfig;
-
-	private StatsManager statsManager;
 
 	private Map<UUID, GamePlayer> players = new HashMap<>();
 
@@ -120,9 +116,6 @@ public class HeroBattle extends JavaPlugin {
 
 		GameAPI.registerGame(getConfig().getString("gameName"), g);
 
-		if(MasterBundle.isDbEnabled)
-			statsManager = SamaGamesAPI.get().getStatsManager("herobattle");
-
 		g.setStatus(Status.Available);
 	}
 
@@ -138,7 +131,8 @@ public class HeroBattle extends JavaPlugin {
 				this.getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
 					@Override
 					public void run() {
-						statsManager.setValue(gamePlayer.getPlayerUniqueID(), "elo", gamePlayer.getElo());
+						int old = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo");
+						StatsApi.increaseStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo", gamePlayer.getElo() - old);
 					}
 				});
 			}
@@ -230,9 +224,5 @@ public class HeroBattle extends JavaPlugin {
 
 	public CoherenceMachine getCoherenceMachine() {
 		return coherenceMachine;
-	}
-
-	public StatsManager getStatsManager() {
-		return statsManager;
 	}
 }
