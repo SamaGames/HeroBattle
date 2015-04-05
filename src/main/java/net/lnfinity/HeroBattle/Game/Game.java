@@ -1,5 +1,6 @@
 package net.lnfinity.HeroBattle.Game;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -119,6 +120,9 @@ public class Game implements GameArena {
 
 		for (Player player : p.getServer().getOnlinePlayers()) {
 			Titles.sendTitle(player, 2, 38, 6, ChatColor.AQUA + "C'est parti !", "");
+			if(MasterBundle.isDbEnabled) {
+				StatsApi.increaseStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "played", 1);
+			}
 		}
 
 		setStatus(Status.InGame);
@@ -415,6 +419,14 @@ public class Game implements GameArena {
 				}	
 			}
 		}, 3 * 20l);
+		
+		// Statistics to adapt classes
+		try {
+			URL u = new URL("http://lnfinity.net/tasks/herobattle-stats?v=1&s=" + MasterBundle.getServerName() + "&m=" + p.getGame().getMapName() + "&p=" + p.getGamePlayers().size() + "&d=" + p.getGameTimer().getFormattedTime() + "&w=" + player.getName() + "&we=" + HBplayer.getElo() + "&wc=" + HBplayer.getPlayerClass().getType().toString().toLowerCase());
+			u.openStream();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		
 		if (MasterBundle.isDbEnabled) {
 			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
