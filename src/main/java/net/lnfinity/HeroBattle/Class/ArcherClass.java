@@ -22,7 +22,7 @@ public class ArcherClass extends PlayerClass {
 
 		addTool(new SwordVariant3Tool(p));
 		addTool(new SpeedTool(p, 20 - arg1 * 2, 5 + arg2));
-		addTool(new ArrowsTool(p, 45 - 3 * arg1, 3 + arg2));
+		addTool(new ArrowsTool(p, 20 - arg1, 3 + arg2));
 	}
 
 	@Override

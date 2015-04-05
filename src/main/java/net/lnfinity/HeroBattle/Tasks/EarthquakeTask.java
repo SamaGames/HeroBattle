@@ -1,6 +1,7 @@
 package net.lnfinity.HeroBattle.Tasks;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Utils.Utils;
 
 import org.bukkit.Effect;
 import org.bukkit.Sound;
@@ -26,7 +27,7 @@ public class EarthquakeTask extends Task {
 		for(Entity e : player.getNearbyEntities(4, 4, 4)) {
 			if(e instanceof Player) {
 				Player damaged = (Player) e;
-				p.getGamePlayer(damaged).setPercentage(p.getGamePlayer(damaged).getPercentage() + 10 + (int) (Math.random() * ((20 - 10) + 10)));
+				p.getGamePlayer(damaged).setPercentage(p.getGamePlayer(damaged).getPercentage() + Utils.randomNumber(20, 50));
 				damaged.damage(0);
 			}
 		}

@@ -98,7 +98,7 @@ public class GameListener implements Listener {
 			final GamePlayer gamePlayer = plugin.getGamePlayer(player);
 			if (e.getDamager() instanceof Player) {
 				// Devrait *enfin* fonctionner !
-				final float reducer = 25.0F;
+				final float reducer = 20.0F;
 				final Player damager = (Player) e.getDamager();
 				final GamePlayer gameDamager = plugin.getGamePlayer(damager);
 				Vector v = player.getVelocity().add(
@@ -175,7 +175,7 @@ public class GameListener implements Listener {
 
 					player.setLevel(0);
 				} else {
-					gamePlayer.setPercentage(damages);
+					gamePlayer.setPercentage(damages + gamePlayer.getPercentage());
 					gamePlayer.setLastDamager(((Player) arrow.getShooter()).getUniqueId());
 					player.setLevel(damages);
 				}
