@@ -18,6 +18,7 @@ public class GamePlayer {
 	private UUID playerID;
 	private String playerName;
 	
+	private int originalElo = 0;
 	private int Elo = 0;
 
 	private PlayerClass classe = null;
@@ -166,6 +167,14 @@ public class GamePlayer {
 	
 	public void addAvaibleClass(PlayerClass theClass) {
 		this.avaible.add(theClass);
+	}
+	
+	public int getOriginalElo() {
+		return originalElo;
+	}
+
+	public void setOriginalElo(int originalElo) {
+		this.originalElo = originalElo;
 	}
 
 	public int getElo() {

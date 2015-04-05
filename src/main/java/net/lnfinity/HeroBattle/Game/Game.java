@@ -394,8 +394,8 @@ public class Game implements GameArena {
 		
 		if (MasterBundle.isDbEnabled) {
 			for (final GamePlayer gamePlayer : p.getGamePlayers().values()) {
-				int old = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo");
-				StatsApi.increaseStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo", gamePlayer.getElo() - old);
+				int old = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), HeroBattle.GAME_NAME_WHITE, "elo");
+				StatsApi.increaseStat(gamePlayer.getPlayerUniqueID(), HeroBattle.GAME_NAME_WHITE, "elo", gamePlayer.getElo() - old);
 			}
 		}
 		
@@ -405,7 +405,12 @@ public class Game implements GameArena {
 				for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
 					Player player = p.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
 					if(player != null) {
-						player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez désormais " + ChatColor.DARK_GREEN + gamePlayer.getElo() + ChatColor.GREEN + " points !");
+						int change = gamePlayer.getElo() - gamePlayer.getOriginalElo();
+						if(change >= 0) {
+							player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN +  "ELO" + ChatColor.GREEN + " augmente de " + ChatColor.DARK_GREEN + change + ChatColor.GREEN + " (" + ChatColor.DARK_GREEN + gamePlayer.getElo() + ChatColor.GREEN + ")");
+						} else if(change < 0) {
+							player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN +  "ELO" + ChatColor.GREEN + " diminue de " + ChatColor.RED + Math.abs(change) + ChatColor.GREEN + " (" + ChatColor.DARK_GREEN + gamePlayer.getElo() + ChatColor.GREEN + ")");
+						}
 					}
 				}	
 			}

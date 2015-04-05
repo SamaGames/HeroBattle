@@ -18,7 +18,7 @@ import redis.clients.jedis.ShardedJedis;
 
 public class ClassManager {
 
-	private HeroBattle p;
+	private final HeroBattle p;
 	private List<PlayerClassType> totalClasses = new ArrayList<PlayerClassType>();
 
 	private List<PlayerClass> availableClasses = new ArrayList<PlayerClass>();

@@ -117,7 +117,7 @@ public class MasterListener implements Listener {
 			public void run() {
 				int elo = 2000;
 				if (MasterBundle.isDbEnabled) {
-					elo = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), "herobattle", "elo");
+					elo = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), HeroBattle.GAME_NAME_WHITE, "elo");
 				} else {
 					// Default
 					elo = 2000;
@@ -129,10 +129,11 @@ public class MasterListener implements Listener {
 					elo = 10000;
 				}
 				gamePlayer.setElo(elo);
+				gamePlayer.setOriginalElo(elo);
 				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 					@Override
 					public void run() {
-						p.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre niveau est actuellement de " + ChatColor.DARK_GREEN + gamePlayer.getElo());
+						p.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " est actuellement de " + ChatColor.DARK_GREEN + gamePlayer.getElo());
 					}
 				}, 20L);
 			}

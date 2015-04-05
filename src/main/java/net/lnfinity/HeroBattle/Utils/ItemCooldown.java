@@ -8,13 +8,14 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 
 public class ItemCooldown {
 
 	private HeroBattle p;
 	private int seconds;
-	private final int task;
+	private final BukkitTask task;
 	private int slotId;
 	private OfflinePlayer player;
 
@@ -56,7 +57,7 @@ public class ItemCooldown {
 
 				if (seconds == 0) {
 					onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.NOTE_PIANO, (float) 1, (float) 1.5);
-					p.getServer().getScheduler().cancelTask(task);
+					task.cancel();
 
 					if (onlinePlayer.getInventory().getItem(slotId) != null
 							&& onlinePlayer.getInventory().getItem(slotId).getType() != Material.AIR) {
@@ -71,6 +72,6 @@ public class ItemCooldown {
 					}
 				}
 			}
-		}, 20L, 20L).getTaskId();
+		}, 20L, 20L);
 	}
 }
