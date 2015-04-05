@@ -45,3 +45,5 @@ game:
     # If value set to true, all games will be ranked and players Elo will change
     # Should always be true
     ranked: true
+
+block-analytics: false

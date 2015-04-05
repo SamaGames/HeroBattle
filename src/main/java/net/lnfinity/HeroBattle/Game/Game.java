@@ -420,12 +420,14 @@ public class Game implements GameArena {
 			}
 		}, 3 * 20l);
 		
-		// Statistics to adapt classes
-		try {
-			URL u = new URL("http://lnfinity.net/tasks/herobattle-stats?v=1&s=" + MasterBundle.getServerName() + "&m=" + p.getGame().getMapName() + "&p=" + p.getGamePlayers().size() + "&d=" + p.getGameTimer().getFormattedTime() + "&w=" + player.getName() + "&we=" + HBplayer.getElo() + "&wc=" + HBplayer.getPlayerClass().getType().toString().toLowerCase());
-			u.openStream();
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		// Analytics to help us improve the game
+		if(p.getConfig().getBoolean("block-analytics")) {
+			try {
+				URL u = new URL("http://lnfinity.net/tasks/herobattle-stats?v=1&s=" + MasterBundle.getServerName() + "&m=" + p.getGame().getMapName() + "&p=" + p.getGamePlayers().size() + "&d=" + p.getGameTimer().getFormattedTime() + "&w=" + player.getName() + "&we=" + HBplayer.getElo() + "&wc=" + HBplayer.getPlayerClass().getType().toString().toLowerCase());
+				u.openStream();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 		
 		if (MasterBundle.isDbEnabled) {
