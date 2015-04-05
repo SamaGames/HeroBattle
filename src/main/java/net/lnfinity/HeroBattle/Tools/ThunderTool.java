@@ -16,8 +16,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class ThunderTool extends PlayerTool {
 
-	HeroBattle p;
-
 	private final int COOLDOWN; // seconds
 
 	public ThunderTool(HeroBattle plugin, int cooldown) {
