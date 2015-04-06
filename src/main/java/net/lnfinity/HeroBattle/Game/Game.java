@@ -111,6 +111,8 @@ public class Game implements GameArena {
 
 		p.getTutorialDisplayer().stopForAll("Le jeu démarre...");
 
+		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " de la partie " + ChatColor.DARK_GREEN + ((int) getTotalElo() / p.getGamePlayers().size()));
+		
 		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Que le meilleur gagne !");
 		teleportPlayers();
 
@@ -450,16 +452,7 @@ public class Game implements GameArena {
 	}
 	
 	public void calculateElos(UUID winner) {
-		double total = 0; // Total
-		for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
-			if(gamePlayer.getElo() < 1000) { // Pour les nouveaux joueurs
-				gamePlayer.setElo(2000);
-			}
-			if(gamePlayer.getElo() > 10000) { // Ne devrait jamais arriver
-				gamePlayer.setElo(10000);
-			}
-			total += gamePlayer.getElo();
-		}
+		double total = getTotalElo();
 		
 		for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
 			double esp = (gamePlayer.getElo() / total); // Espérance de gain pour gamePlayer
@@ -490,6 +483,20 @@ public class Game implements GameArena {
 				}
 			}
 		}
+	}
+	
+	public int getTotalElo() {
+		int total = 0; // Total
+		for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
+			if(gamePlayer.getElo() < 1000) { // Pour les nouveaux joueurs
+				gamePlayer.setElo(2000);
+			}
+			if(gamePlayer.getElo() > 10000) { // Ne devrait jamais arriver
+				gamePlayer.setElo(10000);
+			}
+			total += gamePlayer.getElo();
+		}
+		return total;
 	}
 
 	@Override
