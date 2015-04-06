@@ -276,8 +276,6 @@ public class Game implements GameArena {
 				break;
 			}
 		}
-		
-		StatsApi.increaseStat(player, p.getName(), "deaths", 1);
 
 		// Effects on the player
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 0));
