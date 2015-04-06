@@ -467,7 +467,7 @@ public class Game implements GameArena {
 
 			if(gamePlayer.getPlayerUniqueID() == winner) { // Le joueur a gagné
 				int elo = gamePlayer.getElo();
-				k = 40 * ((total / p.getGamePlayers().size()) / elo);
+				k = 20 * p.getGamePlayers().size() * ((total / p.getGamePlayers().size()) / elo);
 				int elo1 = (int) (k * (1 - esp));
 				double mult = 1;
 
