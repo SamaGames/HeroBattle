@@ -60,7 +60,7 @@ public class GameTimer {
 						}, 5 * 20L);
 					}
 				}
-				p.getScoreboardManager().refresh();
+				p.getScoreboardManager().updateTimer();
 			}
 		}, 20L, 20L).getTaskId();
 	}

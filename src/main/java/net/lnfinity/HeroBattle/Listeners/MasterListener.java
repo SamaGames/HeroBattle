@@ -130,6 +130,7 @@ public class MasterListener implements Listener {
 				}
 				gamePlayer.setElo(elo);
 				gamePlayer.setOriginalElo(elo);
+				plugin.getScoreboardManager().refreshTab();
 				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 					@Override
 					public void run() {

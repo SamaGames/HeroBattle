@@ -396,6 +396,8 @@ public class Game implements GameArena {
 
 		calculateElos(id);
 		
+		p.getScoreboardManager().refreshTab();
+		
 		if (MasterBundle.isDbEnabled) {
 			for (final GamePlayer gamePlayer : p.getGamePlayers().values()) {
 				int old = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), HeroBattle.GAME_NAME_WHITE, "elo");

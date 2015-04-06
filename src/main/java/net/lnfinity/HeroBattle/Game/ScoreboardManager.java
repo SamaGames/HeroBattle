@@ -11,10 +11,11 @@ import org.bukkit.scoreboard.Scoreboard;
 
 public class ScoreboardManager {
 
-	HeroBattle p = null;
-	Scoreboard board = null;
-	Objective percentageBelowName = null;
-	Objective percentageSidebar = null;
+	private HeroBattle p = null;
+	private Scoreboard board = null;
+	private Objective percentageBelowName = null;
+	private Objective percentageSidebar = null;
+	private Objective eloPlayerList = null;
 
 	public ScoreboardManager(HeroBattle plugin) {
 		p = plugin;
@@ -26,6 +27,9 @@ public class ScoreboardManager {
 
 		percentageSidebar = board.registerNewObjective("perct_sidebar", "dummy");
 		percentageSidebar.setDisplayName("  " + HeroBattle.GAME_NAME_BICOLOR_BOLD + ChatColor.DARK_GRAY + " │ " + ChatColor.GRAY + p.getGameTimer().getFormattedTime());
+		
+		eloPlayerList = board.registerNewObjective("elo_playerlist", "dummy");
+		eloPlayerList.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 	}
 
 	/**
@@ -38,6 +42,13 @@ public class ScoreboardManager {
 
 		percentageBelowName.setDisplaySlot(DisplaySlot.BELOW_NAME);
 		percentageSidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
+		eloPlayerList.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+	}
+	
+	public void refreshTab() {
+		for (GamePlayer player : p.getGamePlayers().values()) {
+			eloPlayerList.getScore(p.getServer().getPlayer(player.getPlayerUniqueID()).getName()).setScore(player.getElo());
+		}
 	}
 
 	/**
@@ -68,6 +79,8 @@ public class ScoreboardManager {
 		}
 
 		percentageBelowName.getScore(player.getPlayerName()).setScore(percentage);
+		
+		eloPlayerList.getScore(player.getPlayerName()).setScore(player.getElo());
 	}
 
 	public void refresh() {
@@ -79,6 +92,10 @@ public class ScoreboardManager {
 		for (GamePlayer player : p.getGamePlayers().values()) {
 			update(player);
 		}
+	}
+	
+	public void updateTimer() {
+		percentageSidebar.setDisplayName("  " + HeroBattle.GAME_NAME_BICOLOR_BOLD + ChatColor.DARK_GRAY + " │ " + ChatColor.GRAY + p.getGameTimer().getFormattedTime());
 	}
 
 	/**

@@ -2,18 +2,22 @@ package net.lnfinity.HeroBattle.Listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Game.DeathType;
+import net.lnfinity.HeroBattle.Game.GamePlayer;
+import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
@@ -84,5 +88,11 @@ public class SystemListener implements Listener {
 		if (e.getSpawnReason() != CreatureSpawnEvent.SpawnReason.NATURAL) {
 			e.setCancelled(true);
 		}
+	}
+	
+	@EventHandler (priority = EventPriority.HIGHEST)
+	public void onPlayerChat(PlayerChatEvent e) {
+		GamePlayer gamePlayer = plugin.getGamePlayer(e.getPlayer().getUniqueId());
+		e.setFormat(ChatColor.GREEN + "(" + ChatColor.DARK_GREEN + gamePlayer.getElo() + ChatColor.GREEN + ") " + ChatColor.RESET + e.getFormat());
 	}
 }
