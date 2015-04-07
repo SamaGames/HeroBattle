@@ -6,6 +6,7 @@ import java.util.Random;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.ItemCooldown;
+import net.lnfinity.HeroBattle.Utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
 
@@ -47,11 +48,7 @@ public class InkTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList(ChatColor.GRAY + "Aveugle les joueurs proches.",
-				ChatColor.GRAY + "Attention, votre jet peut vous toucher...",
-				"",
-				ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Clic droit pour activer l'effet.",
-				ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ne peut être utilisé que toutes les " + COOLDOWN + " secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Lanche un jet d'encre qui touche les joueurs alentours les aveuglant pendant " + ChatColor.GOLD + EFFECT_DURATION + " " + ChatColor.GRAY + "secondes. Attention, vous avez " + ChatColor.RED + (int) (PROBABILITY_SENDER_HIT * 100) + ChatColor.GRAY + "% " + " de chance de vous toucher ! Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override

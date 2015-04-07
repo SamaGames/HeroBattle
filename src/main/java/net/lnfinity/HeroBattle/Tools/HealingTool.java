@@ -7,6 +7,7 @@ import java.util.Random;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Utils.ItemCooldown;
+import net.lnfinity.HeroBattle.Utils.Utils;
 import net.samagames.utils.GlowEffect;
 
 import org.bukkit.ChatColor;
@@ -47,10 +48,7 @@ public class HealingTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList(ChatColor.GRAY + "Vous soigne des dégâts subits.", ChatColor.GRAY
-				+ "Attention, vous pouvez échouer.", "", ChatColor.DARK_GRAY + "" + ChatColor.ITALIC
-				+ "Clic droit pour activer l'effet.", ChatColor.DARK_GRAY + "" + ChatColor.ITALIC
-				+ "Ne peut être utilisé que toutes les " + COOLDOWN + " secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Vous soigne de " + ChatColor.GOLD + POWER + " " + ChatColor.GRAY + "pourcents. Attention, vous avez " + ChatColor.RED + (int) (PROBABILITY * 100) + ChatColor.GRAY + "% " + " de chance d'échouer ce qui vous ralentira ! Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override

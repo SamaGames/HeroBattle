@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.ItemCooldown;
+import net.lnfinity.HeroBattle.Utils.Utils;
 import net.samagames.utils.GlowEffect;
 
 import org.bukkit.ChatColor;
@@ -41,9 +42,7 @@ public class SmokeTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList(ChatColor.GRAY + "Allume une bombe fumigène à vos pieds et vous fait disparaître.", "",
-				ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Clic droit pour activer l'effet.", ChatColor.DARK_GRAY
-						+ "" + ChatColor.ITALIC + "Ne peut être utilisé que toutes les " + COOLDOWN + " secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Lance une bombe fumigène à vos pieds et vous fait disparaitre pendant " + ChatColor.GOLD + EFFECT_DURATION + " " + ChatColor.GRAY + "secondes. Seul l'object sélectionné est alors visible des autres joueurs. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override

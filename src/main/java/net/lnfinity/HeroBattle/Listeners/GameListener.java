@@ -72,7 +72,7 @@ public class GameListener implements Listener {
 				e.setDamage(0);
 			}
 			if (e.getCause() == DamageCause.LIGHTNING) {
-				gp.setPercentage(gp.getPercentage() + 20 + (int) (Math.random() * ((50 - 20) + 20)));
+				gp.setPercentage(gp.getPercentage() + 25 + (int) (Math.random() * ((50 - 25) + 25)));
 			} else if (e.getCause() == DamageCause.FIRE_TICK) {
 				gp.setPercentage(gp.getPercentage() + 2);
 			} else if (e.getCause() == DamageCause.POISON) {

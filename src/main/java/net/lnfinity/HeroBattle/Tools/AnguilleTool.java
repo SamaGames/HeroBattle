@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.ItemCooldown;
+import net.lnfinity.HeroBattle.Utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
 
@@ -39,9 +40,7 @@ public class AnguilleTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList(ChatColor.GRAY + "La vengeance de l'anguille...", "", ChatColor.DARK_GRAY + ""
-				+ ChatColor.ITALIC + "Clic droit pour activer l'effet.", ChatColor.DARK_GRAY + "" + ChatColor.ITALIC
-				+ "Ne peut être utilisé que toutes les " + COOLDOWN + " secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Enflamme les joueurs trop proches de vous pendant " + ChatColor.GOLD + DURATION + " " + ChatColor.GRAY + "secondes, en tant que vengeance pour nous avoir martyrisé ! Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override

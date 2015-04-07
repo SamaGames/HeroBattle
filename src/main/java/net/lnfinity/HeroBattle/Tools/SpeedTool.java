@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.ItemCooldown;
+import net.lnfinity.HeroBattle.Utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
 
@@ -39,12 +40,7 @@ public class SpeedTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList(
-				ChatColor.GRAY + "Vous offre un coup de boost pendant quelques secondes.",
-				"",
-				ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Clic droit pour activer l'effet.",
-				ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Ne peut être utilisé que toutes les " + COOLDOWN + " secondes."
-		);
+		return Utils.getToolDescription(ChatColor.GRAY + "Vous ajoute l'effet de potion vitesse " + ChatColor.GOLD + "1 " + ChatColor.GRAY + "pendant " + ChatColor.GOLD + EFFECT_DURATION + " " + ChatColor.GRAY + "secondes. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.ItemCooldown;
+import net.lnfinity.HeroBattle.Utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
 
@@ -41,10 +42,7 @@ public class ArrowsTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList(ChatColor.GRAY + "Objet à double pouvoirs", "", ChatColor.GRAY
-				+ "Clic droit pour envoyer une rafale de flèches.", ChatColor.GRAY
-				+ "Clic gauche pour envoyer une flèche explosive.", "", ChatColor.DARK_GRAY + "" + ChatColor.ITALIC
-				+ "Ne peut être utilisé que toutes les " + COOLDOWN + " secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Clic gauche pour lancer une flèche explosive causant " + ChatColor.RED + "20 " + ChatColor.GRAY + "à " + ChatColor.RED + "40 " + ChatColor.GRAY + "dégâts au joueur touché. Clic droit pour lancer une pluie de " + ChatColor.GOLD + ARROWS_TO_FIRE + " " + ChatColor.GRAY + "flèches occasionant chacune " + ChatColor.RED + "8 " + ChatColor.GRAY + "à " + ChatColor.RED + "20 " + ChatColor.GRAY + "dégâts. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package net.lnfinity.HeroBattle.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.lnfinity.HeroBattle.Game.GamePlayer;
@@ -97,8 +99,43 @@ public final class Utils {
 		}
 		return str;
 	}
-	
+
 	public static double logb(double a, double b) {
-			return Math.log(a) / Math.log(b);
+		return Math.log(a) / Math.log(b);
+	}
+
+	public static List<String> getToolDescription(String desc) {
+		List<String> lines = new ArrayList<String>();
+		String[] words = desc.split(" ");
+		int line = 0;
+		lines.add(line, "");
+		for (int k = 0; k < words.length; k++) {
+			int chars = new String(lines.get(line) + " " + words[k]).length() - countColors(lines.get(line) + " " + words[k]);
+			if(chars >= 45) {
+				line++;
+				lines.add(line, ChatColor.GRAY + words[k]);
+			} else {
+				if(lines.equals("")) {
+					lines.set(line, ChatColor.GRAY + words[k]);
+				} else {
+					lines.set(line, lines.get(line) + " " + words[k]);
+				}
+			}
+		}
+		lines.set(0, lines.get(0).trim());
+		for(int k = 0; k < lines.size(); k++) {
+			lines.set(k, lines.get(k).trim());
+		}
+		return lines;
+	}
+	
+	private static int countColors(String str) {
+		int count = 0;
+		for(int i = 0; i < str.length(); i++) {
+			if(str.charAt(i) == '§') {
+				count++;
+			}
+		}
+		return count;
 	}
 }
