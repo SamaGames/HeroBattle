@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.Tools;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
@@ -13,6 +14,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class SwordTool extends PlayerTool {
+	
+	protected int upgrade = 0;
+	protected Random random = new Random();
 
 	public SwordTool(HeroBattle plugin) {
 		super(plugin);

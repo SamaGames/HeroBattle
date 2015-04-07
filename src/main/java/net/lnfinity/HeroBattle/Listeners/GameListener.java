@@ -8,6 +8,7 @@ import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Powerups.Powerup;
 import net.lnfinity.HeroBattle.Tasks.EarthquakeTask;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
+import net.lnfinity.HeroBattle.Tools.Weapon;
 import net.lnfinity.HeroBattle.Utils.Utils;
 import net.samagames.gameapi.json.Status;
 
@@ -101,6 +102,16 @@ public class GameListener implements Listener {
 				final float reducer = 20.0F;
 				final Player damager = (Player) e.getDamager();
 				final GamePlayer gameDamager = plugin.getGamePlayer(damager);
+				
+				if (damager.getItemInHand() != null && damager.getItemInHand().getType() != Material.AIR && damager.getItemInHand().hasItemMeta()
+						&& damager.getItemInHand().getItemMeta().hasDisplayName()) {
+					System.out.println("ok");
+					if(gameDamager.getPlayerClass().getTool(player.getInventory().getHeldItemSlot()) instanceof Weapon) {
+							((Weapon) gameDamager.getPlayerClass().getTool(player.getInventory().getHeldItemSlot())).onPlayerHit(damager, player);
+					}
+						
+				}
+				
 				Vector v = player.getVelocity().add(
 						player.getLocation().toVector().subtract(damager.getLocation().toVector()).normalize()
 								.multiply(gamePlayer.getPercentage() / reducer));

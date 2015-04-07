@@ -1,5 +1,7 @@
 package net.lnfinity.HeroBattle.Tools;
 
+import java.util.Random;
+
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
 
@@ -9,8 +11,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class SwordVariant1Tool extends SwordTool {
 
-	public SwordVariant1Tool(HeroBattle plugin) {
+	public SwordVariant1Tool(HeroBattle plugin, int arg1) {
 		super(plugin);
+		upgrade = arg1;
 	}
 	
 	@Override
