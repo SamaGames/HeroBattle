@@ -3,11 +3,16 @@ package net.lnfinity.HeroBattle.Powerups;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Utils.Utils;
 
+import java.util.Random;
+
 public class PowerupSpawner {
 
-	HeroBattle p;
+	private HeroBattle p;
+
 	private boolean isEnabled = false;
 	private int task = -1;
+
+	Random random = new Random();
 
 	public PowerupSpawner(HeroBattle plugin) {
 		p = plugin;
@@ -30,8 +35,8 @@ public class PowerupSpawner {
 		task = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
 			@Override
 			public void run() {
-				if(Utils.randomNumber(0, 2000) == 0) {
-					p.getPowerupManager().spawnPowerup();
+				if(random.nextInt(2001) == 0) {
+					p.getPowerupManager().spawnRandomPowerup();
 				}
 			}
 		}, 1L, 1L).getTaskId();

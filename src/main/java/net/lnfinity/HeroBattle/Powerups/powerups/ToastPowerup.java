@@ -16,7 +16,7 @@ public class ToastPowerup extends Powerup {
 
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
-		Bukkit.getServer().broadcastMessage("TOAST");
+		Bukkit.getServer().broadcastMessage(ChatColor.DARK_PURPLE + "TOAST... JUMP!");
 	}
 
 	@Override

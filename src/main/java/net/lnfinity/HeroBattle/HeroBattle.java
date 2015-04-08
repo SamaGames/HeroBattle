@@ -10,12 +10,7 @@ import net.lnfinity.HeroBattle.Class.ClassManager;
 import net.lnfinity.HeroBattle.Game.Game;
 import net.lnfinity.HeroBattle.Game.GamePlayer;
 import net.lnfinity.HeroBattle.Game.ScoreboardManager;
-import net.lnfinity.HeroBattle.Listeners.ClassSelectionCommand;
-import net.lnfinity.HeroBattle.Listeners.ClassSelectorListener;
-import net.lnfinity.HeroBattle.Listeners.CommandListener;
-import net.lnfinity.HeroBattle.Listeners.GameListener;
-import net.lnfinity.HeroBattle.Listeners.MasterListener;
-import net.lnfinity.HeroBattle.Listeners.SystemListener;
+import net.lnfinity.HeroBattle.Listeners.*;
 import net.lnfinity.HeroBattle.Powerups.PowerupManager;
 import net.lnfinity.HeroBattle.Tutorial.TutorialDisplayer;
 import net.lnfinity.HeroBattle.Utils.CountdownTimer;
@@ -85,14 +80,11 @@ public class HeroBattle extends JavaPlugin {
 		arenaConfig.addDefault("map.spawns", Arrays.asList("0;64;0", "0;64;0"));
 		arenaConfig.addDefault("map.bottom", 0);
 
-		MasterListener masterListener = new MasterListener(this);
-		getServer().getPluginManager().registerEvents(masterListener, this);
-		GameListener gameListener = new GameListener(this);
-		getServer().getPluginManager().registerEvents(gameListener, this);
-		SystemListener systemListener = new SystemListener(this);
-		getServer().getPluginManager().registerEvents(systemListener, this);
-		ClassSelectorListener classSelectorListener = new ClassSelectorListener(this);
-		getServer().getPluginManager().registerEvents(classSelectorListener, this);
+		getServer().getPluginManager().registerEvents(new MasterListener(this), this);
+		getServer().getPluginManager().registerEvents(new GameListener(this), this);
+		getServer().getPluginManager().registerEvents(new SystemListener(this), this);
+		getServer().getPluginManager().registerEvents(new ClassSelectorListener(this), this);
+		getServer().getPluginManager().registerEvents(new PowerupsListener(this), this);
 
 		CommandListener command = new CommandListener(this);
 		this.getCommand("start").setExecutor(command);

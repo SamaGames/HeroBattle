@@ -225,20 +225,6 @@ public class GameListener implements Listener {
 		plugin.getGame().onPlayerDeath(e.getEntity().getUniqueId(), DeathType.QUIT);
 	}
 
-	@EventHandler
-	public void onPlayerPickupItem(PlayerPickupItemEvent e) {
-		if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-			e.setCancelled(true);
-			for (Map.Entry<Location, Powerup> entry : plugin.getPowerupManager().getExistingPowerups().entrySet()) {
-
-				if (Utils.roundLocation(e.getItem().getLocation()).equals(entry.getKey())) {
-					plugin.getPowerupManager().getItem(entry.getKey())
-							.onPickup(e.getPlayer(), e.getItem().getItemStack());
-					e.getItem().remove();
-				}
-			}
-		}
-	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerDoubleJump(PlayerToggleFlightEvent e) {
