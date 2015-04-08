@@ -49,7 +49,7 @@ public class PowerupManager {
 		locations.remove(location);
 
 
-		final ActivePowerup activePowerup = new ActivePowerup(location, powerup);
+		final ActivePowerup activePowerup = new ActivePowerup(p, location, powerup);
 		activePowerups.add(activePowerup);
 
 		activePowerup.spawn();
@@ -59,7 +59,7 @@ public class PowerupManager {
 			@Override
 			public void run() {
 				if(activePowerup.isAlive()) {
-					unspawnPowerup(activePowerup);
+					unspawnPowerup(activePowerup, false);
 				}
 			}
 		}, DELAY_UNSPAWN_POWERUP);
@@ -69,21 +69,27 @@ public class PowerupManager {
 	 * Removes an active powerup.
 	 *
 	 * @param powerup The active powerup to remove.
+	 * @param got If true the powerup is removed because someone picked-up it.
 	 */
-	private void unspawnPowerup(ActivePowerup powerup) {
-		powerup.remove();
+	private void unspawnPowerup(ActivePowerup powerup, boolean got) {
+		powerup.remove(got);
 		locations.add(powerup.getLocation());
 		activePowerups.remove(powerup);
 	}
 
 
+	/**
+	 * When someone pickup a powerup, executes the good action.
+	 *
+	 * @param itemPicked The item picked up.
+	 * @param player The player who picked up the item.
+	 */
 	public void onPowerupPickup(Item itemPicked, Player player) {
 		String powerupName = itemPicked.getItemStack().getItemMeta().getDisplayName();
 		ActivePowerup activePowerup = null;
 
 		// Powerup lookup
 		for(ActivePowerup powerup : activePowerups) {
-			p.getLogger().info(powerup.getPowerup().getName() + " vs " + powerupName);
 			if(powerup.getPowerup().getName().equals(powerupName)) {
 				activePowerup = powerup;
 				break;
@@ -94,7 +100,7 @@ public class PowerupManager {
 
 
 		activePowerup.getPowerup().onPickup(player, itemPicked.getItemStack());
-		unspawnPowerup(activePowerup);
+		unspawnPowerup(activePowerup, true);
 	}
 
 
