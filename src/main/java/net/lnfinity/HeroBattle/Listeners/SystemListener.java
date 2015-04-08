@@ -7,6 +7,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
 
 import org.bukkit.GameMode;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -85,7 +86,7 @@ public class SystemListener implements Listener {
 
 	@EventHandler
 	public void onCreatureSpawn(CreatureSpawnEvent e) {
-		if (e.getSpawnReason() != CreatureSpawnEvent.SpawnReason.NATURAL) {
+		if (e.getSpawnReason() != CreatureSpawnEvent.SpawnReason.NATURAL && e.getEntityType() != EntityType.ARMOR_STAND && e.getEntityType() != EntityType.DROPPED_ITEM) {
 			e.setCancelled(true);
 		}
 	}

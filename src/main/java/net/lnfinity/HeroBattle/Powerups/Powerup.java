@@ -9,11 +9,9 @@ import org.bukkit.inventory.ItemStack;
 public abstract class Powerup {
 
 	protected HeroBattle p;
-	protected Location location;
 	
-	public Powerup(HeroBattle plugin, Location loc) {
+	public Powerup(HeroBattle plugin) {
 		p = plugin;
-		location = loc;
 	}
 	
 	public abstract void onPickup(Player player, ItemStack pickupItem);
@@ -28,12 +26,4 @@ public abstract class Powerup {
 	 */
 	public abstract String getName();
 
-
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
 }

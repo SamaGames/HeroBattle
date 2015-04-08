@@ -46,7 +46,6 @@ public class PowerupManager {
 					}
 				}
 			}
-			powerups.add(new AddHeart(p, chooseRandomLocation()));
 		}
 	}
 
