@@ -210,7 +210,7 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
-		// Schould never happen ?
+		// Should never happen ?
 		e.setDeathMessage(null);
 		e.getDrops().clear();
 		e.setDroppedExp(0);
