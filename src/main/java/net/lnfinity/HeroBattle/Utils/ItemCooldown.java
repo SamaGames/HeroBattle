@@ -55,6 +55,11 @@ public class ItemCooldown {
 				}
 
 				Player onlinePlayer = ((Player) player);
+				
+				if(onlinePlayer.getInventory().getItem(slotId) != null && onlinePlayer.getInventory().getItem(slotId).getAmount() == 1) {
+					task.cancel();
+					return;
+				}
 
 				ItemStack slot = onlinePlayer.getInventory().getItem(slotId);
 

@@ -60,7 +60,7 @@ public class GameListener implements Listener {
 				gp.playTask(new EarthquakeTask(plugin, p));
 
 				// The double-jump is reset
-				gp.setDoubleJump(2);
+				gp.setJumps(2);
 
 				// The player is on the ground, so the previous hitter is no
 				// longer

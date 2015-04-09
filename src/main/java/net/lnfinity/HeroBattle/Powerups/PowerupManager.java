@@ -1,10 +1,7 @@
 package net.lnfinity.HeroBattle.Powerups;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.Powerups.powerups.InvulnerabilityPowerup;
-import net.lnfinity.HeroBattle.Powerups.powerups.PercentageDividedPowerup;
-import net.lnfinity.HeroBattle.Powerups.powerups.ResetToolCooldownPowerup;
-import net.lnfinity.HeroBattle.Powerups.powerups.ToastPowerup;
+import net.lnfinity.HeroBattle.Powerups.powerups.*;
 import net.lnfinity.HeroBattle.Utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -42,9 +39,14 @@ public class PowerupManager {
 		/** **  Powerups registry  ** **/
 
 		registerPowerup(new ToastPowerup());
+		registerPowerup(new HealPowerup(plugin));
 		registerPowerup(new PercentageDividedPowerup(p));
 		registerPowerup(new InvulnerabilityPowerup(p));
 		registerPowerup(new ResetToolCooldownPowerup(p));
+		registerPowerup(new ZeroPercentagePowerup(plugin));
+		registerPowerup(new TripleJumpPowerup(plugin));
+		registerPowerup(new ZeroCooldownPowerup());
+		registerPowerup(new PowerPowerup(plugin));
 
 
 		/** **  Total weight  ** **/
