@@ -54,6 +54,11 @@ public class ItemCooldown {
 				}
 
 				Player onlinePlayer = ((Player) player);
+				
+				if(onlinePlayer.getInventory().getItem(slotId) != null && onlinePlayer.getInventory().getItem(slotId).getAmount() == 1) {
+					task.cancel();
+					return;
+				}
 
 				if (seconds == 0) {
 					onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.NOTE_PIANO, (float) 1, (float) 1.5);
@@ -62,6 +67,7 @@ public class ItemCooldown {
 					if (onlinePlayer.getInventory().getItem(slotId) != null
 							&& onlinePlayer.getInventory().getItem(slotId).getType() != Material.AIR) {
 						GlowEffect.addGlow(onlinePlayer.getInventory().getItem(slotId));
+						onlinePlayer.getInventory().getItem(slotId).setAmount(1);
 					}
 
 				} else {

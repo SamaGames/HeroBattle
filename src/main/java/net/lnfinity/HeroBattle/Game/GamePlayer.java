@@ -22,7 +22,8 @@ public class GamePlayer {
 	private int Elo = 0;
 
 	private PlayerClass classe = null;
-	private int doubleJump = 2;
+	private int jumps = 2;
+	private int maxJumps = 2;
 	private int percentage = 0;
 	private int lives = 3;
 	private boolean playing = true;
@@ -37,12 +38,20 @@ public class GamePlayer {
 		playerName = Bukkit.getServer().getPlayer(id).getName();
 	}
 
-	public int getDoubleJump() {
-		return doubleJump;
+	public int getJumps() {
+		return jumps;
 	}
 
-	public void setDoubleJump(int doubleJump) {
-		this.doubleJump = doubleJump;
+	public void setJumps(int jumps) {
+		this.jumps = jumps;
+	}
+	
+	public int getMaxJumps() {
+		return maxJumps;
+	}
+
+	public void setMaxJumps(int maxJumps) {
+		this.maxJumps = maxJumps;
 	}
 
 	public int getPercentage() {
@@ -121,11 +130,11 @@ public class GamePlayer {
 	public void doubleJump() {
 		Player player = Bukkit.getServer().getPlayer(playerID);
 		if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
-			setDoubleJump(2);
+			setJumps(maxJumps);
 		}
 
-		if (getDoubleJump() > 0) {
-			setDoubleJump(getDoubleJump() - 1);
+		if (getJumps() > 0) {
+			setJumps(getJumps() - 1);
 			Vector direction = player.getLocation().getDirection().multiply(0.5);
 			Vector vector = new Vector(direction.getX(), 1.3, direction.getZ());
 			player.setVelocity(vector);
