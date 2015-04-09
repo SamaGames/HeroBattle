@@ -72,7 +72,7 @@ public class ResetToolCooldownPowerup implements PositivePowerup {
 
 	@Override
 	public String getName() {
-		return ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "RESTAURATION D'UN OUTIL BLOQUÉ";
+		return ChatColor.GOLD + "" + ChatColor.BOLD + "RESTAURATION D'UN OUTIL BLOQUÉ";
 	}
 
 	@Override

@@ -16,9 +16,10 @@ public class PowerupsListener implements Listener {
 
 	@EventHandler
 	public void onPowerupPickup(PlayerPickupItemEvent ev) {
-		p.getPowerupManager().onPowerupPickup(ev.getItem(), ev.getPlayer());
 
 		ev.setCancelled(true);
+		p.getPowerupManager().onPowerupPickup(ev.getItem(), ev.getPlayer());
+
 	}
 
 }

@@ -39,8 +39,7 @@ public class PercentageDividedPowerup implements PositivePowerup {
 
 	@Override
 	public String getName() {
-		return ChatColor.GREEN + "" + ChatColor.BOLD + "KNOCKBACK : "
-				+ ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "-50 %";
+		return ChatColor.AQUA + "" + ChatColor.BOLD + "POURCENTAGE COUPÉ EN DEUX";
 	}
 
 	@Override

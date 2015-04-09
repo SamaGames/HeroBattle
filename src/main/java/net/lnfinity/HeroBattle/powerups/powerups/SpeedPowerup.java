@@ -23,7 +23,7 @@ public class SpeedPowerup implements PositivePowerup {
 
 	@Override
 	public String getName() {
-		return ChatColor.DARK_PURPLE + "VITESSE" + ChatColor.GREEN + " DIX SECONDES";
+		return ChatColor.DARK_PURPLE + "PLUS VITE" + ChatColor.LIGHT_PURPLE + " DIX SECONDES";
 	}
 
 	@Override
