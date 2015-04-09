@@ -60,7 +60,8 @@ public class TutorialDisplayer {
 				p.getGame().getTutorialLocations().get(1),
 				ChatColor.AQUA + "II. " + ChatColor.GOLD + "But du Jeu",
 				Arrays.asList(
-						ChatColor.GREEN + "Faites tomber vos adversaires dans le vide ou mettez les K.O.",
+						ChatColor.GREEN + "Faites tomber vos adversaires dans le vide",
+						ChatColor.GREEN + "...ou mettez les K.O.",
 						ChatColor.GREEN + "Remportez la partie en étant le dernier en lice"
 				)
 		));
@@ -72,7 +73,7 @@ public class TutorialDisplayer {
 						ChatColor.GREEN + "Toutes les classes ont deux attaques spéciales",
 						ChatColor.GREEN + "Certaines classes possèdent des effets uniques",
 						ChatColor.GREEN + "Vies et résistance sont propres à chaque classe",
-						ChatColor.RED + "Attention" + ChatColor.GREEN + ", chaque capacité possède un cooldown"
+						ChatColor.RED + "Attention" + ChatColor.GREEN + ", chaque capacité a un cooldown"
 				)
 		));
 		
@@ -81,9 +82,9 @@ public class TutorialDisplayer {
 				ChatColor.AQUA + "IV. " + ChatColor.GOLD + "Types de combat",
 				Arrays.asList(
 						ChatColor.GREEN + "Différents types de combat en fonction des classes",
-						ChatColor.DARK_GREEN + "" + ChatColor.UNDERLINE + "Mêlée :" + ChatColor.GREEN + " dégâts de zone",
-						ChatColor.DARK_GREEN + "" + ChatColor.UNDERLINE + "Corps à corps :" + ChatColor.GREEN + " dégâts ciblés proches",
-						ChatColor.DARK_GREEN + "" + ChatColor.UNDERLINE + "Distant :" + ChatColor.GREEN + " dégât longue portée"
+						ChatColor.DARK_GREEN + "Mêlée :" + ChatColor.GREEN + " dégâts de zone",
+						ChatColor.DARK_GREEN + "Corps à corps :" + ChatColor.GREEN + " dégâts ciblés proches",
+						ChatColor.DARK_GREEN + "Distant :" + ChatColor.GREEN + " dégât longue portée"
 				)
 		));
 
@@ -91,7 +92,8 @@ public class TutorialDisplayer {
 				p.getGame().getTutorialLocations().get(3),
 				ChatColor.AQUA + "V. " + ChatColor.GOLD + "Powerups",
 				Arrays.asList(
-						ChatColor.GREEN + "Des powerups peuvent apparaître aléatoirement durant le jeu",
+						ChatColor.GREEN + "Des powerups peuvent apparaître",
+						ChatColor.GREEN + "aléatoirement durant le jeu",
 						ChatColor.GREEN + "Restez sur vos gardes !"
 				)
 		));
