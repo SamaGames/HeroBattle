@@ -1,39 +1,148 @@
 package net.lnfinity.HeroBattle.Powerups;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Powerups.powerups.ToastPowerup;
 import net.lnfinity.HeroBattle.Utils.Utils;
-import net.md_5.bungee.api.ChatColor;
-
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.FireworkEffect.Type;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.entity.*;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.util.Vector;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+
+import java.util.*;
+import java.util.logging.Level;
 
 public class PowerupManager {
 
-	HeroBattle p;
+	private HeroBattle p;
 	private PowerupSpawner spawner;
-	private List<Powerup> powerups = new ArrayList<Powerup>();
-	Map<Location, Powerup> existingPowerups = new HashMap<Location, Powerup>();
-	private List<Location> locations = new ArrayList<Location>();
+
+	public  final static int  INVERSE_PROBABILITY_OF_SPAWN_PER_TICK = 2000; // 50 = dev value; 2000 = prod value
+	private final static long DELAY_UNSPAWN_POSITIVE_POWERUP = 60 * 20l;
+	private final static long DELAY_UNSPAWN_NEGATIVE_POWERUP = 45 * 20l;
+
+	private List<Powerup> powerups = new ArrayList<>();
+	private List<Location> locations = new ArrayList<>();
+
+	private double totalWeight;
+
+	private Set<ActivePowerup> activePowerups = new HashSet<>();
+
+	private Random random = new Random();
 
 	public PowerupManager(HeroBattle plugin) {
-		p = plugin;
+		p       = plugin;
 		spawner = new PowerupSpawner(p);
+
 		registerLocations();
+
+
+		/** **  Powerups registry  ** **/
+
+		registerPowerup(new ToastPowerup());
+
+
+		/** **  Total weight  ** **/
+
+		totalWeight = 0.0;
+		for(Powerup powerup : powerups) {
+			totalWeight += powerup.getWeight();
+		}
 	}
 
-	public void registerLocations() {
+
+	/**
+	 * Tries to spawn a powerup. Nothing will be done if there isn't any location available.
+	 */
+	public void spawnRandomPowerup() {
+		if(locations.size() == 0) return; // There isn't any location available.
+
+
+		final Location location = locations.get(random.nextInt(locations.size()));
+
+		// Weighted random choice of the powerup
+		Powerup powerup = null;
+		double randomIndex = random.nextDouble() * totalWeight;
+		for(Powerup testedPowerup : powerups) {
+			randomIndex -= testedPowerup.getWeight();
+			if(randomIndex <= 0.0d) {
+				powerup = testedPowerup;
+				break;
+			}
+		}
+
+		// Should never happens, but just to be sure
+		if(powerup == null) {
+			throw new RuntimeException("Cannot find a powerup to spawn");
+		}
+
+
+		// The chosen location is removed from the list, to avoid two powerups at the same place
+		locations.remove(location);
+
+
+		final ActivePowerup activePowerup = new ActivePowerup(p, location, powerup);
+		activePowerups.add(activePowerup);
+
+		activePowerup.spawn();
+
+
+		long despawnDelay = powerup instanceof PositivePowerup ?
+				DELAY_UNSPAWN_POSITIVE_POWERUP : DELAY_UNSPAWN_NEGATIVE_POWERUP;
+
+		Bukkit.getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				if (activePowerup.isAlive()) {
+					unspawnPowerup(activePowerup, false);
+				}
+			}
+		}, despawnDelay);
+	}
+
+	/**
+	 * Removes an active powerup.
+	 *
+	 * @param powerup The active powerup to remove.
+	 * @param got If true the powerup is removed because someone picked-up it.
+	 */
+	private void unspawnPowerup(ActivePowerup powerup, boolean got) {
+		powerup.remove(got);
+		locations.add(powerup.getLocation());
+		activePowerups.remove(powerup);
+	}
+
+
+	/**
+	 * When someone pickup a powerup, executes the good action.
+	 *
+	 * @param itemPicked The item picked up.
+	 * @param player The player who picked up the item.
+	 */
+	public void onPowerupPickup(Item itemPicked, Player player) {
+		String powerupName = itemPicked.getItemStack().getItemMeta().getDisplayName();
+		ActivePowerup activePowerup = null;
+
+		// Powerup lookup
+		for(ActivePowerup powerup : activePowerups) {
+			if(powerup.getPowerup().getName().equals(powerupName)) {
+				activePowerup = powerup;
+				break;
+			}
+		}
+
+		if(activePowerup == null) return;  // Not a powerup
+
+
+		activePowerup.getPowerup().onPickup(player, itemPicked.getItemStack());
+		unspawnPowerup(activePowerup, true);
+	}
+
+
+	public void registerPowerup(Powerup powerup) {
+		powerups.add(powerup);
+	}
+
+	private void registerLocations() {
 		List powerSpawns = p.getArenaConfig().getList("map.powerups");
 
 		if(powerSpawns != null) {
@@ -46,78 +155,11 @@ public class PowerupManager {
 					}
 				}
 			}
-			powerups.add(new AddHeart(p, chooseRandomLocation()));
 		}
 	}
 
-	public void addPowerup(Powerup powerup) {
-		powerups.add(powerup);
-	}
-
-	public Location chooseRandomLocation() {
-		return locations.get(Utils.randomNumber(0, locations.size() - 1));
-	}
-
-	public void spawnPowerup() {
-		if (locations == null || locations.size() == 0 || existingPowerups.size() >= locations.size()) {
-			return;
-		}
-		Location loc = locations.get(Utils.randomNumber(0, locations.size() - 1));
-
-		if (!existingPowerups.containsKey(loc)) {
-			p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Un bonus vient de faire son apparition !");
-
-			for (Player player : p.getServer().getOnlinePlayers()) {
-				player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 1);
-			}
-
-			Firework fw = loc.getWorld().spawn(Utils.blockLocation(loc), Firework.class);
-			FireworkMeta fwm = fw.getFireworkMeta();
-			FireworkEffect effect = FireworkEffect.builder()
-					.withColor(Color.BLUE.mixColors(Color.YELLOW.mixColors(Color.GREEN))).with(Type.BALL)
-					.withFade(Color.RED).build();
-			fwm.setPower(0);
-			fwm.addEffects(effect);
-			fw.setFireworkMeta(fwm);
-
-			Powerup pw = powerups.get(Utils.randomNumber(0, powerups.size() - 1));
-
-			existingPowerups.put(loc, pw);
-
-			loc.getWorld().dropItem(Utils.blockLocation(loc), pw.getItem()).setVelocity(new Vector(0, 0, 0));
-		}
-
-	}
 
 	public PowerupSpawner getSpawner() {
 		return spawner;
-	}
-
-	public void removeSpawnedPowerup(Location loc) {
-		if (existingPowerups.get(Utils.roundLocation(loc)) != null) {
-			existingPowerups.remove(Utils.roundLocation(loc));
-		}
-	}
-
-	public boolean hasItemSpawned(Location loc) {
-		for (Map.Entry<Location, Powerup> entry : getExistingPowerups().entrySet()) {
-
-			if (Utils.roundLocation(Utils.roundLocation(loc)).equals(entry.getKey())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public Powerup getItem(Location loc) {
-		if (existingPowerups.get(Utils.roundLocation(loc)) != null) {
-			return existingPowerups.get(Utils.roundLocation(loc));
-		} else {
-			return null;
-		}
-	}
-
-	public HashMap<Location, Powerup> getExistingPowerups() {
-		return (HashMap<Location, Powerup>) existingPowerups;
 	}
 }

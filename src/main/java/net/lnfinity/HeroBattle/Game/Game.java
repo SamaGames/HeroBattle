@@ -11,6 +11,8 @@ import java.util.logging.Level;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Class.PlayerClass;
+import net.lnfinity.HeroBattle.Powerups.ActivePowerup;
+import net.lnfinity.HeroBattle.Powerups.powerups.ToastPowerup;
 import net.lnfinity.HeroBattle.Tools.PlayerTool;
 import net.lnfinity.HeroBattle.Utils.Utils;
 import net.lnfinity.HeroBattle.Utils.WinnerFirework;
