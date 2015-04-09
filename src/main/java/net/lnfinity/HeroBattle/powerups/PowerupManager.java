@@ -49,6 +49,11 @@ public class PowerupManager {
 		registerPowerup(new PowerPowerup(p));
 		registerPowerup(new SpeedPowerup());
 
+		long worldTime = p.getServer().getWorlds().get(0).getTime() % 24000;
+		if(worldTime >= 12000 && worldTime < 24000 && !plugin.getArenaConfig().getBoolean("map.permanentNightVision")) {
+			registerPowerup(new NightVisionPowerup());
+		}
+
 
 		/** **  Total weight  ** **/
 

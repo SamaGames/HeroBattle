@@ -40,7 +40,10 @@ map:
     # The altitude of the bottom else (like the water/lava level, etc.).
     bottom: 0
 
-    permanentNightVision: false   # Set to true to give night vision to all players during the game.
+    # Set to true to give night vision to all players during the game.
+    # If the world time is between 12000 (included) and 24000 (excluded) and this is set to
+    # false, the NightVision powerup will be available.
+    permanentNightVision: false
 
 game:
 
