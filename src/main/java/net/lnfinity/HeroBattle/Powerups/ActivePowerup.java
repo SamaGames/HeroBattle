@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.Powerups;
 
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Utils.ParticleEffect;
 import net.lnfinity.HeroBattle.Utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitTask;
 
 public class ActivePowerup {
 
@@ -27,8 +29,12 @@ public class ActivePowerup {
 	private ArmorStand entityBase;
 	private ArmorStand entityTitle;
 
+	// Async task used to display the particles
+	private BukkitTask particlesTask;
+
 	// Alive?
 	private boolean alive = false;
+
 
 	public ActivePowerup(HeroBattle plugin, Location location, Powerup powerup) {
 		this.p = plugin;
@@ -78,11 +84,13 @@ public class ActivePowerup {
 			player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 1);
 		}
 
+		final Location itemLocation = Utils.blockLocation(location).add(0, 1, 0);
+
 		Color fwColor;
 		if(powerup instanceof PositivePowerup) fwColor = Color.GREEN.mixColors(Color.YELLOW);
 		else                                   fwColor = Color.RED.mixColors(Color.YELLOW);
 
-		final Firework fw = location.getWorld().spawn(Utils.blockLocation(location).add(0, 1, 0), Firework.class);
+		final Firework fw = location.getWorld().spawn(itemLocation, Firework.class);
 		FireworkMeta fwm = fw.getFireworkMeta();
 		FireworkEffect effect = FireworkEffect.builder()
 				.withColor(fwColor).with(FireworkEffect.Type.BALL)
@@ -97,6 +105,15 @@ public class ActivePowerup {
 				fw.detonate();
 			}
 		}, 1l);
+
+
+		particlesTask = Bukkit.getScheduler().runTaskTimerAsynchronously(p, new Runnable() {
+			@Override
+			public void run() {
+				ParticleEffect.SPELL_INSTANT.display(0.5F, 0.5F, 0.5F, 0.1F, 2, itemLocation, 100.0);
+			}
+		}, 1l, 5l);
+
 
 		alive = true;
 	}
@@ -133,6 +150,8 @@ public class ActivePowerup {
 				fw.detonate();
 			}
 		}, 1l);
+
+		particlesTask.cancel();
 
 
 		alive = false;
