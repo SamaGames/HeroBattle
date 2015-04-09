@@ -5,6 +5,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.powerups.PositivePowerup;
 import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -43,7 +44,7 @@ public class ResetToolCooldownPowerup implements PositivePowerup {
 
 			int stackSlot = slotsToTest.get(rand.nextInt(slotsToTest.size()));
 			ItemStack stack = player.getInventory().getItem(stackSlot);
-			slotsToTest.remove(stackSlot);
+			slotsToTest.remove((Integer) stackSlot);
 
 			if(!ToolsUtils.isToolAvailable(stack) && stack.getAmount() >= 6) {
 				toolToReset = stack;
@@ -66,12 +67,12 @@ public class ResetToolCooldownPowerup implements PositivePowerup {
 
 	@Override
 	public ItemStack getItem() {
-		return null;
+		return new ItemStack(Material.WATCH);
 	}
 
 	@Override
 	public String getName() {
-		return null;
+		return ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "RESTAURATION D'UN OUTIL BLOQUÉ";
 	}
 
 	@Override
