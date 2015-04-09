@@ -8,8 +8,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 
 public class PercentageDividedPowerup implements PositivePowerup {
@@ -31,14 +33,8 @@ public class PercentageDividedPowerup implements PositivePowerup {
 
 	@Override
 	public ItemStack getItem() {
-		ItemStack icon = new ItemStack(Material.POTION);
-		PotionMeta meta = ((PotionMeta) icon.getItemMeta());
-
-		meta.addCustomEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1, 1), true);
-
-		icon.setItemMeta(meta);
-
-		return icon;
+		Potion potion = new Potion(PotionType.INSTANT_HEAL);
+		return potion.toItemStack(1);
 	}
 
 	@Override

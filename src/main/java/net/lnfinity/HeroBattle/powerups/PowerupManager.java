@@ -39,14 +39,15 @@ public class PowerupManager {
 		/** **  Powerups registry  ** **/
 
 		registerPowerup(new ToastPowerup());
-		registerPowerup(new HealPowerup(plugin));
+		registerPowerup(new HealPowerup(p));
 		registerPowerup(new PercentageDividedPowerup(p));
 		registerPowerup(new InvulnerabilityPowerup(p));
 		registerPowerup(new ResetToolCooldownPowerup(p));
-		registerPowerup(new ZeroPercentagePowerup(plugin));
-		registerPowerup(new TripleJumpPowerup(plugin));
+		registerPowerup(new ZeroPercentagePowerup(p));
+		registerPowerup(new TripleJumpPowerup(p));
 		registerPowerup(new ZeroCooldownPowerup());
-		registerPowerup(new PowerPowerup(plugin));
+		registerPowerup(new PowerPowerup(p));
+		registerPowerup(new SpeedPowerup());
 
 
 		/** **  Total weight  ** **/
