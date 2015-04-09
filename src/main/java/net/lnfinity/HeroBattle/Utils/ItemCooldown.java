@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
 
@@ -55,22 +56,25 @@ public class ItemCooldown {
 
 				Player onlinePlayer = ((Player) player);
 
-				if (seconds == 0) {
+				ItemStack slot = onlinePlayer.getInventory().getItem(slotId);
+
+				if (seconds == 0 || ToolsUtils.isToolAvailable(slot)) {
+
 					onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.NOTE_PIANO, (float) 1, (float) 1.5);
 					task.cancel();
 
-					if (onlinePlayer.getInventory().getItem(slotId) != null
-							&& onlinePlayer.getInventory().getItem(slotId).getType() != Material.AIR) {
-						GlowEffect.addGlow(onlinePlayer.getInventory().getItem(slotId));
+					if (slot != null && slot.getType() != Material.AIR) {
+						ToolsUtils.resetTool(slot);
 					}
 
 				} else {
 					// When the game is finished, the inventory is cleaned.
-					if (onlinePlayer.getInventory().getItem(slotId) != null) {
-						onlinePlayer.getInventory().getItem(slotId).setAmount(seconds);
-						onlinePlayer.updateInventory();
+					if (slot != null) {
+						slot.setAmount(seconds);
 					}
 				}
+
+				onlinePlayer.updateInventory();
 			}
 		}, 20L, 20L);
 	}

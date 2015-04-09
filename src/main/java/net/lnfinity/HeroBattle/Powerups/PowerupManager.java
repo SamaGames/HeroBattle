@@ -3,6 +3,7 @@ package net.lnfinity.HeroBattle.Powerups;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Powerups.powerups.InvulnerabilityPowerup;
 import net.lnfinity.HeroBattle.Powerups.powerups.PercentageDividedPowerup;
+import net.lnfinity.HeroBattle.Powerups.powerups.ResetToolCooldownPowerup;
 import net.lnfinity.HeroBattle.Powerups.powerups.ToastPowerup;
 import net.lnfinity.HeroBattle.Utils.Utils;
 import org.bukkit.Bukkit;
@@ -43,6 +44,7 @@ public class PowerupManager {
 		registerPowerup(new ToastPowerup());
 		registerPowerup(new PercentageDividedPowerup(p));
 		registerPowerup(new InvulnerabilityPowerup(p));
+		registerPowerup(new ResetToolCooldownPowerup(p));
 
 
 		/** **  Total weight  ** **/
