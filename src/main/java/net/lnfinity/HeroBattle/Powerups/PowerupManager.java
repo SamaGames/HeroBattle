@@ -1,6 +1,7 @@
 package net.lnfinity.HeroBattle.Powerups;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.Powerups.powerups.InvulnerabilityPowerup;
 import net.lnfinity.HeroBattle.Powerups.powerups.PercentageDividedPowerup;
 import net.lnfinity.HeroBattle.Powerups.powerups.ToastPowerup;
 import net.lnfinity.HeroBattle.Utils.Utils;
@@ -41,6 +42,7 @@ public class PowerupManager {
 
 		registerPowerup(new ToastPowerup());
 		registerPowerup(new PercentageDividedPowerup(p));
+		registerPowerup(new InvulnerabilityPowerup(p));
 
 
 		/** **  Total weight  ** **/
