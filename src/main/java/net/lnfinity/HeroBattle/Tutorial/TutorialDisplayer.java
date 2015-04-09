@@ -41,7 +41,7 @@ public class TutorialDisplayer {
 				p.getGame().getTutorialLocations().get(0),
 				HeroBattle.GAME_NAME_BICOLOR,
 				Arrays.asList(
-						"Comment jouer ?"
+						ChatColor.GREEN + "Comment jouer ?"
 				),
 				false
 		));
@@ -50,9 +50,9 @@ public class TutorialDisplayer {
 				p.getGame().getTutorialLocations().get(0),
 				ChatColor.AQUA + "I. " + ChatColor.GOLD + "Gameplay",
 				Arrays.asList(
-						"Chaque joueur possède une jauge de pourcentage",
-						"Elle définit les dommages du joueur",
-						"Plus elle est élevée, plus les dégâts le feront reculer"
+						ChatColor.GREEN + "Chaque joueur possède une jauge de pourcentage",
+						ChatColor.GREEN + "Elle définit les dommages du joueur",
+						ChatColor.GREEN + "Plus elle est élevée, plus les dégâts le feront reculer"
 				)
 		));
 
@@ -60,8 +60,8 @@ public class TutorialDisplayer {
 				p.getGame().getTutorialLocations().get(1),
 				ChatColor.AQUA + "II. " + ChatColor.GOLD + "But du Jeu",
 				Arrays.asList(
-						"Faites tomber vos adversaires dans le vide ou mettez les K.O.",
-						"Remportez la partie en étant le dernier en lice"
+						ChatColor.GREEN + "Faites tomber vos adversaires dans le vide ou mettez les K.O.",
+						ChatColor.GREEN + "Remportez la partie en étant le dernier en lice"
 				)
 		));
 
@@ -69,18 +69,30 @@ public class TutorialDisplayer {
 				p.getGame().getTutorialLocations().get(2),
 				ChatColor.AQUA + "III. " + ChatColor.GOLD + "Classes",
 				Arrays.asList(
-						"Choisissez votre classe au début du jeu",
-						"Chacune possède ses spécificités"
+						ChatColor.GREEN + "Toutes les classes ont deux attaques spéciales",
+						ChatColor.GREEN + "Certaines classes possèdent des effets uniques",
+						ChatColor.GREEN + "Vies et résistance sont propres à chaque classe",
+						ChatColor.RED + "Attention" + ChatColor.GREEN + ", chaque capacité possède un cooldown"
+				)
+		));
+		
+		content.add(new TutorialChapter(
+				p.getGame().getTutorialLocations().get(2),
+				ChatColor.AQUA + "IV. " + ChatColor.GOLD + "Types de combat",
+				Arrays.asList(
+						ChatColor.GREEN + "Différents types de combat en fonction des classes",
+						ChatColor.DARK_GREEN + "" + ChatColor.UNDERLINE + "Mêlée :" + ChatColor.GREEN + " dégâts de zone",
+						ChatColor.DARK_GREEN + "" + ChatColor.UNDERLINE + "Corps à corps :" + ChatColor.GREEN + " dégâts ciblés proches",
+						ChatColor.DARK_GREEN + "" + ChatColor.UNDERLINE + "Distant :" + ChatColor.GREEN + " dégât longue portée"
 				)
 		));
 
 		content.add(new TutorialChapter(
 				p.getGame().getTutorialLocations().get(3),
-				ChatColor.AQUA + "IV. " + ChatColor.GOLD + "Objets Spéciaux",
+				ChatColor.AQUA + "V. " + ChatColor.GOLD + "Powerups",
 				Arrays.asList(
-						"Chaque classe possède des objets différents",
-						"Ils permettent d'éxecuter des actions spéciales",
-						ChatColor.RED + "Attention" + ChatColor.WHITE + ", ils possèdent un cooldown après chaque utilisation"
+						ChatColor.GREEN + "Des Powerups peuvent apparaître aléatoirement durant le jeu",
+						ChatColor.GREEN + "Restez sur vos gardes !"
 				)
 		));
 
@@ -88,7 +100,7 @@ public class TutorialDisplayer {
 				p.getGame().getTutorialLocations().get(3),
 				HeroBattle.GAME_NAME_BICOLOR,
 				Arrays.asList(
-						"Bon jeu et bonne chance !"
+						ChatColor.GREEN + "Bon jeu et bonne chance !"
 				),
 				false
 		));
@@ -143,6 +155,8 @@ public class TutorialDisplayer {
 			player.hidePlayer(other);
 			other.hidePlayer(player);
 		}
+		
+		player.setPlayerTime(13000, false);
 
 		// The book is removed
 		player.getInventory().remove(Material.BOOK);
@@ -184,6 +198,8 @@ public class TutorialDisplayer {
 
 			// The book is restored
 			p.getGame().equipPlayer(player);
+			
+			player.setPlayerTime(6000, false);
 		}
 
 		try {
