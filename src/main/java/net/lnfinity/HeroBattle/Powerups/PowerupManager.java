@@ -119,12 +119,12 @@ public class PowerupManager {
 	 * @param player The player who picked up the item.
 	 */
 	public void onPowerupPickup(Item itemPicked, Player player) {
-		String powerupName = itemPicked.getItemStack().getItemMeta().getDisplayName();
+		String powerupUUID = itemPicked.getItemStack().getItemMeta().getDisplayName();
 		ActivePowerup activePowerup = null;
 
 		// Powerup lookup
 		for(ActivePowerup powerup : activePowerups) {
-			if(powerup.getPowerup().getName().equals(powerupName)) {
+			if(powerup.getActivePowerupUniqueID().toString().equals(powerupUUID)) {
 				activePowerup = powerup;
 				break;
 			}
