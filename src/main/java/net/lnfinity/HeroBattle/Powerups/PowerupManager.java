@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -17,8 +16,9 @@ public class PowerupManager {
 	private HeroBattle p;
 	private PowerupSpawner spawner;
 
-	public  final static int  INVERSE_PROBABILITY_OF_SPAWN_PER_TICK = 2000;
-	private final static long DELAY_UNSPAWN_POWERUP = 60 * 20l;
+	public  final static int  INVERSE_PROBABILITY_OF_SPAWN_PER_TICK = 100; // 100 = dev value; 2000 = prod value
+	private final static long DELAY_UNSPAWN_POSITIVE_POWERUP = 60 * 20l;
+	private final static long DELAY_UNSPAWN_NEGATIVE_POWERUP = 45 * 20l;
 
 	private List<Powerup> powerups = new ArrayList<>();
 	private List<Location> locations = new ArrayList<>();
@@ -86,14 +86,17 @@ public class PowerupManager {
 		activePowerup.spawn();
 
 
+		long despawnDelay = powerup instanceof PositivePowerup ?
+				DELAY_UNSPAWN_POSITIVE_POWERUP : DELAY_UNSPAWN_NEGATIVE_POWERUP;
+
 		Bukkit.getScheduler().runTaskLater(p, new Runnable() {
 			@Override
 			public void run() {
-				if(activePowerup.isAlive()) {
+				if (activePowerup.isAlive()) {
 					unspawnPowerup(activePowerup, false);
 				}
 			}
-		}, DELAY_UNSPAWN_POWERUP);
+		}, despawnDelay);
 	}
 
 	/**

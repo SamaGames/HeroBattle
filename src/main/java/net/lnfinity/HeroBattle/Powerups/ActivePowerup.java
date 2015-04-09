@@ -78,11 +78,15 @@ public class ActivePowerup {
 			player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 1);
 		}
 
+		Color fwColor;
+		if(powerup instanceof PositivePowerup) fwColor = Color.GREEN.mixColors(Color.YELLOW);
+		else                                   fwColor = Color.RED.mixColors(Color.YELLOW);
+
 		final Firework fw = location.getWorld().spawn(Utils.blockLocation(location), Firework.class);
 		FireworkMeta fwm = fw.getFireworkMeta();
 		FireworkEffect effect = FireworkEffect.builder()
-				.withColor(Color.GREEN).with(FireworkEffect.Type.BALL)
-				.withFade(Color.YELLOW.mixColors(Color.GREEN)).build();
+				.withColor(fwColor).with(FireworkEffect.Type.BALL)
+				.withFade(Color.YELLOW).build();
 		fwm.addEffects(effect);
 		fwm.setPower(0);
 		fw.setFireworkMeta(fwm);
@@ -113,9 +117,10 @@ public class ActivePowerup {
 
 		/*** ***  EFFECTS AND BROADCAST  *** ***/
 
+		Color fwColor = got ? Color.BLUE : Color.RED;
+
 		final Firework fw = location.getWorld().spawn(Utils.blockLocation(location), Firework.class);
 		FireworkMeta fwm = fw.getFireworkMeta();
-		Color fwColor = got ? Color.BLUE : Color.RED;
 		FireworkEffect effect = FireworkEffect.builder()
 				.withColor(fwColor).with(FireworkEffect.Type.BALL).build();
 		fwm.addEffects(effect);
