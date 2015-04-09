@@ -82,7 +82,7 @@ public class ActivePowerup {
 		if(powerup instanceof PositivePowerup) fwColor = Color.GREEN.mixColors(Color.YELLOW);
 		else                                   fwColor = Color.RED.mixColors(Color.YELLOW);
 
-		final Firework fw = location.getWorld().spawn(Utils.blockLocation(location), Firework.class);
+		final Firework fw = location.getWorld().spawn(Utils.blockLocation(location).add(0, 1, 0), Firework.class);
 		FireworkMeta fwm = fw.getFireworkMeta();
 		FireworkEffect effect = FireworkEffect.builder()
 				.withColor(fwColor).with(FireworkEffect.Type.BALL)
@@ -119,7 +119,7 @@ public class ActivePowerup {
 
 		Color fwColor = got ? Color.BLUE : Color.RED;
 
-		final Firework fw = location.getWorld().spawn(Utils.blockLocation(location), Firework.class);
+		final Firework fw = location.getWorld().spawn(Utils.blockLocation(location).add(0, 1, 0), Firework.class);
 		FireworkMeta fwm = fw.getFireworkMeta();
 		FireworkEffect effect = FireworkEffect.builder()
 				.withColor(fwColor).with(FireworkEffect.Type.BALL).build();
