@@ -17,7 +17,8 @@ public class PowerupManager {
 	private HeroBattle p;
 	private PowerupSpawner spawner;
 
-	private final long DELAY_UNSPAWN_POWERUP = 60 * 20l;
+	public  final static int  INVERSE_PROBABILITY_OF_SPAWN_PER_TICK = 2000;
+	private final static long DELAY_UNSPAWN_POWERUP = 60 * 20l;
 
 	private List<Powerup> powerups = new ArrayList<>();
 	private List<Location> locations = new ArrayList<>();
