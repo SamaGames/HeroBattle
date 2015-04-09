@@ -45,6 +45,6 @@ public class PercentageDividedPowerup implements PositivePowerup {
 
 	@Override
 	public double getWeight() {
-		return 1;
+		return 10;
 	}
 }

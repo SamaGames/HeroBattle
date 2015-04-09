@@ -76,6 +76,6 @@ public class ResetToolCooldownPowerup implements PositivePowerup {
 
 	@Override
 	public double getWeight() {
-		return 0;
+		return 20;
 	}
 }
