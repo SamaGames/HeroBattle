@@ -1,7 +1,16 @@
 package net.lnfinity.HeroBattle.Powerups;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.logging.Level;
+
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.Powerups.powerups.HealPowerup;
+import net.lnfinity.HeroBattle.Powerups.powerups.InvulnerabilityPowerup;
+import net.lnfinity.HeroBattle.Powerups.powerups.PercentageDividedPowerup;
 import net.lnfinity.HeroBattle.Powerups.powerups.PowerPowerup;
 import net.lnfinity.HeroBattle.Powerups.powerups.ToastPowerup;
 import net.lnfinity.HeroBattle.Powerups.powerups.TripleJumpPowerup;
@@ -13,9 +22,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-
-import java.util.*;
-import java.util.logging.Level;
 
 public class PowerupManager {
 
@@ -46,11 +52,13 @@ public class PowerupManager {
 
 		registerPowerup(new ToastPowerup());
 		registerPowerup(new HealPowerup(plugin));
+		registerPowerup(new InvulnerabilityPowerup(p));
 		registerPowerup(new ZeroPercentagePowerup(plugin));
 		registerPowerup(new TripleJumpPowerup(plugin));
 		registerPowerup(new ZeroCooldownPowerup());
 		registerPowerup(new PowerPowerup(plugin));
-		
+		registerPowerup(new PercentageDividedPowerup(p));
+
 		/** **  Total weight  ** **/
 
 		totalWeight = 0.0;

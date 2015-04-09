@@ -29,6 +29,7 @@ public class GamePlayer {
 	private boolean playing = true;
 	private boolean doubleDamages = false;
 	private boolean isInvisible = false;
+	private boolean isInvulnerable = false;
 	private UUID lastDamager = null;
 	private List<PlayerClass> avaible = new ArrayList<PlayerClass>();
 	private List<Task> tasks = new ArrayList<Task>();
@@ -59,6 +60,8 @@ public class GamePlayer {
 	}
 
 	public void setPercentage(int percentage) {
+		if(isInvulnerable() && percentage >= this.percentage) return;
+
 		this.percentage = percentage;
 	}
 
@@ -92,6 +95,14 @@ public class GamePlayer {
 
 	public void setInvisible(boolean isInvisible) {
 		this.isInvisible = isInvisible;
+	}
+
+	public boolean isInvulnerable() {
+		return isInvulnerable;
+	}
+
+	public void setInvulnerable(boolean isInvulnerable) {
+		this.isInvulnerable = isInvulnerable;
 	}
 
 	public UUID getLastDamager() {
