@@ -17,6 +17,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class MasterListener implements Listener {
 
@@ -69,6 +71,13 @@ public class MasterListener implements Listener {
 
 		p.setMaxHealth(20);
 		p.setHealth(20);
+
+		if(plugin.getArenaConfig().getBoolean("map.permanentNightVision")) {
+			p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
+		}
+		else {
+			p.removePotionEffect(PotionEffectType.NIGHT_VISION);
+		}
 
 		plugin.getGame().equipPlayer(p);
 
