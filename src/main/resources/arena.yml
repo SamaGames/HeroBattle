@@ -8,7 +8,7 @@ map:
 
     minPlayers: 4   # Minimum players to start the timer
 
-    waiting: 30     # Time before begining
+    waiting: 120    # Time before begining
 
     gameTime: 15    # Maximum time the game should last (in minutes)
 

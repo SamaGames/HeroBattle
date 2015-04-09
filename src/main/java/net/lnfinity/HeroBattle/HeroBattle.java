@@ -20,6 +20,7 @@ import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.themachine.CoherenceMachine;
 
+import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -70,13 +71,8 @@ public class HeroBattle extends JavaPlugin {
 		}
 
 		arenaConfig = YamlConfiguration.loadConfiguration(arenaFile);
+		arenaConfig.setDefaults(YamlConfiguration.loadConfiguration(new File(getDataFolder(), "arena.yml")));
 
-		arenaConfig.addDefault("map.name", "HeroBattle");
-		arenaConfig.addDefault("map.maxPlayers", 10);
-		arenaConfig.addDefault("map.maxVIP", 2);
-		arenaConfig.addDefault("map.hub", "0;64;0");
-		arenaConfig.addDefault("map.spawns", Arrays.asList("0;64;0", "0;64;0"));
-		arenaConfig.addDefault("map.bottom", 0);
 
 		getServer().getPluginManager().registerEvents(new MasterListener(this), this);
 		getServer().getPluginManager().registerEvents(new GameListener(this), this);
@@ -91,9 +87,6 @@ public class HeroBattle extends JavaPlugin {
 
 		this.getCommand("classe").setExecutor(new ClassSelectionCommand(this));
 
-		for (Player player : getServer().getOnlinePlayers()) {
-			addGamePlayer(player);
-		}
 
 		timer = new CountdownTimer(this);
 		g = new Game(this);
@@ -104,6 +97,12 @@ public class HeroBattle extends JavaPlugin {
 		tutorialDisplayer = new TutorialDisplayer(this);
 
 		addOnlinePlayers();
+
+
+		World world = getServer().getWorlds().get(0);
+		world.setGameRuleValue("doDaylightCycle", "false");
+		world.setTime(arenaConfig.getLong("map.dayTime"));
+
 
 		GameAPI.registerGame(getConfig().getString("gameName"), g);
 
