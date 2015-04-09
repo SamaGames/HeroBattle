@@ -14,9 +14,14 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.UUID;
+
 public class ActivePowerup {
 
 	HeroBattle p;
+
+	// UUID of this specific active powerup
+	private UUID activePowerupID = UUID.randomUUID();
 
 	// Location
 	private Location location;
@@ -50,7 +55,7 @@ public class ActivePowerup {
 
 		ItemStack powerupItem = powerup.getItem().clone();
 		ItemMeta powerupItemMeta = powerupItem.getItemMeta();
-			powerupItemMeta.setDisplayName(powerup.getName());
+			powerupItemMeta.setDisplayName(activePowerupID.toString());
 		powerupItem.setItemMeta(powerupItemMeta);
 
 
@@ -168,5 +173,9 @@ public class ActivePowerup {
 
 	public Location getLocation() {
 		return location;
+	}
+
+	public UUID getActivePowerupUniqueID() {
+		return activePowerupID;
 	}
 }
