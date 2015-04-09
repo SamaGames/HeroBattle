@@ -10,13 +10,18 @@ depend:
 commands:
   start:
     description: Force le démarrage du jeu.
-    aliases: [start]
     usage: Vous n'avez pas les permissions requises !
+
   forcestop:
     description: Force l'arrêt du jeu. Sachez ce que vous faites !
-    aliases: [forcestop]
+    aliases: [fstop]
     usage: Vous n'avez pas les permissions requises !
+
+  powerup:
+    description: Provoque l'apparition d'un powerup (si une place est libre).
+    usage: Vous n'avez pas les permissions requises !
+
   classe:
     description: Permet de choisir une classe.
-    aliases: [classe]
+    aliases: [class]
     usage: /classe <classe>

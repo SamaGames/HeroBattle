@@ -87,6 +87,7 @@ public class HeroBattle extends JavaPlugin {
 		CommandListener command = new CommandListener(this);
 		this.getCommand("start").setExecutor(command);
 		this.getCommand("forcestop").setExecutor(command);
+		this.getCommand("powerup").setExecutor(command);
 
 		this.getCommand("classe").setExecutor(new ClassSelectionCommand(this));
 
