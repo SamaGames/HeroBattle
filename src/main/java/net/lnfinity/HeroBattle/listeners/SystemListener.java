@@ -86,7 +86,7 @@ public class SystemListener implements Listener {
 
 	@EventHandler
 	public void onCreatureSpawn(CreatureSpawnEvent e) {
-		if (e.getSpawnReason() != CreatureSpawnEvent.SpawnReason.NATURAL && e.getEntityType() != EntityType.ARMOR_STAND && e.getEntityType() != EntityType.DROPPED_ITEM) {
+		if (e.getEntityType() != EntityType.ARMOR_STAND && e.getEntityType() != EntityType.DROPPED_ITEM) {
 			e.setCancelled(true);
 		}
 	}
