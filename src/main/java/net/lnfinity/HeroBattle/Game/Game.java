@@ -146,6 +146,8 @@ public class Game implements GameArena {
 
 			player.getInventory().clear();
 			player.setLevel(0);
+			
+			player.setPlayerTime(6000, false);
 
 			p.getGame().updatePlayerArmor(player);
 
