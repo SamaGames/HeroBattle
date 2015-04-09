@@ -6,24 +6,31 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class Powerup {
-
-	protected HeroBattle p;
+public interface Powerup {
 	
-	public Powerup(HeroBattle plugin) {
-		p = plugin;
-	}
-	
-	public abstract void onPickup(Player player, ItemStack pickupItem);
+	public void onPickup(Player player, ItemStack pickupItem);
 
 	/**
 	 * The item used to represent this powerup.
 	 */
-	public abstract ItemStack getItem();
+	public ItemStack getItem();
 
 	/**
 	 * The name of this powerup, displayed above.
 	 */
-	public abstract String getName();
+	public String getName();
+
+
+	/**
+	 * Returns the weight of this powerup. Used to randomly choose the powerup to spawn.
+	 *
+	 * <p>
+	 *     Powerups with a higher weight will have an higher chance to spawn.
+	 * </p>
+	 * <p>
+	 *     Between {@code 0} and {@code Double.MAX_VALUE}.
+	 * </p>
+	 */
+	public double getWeight();
 
 }

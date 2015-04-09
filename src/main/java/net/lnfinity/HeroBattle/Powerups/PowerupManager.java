@@ -22,17 +22,30 @@ public class PowerupManager {
 	private List<Powerup> powerups = new ArrayList<>();
 	private List<Location> locations = new ArrayList<>();
 
+	private double totalWeight;
+
 	private Set<ActivePowerup> activePowerups = new HashSet<>();
 
 	private Random random = new Random();
 
 	public PowerupManager(HeroBattle plugin) {
-		p = plugin;
+		p       = plugin;
 		spawner = new PowerupSpawner(p);
 
 		registerLocations();
 
-		registerPowerup(new ToastPowerup(p));
+
+		/** **  Powerups registry  ** **/
+
+		registerPowerup(new ToastPowerup());
+
+
+		/** **  Total weight  ** **/
+
+		totalWeight = 0.0;
+		for(Powerup powerup : powerups) {
+			totalWeight += powerup.getWeight();
+		}
 	}
 
 
@@ -42,8 +55,25 @@ public class PowerupManager {
 	public void spawnRandomPowerup() {
 		if(locations.size() == 0) return; // There isn't any location available.
 
+
 		final Location location = locations.get(random.nextInt(locations.size()));
-		Powerup  powerup  = powerups .get(random.nextInt(powerups.size()));
+
+		// Weighted random choice of the powerup
+		Powerup powerup = null;
+		double randomIndex = random.nextDouble() * totalWeight;
+		for(Powerup testedPowerup : powerups) {
+			randomIndex -= testedPowerup.getWeight();
+			if(randomIndex <= 0.0d) {
+				powerup = testedPowerup;
+				break;
+			}
+		}
+
+		// Should never happens, but just to be sure
+		if(powerup == null) {
+			throw new RuntimeException("Cannot find a powerup to spawn");
+		}
+
 
 		// The chosen location is removed from the list, to avoid two powerups at the same place
 		locations.remove(location);

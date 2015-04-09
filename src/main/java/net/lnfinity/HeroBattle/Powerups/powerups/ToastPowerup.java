@@ -9,10 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 
-public class ToastPowerup extends Powerup {
-	public ToastPowerup(HeroBattle plugin) {
-		super(plugin);
-	}
+public class ToastPowerup implements Powerup {
 
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
@@ -27,5 +24,10 @@ public class ToastPowerup extends Powerup {
 	@Override
 	public String getName() {
 		return ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "TOAST";
+	}
+
+	@Override
+	public double getWeight() {
+		return 1;
 	}
 }
