@@ -88,6 +88,11 @@ public class HeroBattle extends JavaPlugin {
 		this.getCommand("classe").setExecutor(new ClassSelectionCommand(this));
 
 
+		World world = getServer().getWorlds().get(0);
+		world.setGameRuleValue("doDaylightCycle", "false");
+		world.setTime(arenaConfig.getLong("map.dayTime"));
+
+
 		timer = new CountdownTimer(this);
 		g = new Game(this);
 		gameTimer = new GameTimer(this, this.getArenaConfig().getInt("map.gameTime"));
@@ -97,11 +102,6 @@ public class HeroBattle extends JavaPlugin {
 		tutorialDisplayer = new TutorialDisplayer(this);
 
 		addOnlinePlayers();
-
-
-		World world = getServer().getWorlds().get(0);
-		world.setGameRuleValue("doDaylightCycle", "false");
-		world.setTime(arenaConfig.getLong("map.dayTime"));
 
 
 		GameAPI.registerGame(getConfig().getString("gameName"), g);
