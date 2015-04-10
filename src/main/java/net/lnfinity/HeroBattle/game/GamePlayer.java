@@ -147,7 +147,7 @@ public class GamePlayer {
 		if (getJumps() > 0) {
 			setJumps(getJumps() - 1);
 			Vector direction = player.getLocation().getDirection().multiply(0.5);
-			Vector vector = new Vector(direction.getX(), 1.3, direction.getZ());
+			Vector vector = new Vector(direction.getX(), 0.9, direction.getZ());
 			player.setVelocity(vector);
 		}
 	}

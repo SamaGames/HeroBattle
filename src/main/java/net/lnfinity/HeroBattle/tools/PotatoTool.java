@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
@@ -53,7 +54,7 @@ public class PotatoTool extends PlayerTool {
 
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-		if (tool.containsEnchantment(GlowEffect.getGlow())) {
+		if (ToolsUtils.isToolAvailable(tool)) {
 			new ItemCooldown(p, player, this, COOLDOWN);
 			player.getWorld().playSound(player.getLocation(), Sound.WITHER_SPAWN, 1, 2);
 			for (Entity entity : player.getNearbyEntities(5, 5, 5)) {

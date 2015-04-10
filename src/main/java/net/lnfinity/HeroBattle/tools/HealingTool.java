@@ -6,6 +6,7 @@ import java.util.Random;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.utils.GlowEffect;
 
@@ -59,7 +60,7 @@ public class HealingTool extends PlayerTool {
 
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-		if (tool.containsEnchantment(GlowEffect.getGlow())) {
+		if (ToolsUtils.isToolAvailable(tool)) {
 			new ItemCooldown(p, player, this, COOLDOWN);
 			if (random.nextDouble() >= PROBABILITY) {
 				GamePlayer gamePlayer = p.getGamePlayer(player);

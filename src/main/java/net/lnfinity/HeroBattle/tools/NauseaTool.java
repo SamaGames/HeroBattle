@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
@@ -63,7 +64,7 @@ public class NauseaTool extends PlayerTool {
 
 	@Override
 	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
-		if (tool.containsEnchantment(GlowEffect.getGlow())) {
+		if (ToolsUtils.isToolAvailable(tool)) {
 			player.playSound(player.getLocation(), Sound.ENDERDRAGON_GROWL, (float) 1, (float) 2);
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override

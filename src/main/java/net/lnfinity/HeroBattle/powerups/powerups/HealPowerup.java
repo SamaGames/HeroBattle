@@ -27,7 +27,7 @@ public class HealPowerup implements PositivePowerup {
 			player.sendMessage(ChatColor.GREEN + "Vous gagnez " + ChatColor.DARK_GREEN + "1 " + ChatColor.GREEN + "vie !");
 			gamePlayer.setLives(gamePlayer.getLives() + 1);
 			player.setHealth(player.getHealth() + 2);
-			p.getScoreboardManager().update(player);
+			p.getScoreboardManager().refresh();
 		}
 	}
 

@@ -39,16 +39,16 @@ public class NightVisionPowerup implements PositivePowerup {
 
 	@Override
 	public ItemStack getItem() {
-		return new ItemStack(Material.REDSTONE_LAMP_ON);
+		return new ItemStack(Material.REDSTONE_LAMP_OFF);
 	}
 
 	@Override
 	public String getName() {
-		return null;
+		return ChatColor.DARK_BLUE + "" + ChatColor.BOLD + "VISION NOCTURNE";
 	}
 
 	@Override
 	public double getWeight() {
-		return 0;
+		return 15;
 	}
 }

@@ -57,6 +57,7 @@ public class ItemCooldown {
 				Player onlinePlayer = ((Player) player);
 				
 				if(onlinePlayer.getInventory().getItem(slotId) != null && onlinePlayer.getInventory().getItem(slotId).getAmount() == 1) {
+					ToolsUtils.resetTool(onlinePlayer.getInventory().getItem(slotId));
 					task.cancel();
 					return;
 				}

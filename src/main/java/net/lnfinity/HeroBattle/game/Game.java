@@ -147,7 +147,7 @@ public class Game implements GameArena {
 			player.getInventory().clear();
 			player.setLevel(0);
 			
-			player.setPlayerTime(6000, false);
+			player.setPlayerTime(p.getArenaConfig().getLong("map.dayTime"), false);
 
 			p.getGame().updatePlayerArmor(player);
 

@@ -158,7 +158,7 @@ public class TutorialDisplayer {
 			other.hidePlayer(player);
 		}
 		
-		player.setPlayerTime(13000, false);
+		player.setPlayerTime(p.getArenaConfig().getLong("map.dayTime"), false);
 
 		// The book is removed
 		player.getInventory().remove(Material.BOOK);

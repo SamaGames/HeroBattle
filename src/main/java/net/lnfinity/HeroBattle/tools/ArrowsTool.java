@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
@@ -53,7 +54,7 @@ public class ArrowsTool extends PlayerTool {
 
 	@Override
 	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
-		if (tool.containsEnchantment(GlowEffect.getGlow())) {
+		if (ToolsUtils.isToolAvailable(tool)) {
 			taskId = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
 				int loop = 1;
 

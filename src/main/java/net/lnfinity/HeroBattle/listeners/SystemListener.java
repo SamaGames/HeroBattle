@@ -50,6 +50,8 @@ public class SystemListener implements Listener {
 
 			if (plugin.getGame().getStatus() == Status.InGame) {
 				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.FALL);
+			} else {
+				plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
 			}
 		} else if (e.getTo().getBlockY() <= plugin.getGame().getBottomHeight()
 				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE) {

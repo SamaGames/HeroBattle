@@ -46,7 +46,7 @@ public class PowerPowerup implements PositivePowerup {
 
 	@Override
 	public double getWeight() {
-		return 35;
+		return 25;
 	}
 
 }

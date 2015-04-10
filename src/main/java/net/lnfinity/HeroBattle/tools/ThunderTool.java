@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
@@ -47,7 +48,7 @@ public class ThunderTool extends PlayerTool {
 
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-		if (tool.containsEnchantment(GlowEffect.getGlow())) {
+		if (ToolsUtils.isToolAvailable(tool)) {
 			new ItemCooldown(p, player, this, COOLDOWN);
 			Block b = p.getGame().getTargetBlock(player, 20);
 			if (b != null) {

@@ -90,7 +90,7 @@ public class HeroBattle extends JavaPlugin {
 
 		World world = getServer().getWorlds().get(0);
 		world.setGameRuleValue("doDaylightCycle", "false");
-		world.setTime(arenaConfig.getLong("map.dayTime"));
+		world.setTime(6000);
 
 
 		timer = new CountdownTimer(this);
@@ -102,7 +102,6 @@ public class HeroBattle extends JavaPlugin {
 		tutorialDisplayer = new TutorialDisplayer(this);
 
 		addOnlinePlayers();
-
 
 		GameAPI.registerGame(getConfig().getString("gameName"), g);
 

@@ -16,7 +16,7 @@ public class PowerupManager {
 	private HeroBattle p;
 	private PowerupSpawner spawner;
 
-	public  final static int  INVERSE_PROBABILITY_OF_SPAWN_PER_TICK = 2000; // 50 = dev value; 2000 = prod value
+	public  final static int  INVERSE_PROBABILITY_OF_SPAWN_PER_TICK = 500; // 50 = dev value; 2000 = prod value
 	private final static long DELAY_UNSPAWN_POSITIVE_POWERUP = 60 * 20l;
 	private final static long DELAY_UNSPAWN_NEGATIVE_POWERUP = 45 * 20l;
 
@@ -49,7 +49,7 @@ public class PowerupManager {
 		registerPowerup(new PowerPowerup(p));
 		registerPowerup(new SpeedPowerup());
 
-		long worldTime = p.getServer().getWorlds().get(0).getTime() % 24000;
+		long worldTime = p.getArenaConfig().getLong("map.dayTime") % 24000;
 		if(worldTime >= 12000 && worldTime < 24000 && !plugin.getArenaConfig().getBoolean("map.permanentNightVision")) {
 			registerPowerup(new NightVisionPowerup());
 		}
