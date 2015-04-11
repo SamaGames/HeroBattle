@@ -13,6 +13,7 @@ public class ZeroCooldownPowerup implements PositivePowerup {
 
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
+		player.sendMessage(ChatColor.GREEN + "Toutes vos capacités ont été rafraichies !");
 		for(int i = 1; i < 9; i++) {
 			ItemStack stack = player.getInventory().getItem(i);
 			if(stack != null) {

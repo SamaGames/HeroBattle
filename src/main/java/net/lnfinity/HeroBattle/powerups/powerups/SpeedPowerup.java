@@ -13,6 +13,7 @@ public class SpeedPowerup implements PositivePowerup {
 
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
+		player.sendMessage(ChatColor.GREEN + "De la vitesse pour 10 secondes !");
 		player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 10, 0));
 	}
 

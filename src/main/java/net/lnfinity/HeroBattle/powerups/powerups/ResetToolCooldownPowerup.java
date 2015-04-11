@@ -54,13 +54,13 @@ public class ResetToolCooldownPowerup implements PositivePowerup {
 
 
 		if(toolToReset == null) {
-			player.sendMessage(ChatColor.RED + "" + ChatColor.ITALIC + "Vous n'avez aucun outil qui vaille le coup d'être réinitialisé...");
+			player.sendMessage(ChatColor.RED + "" + ChatColor.ITALIC + "Vous n'avez aucune capacité qui vaille le coup d'être réinitialisé...");
 			return;
 		}
 
 
 		ToolsUtils.resetTool(toolToReset);
-		player.sendMessage(ChatColor.GREEN + "L'outil " + toolToReset.getItemMeta().getDisplayName() + ChatColor.GREEN + " est à nouveau utilisable ! " + ChatColor.DARK_GREEN + "*pouf*");
+		player.sendMessage(ChatColor.GREEN + "La capacité " + toolToReset.getItemMeta().getDisplayName() + ChatColor.GREEN + " est à nouveau utilisable ! " + ChatColor.DARK_GREEN + "*pouf*");
 
 		player.updateInventory();
 	}

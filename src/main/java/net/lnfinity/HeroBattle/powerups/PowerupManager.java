@@ -16,7 +16,7 @@ public class PowerupManager {
 	private HeroBattle p;
 	private PowerupSpawner spawner;
 
-	public  final static int  INVERSE_PROBABILITY_OF_SPAWN_PER_TICK = 500; // 50 = dev value; 2000 = prod value
+	public  final static int  INVERSE_PROBABILITY_OF_SPAWN_PER_TICK = 1000; // 50 = dev value; 2000 = prod value
 	private final static long DELAY_UNSPAWN_POSITIVE_POWERUP = 60 * 20l;
 	private final static long DELAY_UNSPAWN_NEGATIVE_POWERUP = 45 * 20l;
 

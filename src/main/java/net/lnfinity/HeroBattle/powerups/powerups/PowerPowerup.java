@@ -22,7 +22,7 @@ public class PowerPowerup implements PositivePowerup {
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
 		final GamePlayer gamePlayer = p.getGamePlayer(player);
-		player.sendMessage(ChatColor.GREEN + "Vous activez " + ChatColor.DARK_GREEN + "doubles dommages " + ChatColor.GREEN + "!");
+		player.sendMessage(ChatColor.GREEN + "Vous activez " + ChatColor.DARK_GREEN + "doubles dommages " + ChatColor.GREEN + " pour 15 secondes !");
 		gamePlayer.setDoubleDamages(true);
 		player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 15 * 20, 0));
 		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
