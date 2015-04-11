@@ -349,6 +349,9 @@ public class Game implements GameArena {
 
 	public void onPlayerQuit(UUID id) {
 		GamePlayer gPlayer = p.getGamePlayer(id);
+		if(gPlayer == null) {
+			return;
+		}
 		if (gPlayer.isPlaying()) {
 			gPlayer.setPlaying(false);
 

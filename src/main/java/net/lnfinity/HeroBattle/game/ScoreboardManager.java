@@ -47,7 +47,10 @@ public class ScoreboardManager {
 	
 	public void refreshTab() {
 		for (GamePlayer player : p.getGamePlayers().values()) {
-			eloPlayerList.getScore(p.getServer().getPlayer(player.getPlayerUniqueID()).getName()).setScore(player.getElo());
+			Player realPlayer = p.getServer().getPlayer(player.getPlayerUniqueID());
+			if(player != null && realPlayer != null) {
+				eloPlayerList.getScore(realPlayer.getName()).setScore(player.getElo());
+			}
 		}
 	}
 
