@@ -4,19 +4,23 @@ import net.lnfinity.HeroBattle.HeroBattle;
 
 import net.lnfinity.HeroBattle.utils.Utils;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 public class ScoreboardManager {
 
 	private HeroBattle p = null;
 	private Scoreboard board = null;
+
 	private Objective percentageBelowName = null;
 	private Objective percentageSidebar = null;
 	private Objective eloPlayerList = null;
 
+	
 	public ScoreboardManager(HeroBattle plugin) {
 		p = plugin;
 
