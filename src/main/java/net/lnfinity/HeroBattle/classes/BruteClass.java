@@ -5,6 +5,8 @@ import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.EarthquakeTool;
+import net.lnfinity.HeroBattle.tools.IceTool;
+import net.lnfinity.HeroBattle.tools.InvincibleTool;
 import net.lnfinity.HeroBattle.tools.NauseaTool;
 import net.lnfinity.HeroBattle.tools.SwordTool;
 
@@ -23,6 +25,8 @@ public class BruteClass extends PlayerClass {
 		addTool(new SwordTool(p));
 		addTool(new EarthquakeTool(p, 30 - arg1 * 2));
 		addTool(new NauseaTool(p, 60 - arg1 * 4, 10 + arg2, 0.25 - arg2 * 0.05));
+		addTool(new IceTool(p, 10, 5));
+		addTool(new InvincibleTool(p, 10, 5));
 	}
 
 	@Override
