@@ -201,7 +201,7 @@ public class Game implements GameArena {
 		player.getInventory().clear();
 		player.getInventory().setArmorContents(null);
 
-		teleportHub(player.getUniqueId());
+		teleportRandomSpot(player);
 	}
 
 	public void chooseRandomClass(Player player) {
@@ -584,10 +584,17 @@ public class Game implements GameArena {
 	}
 
 	public void updatePlayerArmor(Player player) {
-		if (p.getGamePlayer(player).isInvisible()) {
+
+		GamePlayer gamePlayer = p.getGamePlayer(player);
+
+		if(!gamePlayer.isPlaying()) return;
+
+
+		if (gamePlayer.isInvisible()) {
 			player.getInventory().setArmorContents(null);
-		} else {
-			GamePlayer gamePlayer = p.getGamePlayer(player);
+		}
+
+		else {
 			player.getInventory().setHelmet(gamePlayer.getPlayerClass().getHat());
 			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
 			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
