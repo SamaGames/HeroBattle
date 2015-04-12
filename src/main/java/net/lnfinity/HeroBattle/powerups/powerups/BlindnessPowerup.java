@@ -1,5 +1,6 @@
-package net.lnfinity.HeroBattle.powerups;
+package net.lnfinity.HeroBattle.powerups.powerups;
 
+import net.lnfinity.HeroBattle.powerups.NegativePowerup;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
