@@ -111,9 +111,11 @@ public class Game implements GameArena {
 
 		p.getTutorialDisplayer().stopForAll("Le jeu démarre...");
 
-		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " de la partie " + ChatColor.DARK_GREEN + ((int) getTotalElo() / p.getGamePlayers().size()));
-		
+		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " de la partie " + ChatColor.DARK_GREEN + (getTotalElo() / p.getGamePlayers().size()));
 		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Que le meilleur gagne !");
+
+		p.getServer().getWorlds().get(0).setTime(p.getArenaConfig().getLong("map.dayTime"));
+
 		teleportPlayers();
 
 		p.getGameTimer().startTimer();
@@ -146,8 +148,6 @@ public class Game implements GameArena {
 
 			player.getInventory().clear();
 			player.setLevel(0);
-			
-			player.setPlayerTime(p.getArenaConfig().getLong("map.dayTime"), false);
 
 			p.getGame().updatePlayerArmor(player);
 

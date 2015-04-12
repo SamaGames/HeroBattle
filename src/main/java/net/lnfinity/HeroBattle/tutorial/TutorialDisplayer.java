@@ -201,7 +201,7 @@ public class TutorialDisplayer {
 			// The book is restored
 			p.getGame().equipPlayer(player);
 			
-			player.setPlayerTime(6000, false);
+			player.resetPlayerTime();
 		}
 
 		try {
