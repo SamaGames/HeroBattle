@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.MaiteClass;
 import net.lnfinity.HeroBattle.classes.NotYetAvailableClass;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.game.GamePlayer;
@@ -17,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +33,6 @@ public class ClassSelectorListener implements Listener {
 	private final String TITLE_CLASS_DETAILS = "Détails de la classe ";
 
 	private final int COMING_SOON_CLASSES_COUNT = 2;
-	private int tutorialTask = -1;
 
 	public ClassSelectorListener(HeroBattle plugin) {
 		p = plugin;
@@ -39,6 +40,7 @@ public class ClassSelectorListener implements Listener {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
+
 		if (e.getWhoClicked() instanceof Player && e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta()) {
 			Player player = (Player) e.getWhoClicked();
 			GamePlayer gamePlayer = p.getGamePlayer(player);
@@ -80,19 +82,40 @@ public class ClassSelectorListener implements Listener {
 				if (e.getCurrentItem().equals(createBackToListItem())) {
 					// Go back to the menu
 					createSelector(player);
-				} else if (e.getCurrentItem().getItemMeta().getDisplayName()
+				}
+
+				else if (e.getCurrentItem().getItemMeta().getDisplayName()
 						.equals(createUseThisClassItem(null).getItemMeta().getDisplayName())) {
-					if(p.getClassManager().playerHasClass(gamePlayer, p.getClassManager().getClassFromName(player, e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")).getType())) {
-						selectClass(player, p.getClassManager().getClassFromName(player, e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "")));
-					} else {
+
+					String className = e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "");
+
+					if(className.equals("Maïté")) {
+						selectClass(player, new MaiteClass(p));
+					}
+
+					else if(p.getClassManager().playerHasClass(gamePlayer, p.getClassManager().getClassFromName(player, className).getType())) {
+						selectClass(player, p.getClassManager().getClassFromName(player, className));
+					}
+
+					else {
 						player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
 					}
-					player.closeInventory();
-					
+
 					player.closeInventory();
 				}
 
 				e.setCancelled(true);
+			}
+		}
+
+		// Easter egg
+		else if(e.getWhoClicked() instanceof Player && e.getRawSlot() == e.getInventory().getSize() - 8 && e.getSlotType() == InventoryType.SlotType.CONTAINER) {
+			MaiteClass maite = new MaiteClass(p);
+			if (e.getClick().isLeftClick()) {
+				selectClass(((Player) e.getWhoClicked()), maite);
+				e.getWhoClicked().closeInventory();
+			} else if (e.getClick().isRightClick()) {
+				createDetails(((Player) e.getWhoClicked()), maite);
 			}
 		}
 	}
