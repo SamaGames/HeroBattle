@@ -97,7 +97,7 @@ public class GameListener implements Listener {
 				
 				if (damager.getItemInHand() != null && damager.getItemInHand().getType() != Material.AIR && damager.getItemInHand().hasItemMeta()
 						&& damager.getItemInHand().getItemMeta().hasDisplayName()) {
-					System.out.println("ok");
+
 					if(gameDamager.getPlayerClass().getTool(player.getInventory().getHeldItemSlot()) instanceof Weapon) {
 							((Weapon) gameDamager.getPlayerClass().getTool(player.getInventory().getHeldItemSlot())).onPlayerHit(damager, player);
 					}
