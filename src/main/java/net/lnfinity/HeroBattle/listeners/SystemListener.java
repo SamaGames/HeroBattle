@@ -102,6 +102,6 @@ public class SystemListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerChat(PlayerChatEvent e) {
 		GamePlayer gamePlayer = plugin.getGamePlayer(e.getPlayer().getUniqueId());
-		e.setFormat(ChatColor.GREEN + "(" + ChatColor.DARK_GREEN + gamePlayer.getElo() + ChatColor.GREEN + ") " + ChatColor.RESET + e.getFormat());
+		e.setFormat(ChatColor.DARK_GREEN + "" + gamePlayer.getElo() + ChatColor.GREEN + " ▏ " + ChatColor.RESET + e.getFormat());
 	}
 }
