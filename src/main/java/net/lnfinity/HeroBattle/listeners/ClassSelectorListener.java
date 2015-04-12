@@ -230,13 +230,13 @@ public class ClassSelectorListener implements Listener {
 		return createItem(theClass, isEnabled, true);	
 	}
 	
-	public ItemStack createItem(PlayerClass theClass, boolean isEnabled, boolean avaible) {
+	public ItemStack createItem(PlayerClass theClass, boolean isEnabled, boolean available) {
 		ItemStack item = new ItemStack(theClass.getIcon());
 		ItemMeta meta = item.getItemMeta();
 
 		if (isEnabled) {
 			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + ChatColor.BOLD + "" + theClass.getName());
-		} else if(!avaible){
+		} else if(!available){
 			meta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + theClass.getName());
 		} else {
 			meta.setDisplayName(ChatColor.RESET + theClass.getName());
@@ -250,12 +250,19 @@ public class ClassSelectorListener implements Listener {
 
 		lore.add("");
 
-		lore.add(ChatColor.GRAY + "• Clic gauche pour jouer avec cette classe");
+		if(available) {
+			lore.add(ChatColor.GRAY + "• Clic gauche pour jouer avec cette classe");
+		}
+
 		lore.add(ChatColor.GRAY + "• Clic droit pour voir ses caractéristiques");
 
 		if (isEnabled) {
 			lore.add("");
 			lore.add(ChatColor.LIGHT_PURPLE + "Sélectionné");
+		}
+		if(!available) {
+			lore.add("");
+			lore.add(ChatColor.RED + "Non débloqué");
 		}
 
 		meta.setLore(lore);
