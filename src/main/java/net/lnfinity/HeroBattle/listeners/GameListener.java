@@ -91,7 +91,7 @@ public class GameListener implements Listener {
 			final GamePlayer gamePlayer = plugin.getGamePlayer(player);
 			if (e.getDamager() instanceof Player) {
 				// Devrait *enfin* fonctionner !
-				final float reducer = 20.0F;
+				final float reducer = 15.0F;
 				final Player damager = (Player) e.getDamager();
 				final GamePlayer gameDamager = plugin.getGamePlayer(damager);
 				

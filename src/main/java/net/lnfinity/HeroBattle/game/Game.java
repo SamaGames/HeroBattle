@@ -595,7 +595,11 @@ public class Game implements GameArena {
 		}
 
 		else {
-			player.getInventory().setHelmet(gamePlayer.getPlayerClass().getHat());
+			ItemStack hat = gamePlayer.getPlayerClass().getHat();
+			ItemMeta hatMeta = hat.getItemMeta();
+			hatMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + gamePlayer.getPlayerClass().getName());
+			hat.setItemMeta(hatMeta);
+			player.getInventory().setHelmet(hat);
 			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
 			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
 			int R = 470 - gamePlayer.getPercentage();

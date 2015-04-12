@@ -7,6 +7,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.SmokeTool;
 import net.lnfinity.HeroBattle.tools.SwordVariant2Tool;
 import net.lnfinity.HeroBattle.tools.ThunderTool;
+import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -44,7 +45,7 @@ public class MageClass extends PlayerClass {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList("La magie, il maitrise.");
+		return Arrays.asList("La magie, il maitrise.", "", ChatColor.GRAY + "Classe de type " + ChatColor.GOLD + "Magie", ChatColor.GREEN + "+ " + ChatColor.GRAY + "Très puissant, agile", ChatColor.RED + "- " + ChatColor.GRAY + "Faible résistance");
 	}
 
 	@Override

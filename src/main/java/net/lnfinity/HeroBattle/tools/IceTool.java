@@ -13,8 +13,11 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.utils.ItemCooldown;
 import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;
@@ -66,6 +69,15 @@ public class IceTool extends PlayerTool {
 			}
 			
 			if (b != null) {
+				for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
+					Player target = p.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
+					if(target != null) {
+						if(target.getLocation().distance(b.getLocation()) <= 3) {
+							target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, DURATION * 20, 3));
+						}
+					}
+				}
+				
 				buildBlock(b.getLocation().add(0, -1, -1), toClean);
 				buildBlock(b.getLocation().add(0, 0, -1), toClean);
 				buildBlock(b.getLocation().add(0, 1, -1), toClean);

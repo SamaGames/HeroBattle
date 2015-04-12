@@ -7,6 +7,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PowerTool;
 import net.lnfinity.HeroBattle.tools.SpeedTool;
 import net.lnfinity.HeroBattle.tools.SwordVariant1Tool;
+import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -44,7 +45,7 @@ public class GuerrierClass extends PlayerClass {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList("Il n'a pas froid aux yeux.");
+		return Arrays.asList("Il n'a pas froid aux yeux.", "", ChatColor.GRAY + "Classe de type " + ChatColor.GOLD + "Corps à corps", ChatColor.GREEN + "+ " + ChatColor.GRAY + "Très résistant, dégâts ciblés, précision", ChatColor.RED + "- " + ChatColor.GRAY + "Puissance d'attaque, agilité");
 	}
 
 	@Override

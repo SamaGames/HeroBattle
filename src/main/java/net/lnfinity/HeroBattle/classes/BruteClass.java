@@ -9,6 +9,7 @@ import net.lnfinity.HeroBattle.tools.IceTool;
 import net.lnfinity.HeroBattle.tools.InvincibleTool;
 import net.lnfinity.HeroBattle.tools.NauseaTool;
 import net.lnfinity.HeroBattle.tools.SwordTool;
+import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -25,8 +26,6 @@ public class BruteClass extends PlayerClass {
 		addTool(new SwordTool(p));
 		addTool(new EarthquakeTool(p, 30 - arg1 * 2));
 		addTool(new NauseaTool(p, 60 - arg1 * 4, 10 + arg2, 0.25 - arg2 * 0.05));
-		addTool(new IceTool(p, 10, 5));
-		addTool(new InvincibleTool(p, 10, 5));
 	}
 
 	@Override
@@ -41,7 +40,7 @@ public class BruteClass extends PlayerClass {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList("Pour le plaisir de faire des dégâts.");
+		return Arrays.asList("Pour le plaisir de faire des dégâts.", "", ChatColor.GRAY + "Classe de type " + ChatColor.GOLD + "Mêlée", ChatColor.GREEN + "+ " + ChatColor.GRAY + "Dégâts de masse, résistant", ChatColor.RED + "- " + ChatColor.GRAY + "Précision, agilité");
 	}
 
 	@Override

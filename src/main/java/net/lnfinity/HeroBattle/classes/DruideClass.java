@@ -7,6 +7,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.HealingTool;
 import net.lnfinity.HeroBattle.tools.InkTool;
 import net.lnfinity.HeroBattle.tools.SwordVariant4Tool;
+import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -44,7 +45,7 @@ public class DruideClass extends PlayerClass {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList("La capacité à pouvoir se soigner.");
+		return Arrays.asList("La capacité à pouvoir se soigner.", "", ChatColor.GRAY + "Classe de type " + ChatColor.GOLD + "Magie", ChatColor.GREEN + "+ " + ChatColor.GRAY + "Peut se soigner, résistant", ChatColor.RED + "- " + ChatColor.GRAY + "Vitesse, agilité");
 	}
 
 	@Override

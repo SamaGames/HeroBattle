@@ -69,7 +69,7 @@ public class InvincibleTool extends PlayerTool {
 				public void run() {
 					gamePlayer.setInvulnerable(false);
 				}
-			}, DURATION);
+			}, DURATION * 20L);
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}

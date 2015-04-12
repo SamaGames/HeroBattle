@@ -10,6 +10,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.IceTool;
 import net.lnfinity.HeroBattle.tools.InvincibleTool;
 import net.lnfinity.HeroBattle.tools.SwordVariant5Tool;
+import net.md_5.bungee.api.ChatColor;
 
 public class CryogenieClass extends PlayerClass {
 	
@@ -46,7 +47,7 @@ public class CryogenieClass extends PlayerClass {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList("Maître des contrées du froid");
+		return Arrays.asList("Maître des contrées du froid", "", ChatColor.GRAY + "Classe de type " + ChatColor.GOLD + "Mêlée", ChatColor.GREEN + "+ " + ChatColor.GRAY + "Très résistant, très puissant", ChatColor.RED + "- " + ChatColor.GRAY + "Combats distants");
 	}
 
 	@Override
