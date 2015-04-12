@@ -13,7 +13,7 @@ public class TutorialDisplayer {
 
 	private HeroBattle p;
 
-	public static final long READING_TIME = 60l; // ticks
+	public static final long READING_TIME = 50l; // ticks
 
 
 	/**
@@ -22,7 +22,7 @@ public class TutorialDisplayer {
 	private Map<UUID, BukkitTask> viewers = new HashMap<>();
 
 	/**
-	 * Map: chapter's title -> chapter's content in the {@link TutorialChapter} object.
+	 * Chapter's contents
 	 */
 	private List<TutorialChapter> content = new LinkedList<>();
 
@@ -37,7 +37,7 @@ public class TutorialDisplayer {
 
 		/* ***  Tutorial's content  *** */
 
-		content.add(new TutorialChapter(
+		addChapter(new TutorialChapter(
 				p.getGame().getTutorialLocations().get(0),
 				HeroBattle.GAME_NAME_BICOLOR,
 				Arrays.asList(
@@ -46,7 +46,7 @@ public class TutorialDisplayer {
 				false
 		));
 
-		content.add(new TutorialChapter(
+		addChapter(new TutorialChapter(
 				p.getGame().getTutorialLocations().get(0),
 				ChatColor.AQUA + "I. " + ChatColor.GOLD + "Gameplay",
 				Arrays.asList(
@@ -56,7 +56,7 @@ public class TutorialDisplayer {
 				)
 		));
 
-		content.add(new TutorialChapter(
+		addChapter(new TutorialChapter(
 				p.getGame().getTutorialLocations().get(1),
 				ChatColor.AQUA + "II. " + ChatColor.GOLD + "But du Jeu",
 				Arrays.asList(
@@ -66,7 +66,7 @@ public class TutorialDisplayer {
 				)
 		));
 
-		content.add(new TutorialChapter(
+		addChapter(new TutorialChapter(
 				p.getGame().getTutorialLocations().get(2),
 				ChatColor.AQUA + "III. " + ChatColor.GOLD + "Classes",
 				Arrays.asList(
@@ -76,8 +76,8 @@ public class TutorialDisplayer {
 						ChatColor.RED + "Attention" + ChatColor.GREEN + ", chaque capacité a un cooldown"
 				)
 		));
-		
-		content.add(new TutorialChapter(
+
+		addChapter(new TutorialChapter(
 				p.getGame().getTutorialLocations().get(2),
 				ChatColor.AQUA + "IV. " + ChatColor.GOLD + "Types de combat",
 				Arrays.asList(
@@ -88,7 +88,7 @@ public class TutorialDisplayer {
 				)
 		));
 
-		content.add(new TutorialChapter(
+		addChapter(new TutorialChapter(
 				p.getGame().getTutorialLocations().get(3),
 				ChatColor.AQUA + "V. " + ChatColor.GOLD + "Powerups",
 				Arrays.asList(
@@ -98,7 +98,7 @@ public class TutorialDisplayer {
 				)
 		));
 
-		content.add(new TutorialChapter(
+		addChapter(new TutorialChapter(
 				p.getGame().getTutorialLocations().get(3),
 				HeroBattle.GAME_NAME_BICOLOR,
 				Arrays.asList(
@@ -106,12 +106,16 @@ public class TutorialDisplayer {
 				),
 				false
 		));
+	}
 
-
-		// Time needed?
-		for(TutorialChapter chapter : content) {
-			timeNeededToPlayThisTutorial += READING_TIME * chapter.getContent().size();
-		}
+	/**
+	 * Adds a chapter in the tutorial.
+	 *
+	 * @param chapter The chapter to add.
+	 */
+	public void addChapter(TutorialChapter chapter) {
+		content.add(chapter);
+		timeNeededToPlayThisTutorial += READING_TIME * chapter.getContent().size();
 	}
 
 	/**
