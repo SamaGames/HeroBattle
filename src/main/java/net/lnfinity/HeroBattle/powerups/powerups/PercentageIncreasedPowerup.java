@@ -9,11 +9,17 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 
 public class PercentageIncreasedPowerup implements NegativePowerup {
 
-	HeroBattle p;
+	private HeroBattle p;
+	private Map<UUID,BukkitTask> soundTasks = new HashMap<>();
 
 	public PercentageIncreasedPowerup(HeroBattle plugin) {
 		p = plugin;
@@ -24,20 +30,29 @@ public class PercentageIncreasedPowerup implements NegativePowerup {
 
 		GamePlayer gPlayer = p.getGamePlayer(player);
 
-		int percentageIncrease = Utils.randomNumber(5, 30);
+		final UUID playerUUID = player.getUniqueId();
+		final int percentageIncrease = Utils.randomNumber(5, 30);
 
 		gPlayer.setPercentage(gPlayer.getPercentage() + percentageIncrease);
 		player.sendMessage(ChatColor.RED + "Votre pourcentage augmente de " + ChatColor.DARK_RED + percentageIncrease + ChatColor.RED + " points !");
 
-		p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
-			float pitch = 1f;
+		soundTasks.put(playerUUID, p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
+			float pitch   = 1f;
+			int   counter = 0;
 
 			@Override
 			public void run() {
+
 				player.playSound(player.getLocation(), Sound.CLICK, 1, pitch);
 				pitch += 0.1f;
+				counter++;
+
+				if(counter >= percentageIncrease) {
+					soundTasks.get(playerUUID).cancel();
+				}
+
 			}
-		}, 1l, 2l);
+		}, 1l, 2l));
 	}
 
 	@Override
