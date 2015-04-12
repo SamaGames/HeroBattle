@@ -45,7 +45,7 @@ public class ArcherClass extends PlayerClass {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList("La maitrise d'un arc et de ses flèches,", "n'est pas donnée à tout le monde.", "", ChatColor.GRAY + "Classe de type " + ChatColor.GOLD + "Distant", ChatColor.GREEN + "+ " + ChatColor.GRAY + "Dégâts à distance, agilité, précision", ChatColor.RED + "- " + ChatColor.GRAY + "Peu résistant, corps à corps");
+		return Arrays.asList("La maitrise d'un arc et de ses flèches", "n'est pas donnée à tout le monde.", "", ChatColor.GRAY + "Classe de type " + ChatColor.GOLD + "Distant", ChatColor.GREEN + "+ " + ChatColor.GRAY + "Dégâts à distance, agilité, précision", ChatColor.RED + "- " + ChatColor.GRAY + "Peu résistant, corps à corps");
 	}
 
 	@Override
