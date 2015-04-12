@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.player.PlayerAchievementAwardedEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -91,6 +92,11 @@ public class SystemListener implements Listener {
 		if (e.getEntityType() != EntityType.ARMOR_STAND && e.getEntityType() != EntityType.DROPPED_ITEM) {
 			e.setCancelled(true);
 		}
+	}
+
+	@EventHandler
+	public void onAchievementAwarded(PlayerAchievementAwardedEvent e) {
+		e.setCancelled(true);
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
