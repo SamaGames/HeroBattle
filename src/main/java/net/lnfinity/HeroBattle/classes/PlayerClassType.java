@@ -7,6 +7,7 @@ public enum PlayerClassType {
 	ARCHER("archer"),
 	MAGE("mage"),
 	DRUIDE("druide"),
+	CRYOGENIE("cryogenie"),
 	
 	MAITE("maite");
 	

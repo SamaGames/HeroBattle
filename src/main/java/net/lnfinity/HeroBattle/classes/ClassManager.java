@@ -35,12 +35,14 @@ public class ClassManager {
 		registerClass(new ArcherClass(p));
 		registerClass(new MageClass(p));
 		registerClass(new DruideClass(p));
+		registerClass(new CryogenieClass(p));
 
 		totalClasses.add(PlayerClassType.BRUTE);
 		totalClasses.add(PlayerClassType.GUERRIER);
 		totalClasses.add(PlayerClassType.ARCHER);
 		totalClasses.add(PlayerClassType.MAGE);
 		totalClasses.add(PlayerClassType.DRUIDE);
+		totalClasses.add(PlayerClassType.CRYOGENIE);
 
 	}
 
