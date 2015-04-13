@@ -84,7 +84,8 @@ public class TutorialDisplayer {
 						ChatColor.GREEN + "Différents types de combat en fonction des classes",
 						ChatColor.DARK_GREEN + "Mêlée :" + ChatColor.GREEN + " dégâts de zone",
 						ChatColor.DARK_GREEN + "Corps à corps :" + ChatColor.GREEN + " dégâts ciblés proches",
-						ChatColor.DARK_GREEN + "Distant :" + ChatColor.GREEN + " dégât longue portée"
+						ChatColor.DARK_GREEN + "Distant :" + ChatColor.GREEN + " dégâts longue portée",
+						ChatColor.DARK_GREEN + "Magie :" + ChatColor.GREEN + " dégâts ayant recours à la magie"
 				)
 		));
 

@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.tools;
+package net.lnfinity.HeroBattle.tools.displayers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.Weapon;
 import net.md_5.bungee.api.ChatColor;
 
 public class SwordVariant5Tool extends SwordTool implements Weapon {

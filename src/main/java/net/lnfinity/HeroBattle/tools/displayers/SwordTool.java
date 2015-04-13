@@ -1,10 +1,11 @@
-package net.lnfinity.HeroBattle.tools;
+package net.lnfinity.HeroBattle.tools.displayers;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;

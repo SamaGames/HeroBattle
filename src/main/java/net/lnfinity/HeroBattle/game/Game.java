@@ -247,7 +247,7 @@ public class Game implements GameArena {
 
 		// Broadcasts
 		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + hbPlayer.getLives() + ChatColor.DARK_GRAY
-				+ " vies restantes)";
+				+ " vies)";
 		if (hbPlayer.getLastDamager() == null) {
 			switch (death) {
 			case FALL:
@@ -341,7 +341,7 @@ public class Game implements GameArena {
 			p.getServer().broadcastMessage(
 					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
 							+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + p.getPlayingPlayerCount()
-							+ ChatColor.DARK_GRAY + " joueur" + s + " restant" + s + ChatColor.DARK_GRAY + "]");
+							+ ChatColor.DARK_GRAY + " joueur" + s + ChatColor.DARK_GRAY + "]");
 
 			if (p.getPlayingPlayerCount() == 1) {
 				for (Player pl : p.getServer().getOnlinePlayers()) {
@@ -375,8 +375,8 @@ public class Game implements GameArena {
 			p.getServer().broadcastMessage(
 					HeroBattle.GAME_TAG + ChatColor.YELLOW + p.getServer().getPlayer(id).getDisplayName()
 							+ ChatColor.YELLOW + " a perdu ! " + ChatColor.DARK_GRAY + "[" + ChatColor.RED
-							+ (p.getPlayingPlayerCount() - 1) + ChatColor.DARK_GRAY + " joueur" + s + " restant" + s
-							+ ChatColor.DARK_GRAY + "]");
+							+ (p.getPlayingPlayerCount() - 1) + ChatColor.DARK_GRAY + " joueur" + s +
+							ChatColor.DARK_GRAY + "]");
 
 			p.getScoreboardManager().refresh();
 		}

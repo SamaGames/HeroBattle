@@ -1,8 +1,9 @@
-package net.lnfinity.HeroBattle.tools;
+package net.lnfinity.HeroBattle.tools.displayers;
 
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.utils.ItemCooldown;
 import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;
@@ -15,37 +16,39 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-public class AnguilleTool extends PlayerTool {
+public class PotatoTool extends PlayerTool {
 
 	private final int COOLDOWN;
 	private final int DURATION;
 
-	public AnguilleTool(HeroBattle plugin) {
+	public PotatoTool(HeroBattle plugin) {
 		super(plugin);
 
-		COOLDOWN = 60;
-		DURATION = 6;
+		COOLDOWN = 90;
+		DURATION = 10;
 	}
 
 	@Override
 	public String getToolID() {
-		return "tool.anguille";
+		return "tool.potato";
 	}
 
 	@Override
 	public String getName() {
-		return ChatColor.DARK_RED + "" + ChatColor.BOLD + "L'anguille";
+		return ChatColor.YELLOW + "" + ChatColor.BOLD + "La patoche";
 	}
 
 	@Override
 	public List<String> getDescription() {
-		return Utils.getToolDescription(ChatColor.GRAY + "Enflamme les joueurs trop proches de vous pendant " + ChatColor.GOLD + DURATION + " " + ChatColor.GRAY + "secondes, en tant que vengeance pour nous avoir martyrisé ! Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Parce que la patate c'est bon, j'empoisonne mes ennemis pendant " + ChatColor.GOLD + DURATION + " " + ChatColor.GRAY + "secondes. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
 	public ItemStack getItem() {
-		ItemStack item = new ItemStack(Material.RAW_FISH);
+		ItemStack item = new ItemStack(Material.POISONOUS_POTATO);
 		GlowEffect.addGlow(item);
 		return item;
 	}
@@ -54,10 +57,12 @@ public class AnguilleTool extends PlayerTool {
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (ToolsUtils.isToolAvailable(tool)) {
 			new ItemCooldown(p, player, this, COOLDOWN);
-			player.getWorld().playSound(player.getLocation(), Sound.CAT_HISS, 1, 1);
+			player.getWorld().playSound(player.getLocation(), Sound.WITHER_SPAWN, 1, 2);
 			for (Entity entity : player.getNearbyEntities(5, 5, 5)) {
 				if (entity instanceof Player) {
-					entity.setFireTicks(20 * DURATION);
+					Player victim = (Player) entity;
+					victim.playSound(victim.getLocation(), Sound.AMBIENCE_CAVE, 1, 2);
+					victim.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 * DURATION, 0));
 				}
 			}
 		} else {

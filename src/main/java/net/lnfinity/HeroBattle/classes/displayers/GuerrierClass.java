@@ -1,12 +1,14 @@
-package net.lnfinity.HeroBattle.classes;
+package net.lnfinity.HeroBattle.classes.displayers;
 
 import java.util.Arrays;
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tools.PowerTool;
-import net.lnfinity.HeroBattle.tools.SpeedTool;
-import net.lnfinity.HeroBattle.tools.SwordVariant1Tool;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.tools.displayers.PowerTool;
+import net.lnfinity.HeroBattle.tools.displayers.SpeedTool;
+import net.lnfinity.HeroBattle.tools.displayers.SwordVariant1Tool;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
@@ -65,7 +67,7 @@ public class GuerrierClass extends PlayerClass {
 
 	@Override
 	public int getLives() {
-		return 4;
+		return 3;
 	}
 
 	@Override

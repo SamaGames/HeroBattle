@@ -1,9 +1,9 @@
-package net.lnfinity.HeroBattle.tools;
+package net.lnfinity.HeroBattle.tools.displayers;
 
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tasks.EarthquakeTask;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.utils.ItemCooldown;
 import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;
@@ -11,40 +11,39 @@ import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
 
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class EarthquakeTool extends PlayerTool {
+public class ThunderTool extends PlayerTool {
 
-	public final int COOLDOWN;
+	private final int COOLDOWN; // seconds
 
-	public EarthquakeTool(HeroBattle plugin, int cooldown) {
+	public ThunderTool(HeroBattle plugin, int cooldown) {
 		super(plugin);
 		COOLDOWN = cooldown;
 	}
 
 	@Override
 	public String getToolID() {
-		return "tool.earthquake";
+		return "tool.thunder";
 	}
 
 	@Override
 	public String getName() {
-		return ChatColor.BLACK + "" + ChatColor.BOLD + "Tremblement de terre";
+		return ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Colère de Zeus";
 	}
 
 	@Override
 	public List<String> getDescription() {
-		return Utils.getToolDescription(ChatColor.GRAY + "Vous fait tomber au sol provoquant ainsi un séisme qui occasionne aux joueurs alentours " + ChatColor.RED + "20 " + ChatColor.GRAY + "à " + ChatColor.RED + "50 " + ChatColor.GRAY + "dégâts. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Invoque un éclair dans la direction visée blessant les joueurs touchés par la foudre de " + ChatColor.RED + "25 " + ChatColor.GRAY + "à " + ChatColor.RED + "50 " + ChatColor.GRAY + "pourcents. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
 	public ItemStack getItem() {
-		ItemStack item = new ItemStack(Material.FLINT, 1);
+		ItemStack item = new ItemStack(Material.FIREBALL);
 		GlowEffect.addGlow(item);
-
 		return item;
 	}
 
@@ -52,19 +51,15 @@ public class EarthquakeTool extends PlayerTool {
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (ToolsUtils.isToolAvailable(tool)) {
 			new ItemCooldown(p, player, this, COOLDOWN);
-			if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
-				player.setVelocity(player.getVelocity().setY(-1));
-
-				player.setFallDistance(10);
-
-				p.getGamePlayer(player).addTask(new EarthquakeTask(p, player));
+			Block b = p.getGame().getTargetBlock(player, 20);
+			if (b != null) {
+				player.getWorld().strikeLightning(b.getLocation());
 			} else {
-				player.sendMessage(ChatColor.RED + "Vous échouez tremblement de terre");
+				player.sendMessage(ChatColor.RED + "Vous échouez votre colère");
 			}
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
-
 	}
 
 	@Override

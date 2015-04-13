@@ -5,6 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.displayers.ArcherClass;
+import net.lnfinity.HeroBattle.classes.displayers.BruteClass;
+import net.lnfinity.HeroBattle.classes.displayers.CryogenieClass;
+import net.lnfinity.HeroBattle.classes.displayers.DruideClass;
+import net.lnfinity.HeroBattle.classes.displayers.GuerrierClass;
+import net.lnfinity.HeroBattle.classes.displayers.MageClass;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.zyuiop.MasterBundle.MasterBundle;
 
@@ -149,6 +155,8 @@ public class ClassManager {
 			return new MageClass(p, arg1, arg2, arg3);
 		case DRUIDE:
 			return new DruideClass(p, arg1, arg2, arg3);
+		case CRYOGENIE:
+			return new CryogenieClass(p, arg1, arg2, arg3);
 		}
 		return null;
 	}

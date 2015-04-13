@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.tools;
+package net.lnfinity.HeroBattle.tools.displayers;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;

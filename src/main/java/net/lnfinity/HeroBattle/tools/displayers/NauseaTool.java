@@ -1,9 +1,10 @@
-package net.lnfinity.HeroBattle.tools;
+package net.lnfinity.HeroBattle.tools.displayers;
 
 import java.util.List;
 import java.util.Random;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.utils.ItemCooldown;
 import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;

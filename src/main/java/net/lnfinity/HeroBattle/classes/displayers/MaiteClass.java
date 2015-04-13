@@ -1,12 +1,14 @@
-package net.lnfinity.HeroBattle.classes;
+package net.lnfinity.HeroBattle.classes.displayers;
 
 import java.util.Arrays;
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tools.AnguilleTool;
-import net.lnfinity.HeroBattle.tools.PotatoTool;
-import net.lnfinity.HeroBattle.tools.SwordVariant8Tool;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.tools.displayers.AnguilleTool;
+import net.lnfinity.HeroBattle.tools.displayers.PotatoTool;
+import net.lnfinity.HeroBattle.tools.displayers.SwordVariant8Tool;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

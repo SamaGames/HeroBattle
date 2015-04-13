@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.tools;
+package net.lnfinity.HeroBattle.tools.displayers;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

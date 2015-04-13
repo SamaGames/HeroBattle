@@ -1,9 +1,10 @@
-package net.lnfinity.HeroBattle.tools;
+package net.lnfinity.HeroBattle.tools.displayers;
 
 import java.util.Arrays;
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.Weapon;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
 

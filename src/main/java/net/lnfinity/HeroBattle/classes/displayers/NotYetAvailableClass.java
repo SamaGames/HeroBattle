@@ -1,6 +1,9 @@
-package net.lnfinity.HeroBattle.classes;
+package net.lnfinity.HeroBattle.classes.displayers;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.PlayerClassType;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

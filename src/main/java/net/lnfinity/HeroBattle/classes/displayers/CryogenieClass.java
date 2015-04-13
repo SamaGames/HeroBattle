@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.classes;
+package net.lnfinity.HeroBattle.classes.displayers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,9 +7,11 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tools.IceTool;
-import net.lnfinity.HeroBattle.tools.InvincibleTool;
-import net.lnfinity.HeroBattle.tools.SwordVariant5Tool;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.tools.displayers.IceTool;
+import net.lnfinity.HeroBattle.tools.displayers.InvincibleTool;
+import net.lnfinity.HeroBattle.tools.displayers.SwordVariant5Tool;
 import net.md_5.bungee.api.ChatColor;
 
 public class CryogenieClass extends PlayerClass {

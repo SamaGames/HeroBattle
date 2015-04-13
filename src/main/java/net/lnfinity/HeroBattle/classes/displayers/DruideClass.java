@@ -1,12 +1,14 @@
-package net.lnfinity.HeroBattle.classes;
+package net.lnfinity.HeroBattle.classes.displayers;
 
 import java.util.Arrays;
 import java.util.List;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tools.HealingTool;
-import net.lnfinity.HeroBattle.tools.InkTool;
-import net.lnfinity.HeroBattle.tools.SwordVariant4Tool;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.tools.displayers.HealingTool;
+import net.lnfinity.HeroBattle.tools.displayers.InkTool;
+import net.lnfinity.HeroBattle.tools.displayers.SwordVariant4Tool;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;

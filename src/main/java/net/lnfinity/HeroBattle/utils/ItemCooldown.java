@@ -4,6 +4,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.samagames.utils.GlowEffect;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
@@ -65,8 +66,9 @@ public class ItemCooldown {
 				ItemStack slot = onlinePlayer.getInventory().getItem(slotId);
 
 				if (seconds == 0 || ToolsUtils.isToolAvailable(slot)) {
-
-					onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.NOTE_PIANO, (float) 1, (float) 1.5);
+					if(onlinePlayer.getGameMode() == GameMode.ADVENTURE) {
+						onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.NOTE_PIANO, (float) 1, (float) 1.5);
+					}
 					task.cancel();
 
 					if (slot != null && slot.getType() != Material.AIR) {

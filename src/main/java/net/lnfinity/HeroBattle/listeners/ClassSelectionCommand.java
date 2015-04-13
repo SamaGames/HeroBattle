@@ -1,8 +1,8 @@
 package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.MaiteClass;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.displayers.MaiteClass;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
 
