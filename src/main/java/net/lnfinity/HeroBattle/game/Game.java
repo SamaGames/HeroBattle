@@ -130,6 +130,19 @@ public class Game implements GameArena {
 		}
 
 		setStatus(Status.InGame);
+
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				// Bêta olala
+				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
+				p.getServer().broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Attention : ce jeu est encore en bêta !");
+				p.getServer().broadcastMessage(ChatColor.GOLD + "Les classes, compétences ou powerups sont susceptible d'évoluer, ceci dans le but d'améliorer et d'équilibrer le jeu.");
+				p.getServer().broadcastMessage(ChatColor.GOLD + "D'autres fonctionnalités pourraient être ajoutées ou modifiées.");
+				p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "N'hésitez pas à nous transmettre votre avis en jeu ou via le forum, pour que nous puissions faire évoluer au mieux le jeu !");
+				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
+			}
+		}, 60l);
 	}
 
 	public void teleportPlayers() {
