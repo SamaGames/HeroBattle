@@ -11,6 +11,7 @@ import net.lnfinity.HeroBattle.classes.displayers.CryogenieClass;
 import net.lnfinity.HeroBattle.classes.displayers.DruideClass;
 import net.lnfinity.HeroBattle.classes.displayers.GuerrierClass;
 import net.lnfinity.HeroBattle.classes.displayers.MageClass;
+import net.lnfinity.HeroBattle.classes.displayers.PyrobarbareClass;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.zyuiop.MasterBundle.MasterBundle;
 
@@ -42,6 +43,7 @@ public class ClassManager {
 		registerClass(new MageClass(p));
 		registerClass(new DruideClass(p));
 		registerClass(new CryogenieClass(p));
+		registerClass(new PyrobarbareClass(p));
 
 		totalClasses.add(PlayerClassType.BRUTE);
 		totalClasses.add(PlayerClassType.GUERRIER);
@@ -49,6 +51,7 @@ public class ClassManager {
 		totalClasses.add(PlayerClassType.MAGE);
 		totalClasses.add(PlayerClassType.DRUIDE);
 		totalClasses.add(PlayerClassType.CRYOGENIE);
+		totalClasses.add(PlayerClassType.PYROBARBARE);
 
 	}
 
@@ -157,8 +160,11 @@ public class ClassManager {
 			return new DruideClass(p, arg1, arg2, arg3);
 		case CRYOGENIE:
 			return new CryogenieClass(p, arg1, arg2, arg3);
+		case PYROBARBARE:
+			return new PyrobarbareClass(p, arg1, arg2, arg3);
+		default:
+			return new BruteClass(p, arg1, arg2, arg3);
 		}
-		return null;
 	}
 
 	public PlayerClassType getPlayerClassType(String type) {

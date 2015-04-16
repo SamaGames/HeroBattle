@@ -5,6 +5,7 @@ import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
 import net.lnfinity.HeroBattle.tools.Weapon;
+import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.gameapi.json.Status;
 
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,6 +24,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
@@ -242,5 +245,28 @@ public class GameListener implements Listener {
 		if (plugin.getTutorialDisplayer().isWatchingTutorial(e.getPlayer().getUniqueId())) {
 			e.setCancelled(true);
 		}
+	}
+	
+	@EventHandler
+	public void onentityExplode(EntityExplodeEvent e) {
+		Entity entity = e.getEntity();
+	    if (!(entity instanceof Fireball)) return;
+		e.blockList().clear();
+	    for(GamePlayer gamePlayer : plugin.getGamePlayers().values()) {
+	    	Player player = plugin.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
+	    	if(player != null) {
+	    		if(player.getLocation().distance(e.getEntity().getLocation()) <= 4) {
+	    			player.damage(0);
+	    			gamePlayer.setPercentage(gamePlayer.getPercentage() + Utils.randomNumber(16, 25));
+	    			player.setLevel(gamePlayer.getPercentage());
+	    			plugin.getScoreboardManager().update(player);
+	    		}
+	    	}
+	    
+	    }
+	    
+	    for(int i = 0; i <= Utils.randomNumber(10, 15); i++) {
+	    	e.getEntity().getWorld().playEffect(e.getLocation().clone().add(1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2)), Effect.FLAME, 0);
+	    }
 	}
 }

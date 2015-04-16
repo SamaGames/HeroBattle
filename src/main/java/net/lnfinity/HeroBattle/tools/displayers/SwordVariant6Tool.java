@@ -14,25 +14,25 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.Weapon;
 import net.md_5.bungee.api.ChatColor;
 
-public class SwordVariant5Tool extends SwordTool implements Weapon {
+public class SwordVariant6Tool extends SwordTool implements Weapon {
 
-	public SwordVariant5Tool(HeroBattle plugin) {
+	public SwordVariant6Tool(HeroBattle plugin) {
 		super(plugin);
 	}
 	
 	@Override
 	public String getToolID() {
-		return "tool.sword.variant5";
+		return "tool.sword.variant6";
 	}
 
 	@Override
 	public String getName() {
-		return ChatColor.WHITE + "" + ChatColor.BOLD + "Sceptre du froid";
+		return ChatColor.GOLD + "" + ChatColor.BOLD + "Lame dorée";
 	}
 
 	@Override
 	public ItemStack getItem() {
-		ItemStack item = new ItemStack(Material.IRON_HOE, 1);
+		ItemStack item = new ItemStack(Material.GOLD_SWORD, 1);
 
 		ItemMeta meta = item.getItemMeta();
 		meta.spigot().setUnbreakable(true);
@@ -48,15 +48,15 @@ public class SwordVariant5Tool extends SwordTool implements Weapon {
 				ChatColor.GRAY + "Cliquez droit pour faire un double saut.",
 				"",
 				ChatColor.AQUA + "Effet spécial:",
-				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + ((int) 10 + upgrade * 2) + ChatColor.GRAY + "% de chance de geler votre cible", ChatColor.GRAY + "pendant " + ChatColor.GOLD + "2 " + ChatColor.GRAY + "secondes à chaque coup porté"
+				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + ((int) 4 + upgrade) + ChatColor.GRAY + "% de chance de brûler votre cible", ChatColor.GRAY + "pendant " + ChatColor.GOLD + "2 " + ChatColor.GRAY + "secondes à chaque coup porté"
 		);
 	}
 
 	@Override
 	public void onPlayerHit(Player sender, Player victim) {
-		double n = 0.1 + upgrade * 0.02;
+		double n = 0.04 + upgrade * 0.01;
 		if(random.nextDouble() <= n) {
-			sender.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2 * 20, 1));
+			sender.setFireTicks(sender.getFireTicks() + 2 * 20);
 		}
 		
 	}

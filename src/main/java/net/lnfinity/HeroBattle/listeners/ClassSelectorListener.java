@@ -32,7 +32,7 @@ public class ClassSelectorListener implements Listener {
 	private final String TITLE_CLASS_SELECTOR = "Sélection de la classe";
 	private final String TITLE_CLASS_DETAILS = "Détails de la classe ";
 
-	private final int COMING_SOON_CLASSES_COUNT = 1;
+	private final int COMING_SOON_CLASSES_COUNT = 0;
 
 
 	public ClassSelectorListener(HeroBattle plugin) {

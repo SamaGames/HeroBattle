@@ -8,6 +8,7 @@ public enum PlayerClassType {
 	MAGE("mage"),
 	DRUIDE("druide"),
 	CRYOGENIE("cryogenie"),
+	PYROBARBARE("pyrobarbare"),
 	
 	MAITE("maite");
 	
