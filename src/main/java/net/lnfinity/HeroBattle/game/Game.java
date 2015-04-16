@@ -429,7 +429,7 @@ public class Game implements GameArena {
 		new WinnerFirework(p, 30, player);
 
 		StarsManager.creditJoueur(player, 1, "Victoire !");
-		CoinsManager.creditJoueur(player.getUniqueId(), 8, true, true, "Victoire !");
+		CoinsManager.creditJoueur(player.getUniqueId(), 16, true, true, "Victoire !");
 		StatsApi.increaseStat(player, p.getName(), "wins", 1);
 
 		calculateElos(id);
@@ -511,6 +511,7 @@ public class Game implements GameArena {
 				while(i < 3 && iterPercentages.hasNext()) {
 					Map.Entry<UUID, Long> entry = iterPercentages.next();
 					topsPercentages[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + entry.getValue() + " %)";
+					CoinsManager.creditJoueur(entry.getKey(), i == 0 ? 10 : i == 1 ? 6 : 4, true, true, "Rang " + (i - 1) + " au classement des dégâts infligés !");
 					i++;
 				}
 
@@ -520,6 +521,7 @@ public class Game implements GameArena {
 				while(i < 3 && iterKills.hasNext()) {
 					Map.Entry<UUID, Integer> entry = iterKills.next();
 					topsKills[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + entry.getValue() + ")";
+					CoinsManager.creditJoueur(entry.getKey(), i == 0 ? 10 : i == 1 ? 6 : 4, true, true, "Rang " + (i - 1) + " au classement des kills !");
 					i++;
 				}
 
