@@ -41,11 +41,11 @@ public class GameTimer {
 				if(minutes >= maxMinutes) {
 					pauseTimer();
 				}
-				if(minutes == maxMinutes - 1) {
+				if(minutes == maxMinutes - 1 && seconds == 0) {
 					p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.YELLOW + "La partie se termine dans 1 minute !");
 				}
 				if(minutes == maxMinutes - 1 && (seconds  == 30 || seconds == 50)) {
-					p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.YELLOW + "La partie se termine dans " + seconds + " secondes !");
+					p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.YELLOW + "La partie se termine dans " + (60 - seconds) + " secondes !");
 				}
 				if(minutes == maxMinutes) {
 					if (MasterBundle.isDbEnabled) {
