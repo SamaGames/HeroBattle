@@ -65,7 +65,7 @@ public class GamePlayer {
 	public void setPercentage(int percentage) {
 		setPercentage(percentage, null);
 	}
-	
+
 	public void setPercentage(int percentage, GamePlayer aggressor) {
 		if(isInvulnerable() && percentage >= this.percentage) return;
 
