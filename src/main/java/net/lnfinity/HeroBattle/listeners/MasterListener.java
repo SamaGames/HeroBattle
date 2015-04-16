@@ -5,6 +5,7 @@ import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.events.FinishJoinPlayerEvent;
+import net.samagames.gameapi.events.JoinModEvent;
 import net.samagames.gameapi.json.Status;
 import net.samagames.utils.Titles;
 import net.zyuiop.MasterBundle.MasterBundle;
@@ -150,6 +151,17 @@ public class MasterListener implements Listener {
 		});
 
 		GameAPI.getManager().sendArena();
+	}
+
+
+	@EventHandler
+	public void onModeratorJoin(JoinModEvent ev) {
+		Player moderator = plugin.getServer().getPlayer(ev.getPlayer());
+
+		if(moderator == null) return; // Just in case...
+
+		moderator.setScoreboard(plugin.getScoreboardManager().getScoreboard());
+		moderator.setGameMode(GameMode.SPECTATOR);
 	}
 
 	@EventHandler

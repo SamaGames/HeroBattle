@@ -34,6 +34,9 @@ public class GamePlayer {
 	private List<PlayerClass> avaible = new ArrayList<PlayerClass>();
 	private List<Task> tasks = new ArrayList<Task>();
 
+	private long percentageInflicted = 0l;
+	private int playersKilled = 0;
+
 	public GamePlayer(UUID id) {
 		playerID = id;
 		playerName = Bukkit.getServer().getPlayer(id).getName();
@@ -60,9 +63,15 @@ public class GamePlayer {
 	}
 
 	public void setPercentage(int percentage) {
+		setPercentage(percentage, null);
+	}
+
+	public void setPercentage(int percentage, GamePlayer aggressor) {
 		if(isInvulnerable() && percentage >= this.percentage) return;
 
 		this.percentage = percentage;
+
+		if(aggressor != null) aggressor.addPercentageInflicted(percentage);
 	}
 
 	public int getLives() {
@@ -203,5 +212,21 @@ public class GamePlayer {
 
 	public void setElo(int elo) {
 		Elo = elo;
+	}
+
+	public long getPercentageInflicted() {
+		return percentageInflicted;
+	}
+
+	public void addPercentageInflicted(long percentageInflicted) {
+		this.percentageInflicted += percentageInflicted;
+	}
+
+	public int getPlayersKilled() {
+		return playersKilled;
+	}
+
+	public void addPlayersKilled() {
+		this.playersKilled++;
 	}
 }

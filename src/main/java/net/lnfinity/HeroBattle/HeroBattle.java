@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.lnfinity.HeroBattle.classes.ClassManager;
 import net.lnfinity.HeroBattle.game.Game;
@@ -52,7 +53,7 @@ public class HeroBattle extends JavaPlugin {
 
 	private Configuration arenaConfig;
 
-	private Map<UUID, GamePlayer> players = new HashMap<>();
+	private Map<UUID, GamePlayer> players = new ConcurrentHashMap<>();
 
 	@Override
 	public void onEnable() {

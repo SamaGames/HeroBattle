@@ -33,7 +33,7 @@ public class PercentageIncreasedPowerup implements NegativePowerup {
 		final UUID playerUUID = player.getUniqueId();
 		final int percentageIncrease = Utils.randomNumber(5, 30);
 
-		gPlayer.setPercentage(gPlayer.getPercentage() + percentageIncrease);
+		gPlayer.setPercentage(gPlayer.getPercentage() + percentageIncrease, null);
 		player.sendMessage(ChatColor.RED + "Votre pourcentage augmente de " + ChatColor.DARK_RED + percentageIncrease + ChatColor.RED + " points !");
 
 		soundTasks.put(playerUUID, p.getServer().getScheduler().runTaskTimer(p, new Runnable() {

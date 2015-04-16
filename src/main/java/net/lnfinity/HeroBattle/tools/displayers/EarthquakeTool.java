@@ -52,13 +52,14 @@ public class EarthquakeTool extends PlayerTool {
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (ToolsUtils.isToolAvailable(tool)) {
-			new ItemCooldown(p, player, this, COOLDOWN);
 			if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
 				player.setVelocity(player.getVelocity().setY(-1));
-
 				player.setFallDistance(10);
 
 				p.getGamePlayer(player).addTask(new EarthquakeTask(p, player));
+
+				new ItemCooldown(p, player, this, COOLDOWN);
+
 			} else {
 				player.sendMessage(ChatColor.RED + "Vous échouez tremblement de terre");
 			}

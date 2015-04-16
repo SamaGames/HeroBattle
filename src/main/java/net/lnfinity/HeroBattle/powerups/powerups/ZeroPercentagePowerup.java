@@ -21,7 +21,7 @@ public class ZeroPercentagePowerup implements PositivePowerup {
 	public void onPickup(Player player, ItemStack pickupItem) {
 		GamePlayer gamePlayer = p.getGamePlayer(player);
 		player.sendMessage(ChatColor.GREEN + "Votre pourcentage a été remis à " + ChatColor.DARK_GREEN + "0 " + ChatColor.GREEN + "!");
-		gamePlayer.setPercentage(0);
+		gamePlayer.setPercentage(0, null);
 		player.setLevel(0);
 		p.getScoreboardManager().update(player);
 	}

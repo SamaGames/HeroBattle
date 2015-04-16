@@ -8,11 +8,7 @@ import net.lnfinity.HeroBattle.tools.Weapon;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.gameapi.json.Status;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
@@ -30,6 +26,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import java.util.Map;
+import java.util.UUID;
 
 public class GameListener implements Listener {
 
@@ -67,15 +66,35 @@ public class GameListener implements Listener {
 			} else {
 				e.setDamage(0);
 			}
+
+
 			if (e.getCause() == DamageCause.LIGHTNING) {
-				gp.setPercentage(gp.getPercentage() + 25 + (int) (Math.random() * ((50 - 25) + 25)));
-			} else if (e.getCause() == DamageCause.FIRE_TICK) {
-				gp.setPercentage(gp.getPercentage() + 2);
-			} else if (e.getCause() == DamageCause.POISON) {
-				gp.setPercentage(gp.getPercentage() + 3);
-			} else if (e.getCause() == DamageCause.WITHER) {
-				gp.setPercentage(gp.getPercentage() + 4);
+				UUID nearest = null;
+				Double distanceS = Double.MAX_VALUE;
+				Location locRef = p.getLocation();
+				for(Map.Entry<UUID,Location> entry : plugin.getGame().getLastLightningBolts().entrySet()) {
+					double distanceLoc = entry.getValue().distanceSquared(locRef);
+					if(distanceLoc < distanceS) {
+						distanceS = distanceLoc;
+						nearest = entry.getKey();
+					}
+				}
+
+				gp.setPercentage(gp.getPercentage() + 25 + (int) (Math.random() * ((50 - 25) + 25)), nearest == null ? null : plugin.getGamePlayer(nearest));
 			}
+
+			else if (e.getCause() == DamageCause.FIRE_TICK) {
+				gp.setPercentage(gp.getPercentage() + 2, plugin.getGamePlayer(plugin.getGame().getFiresInProgress().get(gp.getPlayerUniqueID())));
+			}
+
+			else if (e.getCause() == DamageCause.POISON) {
+				gp.setPercentage(gp.getPercentage() + 3, plugin.getGamePlayer(plugin.getGame().getPoisonsInProgress().get(gp.getPlayerUniqueID())));
+			}
+
+			else if (e.getCause() == DamageCause.WITHER) {
+				gp.setPercentage(gp.getPercentage() + 4, null);
+			}
+
 			p.setLevel(0);
 			p.setTotalExperience(0);
 			p.setLevel(gp.getPercentage());
@@ -127,7 +146,7 @@ public class GameListener implements Listener {
 				if (damages >= gamePlayer.getPlayerClass().getMaxResistance()) {
 					damages = gamePlayer.getPlayerClass().getMaxResistance();
 
-					gamePlayer.setPercentage(damages);
+					gamePlayer.setPercentage(damages, gameDamager);
 					gamePlayer.setLastDamager(damager.getUniqueId());
 
 					player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
@@ -139,19 +158,23 @@ public class GameListener implements Listener {
 
 					player.setLevel(0);
 				} else {
-					gamePlayer.setPercentage(damages);
+					gamePlayer.setPercentage(damages, gameDamager);
 					gamePlayer.setLastDamager(damager.getUniqueId());
 					player.setLevel(damages);
 				}
+
 				plugin.getScoreboardManager().update(player);
 				
 			} else if (e.getDamager() instanceof Arrow) {
 				Arrow arrow = (Arrow) e.getDamager();
 				int damages;
-				if (arrow.getShooter().equals(e.getEntity())) {
+				if (arrow.getShooter().equals(e.getEntity()) || !(arrow.getShooter() instanceof Player)) {
 					e.setCancelled(true);
 					return;
 				}
+
+				GamePlayer damagerGPlayer = plugin.getGamePlayer(((Player) arrow.getShooter()));
+
 				if (arrow.getCustomName() != null && arrow.getCustomName().equals(" ")) {
 					arrow.getWorld().playEffect(arrow.getLocation(), Effect.EXPLOSION_HUGE, 1);
 					arrow.getWorld().playSound(arrow.getLocation(), Sound.EXPLODE, 1L, 1L);
@@ -169,7 +192,7 @@ public class GameListener implements Listener {
 				if (damages >= gamePlayer.getPlayerClass().getMaxResistance()) {
 					damages = gamePlayer.getPlayerClass().getMaxResistance();
 
-					gamePlayer.setPercentage(damages);
+					gamePlayer.setPercentage(damages, damagerGPlayer);
 					gamePlayer.setLastDamager(((Player) arrow.getShooter()).getUniqueId());
 
 					player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
@@ -181,7 +204,7 @@ public class GameListener implements Listener {
 
 					player.setLevel(0);
 				} else {
-					gamePlayer.setPercentage(damages + gamePlayer.getPercentage());
+					gamePlayer.setPercentage(damages + gamePlayer.getPercentage(), damagerGPlayer);
 					gamePlayer.setLastDamager(((Player) arrow.getShooter()).getUniqueId());
 					player.setLevel(damages);
 				}
