@@ -1,6 +1,7 @@
 package net.lnfinity.HeroBattle.game;
 
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -423,15 +424,11 @@ public class Game implements GameArena {
 
 		if(id != null) {
 			Player player = p.getServer().getPlayer(id);
-			GamePlayer HBplayer = p.getGamePlayer(player);
-			p.getGameTimer().pauseTimer();
-			HBplayer.setPlaying(true);
-			p.getScoreboardManager().refresh();
+			GamePlayer gPlayer = p.getGamePlayer(player);
 
-			p.getPowerupManager().getSpawner().stopTimer();
 			player.getInventory().clear();
 
-			HBplayer.setPlaying(false);
+			gPlayer.setPlaying(false);
 
 			p.getServer().broadcastMessage(
 					HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + ChatColor.GREEN + ChatColor.BOLD + " remporte la partie !");
@@ -442,9 +439,14 @@ public class Game implements GameArena {
 			StatsApi.increaseStat(player, p.getName(), "wins", 1);
 		}
 
-		calculateElos(id);
-		
+		p.getPowerupManager().getSpawner().stopTimer();
+		p.getGameTimer().pauseTimer();
+		p.getScoreboardManager().refresh();
 		p.getScoreboardManager().refreshTab();
+
+
+		calculateElos(id);
+
 		
 		if (MasterBundle.isDbEnabled) {
 			for (final GamePlayer gamePlayer : p.getGamePlayers().values()) {
@@ -553,12 +555,41 @@ public class Game implements GameArena {
 		
 		// Analytics to help us improve the game
 		if(!p.getArenaConfig().getBoolean("block-analytics")) {
-			try {
-				URL u = new URL("http://lnfinity.net/tasks/herobattle-stats?v=1&s=" + MasterBundle.getServerName() + "&m=" + p.getGame().getMapName() + "&p=" + p.getGamePlayers().size() + "&d=" + p.getGameTimer().getFormattedTime() + "&w=" + player.getName() + "&we=" + HBplayer.getElo() + "&wc=" + HBplayer.getPlayerClass().getType().toString().toLowerCase());
-				u.openStream();
-			} catch (Exception ex) {
-				ex.printStackTrace();
+
+			final String serverName = MasterBundle.getServerName();
+			final String mapName = p.getGame().getMapName();
+			final Integer playersCount = p.getGamePlayers().size();
+			final String duration = p.getGameTimer().getFormattedTime();
+
+			final String winnerName;
+			final Integer winnerELO;
+			final String winnerClass;
+
+			if(id != null) {
+				Player player = p.getServer().getPlayer(id);
+				GamePlayer gPlayer = p.getGamePlayer(player);
+
+				winnerName = player.getName();
+				winnerELO = gPlayer.getElo();
+				winnerClass = gPlayer.getPlayerClass().getType().toString().toLowerCase();
 			}
+			else {
+				winnerName = "(No winner)";
+				winnerELO = 0;
+				winnerClass = "";
+			}
+
+			p.getServer().getScheduler().runTaskAsynchronously(p, new Runnable() {
+				@Override
+				public void run() {
+					try {
+						URL u = new URL("http://lnfinity.net/tasks/herobattle-stats?v=1&s=" + URLEncoder.encode(serverName, "UTF-8") + "&m=" + URLEncoder.encode(mapName, "UTF-8") + "&p=" + playersCount + "&d=" + URLEncoder.encode(duration, "UTF-8") + "&w=" + URLEncoder.encode(winnerName, "UTF-8") + "&we=" + winnerELO + "&wc=" + URLEncoder.encode(winnerClass, "UTF-8"));
+						u.openStream();
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			});
 		}
 		
 		if (MasterBundle.isDbEnabled) {
