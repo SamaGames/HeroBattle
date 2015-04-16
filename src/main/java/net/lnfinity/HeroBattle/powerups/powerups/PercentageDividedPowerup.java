@@ -25,7 +25,7 @@ public class PercentageDividedPowerup implements PositivePowerup {
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
 		GamePlayer gPlayer = p.getGamePlayer(player);
-		gPlayer.setPercentage(gPlayer.getPercentage() / 2);
+		gPlayer.setPercentage(gPlayer.getPercentage() / 2, null);
 		p.getScoreboardManager().update(gPlayer);
 
 		player.sendMessage(ChatColor.GREEN + "Votre pourcentage a été divisé par deux !");

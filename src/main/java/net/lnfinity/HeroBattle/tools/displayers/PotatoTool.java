@@ -1,6 +1,8 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
@@ -54,17 +56,35 @@ public class PotatoTool extends PlayerTool {
 	}
 
 	@Override
-	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
+	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (ToolsUtils.isToolAvailable(tool)) {
 			new ItemCooldown(p, player, this, COOLDOWN);
 			player.getWorld().playSound(player.getLocation(), Sound.WITHER_SPAWN, 1, 2);
+
+			final List<UUID> victims = new ArrayList<>();
 			for (Entity entity : player.getNearbyEntities(5, 5, 5)) {
 				if (entity instanceof Player) {
 					Player victim = (Player) entity;
 					victim.playSound(victim.getLocation(), Sound.AMBIENCE_CAVE, 1, 2);
 					victim.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 * DURATION, 0));
+
+					victims.add(victim.getUniqueId());
 				}
 			}
+
+			for(UUID victim : victims) {
+				p.getGame().getPoisonsInProgress().put(victim, player.getUniqueId());
+			}
+
+			p.getServer().getScheduler().runTaskLaterAsynchronously(p, new Runnable() {
+				@Override
+				public void run() {
+					for(UUID victim : victims) {
+						p.getGame().getPoisonsInProgress().remove(victim);
+					}
+				}
+			}, 20 * DURATION);
+
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}

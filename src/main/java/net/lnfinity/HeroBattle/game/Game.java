@@ -1,12 +1,8 @@
 package net.lnfinity.HeroBattle.game;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 import net.lnfinity.HeroBattle.HeroBattle;
@@ -45,14 +41,33 @@ public class Game implements GameArena {
 	private HeroBattle p;
 	private Status status = Status.Idle;
 
+
 	private List<Location> spawnPoints = new LinkedList<>();
 	private Location hub;
 
+	private Double bottomHeight = 0.0;
+
 	private ArrayList<Location> tutorialLocations = new ArrayList<Location>();
 
-	private Random random = new Random();
 
-	private Double bottomHeight = 0.0;
+	/**
+	 * We store here the last players who launched a lightning bolt and where,
+	 * to associate the damages to the good damager.
+	 */
+	private Map<UUID,Location> lastLightningBolts = new ConcurrentHashMap<>();
+
+	/**
+	 * Map player -> who poisonned him
+	 */
+	private Map<UUID,UUID> poisonsInProgress = new ConcurrentHashMap<>();
+
+	/**
+	 * Map player -> who inflammed him
+	 */
+	private Map<UUID,UUID> firesInProgress = new ConcurrentHashMap<>();
+
+
+	private Random random = new Random();
 
 	public Game(HeroBattle plugin) {
 		p = plugin;
@@ -195,7 +210,7 @@ public class Game implements GameArena {
 	public void spawnPlayer(Player player) {
 		GamePlayer hbPlayer = p.getGamePlayer(player);
 
-		hbPlayer.setPercentage(0);
+		hbPlayer.setPercentage(0, null);
 		player.setExp(0);
 		player.setLevel(0);
 		player.setTotalExperience(0);
@@ -439,6 +454,85 @@ public class Game implements GameArena {
 				}	
 			}
 		}, 3 * 20l);
+
+
+		p.getServer().getScheduler().runTaskAsynchronously(p, new Runnable() {
+			@Override
+			public void run() {
+				Map<UUID, Long> percentagesInflicted = new TreeMap<>(new Comparator<UUID>() {
+					@Override
+					public int compare(UUID a, UUID b) {
+						try {
+							Long prcA = p.getGamePlayer(a).getPercentageInflicted();
+							Long prcB = p.getGamePlayer(b).getPercentageInflicted();
+
+							if (prcA >= prcB) return -1;
+							else return 1;
+
+						} catch(NullPointerException e) {
+							return 0;
+						}
+					}
+				});
+
+				Map<UUID, Integer> kills = new TreeMap<>(new Comparator<UUID>() {
+					@Override
+					public int compare(UUID a, UUID b) {
+						try {
+							Integer killsA = p.getGamePlayer(a).getPlayersKilled();
+							Integer killsB = p.getGamePlayer(b).getPlayersKilled();
+
+							if (killsA >= killsB) return -1;
+							else return 1;
+
+						} catch(NullPointerException e) {
+							return 0;
+						}
+					}
+				});
+
+				for(GamePlayer player : p.getGamePlayers().values()) {
+					percentagesInflicted.put(player.getPlayerUniqueID(), player.getPercentageInflicted());
+					kills.put(player.getPlayerUniqueID(), player.getPlayersKilled());
+				}
+
+
+				String[] topsPercentages = new String[]{"", "", ""};
+				String[] topsKills       = new String[]{"", "", ""};
+
+				// Percentages
+				int i = 0;
+				Iterator<Map.Entry<UUID, Long>> iterPercentages = percentagesInflicted.entrySet().iterator();
+				while(i < 3 && iterPercentages.hasNext()) {
+					Map.Entry<UUID, Long> entry = iterPercentages.next();
+					topsPercentages[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + "(" + entry.getValue() + " %)";
+					i++;
+				}
+
+				// Kills
+				i = 0;
+				Iterator<Map.Entry<UUID, Integer>> iterKills = kills.entrySet().iterator();
+				while(i < 3 && iterKills.hasNext()) {
+					Map.Entry<UUID, Integer> entry = iterKills.next();
+					topsKills[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + "(" + entry.getValue() + ")";
+					i++;
+				}
+
+
+				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
+				Bukkit.broadcastMessage(ChatColor.GOLD + "                      Classement des Kills          ");
+				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
+				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsKills[0] + ChatColor.GOLD + "  " + topsKills[1] + ChatColor.GRAY + "  " + topsKills[2]);
+				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
+				Bukkit.broadcastMessage(ChatColor.GOLD + "                  Classement des dégâts infligés    ");
+				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
+				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsPercentages[0] + ChatColor.GOLD + "  " + topsPercentages[1] + ChatColor.GRAY + "  " + topsPercentages[2]);
+				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
+				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
+
+			}
+		});
+
 		
 		// Analytics to help us improve the game
 		if(!p.getArenaConfig().getBoolean("block-analytics")) {
@@ -577,6 +671,19 @@ public class Game implements GameArena {
 	 */
 	public Double getBottomHeight() {
 		return bottomHeight;
+	}
+
+
+	public Map<UUID, Location> getLastLightningBolts() {
+		return lastLightningBolts;
+	}
+
+	public Map<UUID, UUID> getPoisonsInProgress() {
+		return poisonsInProgress;
+	}
+
+	public Map<UUID, UUID> getFiresInProgress() {
+		return firesInProgress;
 	}
 
 	public Block getTargetBlock(Player player, int maxRange) {

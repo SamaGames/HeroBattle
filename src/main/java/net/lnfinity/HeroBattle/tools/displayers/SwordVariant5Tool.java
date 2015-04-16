@@ -56,7 +56,7 @@ public class SwordVariant5Tool extends SwordTool implements Weapon {
 	public void onPlayerHit(Player sender, Player victim) {
 		double n = 0.1 + upgrade * 0.02;
 		if(random.nextDouble() <= n) {
-			sender.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2 * 20, 1));
+			victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2 * 20, 1));
 		}
 		
 	}

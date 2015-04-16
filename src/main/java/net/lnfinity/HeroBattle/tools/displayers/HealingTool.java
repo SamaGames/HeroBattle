@@ -69,7 +69,7 @@ public class HealingTool extends PlayerTool {
 				if (newPercentage < 0) {
 					newPercentage = 0;
 				}
-				gamePlayer.setPercentage(newPercentage);
+				gamePlayer.setPercentage(newPercentage, null);
 				player.playSound(player.getLocation(), Sound.FIZZ, 1, 1);
 				p.getScoreboardManager().refresh();
 			} else {
