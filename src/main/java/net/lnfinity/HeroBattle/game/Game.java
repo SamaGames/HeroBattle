@@ -510,7 +510,7 @@ public class Game implements GameArena {
 				Iterator<Map.Entry<UUID, Long>> iterPercentages = percentagesInflicted.entrySet().iterator();
 				while(i < 3 && iterPercentages.hasNext()) {
 					Map.Entry<UUID, Long> entry = iterPercentages.next();
-					topsPercentages[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + "(" + entry.getValue() + " %)";
+					topsPercentages[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + entry.getValue() + " %)";
 					i++;
 				}
 
@@ -519,7 +519,7 @@ public class Game implements GameArena {
 				Iterator<Map.Entry<UUID, Integer>> iterKills = kills.entrySet().iterator();
 				while(i < 3 && iterKills.hasNext()) {
 					Map.Entry<UUID, Integer> entry = iterKills.next();
-					topsKills[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + "(" + entry.getValue() + ")";
+					topsKills[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + entry.getValue() + ")";
 					i++;
 				}
 
@@ -527,11 +527,11 @@ public class Game implements GameArena {
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                      Classement des Kills          ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
-				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsKills[0] + ChatColor.GOLD + "  " + topsKills[1] + ChatColor.GRAY + "  " + topsKills[2]);
+				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsKills[0] + ChatColor.DARK_GRAY + " ⋅ " + ChatColor.GRAY +  topsKills[1] + ChatColor.DARK_GRAY + " ⋅ " + ChatColor.GOLD + topsKills[2]);
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                  Classement des dégâts infligés    ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
-				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsPercentages[0] + ChatColor.GOLD + "  " + topsPercentages[1] + ChatColor.GRAY + "  " + topsPercentages[2]);
+				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsPercentages[0] + ChatColor.DARK_GRAY + " ⋅ " + ChatColor.GRAY +  topsPercentages[1] + ChatColor.DARK_GRAY + " ⋅ " + ChatColor.GOLD + topsPercentages[2]);
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
 
