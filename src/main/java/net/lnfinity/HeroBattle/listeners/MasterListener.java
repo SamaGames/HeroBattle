@@ -125,7 +125,7 @@ public class MasterListener implements Listener {
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 			@Override
 			public void run() {
-				int elo = 2000;
+				int elo;
 				if (MasterBundle.isDbEnabled) {
 					elo = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), HeroBattle.GAME_NAME_WHITE, "elo");
 				} else {

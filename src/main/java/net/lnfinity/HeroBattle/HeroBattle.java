@@ -134,10 +134,12 @@ public class HeroBattle extends JavaPlugin {
 	}
 
 	public GamePlayer getGamePlayer(Player p) {
+		if(p == null) return null;
 		return players.get(p.getUniqueId());
 	}
 
 	public GamePlayer getGamePlayer(UUID id) {
+		if(id == null) return null;
 		return players.get(id);
 	}
 

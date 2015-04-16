@@ -66,6 +66,11 @@ public class Game implements GameArena {
 	 */
 	private Map<UUID,UUID> firesInProgress = new ConcurrentHashMap<>();
 
+	/**
+	 * Map fireballs UUID -> who launched them
+	 */
+	private Map<UUID,UUID> fireballsLaunched = new ConcurrentHashMap<>();
+
 
 	private Random random = new Random();
 
@@ -684,6 +689,10 @@ public class Game implements GameArena {
 
 	public Map<UUID, UUID> getFiresInProgress() {
 		return firesInProgress;
+	}
+
+	public Map<UUID, UUID> getFireballsLaunched() {
+		return fireballsLaunched;
 	}
 
 	public Block getTargetBlock(Player player, int maxRange) {

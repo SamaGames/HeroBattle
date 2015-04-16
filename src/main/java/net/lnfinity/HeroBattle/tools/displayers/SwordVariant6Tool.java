@@ -40,25 +40,35 @@ public class SwordVariant6Tool extends SwordTool implements Weapon {
 
 		return item;
 	}
-	
+
 	@Override
 	public List<String> getDescription() {
 		return Arrays.asList(
 				ChatColor.GRAY + "Frappez les joueurs pour les repousser.",
 				ChatColor.GRAY + "Cliquez droit pour faire un double saut.",
 				"",
-				ChatColor.AQUA + "Effet spécial:",
-				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + ((int) 4 + upgrade) + ChatColor.GRAY + "% de chance de brûler votre cible", ChatColor.GRAY + "pendant " + ChatColor.GOLD + "2 " + ChatColor.GRAY + "secondes à chaque coup porté"
+				ChatColor.AQUA + "Effet spécial",
+				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + (4 + upgrade) + ChatColor.GRAY + "% de chance de brûler votre cible", ChatColor.GRAY + "pendant " + ChatColor.GOLD + "2 " + ChatColor.GRAY + "secondes à chaque coup porté"
 		);
 	}
 
 	@Override
-	public void onPlayerHit(Player sender, Player victim) {
+	public void onPlayerHit(final Player sender, final Player victim) {
 		double n = 0.04 + upgrade * 0.01;
 		if(random.nextDouble() <= n) {
-			sender.setFireTicks(sender.getFireTicks() + 2 * 20);
+
+			int duration = sender.getFireTicks() + 2 * 20;
+
+			sender.setFireTicks(duration);
+
+			p.getGame().getFiresInProgress().put(victim.getUniqueId(), sender.getUniqueId());
+			p.getServer().getScheduler().runTaskLaterAsynchronously(p, new Runnable() {
+				@Override
+				public void run() {
+					p.getGame().getFiresInProgress().remove(victim.getUniqueId());
+				}
+			}, duration);
 		}
-		
 	}
 
 }

@@ -48,7 +48,7 @@ public class SwordVariant5Tool extends SwordTool implements Weapon {
 				ChatColor.GRAY + "Cliquez droit pour faire un double saut.",
 				"",
 				ChatColor.AQUA + "Effet spécial:",
-				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + ((int) 10 + upgrade * 2) + ChatColor.GRAY + "% de chance de geler votre cible", ChatColor.GRAY + "pendant " + ChatColor.GOLD + "2 " + ChatColor.GRAY + "secondes à chaque coup porté"
+				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + (10 + upgrade * 2) + ChatColor.GRAY + "% de chance de geler votre cible", ChatColor.GRAY + "pendant " + ChatColor.GOLD + "2 " + ChatColor.GRAY + "secondes à chaque coup porté"
 		);
 	}
 

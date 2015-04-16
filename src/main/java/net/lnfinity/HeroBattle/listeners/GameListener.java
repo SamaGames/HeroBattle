@@ -214,6 +214,33 @@ public class GameListener implements Listener {
 	}
 
 	@EventHandler
+	public void onentityExplode(EntityExplodeEvent e) {
+		Entity entity = e.getEntity();
+		if (!(entity instanceof Fireball)) return;
+		e.blockList().clear();
+
+		GamePlayer damager = plugin.getGamePlayer(plugin.getGame().getFireballsLaunched().get(entity.getUniqueId()));
+
+		for(GamePlayer gamePlayer : plugin.getGamePlayers().values()) {
+			Player player = plugin.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
+			if(player != null) {
+				if(player.getLocation().distance(e.getEntity().getLocation()) <= 4) {
+					player.damage(0);
+					gamePlayer.setPercentage(gamePlayer.getPercentage() + Utils.randomNumber(16, 25), damager);
+					player.setLevel(gamePlayer.getPercentage());
+					plugin.getScoreboardManager().update(player);
+				}
+			}
+
+		}
+
+		for(int i = 0; i <= Utils.randomNumber(10, 15); i++) {
+			e.getEntity().getWorld().playEffect(e.getLocation().clone().add(1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2)), Effect.FLAME, 0);
+		}
+	}
+
+
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		e.setCancelled(true);
 		final Player p = e.getPlayer();
@@ -268,28 +295,5 @@ public class GameListener implements Listener {
 		if (plugin.getTutorialDisplayer().isWatchingTutorial(e.getPlayer().getUniqueId())) {
 			e.setCancelled(true);
 		}
-	}
-	
-	@EventHandler
-	public void onentityExplode(EntityExplodeEvent e) {
-		Entity entity = e.getEntity();
-	    if (!(entity instanceof Fireball)) return;
-		e.blockList().clear();
-	    for(GamePlayer gamePlayer : plugin.getGamePlayers().values()) {
-	    	Player player = plugin.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
-	    	if(player != null) {
-	    		if(player.getLocation().distance(e.getEntity().getLocation()) <= 4) {
-	    			player.damage(0);
-	    			gamePlayer.setPercentage(gamePlayer.getPercentage() + Utils.randomNumber(16, 25));
-	    			player.setLevel(gamePlayer.getPercentage());
-	    			plugin.getScoreboardManager().update(player);
-	    		}
-	    	}
-	    
-	    }
-	    
-	    for(int i = 0; i <= Utils.randomNumber(10, 15); i++) {
-	    	e.getEntity().getWorld().playEffect(e.getLocation().clone().add(1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2)), Effect.FLAME, 0);
-	    }
 	}
 }

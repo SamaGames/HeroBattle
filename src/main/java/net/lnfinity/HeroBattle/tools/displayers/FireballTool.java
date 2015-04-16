@@ -56,10 +56,10 @@ public class FireballTool extends PlayerTool {
 			new ItemCooldown(p, player, this, COOLDOWN);
 			Fireball fireball = (Fireball) player.getWorld().spawnEntity(player.getLocation().add(player.getLocation().getDirection().normalize().multiply(2)), EntityType.FIREBALL);
 			fireball.setVelocity(player.getLocation().getDirection().normalize());
+			p.getGame().getFireballsLaunched().put(fireball.getUniqueId(), player.getUniqueId());
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
-
 	}
 
 	@Override
