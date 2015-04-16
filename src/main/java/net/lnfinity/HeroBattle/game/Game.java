@@ -314,6 +314,8 @@ public class Game implements GameArena {
 				CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur K.O. !");
 				break;
 			}
+
+			hbPlayer.addPlayersKilled();
 		}
 
 		// Effects on the player
@@ -533,7 +535,7 @@ public class Game implements GameArena {
 				while(i < 3 && iterKills.hasNext()) {
 					Map.Entry<UUID, Integer> entry = iterKills.next();
 					topsKills[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + entry.getValue() + ")";
-					CoinsManager.creditJoueur(entry.getKey(), i == 0 ? 10 : i == 1 ? 6 : 4, true, true, "Rang " + (i - 1) + " au classement des kills !");
+					CoinsManager.creditJoueur(entry.getKey(), i == 0 ? 10 : i == 1 ? 6 : 4, true, true, "Rang " + (i + 1) + " au classement des kills !");
 					i++;
 				}
 
