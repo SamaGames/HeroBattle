@@ -315,7 +315,7 @@ public class Game implements GameArena {
 				break;
 			}
 
-			hbPlayer.addPlayersKilled();
+			p.getGamePlayer(hbPlayer.getLastDamager()).addPlayersKilled();
 		}
 
 		// Effects on the player
