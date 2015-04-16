@@ -60,7 +60,6 @@ public class IceTool extends PlayerTool {
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (ToolsUtils.isToolAvailable(tool)) {
-			new ItemCooldown(p, player, this, COOLDOWN);
 			final List<Location> toClean = new ArrayList<Location>();
 			Block b = null;
 			try {
@@ -70,10 +69,13 @@ public class IceTool extends PlayerTool {
 			}
 			
 			if (b != null) {
+
+				new ItemCooldown(p, player, this, COOLDOWN);
+
 				for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
 					Player target = p.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
 					if(target != null) {
-						if(target.getLocation().distance(b.getLocation()) <= 3) {
+						if(target.getLocation().distanceSquared(b.getLocation()) <= 9) {
 							target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, DURATION * 20, 3));
 						}
 					}

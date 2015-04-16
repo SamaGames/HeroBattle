@@ -50,10 +50,10 @@ public class ThunderTool extends PlayerTool {
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (ToolsUtils.isToolAvailable(tool)) {
-			new ItemCooldown(p, player, this, COOLDOWN);
 			Block b = p.getGame().getTargetBlock(player, 20);
 			if (b != null) {
 				player.getWorld().strikeLightning(b.getLocation());
+				new ItemCooldown(p, player, this, COOLDOWN);
 			} else {
 				player.sendMessage(ChatColor.RED + "Vous échouez votre colère");
 			}
