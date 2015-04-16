@@ -30,6 +30,10 @@ public class PercentageIncreasedPowerup implements NegativePowerup {
 
 		GamePlayer gPlayer = p.getGamePlayer(player);
 
+		if(gPlayer.isInvulnerable()) {
+			player.sendMessage(ChatColor.GREEN + "Votre invulnérabilité vous sauve..." + ChatColor.RED + " pour cette fois. :>");
+		}
+
 		final UUID playerUUID = player.getUniqueId();
 		final int percentageIncrease = Utils.randomNumber(5, 30);
 
@@ -37,7 +41,7 @@ public class PercentageIncreasedPowerup implements NegativePowerup {
 		player.sendMessage(ChatColor.RED + "Votre pourcentage augmente de " + ChatColor.DARK_RED + percentageIncrease + ChatColor.RED + " points !");
 
 		soundTasks.put(playerUUID, p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
-			float pitch   = 1f;
+			float pitch   = 0.5f;
 			int   counter = 0;
 
 			@Override

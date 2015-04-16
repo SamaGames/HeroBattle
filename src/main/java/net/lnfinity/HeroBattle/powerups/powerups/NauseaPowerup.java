@@ -14,7 +14,7 @@ public class NauseaPowerup implements NegativePowerup {
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
 
-		player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 8, 1, true));
+		player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 14, 1, true));
 		player.sendMessage(ChatColor.RED + "Blurp... :c");
 
 	}
