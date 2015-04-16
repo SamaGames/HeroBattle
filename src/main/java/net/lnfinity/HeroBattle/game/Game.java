@@ -412,26 +412,35 @@ public class Game implements GameArena {
 		}
 	}
 
+	/**
+	 * Call this when the game is finished.
+	 *
+	 * @param id The UUID of the winner. If {@code null}, no winner for this game (counter timed out, as example).
+	 */
 	public void onPlayerWin(UUID id) {
+
 		this.setStatus(Status.Stopping);
-		Player player = p.getServer().getPlayer(id);
-		GamePlayer HBplayer = p.getGamePlayer(player);
-		p.getGameTimer().pauseTimer();
-		HBplayer.setPlaying(true);
-		p.getScoreboardManager().refresh();
 
-		p.getPowerupManager().getSpawner().stopTimer();
-		player.getInventory().clear();
-		
-		HBplayer.setPlaying(false);
+		if(id != null) {
+			Player player = p.getServer().getPlayer(id);
+			GamePlayer HBplayer = p.getGamePlayer(player);
+			p.getGameTimer().pauseTimer();
+			HBplayer.setPlaying(true);
+			p.getScoreboardManager().refresh();
 
-		p.getServer().broadcastMessage(
-				HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + ChatColor.GREEN + ChatColor.BOLD + " remporte la partie !");
-		new WinnerFirework(p, 30, player);
+			p.getPowerupManager().getSpawner().stopTimer();
+			player.getInventory().clear();
 
-		StarsManager.creditJoueur(player, 1, "Victoire !");
-		CoinsManager.creditJoueur(player.getUniqueId(), 16, true, true, "Victoire !");
-		StatsApi.increaseStat(player, p.getName(), "wins", 1);
+			HBplayer.setPlaying(false);
+
+			p.getServer().broadcastMessage(
+					HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + ChatColor.GREEN + ChatColor.BOLD + " remporte la partie !");
+			new WinnerFirework(p, 30, player);
+
+			StarsManager.creditJoueur(player, 1, "Victoire !");
+			CoinsManager.creditJoueur(player.getUniqueId(), 16, true, true, "Victoire !");
+			StatsApi.increaseStat(player, p.getName(), "wins", 1);
+		}
 
 		calculateElos(id);
 		
@@ -557,7 +566,7 @@ public class Game implements GameArena {
 				@Override
 				public void run() {
 					for (Player player : p.getServer().getOnlinePlayers()) {
-						player.kickPlayer("");
+						player.kickPlayer(player.getName());
 					}
 				}
 			}, 25 * 20L);
@@ -570,7 +579,12 @@ public class Game implements GameArena {
 			}, 30 * 20L);
 		}
 	}
-	
+
+	/**
+	 * Calculates the ELOs of the players.
+	 *
+	 * @param winner The winner. Can be {@code null}.
+	 */
 	public void calculateElos(UUID winner) {
 		double total = getTotalElo();
 		

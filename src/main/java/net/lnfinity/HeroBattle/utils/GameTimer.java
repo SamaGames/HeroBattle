@@ -48,17 +48,8 @@ public class GameTimer {
 					p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.YELLOW + "La partie se termine dans " + (60 - seconds) + " secondes !");
 				}
 				if(minutes == maxMinutes) {
-					if (MasterBundle.isDbEnabled) {
-						for (Player player : p.getServer().getOnlinePlayers()) {
-							player.kickPlayer("");
-						}
-						Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
-							@Override
-							public void run() {
-								Bukkit.shutdown();
-							}
-						}, 5 * 20L);
-					}
+					p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.RED + "" + ChatColor.BOLD + "La partie se termine car le délai maximal est dépassé !");
+					p.getGame().onPlayerWin(null);
 				}
 				p.getScoreboardManager().updateTimer();
 			}
