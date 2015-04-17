@@ -1,21 +1,17 @@
 package net.lnfinity.HeroBattle.game;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.tasks.Task;
-
-import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 
 public class GamePlayer {

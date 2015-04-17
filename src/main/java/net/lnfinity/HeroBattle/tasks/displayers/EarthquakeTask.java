@@ -3,7 +3,6 @@ package net.lnfinity.HeroBattle.tasks.displayers;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.utils.Utils;
-
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;

@@ -1,16 +1,5 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import java.util.List;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
@@ -18,6 +7,12 @@ import net.lnfinity.HeroBattle.utils.ItemCooldown;
 import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.utils.GlowEffect;
+import org.bukkit.*;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class InvincibleTool extends PlayerTool {
 

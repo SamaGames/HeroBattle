@@ -1,11 +1,10 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.md_5.bungee.api.ChatColor;
 
 public class SwordVariant8Tool extends SwordTool {
 

@@ -1,11 +1,7 @@
 package net.lnfinity.HeroBattle.utils;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
-import net.zyuiop.MasterBundle.MasterBundle;
 
 public class GameTimer {
 

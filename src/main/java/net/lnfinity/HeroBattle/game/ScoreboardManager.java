@@ -1,15 +1,12 @@
 package net.lnfinity.HeroBattle.game;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-
 import net.lnfinity.HeroBattle.utils.Utils;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 public class ScoreboardManager {
 

@@ -1,14 +1,13 @@
 package net.lnfinity.HeroBattle.tools;
 
-import java.util.List;
-
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.samagames.utils.GlowEffect;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
 
 /**
  * Represents a player tool given by the classes or a powerup and

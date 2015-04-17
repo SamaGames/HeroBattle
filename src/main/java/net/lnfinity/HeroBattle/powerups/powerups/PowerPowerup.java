@@ -1,15 +1,14 @@
 package net.lnfinity.HeroBattle.powerups.powerups;
 
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.GamePlayer;
+import net.lnfinity.HeroBattle.powerups.PositivePowerup;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.powerups.PositivePowerup;
 
 public class PowerPowerup implements PositivePowerup {
 

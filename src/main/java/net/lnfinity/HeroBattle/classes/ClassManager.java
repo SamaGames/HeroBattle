@@ -1,27 +1,19 @@
 package net.lnfinity.HeroBattle.classes;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.displayers.ArcherClass;
-import net.lnfinity.HeroBattle.classes.displayers.BruteClass;
-import net.lnfinity.HeroBattle.classes.displayers.CryogenieClass;
-import net.lnfinity.HeroBattle.classes.displayers.DruideClass;
-import net.lnfinity.HeroBattle.classes.displayers.GuerrierClass;
-import net.lnfinity.HeroBattle.classes.displayers.MageClass;
-import net.lnfinity.HeroBattle.classes.displayers.PyrobarbareClass;
+import net.lnfinity.HeroBattle.classes.displayers.*;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.zyuiop.MasterBundle.MasterBundle;
-
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import redis.clients.jedis.ShardedJedis;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ClassManager {
 

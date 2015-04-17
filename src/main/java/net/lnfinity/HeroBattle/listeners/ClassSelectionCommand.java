@@ -5,7 +5,6 @@ import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.classes.displayers.MaiteClass;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

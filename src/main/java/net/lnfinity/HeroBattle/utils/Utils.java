@@ -1,14 +1,13 @@
 package net.lnfinity.HeroBattle.utils;
 
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.GamePlayer;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.HeroBattle;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
 
 public final class Utils {
 

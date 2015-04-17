@@ -2,7 +2,6 @@ package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
-
 import net.samagames.gameapi.json.Status;
 import net.zyuiop.MasterBundle.MasterBundle;
 import org.bukkit.Bukkit;

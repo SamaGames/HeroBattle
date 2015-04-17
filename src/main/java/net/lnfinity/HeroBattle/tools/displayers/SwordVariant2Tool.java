@@ -1,19 +1,18 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import java.util.Arrays;
-import java.util.List;
-
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.Weapon;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class SwordVariant2Tool extends SwordTool implements Weapon {
 

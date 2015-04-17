@@ -1,7 +1,7 @@
 package net.lnfinity.HeroBattle.powerups.powerups;
 
-import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.powerups.PositivePowerup;
 import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.md_5.bungee.api.ChatColor;

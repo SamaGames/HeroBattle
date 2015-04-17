@@ -1,7 +1,6 @@
 package net.lnfinity.HeroBattle.tasks;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-
 import org.bukkit.entity.Player;
 
 public abstract class Task {
