@@ -155,7 +155,7 @@ public class GamePlayer {
 	}
 
 	public void doubleJump() {
-		final Player player = Bukkit.getServer().getPlayer(playerID);
+		Player player = Bukkit.getServer().getPlayer(playerID);
 		if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
 			setJumps(maxJumps);
 		}
@@ -165,28 +165,6 @@ public class GamePlayer {
 			Vector direction = player.getLocation().getDirection().multiply(0.5);
 			Vector vector = new Vector(direction.getX(), 0.85, direction.getZ());
 			player.setVelocity(vector);
-
-			if(checkIsOnGroundTask != null) {
-				checkIsOnGroundTask = Bukkit.getScheduler().runTaskTimer(HeroBattle.getInstance(), new Runnable() {
-					@Override
-					public void run() {
-						if(player.isOnline() && player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
-							setJumps(maxJumps);
-							checkIsOnGroundTask.cancel();
-
-							playTask(new EarthquakeTask(HeroBattle.getInstance(), player));
-
-							// The player is on the ground, so the previous hitter is no
-							// longer
-							// the one who will punch it out of the map.
-							// ...only if the player is still inside the map of course.
-							if (player.getLocation().getY() > HeroBattle.getInstance().getGame().getBottomHeight()) {
-								setLastDamager(null);
-							}
-						}
-					}
-				}, 1l, 1l);
-			}
 		}
 	}
 

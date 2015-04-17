@@ -45,7 +45,14 @@ public class GameListener implements Listener {
 			return;
 		}
 		if(e.getCause() == DamageCause.FALL) {
-			e.setCancelled(true);
+			if (e.getEntity() instanceof Player) {
+				Player player = (Player) e.getEntity();
+				e.setCancelled(true);
+				GamePlayer gamePlayer = plugin.getGamePlayer(player);
+				if(gamePlayer != null) {
+					gamePlayer.setJumps(gamePlayer.getMaxJumps());
+				}
+			}
 			return;
 		}
 
