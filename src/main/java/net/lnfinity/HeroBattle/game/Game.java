@@ -418,6 +418,9 @@ public class Game implements GameArena {
 
 		this.setStatus(Status.Stopping);
 
+		p.getScoreboardManager().refresh();
+		p.getScoreboardManager().refreshTab();
+
 		if(id != null) {
 			Player player = p.getServer().getPlayer(id);
 			GamePlayer gPlayer = p.getGamePlayer(player);
@@ -437,8 +440,6 @@ public class Game implements GameArena {
 
 		p.getPowerupManager().getSpawner().stopTimer();
 		p.getGameTimer().pauseTimer();
-		p.getScoreboardManager().refresh();
-		p.getScoreboardManager().refreshTab();
 
 
 		calculateElos(id);
