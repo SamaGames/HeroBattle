@@ -44,6 +44,10 @@ public class GameListener implements Listener {
 			e.setCancelled(true);
 			return;
 		}
+		if(e.getCause() == DamageCause.FALL) {
+			e.setCancelled(true);
+			return;
+		}
 
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();

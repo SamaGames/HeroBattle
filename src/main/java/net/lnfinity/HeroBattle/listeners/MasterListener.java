@@ -46,7 +46,7 @@ public class MasterListener implements Listener {
 		// Needed so the toggleFlight event is fired when the player
 		// double-jump.
 		// The event is always cancelled.
-		p.setAllowFlight(true); // Temp disabled
+		p.setAllowFlight(false); // Temp disabled
 
 		plugin.getGame().teleportHub(p.getUniqueId());
 		
