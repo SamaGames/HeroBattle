@@ -2,11 +2,13 @@ package net.lnfinity.HeroBattle.tutorial;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class TutorialDisplayer {
@@ -19,7 +21,7 @@ public class TutorialDisplayer {
 	/**
 	 * Map: player's UUID -> task executing the tutorial
 	 */
-	private Map<UUID, BukkitTask> viewers = new HashMap<>();
+	private Map<UUID, BukkitTask> viewers = new ConcurrentHashMap<>();
 
 	/**
 	 * Chapter's contents
