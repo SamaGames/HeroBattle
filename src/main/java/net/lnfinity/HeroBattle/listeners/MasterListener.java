@@ -156,12 +156,18 @@ public class MasterListener implements Listener {
 
 	@EventHandler
 	public void onModeratorJoin(JoinModEvent ev) {
-		Player moderator = plugin.getServer().getPlayer(ev.getPlayer());
+		final Player moderator = plugin.getServer().getPlayer(ev.getPlayer());
 
 		if(moderator == null) return; // Just in case...
 
 		moderator.setScoreboard(plugin.getScoreboardManager().getScoreboard());
-		moderator.setGameMode(GameMode.SPECTATOR);
+
+		plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+			@Override
+			public void run() {
+				moderator.setGameMode(GameMode.SPECTATOR);
+			}
+		}, 2l);
 	}
 
 	@EventHandler
