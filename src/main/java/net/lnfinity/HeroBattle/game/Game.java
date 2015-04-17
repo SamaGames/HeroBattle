@@ -597,7 +597,7 @@ public class Game implements GameArena {
 				@Override
 				public void run() {
 					for (Player player : p.getServer().getOnlinePlayers()) {
-						player.kickPlayer(player.getName());
+						player.kickPlayer("");
 					}
 				}
 			}, 25 * 20L);
