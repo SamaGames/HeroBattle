@@ -27,6 +27,7 @@ import org.bukkit.util.Vector;
 
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -514,12 +515,14 @@ public class Game implements GameArena {
 				String[] topsPercentages = new String[]{"", "", ""};
 				String[] topsKills       = new String[]{"", "", ""};
 
+				DecimalFormat bigNumbersFormat = new DecimalFormat("### ### ###");
+
 				// Percentages
 				int i = 0;
 				Iterator<Map.Entry<UUID, Long>> iterPercentages = percentagesInflicted.entrySet().iterator();
 				while(i < 3 && iterPercentages.hasNext()) {
 					Map.Entry<UUID, Long> entry = iterPercentages.next();
-					topsPercentages[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + entry.getValue() + " %)";
+					topsPercentages[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + bigNumbersFormat.format(entry.getValue()) + " %)";
 					CoinsManager.creditJoueur(entry.getKey(), i == 0 ? 10 : i == 1 ? 6 : 4, true, true, "Rang " + (i + 1) + " au classement des dégâts infligés !");
 					i++;
 				}
