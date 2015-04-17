@@ -49,23 +49,7 @@ public class GameListener implements Listener {
 			Player p = (Player) e.getEntity();
 			GamePlayer gp = plugin.getGamePlayer(p);
 
-			if (e.getCause() == DamageCause.FALL) {
-				e.setCancelled(true);
-				gp.playTask(new EarthquakeTask(plugin, p));
-
-				// The double-jump is reset
-				gp.setJumps(2);
-
-				// The player is on the ground, so the previous hitter is no
-				// longer
-				// the one who will punch it out of the map.
-				// ...only if the player is still inside the map of course.
-				if (p.getLocation().getY() > plugin.getGame().getBottomHeight()) {
-					gp.setLastDamager(null);
-				}
-			} else {
-				e.setDamage(0);
-			}
+			e.setDamage(0);
 
 
 			if (e.getCause() == DamageCause.LIGHTNING) {
@@ -280,12 +264,7 @@ public class GameListener implements Listener {
 			if (gPlayer != null && gPlayer.isPlaying() && plugin.getGame().getStatus() != Status.Starting
 					&& plugin.getGame().getStatus() != Status.Available) {
 
-				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-					@Override
-					public void run() {
-						gPlayer.doubleJump();
-					}
-				}, 3l);
+				gPlayer.doubleJump();
 			}
 		}
 	}

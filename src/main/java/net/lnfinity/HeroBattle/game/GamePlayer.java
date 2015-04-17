@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.tasks.Task;
 
+import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+
 
 public class GamePlayer {
 
@@ -33,6 +38,8 @@ public class GamePlayer {
 	private UUID lastDamager = null;
 	private List<PlayerClass> avaible = new ArrayList<PlayerClass>();
 	private List<Task> tasks = new ArrayList<Task>();
+
+	private BukkitTask checkIsOnGroundTask = null;
 
 	private long percentageInflicted = 0l;
 	private int playersKilled = 0;
@@ -148,7 +155,7 @@ public class GamePlayer {
 	}
 
 	public void doubleJump() {
-		Player player = Bukkit.getServer().getPlayer(playerID);
+		final Player player = Bukkit.getServer().getPlayer(playerID);
 		if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
 			setJumps(maxJumps);
 		}
@@ -158,6 +165,28 @@ public class GamePlayer {
 			Vector direction = player.getLocation().getDirection().multiply(0.5);
 			Vector vector = new Vector(direction.getX(), 0.85, direction.getZ());
 			player.setVelocity(vector);
+
+			if(checkIsOnGroundTask != null) {
+				checkIsOnGroundTask = Bukkit.getScheduler().runTaskTimer(HeroBattle.getInstance(), new Runnable() {
+					@Override
+					public void run() {
+						if(player.isOnline() && player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
+							setJumps(maxJumps);
+							checkIsOnGroundTask.cancel();
+
+							playTask(new EarthquakeTask(HeroBattle.getInstance(), player));
+
+							// The player is on the ground, so the previous hitter is no
+							// longer
+							// the one who will punch it out of the map.
+							// ...only if the player is still inside the map of course.
+							if (player.getLocation().getY() > HeroBattle.getInstance().getGame().getBottomHeight()) {
+								setLastDamager(null);
+							}
+						}
+					}
+				}, 1l, 1l);
+			}
 		}
 	}
 

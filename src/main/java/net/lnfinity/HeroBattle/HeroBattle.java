@@ -39,6 +39,8 @@ public class HeroBattle extends JavaPlugin {
 	private static CoherenceMachine coherenceMachine = GameAPI.getCoherenceMachine(GAME_NAME_WHITE);
 	public final static String GAME_TAG = coherenceMachine.getGameTag();
 
+	private static HeroBattle instance;
+
 	private Game g;
 
 	private CountdownTimer timer;
@@ -57,6 +59,9 @@ public class HeroBattle extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+
+		instance = this;
+
 		saveDefaultConfig();
 
 		File arenaFile = new File(getServer().getWorlds().get(0).getWorldFolder(), "arena.yml");
@@ -199,5 +204,9 @@ public class HeroBattle extends JavaPlugin {
 
 	public CoherenceMachine getCoherenceMachine() {
 		return coherenceMachine;
+	}
+
+	public static HeroBattle getInstance() {
+		return instance;
 	}
 }
