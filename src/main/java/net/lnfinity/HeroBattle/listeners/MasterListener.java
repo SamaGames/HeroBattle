@@ -51,17 +51,18 @@ public class MasterListener implements Listener {
 		
 		plugin.getClassManager().addPlayerClasses(p);
 
+		plugin.getCoherenceMachine().getMessageManager().writeWelcomeInGameMessage(p);
+
 		if (p.getName().equals("6infinity8") || p.getName().equals("AmauryPi")) {
 			plugin.getServer().broadcastMessage(
 					HeroBattle.GAME_TAG
 							+ ChatColor.RED + ChatColor.MAGIC + "|||"
 							+ ChatColor.GREEN + ChatColor.BOLD + " " + p.getName() + " "
 							+ ChatColor.RED + ChatColor.MAGIC + "|||"
-							+ ChatColor.YELLOW + " a rejoint la partie !");
+							+ ChatColor.YELLOW + " a rejoint la partie ! " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + plugin.getGame().countGamePlayers() + ChatColor.DARK_GRAY + "/" + ChatColor.RED + plugin.getGame().getMaxPlayers() + ChatColor.DARK_GRAY + "]");
 		} else {
 			plugin.getCoherenceMachine().getMessageManager().writePlayerJoinArenaMessage(p, plugin.getGame());
 		}
-		plugin.getCoherenceMachine().getMessageManager().writeWelcomeInGameMessage(p);
 
 		if (!plugin.getTimer().isEnabled() && plugin.getPlayerCount() >= plugin.getGame().getMinPlayers()) {
 			plugin.getTimer().restartTimer();
