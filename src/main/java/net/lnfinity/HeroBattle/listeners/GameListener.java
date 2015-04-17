@@ -3,6 +3,7 @@ package net.lnfinity.HeroBattle.listeners;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.GamePlayer;
+import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
 import net.lnfinity.HeroBattle.tools.Weapon;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.gameapi.json.Status;
@@ -49,6 +50,7 @@ public class GameListener implements Listener {
 				GamePlayer gamePlayer = plugin.getGamePlayer(player);
 				if(gamePlayer != null) {
 					gamePlayer.setJumps(gamePlayer.getMaxJumps());
+					gamePlayer.playTask(new EarthquakeTask(plugin, player));
 				}
 			}
 			return;
