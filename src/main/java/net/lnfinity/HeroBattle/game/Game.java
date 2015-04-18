@@ -760,6 +760,7 @@ public class Game implements GameArena {
 		return null;
 	}
 
+
 	public void updatePlayerArmor(Player player) {
 
 		GamePlayer gamePlayer = p.getGamePlayer(player);

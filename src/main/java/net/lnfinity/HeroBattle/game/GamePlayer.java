@@ -1,5 +1,6 @@
 package net.lnfinity.HeroBattle.game;
 
+import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.tasks.Task;
 import org.bukkit.Bukkit;
@@ -75,6 +76,18 @@ public class GamePlayer {
 		this.percentage = percentage;
 
 		if(aggressor != null) aggressor.addPercentageInflicted(percentage);
+
+		Player player = Bukkit.getPlayer(playerID);
+		if(player != null) {
+
+			player.setLevel(0);
+			player.setTotalExperience(0);
+			player.setLevel(getPercentage());
+
+			HeroBattle.getInstance().getGame().updatePlayerArmor(player);
+		}
+
+		HeroBattle.getInstance().getScoreboardManager().update(this);
 	}
 
 	public int getLives() {

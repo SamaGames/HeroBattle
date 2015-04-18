@@ -43,6 +43,7 @@ public class GameListener implements Listener {
 			e.setCancelled(true);
 			return;
 		}
+		
 		if(e.getCause() == DamageCause.FALL) {
 			if (e.getEntity() instanceof Player) {
 				Player player = (Player) e.getEntity();
@@ -89,14 +90,6 @@ public class GameListener implements Listener {
 			else if (e.getCause() == DamageCause.WITHER) {
 				gp.setPercentage(gp.getPercentage() + 4, null);
 			}
-
-			p.setLevel(0);
-			p.setTotalExperience(0);
-			p.setLevel(gp.getPercentage());
-
-			plugin.getScoreboardManager().update(p);
-
-			plugin.getGame().updatePlayerArmor(p);
 		}
 	}
 
