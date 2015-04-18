@@ -55,6 +55,12 @@ public class SystemListener implements Listener {
 
 			plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
 		}
+		if(e.getPlayer().isOnGround()) {
+			GamePlayer gamePlayer = plugin.getGamePlayer(e.getPlayer());
+			if(gamePlayer != null) {
+				gamePlayer.setJumps(gamePlayer.getMaxJumps());
+			}
+		}
 	}
 
 	@EventHandler

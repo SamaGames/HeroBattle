@@ -563,7 +563,7 @@ public class Game implements GameArena {
 				Iterator<Map.Entry<UUID, Long>> iterPercentages = percentagesInflicted.entrySet().iterator();
 				while(i < 3 && iterPercentages.hasNext()) {
 					Map.Entry<UUID, Long> entry = iterPercentages.next();
-					topsPercentages[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + Utils.formatNumber(entry.getValue()) + " %)";
+					topsPercentages[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + Utils.formatNumber(entry.getValue()) + "%)";
 					CoinsManager.creditJoueur(entry.getKey(), i == 0 ? 10 : i == 1 ? 6 : 4, true, true, "Rang " + (i + 1) + " au classement des dégâts infligés !");
 					i++;
 				}
