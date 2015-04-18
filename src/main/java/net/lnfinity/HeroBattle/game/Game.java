@@ -546,7 +546,7 @@ public class Game implements GameArena {
 
 
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
-				Bukkit.broadcastMessage(ChatColor.GOLD + "                      Classement des Kills          ");
+				Bukkit.broadcastMessage(ChatColor.GOLD + "                        Classement des Kills        ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
 				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsKills[0] + ChatColor.DARK_GRAY + (!topsKills[1].isEmpty() ? " ⋅ " : "") + ChatColor.GRAY +  topsKills[1] + ChatColor.DARK_GRAY + (!topsKills[2].isEmpty() ? " ⋅ " : "") + ChatColor.GOLD + topsKills[2]);
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
