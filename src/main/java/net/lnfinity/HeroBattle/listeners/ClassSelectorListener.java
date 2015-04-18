@@ -209,12 +209,25 @@ public class ClassSelectorListener implements Listener {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Classe " + classe.getName());
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("");
 
-		lore.add(getBar("Vies", classe.getLives(), 6));
-		lore.add(getBar("Dégâts min.", classe.getMinDamages(), 6));
-		lore.add(getBar("Dégâts max.", classe.getMaxDamages() - 3, 6));
-		lore.add(getBar("Résistance", (classe.getMaxResistance() - 150) / 25, 6));
+		String lives = "";
+		for(int k = 0; k < classe.getLives(); k++) {
+			lives+="❤";
+		}
+		lore.add(ChatColor.GRAY + "Total des vies: " + ChatColor.RED + lives);
+		lore.add("");
+		lore.add(ChatColor.AQUA + "Arme principale:");
+		lore.add(ChatColor.GRAY + "Dégâts minimums: " + ChatColor.GOLD + classe.getMinDamages());
+		lore.add(ChatColor.GRAY + "Dégâts maximums: " + ChatColor.GOLD + classe.getMaxDamages());
+		lore.add("");
+		lore.add(ChatColor.AQUA + "Armure:");
+		lore.add(ChatColor.GRAY + "Résistance maximale: " + ChatColor.RED + classe.getMaxResistance() + ChatColor.GRAY + "%");
+		lore.add("");
+		lore.add(ChatColor.AQUA + "Améliorations boutique:");
+		lore.add(ChatColor.GRAY + "Cooldowns: " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
+		lore.add(ChatColor.GRAY + "Puissance des capacités: " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
+		lore.add(ChatColor.GRAY + "Nouvelles capacités: " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "2");
+
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		inv.setItem(20, item);
