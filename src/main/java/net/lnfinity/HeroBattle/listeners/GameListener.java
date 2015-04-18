@@ -99,6 +99,11 @@ public class GameListener implements Listener {
 		if (e.getEntity() instanceof Player && plugin.getGame().getStatus() == Status.InGame) {
 			final Player player = (Player) e.getEntity();
 			final GamePlayer gamePlayer = plugin.getGamePlayer(player);
+			if(gamePlayer == null) return;
+			if(gamePlayer.isRespawning()) {
+				e.setCancelled(true);
+				return;
+			}
 			if (e.getDamager() instanceof Player) {
 				// Devrait *enfin* fonctionner !
 				final float reducer = 15.0F;
