@@ -5,7 +5,6 @@ import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.lnfinity.HeroBattle.utils.WinnerFirework;
-import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.types.GameArena;
@@ -16,6 +15,7 @@ import net.zyuiop.MasterBundle.StarsManager;
 import net.zyuiop.coinsManager.CoinsManager;
 import net.zyuiop.statsapi.StatsApi;
 import org.bukkit.*;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -283,49 +283,55 @@ public class Game implements GameArena {
 
 		Player lastDamagerPlayer = hbPlayer.getLastDamager() != null ? p.getServer().getPlayer(hbPlayer.getLastDamager()) : null;
 
+		String killedByMessage = ChatColor.RED + "Vous perdez une vie !";
 		if (hbPlayer.getLastDamager() == null || lastDamagerPlayer == null || lastDamagerPlayer.getGameMode() == GameMode.SPECTATOR) {
 			switch (death) {
-			case FALL:
-				p.getServer().broadcastMessage(
-						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
-								+ " est tombé dans le vide" + lives);
-				break;
-			case QUIT:
-				p.getServer().broadcastMessage(
-						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
-								+ " a quitté la partie");
-				break;
-			case KO:
-				p.getServer().broadcastMessage(
-						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " est K.O. !"
-								+ lives);
-				break;
+				case FALL:
+					p.getServer().broadcastMessage(
+							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+									+ " est tombé dans le vide" + lives);
+					break;
+				case QUIT:
+					p.getServer().broadcastMessage(
+							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+									+ " a quitté la partie");
+					break;
+				case KO:
+					p.getServer().broadcastMessage(
+							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " est K.O. !"
+									+ lives);
+					break;
 			}
 		} else {
+			String groupColor = ChatColor.getLastColors(lastDamagerPlayer.getDisplayName());
 			switch (death) {
-			case FALL:
-				p.getServer().broadcastMessage(
-						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
-								+ " a été poussé par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
-								+ lives);
-				StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-				CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur poussé !");
-				break;
-			case QUIT:
-				p.getServer().broadcastMessage(
-						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
-								+ " a quitté la partie");
-				StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-				CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un froussard !");
-				break;
-			case KO:
-				p.getServer().broadcastMessage(
-						HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
-								+ " a été mis K.O. par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
-								+ lives);
-				StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-				CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur K.O. !");
-				break;
+				case FALL:
+					killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a éjecté !";
+
+					p.getServer().broadcastMessage(
+							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+									+ " a été poussé par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+									+ lives);
+					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
+					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur poussé !");
+					break;
+				case QUIT:
+					p.getServer().broadcastMessage(
+							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+									+ " a quitté la partie");
+					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
+					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un froussard !");
+					break;
+				case KO:
+					killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a mis K.O. !";
+
+					p.getServer().broadcastMessage(
+							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+									+ " a été mis K.O. par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+									+ lives);
+					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
+					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur K.O. !");
+					break;
 			}
 
 			p.getGamePlayer(hbPlayer.getLastDamager()).addPlayersKilled();
@@ -341,26 +347,26 @@ public class Game implements GameArena {
 		}, 5);
 
 		// Death message
+		final String finalKilledByMessage = killedByMessage;
 		if (hbPlayer.getLives() >= 1) {
 
-			Titles.sendTitle(player, 3, 150, 10, Utils.heartsToString(hbPlayer, true), ChatColor.RED
-					+ "Vous perdez une vie !");
+			Titles.sendTitle(player, 3, 150, 10, Utils.heartsToString(hbPlayer, true), killedByMessage);
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
 					Titles.sendTitle(player, 15, 50, 8, Utils.heartsToString(hbPlayer), ChatColor.RED
-							+ "Vous perdez une vie !");
+							+ finalKilledByMessage);
 				}
 			}, 10L);
 
 		} else {
 			Titles.sendTitle(player, 3, 150, 0, Utils.heartsToString(hbPlayer, true), ChatColor.RED
-					+ "Vous êtes mort !");
+					+ killedByMessage);
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
 					Titles.sendTitle(player, 15, 100, 18, Utils.heartsToString(hbPlayer), ChatColor.RED
-							+ "Vous êtes mort !");
+							+ finalKilledByMessage);
 				}
 			}, 10L);
 		}
