@@ -5,6 +5,8 @@ import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.classes.displayers.MaiteClass;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
+import net.samagames.gameapi.json.Status;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,6 +27,7 @@ public class ClassSelectionCommand implements CommandExecutor {
 		} else {
 			Player player = p.getServer().getPlayer(sender.getName());
 			if(player != null) {
+				if(p.getGame().getStatus() == Status.Available || p.getGame().getStatus() == Status.PreStarting || p.getGame().getStatus() == Status.Starting) {
 				GamePlayer gamePlayer = p.getGamePlayer(player);
 				if(args[0].equalsIgnoreCase("maite") || args[0].equalsIgnoreCase("maité") || args[0].equalsIgnoreCase("maïté")) {
 					PlayerClass theClass = new MaiteClass(p);
@@ -42,7 +45,10 @@ public class ClassSelectionCommand implements CommandExecutor {
 					}
 				}
 				player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe !");
+			} else {
+				player.sendMessage(ChatColor.RED + "Le jeu est déjà commencé !");
 			}
+		}
 		}
 		return true;
 	}
