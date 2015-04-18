@@ -79,9 +79,10 @@ public class GamePlayer {
 	public void setPercentage(int percentage, GamePlayer aggressor) {
 		if(isInvulnerable() && percentage >= this.percentage) return;
 
+		int oldPercentage = this.percentage;
 		this.percentage = percentage;
 
-		if(aggressor != null) aggressor.addPercentageInflicted(percentage);
+		if(aggressor != null) aggressor.addPercentageInflicted(percentage - oldPercentage);
 
 		Player player = Bukkit.getPlayer(playerID);
 		if(player != null) {
