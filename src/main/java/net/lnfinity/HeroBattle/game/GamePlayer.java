@@ -32,6 +32,7 @@ public class GamePlayer {
 	private boolean doubleDamages = false;
 	private boolean isInvisible = false;
 	private boolean isInvulnerable = false;
+	private boolean isRespawning = false;
 	private UUID lastDamager = null;
 	private List<PlayerClass> avaible = new ArrayList<PlayerClass>();
 	private List<Task> tasks = new ArrayList<Task>();
@@ -257,5 +258,13 @@ public class GamePlayer {
 
 	public void setDeathHandled(boolean deathHandled) {
 		this.deathHandled = deathHandled;
+	}
+
+	public boolean isRespawning() {
+		return isRespawning;
+	}
+
+	public void setRespawning(boolean isRespawning) {
+		this.isRespawning = isRespawning;
 	}
 }

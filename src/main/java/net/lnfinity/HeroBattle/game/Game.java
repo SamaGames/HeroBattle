@@ -338,6 +338,10 @@ public class Game implements GameArena {
 		}
 
 		// Effects on the player
+		for(PotionEffect effect : player.getActivePotionEffects()) {
+			// Clears current effects
+		    player.removePotionEffect(effect.getType());
+		}
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 0));
 		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 			@Override
@@ -373,6 +377,13 @@ public class Game implements GameArena {
 
 		// Respawn
 		if (hbPlayer.getLives() >= 1) {
+			hbPlayer.setRespawning(true);
+			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+				@Override
+				public void run() {
+					hbPlayer.setRespawning(false);
+				}
+			}, 2 * 20L);
 			spawnPlayer(player);
 		} else {
 			enableSpectatorMode(player);
