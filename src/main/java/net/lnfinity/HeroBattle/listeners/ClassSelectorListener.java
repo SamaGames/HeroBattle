@@ -215,19 +215,19 @@ public class ClassSelectorListener implements Listener {
 		for(int k = 0; k < classe.getLives(); k++) {
 			lives+="❤";
 		}
-		lore.add(ChatColor.GRAY + "Total des vies: " + ChatColor.RED + lives);
+		lore.add(ChatColor.GRAY + "Total des vies : " + ChatColor.RED + lives);
 		lore.add("");
-		lore.add(ChatColor.AQUA + "Arme principale:");
-		lore.add(ChatColor.GRAY + "Dégâts minimums: " + ChatColor.GOLD + classe.getMinDamages());
-		lore.add(ChatColor.GRAY + "Dégâts maximums: " + ChatColor.GOLD + classe.getMaxDamages());
+		lore.add(ChatColor.AQUA + "Arme principale :");
+		lore.add(ChatColor.GRAY + "Dégâts minimaux : " + ChatColor.GOLD + classe.getMinDamages());
+		lore.add(ChatColor.GRAY + "Dégâts maximaux : " + ChatColor.GOLD + classe.getMaxDamages());
 		lore.add("");
-		lore.add(ChatColor.AQUA + "Armure:");
-		lore.add(ChatColor.GRAY + "Résistance maximale: " + ChatColor.RED + classe.getMaxResistance() + ChatColor.GRAY + "%");
+		lore.add(ChatColor.AQUA + "Armure :");
+		lore.add(ChatColor.GRAY + "Résistance maximale : " + ChatColor.RED + classe.getMaxResistance() + ChatColor.GRAY + "%");
 		lore.add("");
-		lore.add(ChatColor.AQUA + "Améliorations boutique:");
-		lore.add(ChatColor.GRAY + "Cooldowns: " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
-		lore.add(ChatColor.GRAY + "Puissance des capacités: " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
-		lore.add(ChatColor.GRAY + "Nouvelles capacités: " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "2");
+		lore.add(ChatColor.AQUA + "Améliorations boutique :");
+		lore.add(ChatColor.GRAY + "Cooldowns : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
+		lore.add(ChatColor.GRAY + "Puissance des capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
+		lore.add(ChatColor.GRAY + "Nouvelles capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "2");
 
 		meta.setLore(lore);
 		item.setItemMeta(meta);
