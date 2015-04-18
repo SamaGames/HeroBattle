@@ -28,6 +28,7 @@ import org.bukkit.util.Vector;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -520,7 +521,8 @@ public class Game implements GameArena {
 				String[] topsPercentages = new String[]{"", "", ""};
 				String[] topsKills       = new String[]{"", "", ""};
 
-				DecimalFormat bigNumbersFormat = new DecimalFormat("### ### ###");
+				DecimalFormat bigNumbersFormat = new DecimalFormat("###,###,###");
+				bigNumbersFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.FRANCE));
 
 				// Percentages
 				int i = 0;
