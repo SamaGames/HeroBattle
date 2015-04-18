@@ -23,8 +23,8 @@ public class DruideClass extends PlayerClass {
 		super(plugin);
 		
 		addTool(new SwordVariant4Tool(plugin));
-		addTool(new HealingTool(plugin, 45 - arg1 * 2, 50 + arg2 * 4, 0.4 + arg2 * 0.5));
-		addTool(new InkTool(plugin, 60 - arg1 * 2, 10 + arg2, 0.25 - arg2 * 0.05));
+		addTool(new HealingTool(plugin, 90 - arg1 * 2, 50 + arg2 * 4, 0.4 + arg2 * 0.5));
+		addTool(new InkTool(plugin, 60 - arg1 * 2, 6 + arg2, 0.25 - arg2 * 0.05));
 	}
 
 	@Override
@@ -61,12 +61,12 @@ public class DruideClass extends PlayerClass {
 
 	@Override
 	public int getMaxResistance() {
-		return 200;
+		return 150;
 	}
 
 	@Override
 	public int getLives() {
-		return 4;
+		return 3;
 	}
 
 	@Override
