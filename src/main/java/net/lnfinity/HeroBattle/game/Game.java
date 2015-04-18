@@ -260,6 +260,20 @@ public class Game implements GameArena {
 		final Player player = p.getServer().getPlayer(id);
 		final GamePlayer hbPlayer = p.getGamePlayer(player);
 
+
+		// Avoids this to be called a lot of times
+
+		if(hbPlayer.isDeathHandled()) return;
+
+		hbPlayer.setDeathHandled(true);
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				hbPlayer.setDeathHandled(false);
+			}
+		}, 15l);
+
+
 		// Technical stuff
 		hbPlayer.setLives(hbPlayer.getLives() - 1);
 
