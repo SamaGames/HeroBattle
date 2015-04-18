@@ -17,10 +17,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.player.PlayerAchievementAwardedEvent;
-import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class SystemListener implements Listener {
@@ -96,6 +93,12 @@ public class SystemListener implements Listener {
 	@EventHandler
 	public void onAchievementAwarded(PlayerAchievementAwardedEvent e) {
 		e.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onSneak(PlayerToggleSneakEvent ev) {
+		ev.setCancelled(true);
+		ev.getPlayer().setSneaking(false);
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
