@@ -3,6 +3,7 @@ package net.lnfinity.HeroBattle.powerups;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.powerups.powerups.*;
 import net.lnfinity.HeroBattle.utils.Utils;
+import net.zyuiop.statsapi.StatsApi;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -154,6 +155,9 @@ public class PowerupManager {
 
 		activePowerup.getPowerup().onPickup(player, itemPicked.getItemStack());
 		unspawnPowerup(activePowerup, true);
+
+
+		StatsApi.increaseStat(player, p.getName(), "powerup_taken", 1);
 	}
 
 
