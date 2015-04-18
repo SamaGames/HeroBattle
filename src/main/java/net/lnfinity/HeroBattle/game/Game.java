@@ -265,7 +265,10 @@ public class Game implements GameArena {
 		// Broadcasts
 		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + hbPlayer.getLives() + ChatColor.DARK_GRAY
 				+ " vies)";
-		if (hbPlayer.getLastDamager() == null) {
+
+		Player lastDamagerPlayer = hbPlayer.getLastDamager() != null ? p.getServer().getPlayer(hbPlayer.getLastDamager()) : null;
+
+		if (hbPlayer.getLastDamager() == null || lastDamagerPlayer == null || lastDamagerPlayer.getGameMode() == GameMode.SPECTATOR) {
 			switch (death) {
 			case FALL:
 				p.getServer().broadcastMessage(
@@ -407,6 +410,8 @@ public class Game implements GameArena {
 					return;
 				}
 			}
+
+			onPlayerWin(null);
 		}
 	}
 
