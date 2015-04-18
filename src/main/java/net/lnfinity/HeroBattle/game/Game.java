@@ -378,13 +378,19 @@ public class Game implements GameArena {
 		// Respawn
 		if (hbPlayer.getLives() >= 1) {
 			hbPlayer.setRespawning(true);
+
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
 					hbPlayer.setRespawning(false);
 				}
 			}, 2 * 20L);
+
 			spawnPlayer(player);
+
+			// Très important ! Sinon le joueur conserve sa vélocité
+			player.setVelocity(player.getVelocity().zero());
+
 		} else {
 			enableSpectatorMode(player);
 

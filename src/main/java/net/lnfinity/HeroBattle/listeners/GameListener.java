@@ -147,9 +147,6 @@ public class GameListener implements Listener {
 
 					player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
 
-					// Très important ! Sinon le joueur conserve sa vélocité
-					player.setVelocity(player.getVelocity().zero());
-
 					plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
 
 					player.setLevel(0);
