@@ -179,7 +179,10 @@ public class Game implements GameArena {
 
 			player.getInventory().clear();
 			player.setLevel(0);
-
+			
+			player.setAllowFlight(true);
+			player.setFlySpeed(0.00F);
+			
 			p.getGame().updatePlayerArmor(player);
 
 			int i = 0;
@@ -392,6 +395,7 @@ public class Game implements GameArena {
 			player.setVelocity(player.getVelocity().zero());
 
 		} else {
+			player.setFlySpeed(0.1F);
 			enableSpectatorMode(player);
 
 			String s = "s";

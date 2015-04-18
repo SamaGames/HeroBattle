@@ -170,17 +170,29 @@ public class GamePlayer {
 		return playerName;
 	}
 
-	public void doubleJump() {
+	public void doubleJump(HeroBattle p) {
 		Player player = Bukkit.getServer().getPlayer(playerID);
 		if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
 			setJumps(maxJumps);
 		}
 
 		if (getJumps() > 0) {
-			setJumps(getJumps() - 1);
+			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+				@Override
+				public void run() {
+					setJumps(getJumps() - 1);
+				}
+				
+			}, 2L);
+			
 			Vector direction = player.getLocation().getDirection().multiply(0.5);
 			Vector vector = new Vector(direction.getX(), 0.85, direction.getZ());
 			player.setVelocity(vector);
+			if(getJumps() <= 0) {
+				Bukkit.getPlayer(this.getPlayerUniqueID()).setAllowFlight(false);
+			}
+		} else {
+			Bukkit.getPlayer(this.getPlayerUniqueID()).setAllowFlight(false);
 		}
 	}
 

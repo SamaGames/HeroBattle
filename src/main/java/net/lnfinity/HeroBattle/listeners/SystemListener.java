@@ -57,8 +57,9 @@ public class SystemListener implements Listener {
 		}
 		if(e.getPlayer().isOnGround()) {
 			GamePlayer gamePlayer = plugin.getGamePlayer(e.getPlayer());
-			if(gamePlayer != null) {
+			if(gamePlayer != null && plugin.getGame().getStatus() == Status.InGame) {
 				gamePlayer.setJumps(gamePlayer.getMaxJumps());
+				e.getPlayer().setAllowFlight(true);
 			}
 		}
 	}

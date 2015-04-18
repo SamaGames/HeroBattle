@@ -273,7 +273,7 @@ public class GameListener implements Listener {
 			if (gPlayer != null && gPlayer.isPlaying() && plugin.getGame().getStatus() != Status.Starting
 					&& plugin.getGame().getStatus() != Status.Available) {
 
-				gPlayer.doubleJump();
+				gPlayer.doubleJump(plugin);
 			}
 		}
 	}

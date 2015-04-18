@@ -3,11 +3,13 @@ package net.lnfinity.HeroBattle.tools.displayers;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.List;
@@ -52,8 +54,9 @@ public class SwordTool extends PlayerTool {
 	}
 
 	@Override
-	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-		p.getGamePlayer(player).doubleJump();
+	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
+		p.getGamePlayer(player).doubleJump(p);
+		
 	}
 
 	@Override
