@@ -49,10 +49,10 @@ public class ThunderTool extends PlayerTool {
 	@Override
 	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (ToolsUtils.isToolAvailable(tool)) {
+			new ItemCooldown(p, player, this, COOLDOWN);
 			Block b = p.getGame().getTargetBlock(player, 20);
 			if (b != null) {
 				player.getWorld().strikeLightning(b.getLocation());
-				new ItemCooldown(p, player, this, COOLDOWN);
 
 				p.getGame().getLastLightningBolts().put(player.getUniqueId(), b.getLocation());
 
@@ -64,7 +64,7 @@ public class ThunderTool extends PlayerTool {
 				}, 20 * 4);
 
 			} else {
-				player.sendMessage(ChatColor.RED + "Vous échouez votre colère");
+				player.sendMessage(ChatColor.RED + "Vous ne visez aucun bloc, vous échouez !");
 			}
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
