@@ -5,13 +5,17 @@ import net.lnfinity.HeroBattle.game.GamePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public final class Utils {
 
-	static Random rnd = new Random();
+	private static Random rnd = new Random();
+	private static DecimalFormat bigNumbersFormat;
 
 	/**
 	 * Converts a string (in the config file) to a Location object.
@@ -49,6 +53,13 @@ public final class Utils {
 
 	public static int randomNumber(int min, int max) {
 		return rnd.nextInt(max - min + 1) + min;
+	}
+
+	public static String formatNumber(double number) {
+		DecimalFormat bigNumbersFormat = new DecimalFormat("###,###,###");
+		bigNumbersFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.FRANCE));
+
+		return bigNumbersFormat.format(number).replace(" ", " ");
 	}
 
 	public static Location blockLocation(Location loc) {
@@ -136,5 +147,11 @@ public final class Utils {
 			}
 		}
 		return count;
+	}
+
+
+	static {
+		DecimalFormat bigNumbersFormat = new DecimalFormat("###,###,###");
+		bigNumbersFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.FRANCE));
 	}
 }
