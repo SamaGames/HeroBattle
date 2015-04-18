@@ -3,6 +3,7 @@ package net.lnfinity.HeroBattle.powerups;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.powerups.powerups.*;
 import net.lnfinity.HeroBattle.utils.Utils;
+import net.zyuiop.statsapi.StatsApi;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -16,7 +17,7 @@ public class PowerupManager {
 	private HeroBattle p;
 	private PowerupSpawner spawner;
 
-	public  final static int  INVERSE_PROBABILITY_OF_SPAWN_PER_TICK = 1000; // 50 = dev value; 2000 = prod value
+	public  final static int  INVERSE_PROBABILITY_OF_SPAWN_PER_TICK = 750;
 	private final static long DELAY_UNSPAWN_POSITIVE_POWERUP = 60 * 20l;
 	private final static long DELAY_UNSPAWN_NEGATIVE_POWERUP = 45 * 20l;
 
@@ -154,6 +155,9 @@ public class PowerupManager {
 
 		activePowerup.getPowerup().onPickup(player, itemPicked.getItemStack());
 		unspawnPowerup(activePowerup, true);
+
+
+		StatsApi.increaseStat(player, p.getName(), "powerup_taken", 1);
 	}
 
 

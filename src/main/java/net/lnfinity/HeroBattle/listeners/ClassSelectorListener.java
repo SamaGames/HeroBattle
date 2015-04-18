@@ -94,9 +94,10 @@ public class ClassSelectorListener implements Listener {
 						selectClass(player, new MaiteClass(p));
 					}
 					// TODO Version prod
+					else {
 					//else if(p.getClassManager().playerHasClass(gamePlayer, p.getClassManager().getClassFromName(player, className).getType())) {
 						selectClass(player, p.getClassManager().getClassFromName(player, className));
-					//}
+					}
 
 					//else {
 					//	player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");

@@ -46,7 +46,7 @@ public class GameListener implements Listener {
 			e.setCancelled(true);
 			return;
 		}
-		
+
 		if(e.getCause() == DamageCause.FALL) {
 			if (e.getEntity() instanceof Player) {
 				Player player = (Player) e.getEntity();
@@ -146,9 +146,6 @@ public class GameListener implements Listener {
 					gamePlayer.setLastDamager(damager.getUniqueId());
 
 					player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
-
-					// Très important ! Sinon le joueur conserve sa vélocité
-					player.setVelocity(player.getVelocity().zero());
 
 					plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
 

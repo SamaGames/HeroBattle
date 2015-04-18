@@ -39,6 +39,11 @@ public class GamePlayer {
 
 	private BukkitTask checkIsOnGroundTask = null;
 
+	/**
+	 * Avoid the death to be handled multiple times.
+	 */
+	private boolean deathHandled = false;
+
 	private long percentageInflicted = 0l;
 	private int playersKilled = 0;
 
@@ -245,6 +250,14 @@ public class GamePlayer {
 
 	public void addPlayersKilled() {
 		this.playersKilled++;
+	}
+
+	public boolean isDeathHandled() {
+		return deathHandled;
+	}
+
+	public void setDeathHandled(boolean deathHandled) {
+		this.deathHandled = deathHandled;
 	}
 
 	public boolean isRespawning() {
