@@ -44,21 +44,7 @@ public class CommandListener implements CommandExecutor {
 
 			p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.RED + "Le jeu a été interrompu de force.");
 
-			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					for (Player player : p.getServer().getOnlinePlayers()) {
-						player.kickPlayer("");
-					}
-				}
-			}, 10 * 20L);
-
-			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					Bukkit.shutdown();
-				}
-			}, 15 * 20L);
+			p.getGame().onPlayerWin(null);
 
 		} else if (cmd.getName().equalsIgnoreCase("powerup")) {
 
