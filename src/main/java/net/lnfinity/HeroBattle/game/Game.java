@@ -167,8 +167,11 @@ public class Game implements GameArena {
 		List<Location> tempLocs = new LinkedList<>(spawnPoints);
 		Random rand = new Random();
 
-		for (Player player : p.getServer().getOnlinePlayers()) {
-			GamePlayer hbPlayer = p.getGamePlayer(player);
+		for (GamePlayer hbPlayer : p.getGamePlayers().values()) {
+			Player player = p.getServer().getPlayer(hbPlayer.getPlayerUniqueID());
+
+			if(player == null) continue;
+
 			if (hbPlayer.getPlayerClass() == null) {
 				chooseRandomClass(player);
 			}
