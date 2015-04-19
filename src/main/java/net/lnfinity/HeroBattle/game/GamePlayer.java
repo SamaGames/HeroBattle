@@ -340,4 +340,8 @@ public class GamePlayer {
 	public void setRespawning(boolean isRespawning) {
 		this.isRespawning = isRespawning;
 	}
+
+	public void setJumpLocked(boolean jumpLocked) {
+		this.jumpLocked = jumpLocked;
+	}
 }

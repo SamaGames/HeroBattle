@@ -63,6 +63,8 @@ public class SystemListener implements Listener {
 			GamePlayer gamePlayer = plugin.getGamePlayer(e.getPlayer());
 			if(gamePlayer != null && plugin.getGame().getStatus() == Status.InGame) {
 				gamePlayer.setJumps(gamePlayer.getMaxJumps());
+				gamePlayer.setJumpLocked(false);
+
 				e.getPlayer().setAllowFlight(true);
 
 				gamePlayer.playTask(new EarthquakeTask(plugin, e.getPlayer()));
