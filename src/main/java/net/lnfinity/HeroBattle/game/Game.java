@@ -576,7 +576,7 @@ public class Game implements GameArena {
 
 
 				String[] topsPercentages = new String[]{"", "", ""};
-				String[] topsKills = new String[]{"", "", ""};
+				String[] topsKills       = new String[]{"", "", ""};
 
 
 				// Kills

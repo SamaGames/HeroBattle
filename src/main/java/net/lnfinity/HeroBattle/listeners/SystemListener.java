@@ -109,8 +109,10 @@ public class SystemListener implements Listener {
 
 	@EventHandler
 	public void onSneak(PlayerToggleSneakEvent ev) {
-		ev.setCancelled(true);
-		ev.getPlayer().setSneaking(false);
+		if(ev.getPlayer().getGameMode() != GameMode.SPECTATOR) {
+			ev.setCancelled(true);
+			ev.getPlayer().setSneaking(false);
+		}
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
