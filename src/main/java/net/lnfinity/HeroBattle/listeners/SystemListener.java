@@ -67,6 +67,8 @@ public class SystemListener implements Listener {
 
 				e.getPlayer().setAllowFlight(true);
 
+				gamePlayer.setLastDamager(null);
+
 				gamePlayer.playTask(new EarthquakeTask(plugin, e.getPlayer()));
 			}
 		}
