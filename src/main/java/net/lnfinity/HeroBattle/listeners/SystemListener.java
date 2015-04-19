@@ -125,6 +125,17 @@ public class SystemListener implements Listener {
 			ev.getPlayer().setSneaking(false);
 		}
 	}
+
+	@EventHandler
+	public void onGameModeChange(PlayerGameModeChangeEvent ev) {
+		if(ev.getNewGameMode() == GameMode.ADVENTURE) {
+			ev.getPlayer().setFlySpeed(0);
+		}
+		else {
+			ev.getPlayer().setFlySpeed(0.1f);
+		}
+	}
+
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerChat(PlayerChatEvent e) {
