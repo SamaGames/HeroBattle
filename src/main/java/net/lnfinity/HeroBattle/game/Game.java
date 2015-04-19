@@ -353,6 +353,9 @@ public class Game implements GameArena {
 			}
 		}, 5);
 
+		// Removes the fire
+		player.setFireTicks(0);
+
 		// Death message
 		final String finalKilledByMessage = killedByMessage;
 		if (hbPlayer.getLives() >= 1) {
