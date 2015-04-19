@@ -3,6 +3,7 @@ package net.lnfinity.HeroBattle.game;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.lnfinity.HeroBattle.utils.WinnerFirework;
 import net.samagames.gameapi.GameAPI;
@@ -141,9 +142,12 @@ public class Game implements GameArena {
 
 		for (Player player : p.getServer().getOnlinePlayers()) {
 			Titles.sendTitle(player, 2, 38, 6, ChatColor.AQUA + "C'est parti !", "");
+
 			if(MasterBundle.isDbEnabled) {
 				StatsApi.increaseStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "played", 1);
 			}
+
+			ActionBar.removeMessage(player);
 		}
 
 		setStatus(Status.InGame);

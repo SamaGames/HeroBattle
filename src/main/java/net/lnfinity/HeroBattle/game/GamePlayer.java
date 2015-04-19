@@ -221,6 +221,13 @@ public class GamePlayer {
 		} else {
 			lives = 3;
 		}
+
+		if(classe != null) {
+			ActionBar.sendPermanentMessage(Bukkit.getPlayer(playerID), ChatColor.GREEN + "Classe sélectionnée : " + ChatColor.DARK_GREEN + classe.getName());
+		}
+		else {
+			ActionBar.sendPermanentMessage(Bukkit.getPlayer(playerID), ChatColor.GREEN + "Classe sélectionnée : " + ChatColor.DARK_GREEN + "aléatoire");
+		}
 	}
 
 	public List<Task> getTasks() {
