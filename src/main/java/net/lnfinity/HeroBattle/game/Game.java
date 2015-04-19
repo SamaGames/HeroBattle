@@ -659,7 +659,7 @@ public class Game implements GameArena {
 				@Override
 				public void run() {
 					for (Player player : p.getServer().getOnlinePlayers()) {
-						player.kickPlayer("");
+						GameAPI.kickPlayer(player);
 					}
 				}
 			}, 25 * 20L);

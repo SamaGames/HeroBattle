@@ -136,7 +136,7 @@ public class SystemListener implements Listener {
 		}
 	}
 
-	
+
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerChat(PlayerChatEvent e) {
 		GamePlayer gamePlayer = plugin.getGamePlayer(e.getPlayer().getUniqueId());
