@@ -32,6 +32,7 @@ public class PercentageIncreasedPowerup implements NegativePowerup {
 
 		if(gPlayer.isInvulnerable()) {
 			player.sendMessage(ChatColor.GREEN + "Votre invulnérabilité vous sauve..." + ChatColor.RED + " pour cette fois. :>");
+			return;
 		}
 
 		final UUID playerUUID = player.getUniqueId();
