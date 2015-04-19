@@ -9,10 +9,7 @@ import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.gameapi.json.Status;
 
 import org.bukkit.*;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -161,6 +158,10 @@ public class GameListener implements Listener {
 				gamePlayer.setPercentage(damages + gamePlayer.getPercentage(), damagerGPlayer);
 				gamePlayer.setLastDamager(((Player) arrow.getShooter()).getUniqueId());
 			}
+		}
+
+		else if(e.getEntityType() == EntityType.ARMOR_STAND || e.getEntityType() == EntityType.DROPPED_ITEM) {
+			e.setCancelled(true); // Avoid the lightning bolts from destroying the powerups.
 		}
 	}
 
