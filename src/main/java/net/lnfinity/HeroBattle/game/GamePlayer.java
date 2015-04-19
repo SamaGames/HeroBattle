@@ -138,7 +138,9 @@ public class GamePlayer {
 
 				player.setLevel(0);
 				player.setTotalExperience(0);
+
 				player.setLevel(getPercentage());
+				player.setExp(((float) getPercentage()) / ((float) getPlayerClass().getMaxResistance()));
 
 				HeroBattle.getInstance().getGame().updatePlayerArmor(player);
 			}
