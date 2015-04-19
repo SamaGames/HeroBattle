@@ -491,8 +491,10 @@ public class Game implements GameArena {
 
 			gPlayer.setPlaying(false);
 
-			p.getServer().broadcastMessage(
-					HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + ChatColor.GREEN + ChatColor.BOLD + " remporte la partie !");
+			Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
+			Bukkit.broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + ChatColor.GREEN + ChatColor.BOLD + " remporte la partie !");
+			Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
+
 			new WinnerFirework(p, 30, player);
 
 			StarsManager.creditJoueur(player, 1, "Victoire !");
@@ -532,7 +534,7 @@ public class Game implements GameArena {
 		}, 3 * 20l);
 
 
-		p.getServer().getScheduler().runTaskAsynchronously(p, new Runnable() {
+		p.getServer().getScheduler().runTaskLaterAsynchronously(p, new Runnable() {
 			@Override
 			public void run() {
 				Map<UUID, Long> percentagesInflicted = new TreeMap<>(new Comparator<UUID>() {
@@ -545,7 +547,7 @@ public class Game implements GameArena {
 							if (prcA >= prcB) return -1;
 							else return 1;
 
-						} catch(NullPointerException e) {
+						} catch (NullPointerException e) {
 							return 0;
 						}
 					}
@@ -561,38 +563,39 @@ public class Game implements GameArena {
 							if (killsA >= killsB) return -1;
 							else return 1;
 
-						} catch(NullPointerException e) {
+						} catch (NullPointerException e) {
 							return 0;
 						}
 					}
 				});
 
-				for(GamePlayer player : p.getGamePlayers().values()) {
+				for (GamePlayer player : p.getGamePlayers().values()) {
 					percentagesInflicted.put(player.getPlayerUniqueID(), player.getPercentageInflicted());
 					kills.put(player.getPlayerUniqueID(), player.getPlayersKilled());
 				}
 
 
 				String[] topsPercentages = new String[]{"", "", ""};
-				String[] topsKills       = new String[]{"", "", ""};
+				String[] topsKills = new String[]{"", "", ""};
 
-				// Percentages
-				int i = 0;
-				Iterator<Map.Entry<UUID, Long>> iterPercentages = percentagesInflicted.entrySet().iterator();
-				while(i < 3 && iterPercentages.hasNext()) {
-					Map.Entry<UUID, Long> entry = iterPercentages.next();
-					topsPercentages[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + Utils.formatNumber(entry.getValue()) + "%)";
-					CoinsManager.creditJoueur(entry.getKey(), i == 0 ? 10 : i == 1 ? 6 : 4, true, true, "Rang " + (i + 1) + " au classement des dégâts infligés !");
-					i++;
-				}
 
 				// Kills
-				i = 0;
+				int i = 0;
 				Iterator<Map.Entry<UUID, Integer>> iterKills = kills.entrySet().iterator();
-				while(i < 3 && iterKills.hasNext()) {
+				while (i < 3 && iterKills.hasNext()) {
 					Map.Entry<UUID, Integer> entry = iterKills.next();
 					topsKills[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + entry.getValue() + ")";
 					CoinsManager.creditJoueur(entry.getKey(), i == 0 ? 10 : i == 1 ? 6 : 4, true, true, "Rang " + (i + 1) + " au classement des kills !");
+					i++;
+				}
+
+				// Percentages
+				i = 0;
+				Iterator<Map.Entry<UUID, Long>> iterPercentages = percentagesInflicted.entrySet().iterator();
+				while (i < 3 && iterPercentages.hasNext()) {
+					Map.Entry<UUID, Long> entry = iterPercentages.next();
+					topsPercentages[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + Utils.formatNumber(entry.getValue()) + "%)";
+					CoinsManager.creditJoueur(entry.getKey(), i == 0 ? 10 : i == 1 ? 6 : 4, true, true, "Rang " + (i + 1) + " au classement des dégâts infligés !");
 					i++;
 				}
 
@@ -600,16 +603,16 @@ public class Game implements GameArena {
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                        Classement des Kills        ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
-				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsKills[0] + ChatColor.DARK_GRAY + (!topsKills[1].isEmpty() ? " ⋅ " : "") + ChatColor.GRAY +  topsKills[1] + ChatColor.DARK_GRAY + (!topsKills[2].isEmpty() ? " ⋅ " : "") + ChatColor.GOLD + topsKills[2]);
+				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsKills[0] + ChatColor.DARK_GRAY + (!topsKills[1].isEmpty() ? " ⋅ " : "") + ChatColor.GRAY + topsKills[1] + ChatColor.DARK_GRAY + (!topsKills[2].isEmpty() ? " ⋅ " : "") + ChatColor.GOLD + topsKills[2]);
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                  Classement des dégâts infligés    ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
-				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsPercentages[0] + ChatColor.DARK_GRAY + (!topsPercentages[1].isEmpty() ? " ⋅ " : "") + ChatColor.GRAY +  topsPercentages[1] + ChatColor.DARK_GRAY + (!topsPercentages[2].isEmpty() ? " ⋅ " : "") + ChatColor.GOLD + topsPercentages[2]);
+				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsPercentages[0] + ChatColor.DARK_GRAY + (!topsPercentages[1].isEmpty() ? " ⋅ " : "") + ChatColor.GRAY + topsPercentages[1] + ChatColor.DARK_GRAY + (!topsPercentages[2].isEmpty() ? " ⋅ " : "") + ChatColor.GOLD + topsPercentages[2]);
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
 
 			}
-		});
+		}, 20 * 4l);
 
 		
 		// Analytics to help us improve the game
