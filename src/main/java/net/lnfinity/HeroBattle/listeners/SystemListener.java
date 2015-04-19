@@ -3,6 +3,7 @@ package net.lnfinity.HeroBattle.listeners;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.GamePlayer;
+import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
 import org.bukkit.GameMode;
@@ -62,6 +63,8 @@ public class SystemListener implements Listener {
 			if(gamePlayer != null && plugin.getGame().getStatus() == Status.InGame) {
 				gamePlayer.setJumps(gamePlayer.getMaxJumps());
 				e.getPlayer().setAllowFlight(true);
+
+				gamePlayer.playTask(new EarthquakeTask(plugin, e.getPlayer()));
 			}
 		}
 	}
