@@ -32,7 +32,7 @@ public class ActionBar {
 	/**
 	 * Sends a constant message to the given player.
 	 *
-	 * This message will remain on the screen until the method >?< is called.
+	 * This message will remain on the screen until the {@link #removeMessage} method is called.
 	 *
 	 * @param player The player.
 	 * @param message The message to display.
@@ -45,7 +45,7 @@ public class ActionBar {
 	/**
 	 * Sends a constant message to the given player.
 	 *
-	 * This message will remain on the screen until the method >?< is called.
+	 * This message will remain on the screen until the {@link #removeMessage} method is called.
 	 *
 	 * @param playerUUID The player's UUID.
 	 * @param message The message to display.
