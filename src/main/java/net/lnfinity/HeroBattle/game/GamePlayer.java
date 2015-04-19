@@ -4,6 +4,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.tasks.Task;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -119,14 +120,28 @@ public class GamePlayer {
 
 		if(aggressor != null) aggressor.addPercentageInflicted(percentage - oldPercentage);
 
+
 		Player player = Bukkit.getPlayer(playerID);
-		if(player != null) {
 
-			player.setLevel(0);
-			player.setTotalExperience(0);
-			player.setLevel(getPercentage());
+		if(getPercentage() >= getPlayerClass().getMaxResistance()) {
+			HeroBattle.getInstance().getGame().onPlayerDeath(playerID, DeathType.KO);
 
-			HeroBattle.getInstance().getGame().updatePlayerArmor(player);
+			if(player != null) {
+				player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
+
+				player.setLevel(0);
+			}
+		}
+
+		else {
+			if (player != null) {
+
+				player.setLevel(0);
+				player.setTotalExperience(0);
+				player.setLevel(getPercentage());
+
+				HeroBattle.getInstance().getGame().updatePlayerArmor(player);
+			}
 		}
 
 		HeroBattle.getInstance().getScoreboardManager().update(this);

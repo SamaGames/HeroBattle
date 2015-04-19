@@ -62,20 +62,23 @@ public class HealingTool extends PlayerTool {
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (ToolsUtils.isToolAvailable(tool)) {
 			new ItemCooldown(p, player, this, COOLDOWN);
+
 			if (random.nextDouble() >= PROBABILITY) {
 				GamePlayer gamePlayer = p.getGamePlayer(player);
-				int newPercentage = gamePlayer.getPercentage() - POWER;
-				if (newPercentage < 0) {
-					newPercentage = 0;
-				}
+
+				int newPercentage = Math.max(gamePlayer.getPercentage() - POWER, 0);
+
 				gamePlayer.setPercentage(newPercentage, null);
 				player.playSound(player.getLocation(), Sound.FIZZ, 1, 1);
-				p.getScoreboardManager().refresh();
-			} else {
+			}
+
+			else {
 				player.sendMessage(ChatColor.RED + "Vous échouez votre capacité.");
 				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 15 * 20, 0));
 			}
-		} else {
+		}
+
+		else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
 	}

@@ -129,24 +129,9 @@ public class GameListener implements Listener {
 				if (damager.getInventory().getHeldItemSlot() != 0) {
 					damages = gamePlayer.getPercentage() + 1;
 				}
-				if (damages >= gamePlayer.getPlayerClass().getMaxResistance()) {
-					damages = gamePlayer.getPlayerClass().getMaxResistance();
 
-					gamePlayer.setPercentage(damages, gameDamager);
-					gamePlayer.setLastDamager(damager.getUniqueId());
-
-					player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
-
-					plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
-
-					player.setLevel(0);
-				} else {
-					gamePlayer.setPercentage(damages, gameDamager);
-					gamePlayer.setLastDamager(damager.getUniqueId());
-					player.setLevel(damages);
-				}
-
-				plugin.getScoreboardManager().update(player);
+				gamePlayer.setPercentage(damages, gameDamager);
+				gamePlayer.setLastDamager(damager.getUniqueId());
 				
 			} else if (e.getDamager() instanceof Arrow) {
 				Arrow arrow = (Arrow) e.getDamager();
@@ -172,26 +157,9 @@ public class GameListener implements Listener {
 				} else {
 					damages = 8 + (int) (Math.random() * ((20 - 8) + 8));
 				}
-				if (damages >= gamePlayer.getPlayerClass().getMaxResistance()) {
-					damages = gamePlayer.getPlayerClass().getMaxResistance();
 
-					gamePlayer.setPercentage(damages, damagerGPlayer);
-					gamePlayer.setLastDamager(((Player) arrow.getShooter()).getUniqueId());
-
-					player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
-					
-					// Très important ! Sinon le joueur conserve sa vélocité
-					player.setVelocity(player.getVelocity().zero());
-
-					plugin.getGame().onPlayerDeath(player.getUniqueId(), DeathType.KO);
-
-					player.setLevel(0);
-				} else {
-					gamePlayer.setPercentage(damages + gamePlayer.getPercentage(), damagerGPlayer);
-					gamePlayer.setLastDamager(((Player) arrow.getShooter()).getUniqueId());
-					player.setLevel(damages);
-				}
-				plugin.getScoreboardManager().update(player);
+				gamePlayer.setPercentage(damages + gamePlayer.getPercentage(), damagerGPlayer);
+				gamePlayer.setLastDamager(((Player) arrow.getShooter()).getUniqueId());
 			}
 		}
 	}
