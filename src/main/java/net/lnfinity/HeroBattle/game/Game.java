@@ -433,7 +433,7 @@ public class Game implements GameArena {
 		// Scoreboard update
 		p.getScoreboardManager().refresh();
 
-		
+
 		// Stats
 		StatsApi.increaseStat(player, p.getName(), "deaths", 1);
 	}

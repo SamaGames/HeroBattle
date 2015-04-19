@@ -71,7 +71,7 @@ public class ScoreboardManager {
 	 */
 	public void update(GamePlayer player) {
 
-		int percentage = player.getPercentage();
+		int percentage = player.isPlaying() ? player.getPercentage() : 0;
 
 		if (player.isPlaying()) {
 			percentageSidebar.getScore(Utils.heartsToString(player) + ChatColor.WHITE + " " + player.getPlayerName())
