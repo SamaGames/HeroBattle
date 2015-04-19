@@ -303,9 +303,13 @@ public class Game implements GameArena {
 					p.getServer().broadcastMessage(
 							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " est K.O. !"
 									+ lives);
+
+					killedByMessage = ChatColor.RED + "Vous êtes K.O. !";
 					break;
 			}
-		} else {
+		}
+
+		else {
 			String groupColor = ChatColor.getLastColors(lastDamagerPlayer.getDisplayName());
 			switch (death) {
 				case FALL:
@@ -340,6 +344,7 @@ public class Game implements GameArena {
 			p.getGamePlayer(hbPlayer.getLastDamager()).addPlayersKilled();
 		}
 
+
 		// Effects on the player
 		for(PotionEffect effect : player.getActivePotionEffects()) {
 			// Clears current effects
@@ -355,6 +360,7 @@ public class Game implements GameArena {
 
 		// Removes the fire
 		player.setFireTicks(0);
+
 
 		// Death message
 		final String finalKilledByMessage = killedByMessage;
@@ -381,6 +387,7 @@ public class Game implements GameArena {
 			}, 10L);
 		}
 
+
 		// Respawn
 		if (hbPlayer.getLives() >= 1) {
 			hbPlayer.setRespawning(true);
@@ -397,7 +404,9 @@ public class Game implements GameArena {
 			// Très important ! Sinon le joueur conserve sa vélocité
 			player.setVelocity(player.getVelocity().zero());
 
-		} else {
+		}
+
+		else {
 			player.setFlySpeed(0.1F);
 			enableSpectatorMode(player);
 
@@ -420,9 +429,11 @@ public class Game implements GameArena {
 			}
 		}
 
+
 		// Scoreboard update
 		p.getScoreboardManager().refresh();
 
+		
 		// Stats
 		StatsApi.increaseStat(player, p.getName(), "deaths", 1);
 	}
