@@ -247,7 +247,7 @@ public class GamePlayer {
 						jumpLocked = false;
 					}
 				}
-			}, 10l);
+			}, 6l);
 
 			// The velocity is applied
 			Vector direction = player.getLocation().getDirection().multiply(0.5);
