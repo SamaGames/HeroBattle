@@ -72,7 +72,7 @@ public class GameListener implements Listener {
 				gp.setPercentage(gp.getPercentage() + 25 + (int) (Math.random() * ((50 - 25) + 25)), nearest == null ? null : plugin.getGamePlayer(nearest));
 			}
 
-			else if (e.getCause() == DamageCause.FIRE_TICK) {
+			else if (e.getCause() == DamageCause.FIRE_TICK || e.getCause() == DamageCause.FIRE) {
 				gp.setPercentage(gp.getPercentage() + 2, plugin.getGamePlayer(plugin.getGame().getFiresInProgress().get(gp.getPlayerUniqueID())));
 			}
 
