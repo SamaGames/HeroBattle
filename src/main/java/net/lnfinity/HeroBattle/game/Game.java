@@ -226,7 +226,7 @@ public class Game implements GameArena {
 		teleportRandomSpot(player);
 	}
 
-	public void enableSpectatorMode(Player player) {
+	public void enableSpectatorMode(final Player player) {
 		GamePlayer hbPlayer = p.getGamePlayer(player);
 
 		hbPlayer.setPlaying(false);
@@ -236,6 +236,13 @@ public class Game implements GameArena {
 		player.getInventory().setArmorContents(null);
 
 		teleportRandomSpot(player);
+
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				player.setAllowFlight(true);
+			}
+		}, 10l);
 	}
 
 	public void chooseRandomClass(Player player) {
