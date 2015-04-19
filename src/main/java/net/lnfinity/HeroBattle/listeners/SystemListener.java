@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.DeathType;
+import net.lnfinity.HeroBattle.game.Game;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
 import net.md_5.bungee.api.ChatColor;
@@ -66,6 +67,12 @@ public class SystemListener implements Listener {
 
 				gamePlayer.playTask(new EarthquakeTask(plugin, e.getPlayer()));
 			}
+		}
+
+		// Some times the double jump management of the fly cancels the fly for the spectators
+		if(e.getPlayer().getGameMode() == GameMode.SPECTATOR && !e.getPlayer().getAllowFlight()) {
+			e.getPlayer().setAllowFlight(true);
+			e.getPlayer().setFlying(true);
 		}
 	}
 

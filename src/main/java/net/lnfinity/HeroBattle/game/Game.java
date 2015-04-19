@@ -236,13 +236,6 @@ public class Game implements GameArena {
 		player.getInventory().setArmorContents(null);
 
 		teleportRandomSpot(player);
-
-		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-			@Override
-			public void run() {
-				player.setAllowFlight(true);
-			}
-		}, 10l);
 	}
 
 	public void chooseRandomClass(Player player) {
