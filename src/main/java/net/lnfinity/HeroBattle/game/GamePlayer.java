@@ -3,12 +3,17 @@ package net.lnfinity.HeroBattle.game;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.tasks.Task;
+import net.lnfinity.HeroBattle.utils.ActionBar;
+import net.md_5.bungee.api.ChatColor;
+import net.samagames.gameapi.json.Status;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.StringUtil;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -102,6 +107,8 @@ public class GamePlayer {
 
 	public void setMaxJumps(int maxJumps) {
 		this.maxJumps = maxJumps;
+
+		updateNotificationAboveInventory();
 	}
 
 	public int getPercentage() {
@@ -171,6 +178,8 @@ public class GamePlayer {
 
 	public void setDoubleDamages(boolean doubleDamages) {
 		this.doubleDamages = doubleDamages;
+
+		updateNotificationAboveInventory();
 	}
 
 	public boolean isInvisible() {
@@ -179,6 +188,8 @@ public class GamePlayer {
 
 	public void setInvisible(boolean isInvisible) {
 		this.isInvisible = isInvisible;
+
+		updateNotificationAboveInventory();
 	}
 
 	public boolean isInvulnerable() {
@@ -187,6 +198,8 @@ public class GamePlayer {
 
 	public void setInvulnerable(boolean isInvulnerable) {
 		this.isInvulnerable = isInvulnerable;
+
+		updateNotificationAboveInventory();
 	}
 
 	public UUID getLastDamager() {
@@ -345,5 +358,43 @@ public class GamePlayer {
 
 	public void setJumpLocked(boolean jumpLocked) {
 		this.jumpLocked = jumpLocked;
+	}
+
+	private void updateNotificationAboveInventory() {
+
+		// Displays the selected class
+		if(HeroBattle.getInstance().getGame().getStatus() == Status.InGame) {
+
+			Player player = Bukkit.getPlayer(playerID);
+			if(player == null || !player.isOnline()) return;
+
+
+			List<String> currentStatus = new ArrayList<>();
+
+			if(getMaxJumps() != 2) {
+				if(getMaxJumps() == 3) currentStatus.add(ChatColor.RED + "Triple sauts");
+				else                   currentStatus.add(ChatColor.RED + "Sauts : " + getMaxJumps() + "×");
+			}
+
+			if(hasDoubleDamages()) {
+				currentStatus.add(ChatColor.DARK_GREEN + "Double dommages");
+			}
+
+			if(isInvisible()) {
+				currentStatus.add(ChatColor.GRAY + "Invisible");
+			}
+
+			if(isInvulnerable()) {
+				currentStatus.add(ChatColor.LIGHT_PURPLE + "Invulnérable");
+			}
+
+
+			if(currentStatus.size() == 0) {
+				ActionBar.removeMessage(player, true);
+			}
+			else {
+				ActionBar.sendPermanentMessage(player, StringUtils.join(currentStatus, ChatColor.DARK_GRAY + " - " + ChatColor.RESET));
+			}
+		}
 	}
 }
