@@ -37,15 +37,27 @@ public class GamePlayer {
 	private List<PlayerClass> avaible = new ArrayList<PlayerClass>();
 	private List<Task> tasks = new ArrayList<Task>();
 
-	private BukkitTask checkIsOnGroundTask = null;
-
 	/**
 	 * Avoid the death to be handled multiple times.
 	 */
 	private boolean deathHandled = false;
 
+	/**
+	 * The jumps left count can only be reset every ten ticks
+	 * to avoid (n+1)th jumps.
+	 */
+	private boolean jumpsCountLocked = false;
+
+	/**
+	 * When a jump is in progress, no concurrent jump can be done
+	 * by this player.
+	 */
+	private boolean jumpLocked = false;
+
+
 	private long percentageInflicted = 0l;
 	private int playersKilled = 0;
+
 
 	public GamePlayer(UUID id) {
 		playerID = id;
@@ -57,9 +69,32 @@ public class GamePlayer {
 	}
 
 	public void setJumps(int jumps) {
+		// The jumps cannot be reset when locked; they are locked ten ticks after
+		// a call to this setJumps method.
+		// This to avoid the PlayerMoveEvent to reset this at the beginning
+		// of the jump, when the player is close to the ground.
+		if(jumpsCountLocked && jumps >= getJumps()) return;
+
 		this.jumps = jumps;
+
+
+		// Lock manager
+		jumpsCountLocked = true;
+		Bukkit.getScheduler().runTaskLater(HeroBattle.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				jumpsCountLocked = false;
+			}
+		}, 10l);
+
+
+		// If there isn't any jump left, the fly mode is removed, so the PlayerToggleFlyEvent
+		// is not called anymore and the player falls more naturally
+		if(getJumps() <= 0) {
+			Bukkit.getPlayer(this.getPlayerUniqueID()).setAllowFlight(false);
+		}
 	}
-	
+
 	public int getMaxJumps() {
 		return maxJumps;
 	}
@@ -170,29 +205,39 @@ public class GamePlayer {
 		return playerName;
 	}
 
-	public void doubleJump(HeroBattle p) {
+	public void doubleJump() {
+
+		if(jumpLocked) return; // nop
+
+
 		Player player = Bukkit.getServer().getPlayer(playerID);
+
 		if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
 			setJumps(maxJumps);
 		}
 
 		if (getJumps() > 0) {
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+
+			// The jump is locked when the velocity is applied, to avoid the player to
+			// do dozens of jumps by spam-right-clicking or double-jumping.
+			// The jumps count left is not reset directly but ten ticks after, to avoid it being
+			// overwritten by the PlayerMoveEvent checking if the player is on the ground.
+			final int futureJumps = getJumps() - 1;
+			jumpLocked = true;
+			Bukkit.getScheduler().runTaskLater(HeroBattle.getInstance(), new Runnable() {
 				@Override
 				public void run() {
-					setJumps(getJumps() - 1);
+					if(getJumps() == futureJumps + 1) {
+						setJumps(futureJumps);
+						jumpLocked = false;
+					}
 				}
-				
-			}, 2L);
-			
+			}, 10l);
+
+			// The velocity is applied
 			Vector direction = player.getLocation().getDirection().multiply(0.5);
 			Vector vector = new Vector(direction.getX(), 0.85, direction.getZ());
 			player.setVelocity(vector);
-			if(getJumps() <= 0) {
-				Bukkit.getPlayer(this.getPlayerUniqueID()).setAllowFlight(false);
-			}
-		} else {
-			Bukkit.getPlayer(this.getPlayerUniqueID()).setAllowFlight(false);
 		}
 	}
 

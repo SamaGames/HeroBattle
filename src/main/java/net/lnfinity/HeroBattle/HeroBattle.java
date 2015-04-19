@@ -1,5 +1,3 @@
-Maïté
-
 package net.lnfinity.HeroBattle;
 
 import net.lnfinity.HeroBattle.classes.ClassManager;

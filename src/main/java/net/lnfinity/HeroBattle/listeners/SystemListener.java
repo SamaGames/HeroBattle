@@ -6,6 +6,7 @@ import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -55,7 +56,8 @@ public class SystemListener implements Listener {
 
 			plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
 		}
-		if(e.getPlayer().isOnGround()) {
+
+		if(((Entity) e.getPlayer()).isOnGround()) {
 			GamePlayer gamePlayer = plugin.getGamePlayer(e.getPlayer());
 			if(gamePlayer != null && plugin.getGame().getStatus() == Status.InGame) {
 				gamePlayer.setJumps(gamePlayer.getMaxJumps());

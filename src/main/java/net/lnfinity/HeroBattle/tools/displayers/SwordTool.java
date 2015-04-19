@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +54,7 @@ public class SwordTool extends PlayerTool {
 
 	@Override
 	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
-		p.getGamePlayer(player).doubleJump(p);
+		p.getGamePlayer(player).doubleJump();
 		
 	}
 
