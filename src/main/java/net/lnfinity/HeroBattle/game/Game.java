@@ -397,7 +397,7 @@ public class Game implements GameArena {
 				public void run() {
 					hbPlayer.setRespawning(false);
 				}
-			}, 2 * 20L);
+			}, 60L);
 
 			spawnPlayer(player);
 
