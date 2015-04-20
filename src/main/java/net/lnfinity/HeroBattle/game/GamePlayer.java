@@ -131,6 +131,8 @@ public class GamePlayer {
 		Player player = Bukkit.getPlayer(playerID);
 
 		if(getPercentage() >= getPlayerClass().getMaxResistance()) {
+			if(aggressor != null) setLastDamager(aggressor.getPlayerUniqueID());
+
 			HeroBattle.getInstance().getGame().onPlayerDeath(playerID, DeathType.KO);
 
 			if(player != null) {
