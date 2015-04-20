@@ -363,6 +363,8 @@ public class GamePlayer {
 
 	public void setRespawning(boolean isRespawning) {
 		this.isRespawning = isRespawning;
+
+		updateNotificationAboveInventory();
 	}
 
 	public void setJumpLocked(boolean jumpLocked) {
@@ -393,7 +395,7 @@ public class GamePlayer {
 				currentStatus.add(ChatColor.GRAY + "Invisible");
 			}
 
-			if(isInvulnerable()) {
+			if(isInvulnerable() || isRespawning()) {
 				currentStatus.add(ChatColor.LIGHT_PURPLE + "Invulnérable");
 			}
 
