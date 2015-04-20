@@ -215,6 +215,8 @@ public class MasterListener implements Listener {
 		if(plugin.getGame().getStatus() != Status.InGame && plugin.getGame().getStatus() != Status.Stopping) {
 			plugin.removeGamePlayer(ev.getPlayer());
 		}
+
+		ActionBar.removeMessage(ev.getPlayer());
 		
 		GameAPI.getManager().sendArena();
 	}
