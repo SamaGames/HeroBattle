@@ -217,6 +217,8 @@ public class MasterListener implements Listener {
 		}
 
 		ActionBar.removeMessage(ev.getPlayer());
+
+		plugin.getScoreboardManager().removePlayer(ev.getPlayer());
 		
 		GameAPI.getManager().sendArena();
 	}

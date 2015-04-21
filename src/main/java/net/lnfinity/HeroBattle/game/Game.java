@@ -289,6 +289,7 @@ public class Game implements GameArena {
 		// Technical stuff
 		hbPlayer.setLives(hbPlayer.getLives() - 1);
 
+
 		// Broadcasts
 		String s = hbPlayer.getLives() <= 1 ? "" : "s";
 		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + hbPlayer.getLives() + ChatColor.DARK_GRAY
@@ -377,6 +378,7 @@ public class Game implements GameArena {
 				player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 1, 1);
 			}
 		}, 5);
+
 
 		// Removes the fire
 		p.getServer().getScheduler().runTaskLater(p, new Runnable() {

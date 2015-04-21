@@ -45,11 +45,14 @@ public class ScoreboardManager {
 		percentageSidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
 		eloPlayerList.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 	}
-	
+
+	/**
+	 * Refreshes the tab list with players' ELOs.
+	 */
 	public void refreshTab() {
 		for (GamePlayer player : p.getGamePlayers().values()) {
 			Player realPlayer = p.getServer().getPlayer(player.getPlayerUniqueID());
-			if(player != null && realPlayer != null) {
+			if(player != null && realPlayer != null && realPlayer.isOnline()) {
 				eloPlayerList.getScore(realPlayer.getName()).setScore(player.getElo());
 			}
 		}
@@ -87,6 +90,9 @@ public class ScoreboardManager {
 		eloPlayerList.getScore(player.getPlayerName()).setScore(player.getElo());
 	}
 
+	/**
+	 * Refreshes the whole scoreboards.
+	 */
 	public void refresh() {
 		percentageSidebar.unregister();
 		percentageSidebar = board.registerNewObjective("perct_sidebar", "dummy");
@@ -97,9 +103,21 @@ public class ScoreboardManager {
 			update(player);
 		}
 	}
-	
+
+	/**
+	 * Refreshes the timer in the scoreboard title
+	 */
 	public void updateTimer() {
 		percentageSidebar.setDisplayName("  " + HeroBattle.GAME_NAME_BICOLOR_BOLD + ChatColor.DARK_GRAY + " │ " + ChatColor.GRAY + p.getGameTimer().getFormattedTime());
+	}
+
+	/**
+	 * Removes a player from the scoreboard. Avoid phantoms players in the tab list.
+	 *
+	 * @param player The player to remove.
+	 */
+	public void removePlayer(Player player) {
+		board.resetScores(player.getName());
 	}
 
 	/**
