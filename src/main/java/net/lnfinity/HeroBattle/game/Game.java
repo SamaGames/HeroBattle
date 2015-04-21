@@ -160,10 +160,10 @@ public class Game implements GameArena {
 				// Bêta olala
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
 				p.getServer().broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Attention : ce jeu est encore en bêta !");
-				p.getServer().broadcastMessage(ChatColor.GOLD + "Les classes, compétences ou powerups sont susceptible d'évoluer, ceci dans le but d'améliorer et d'équilibrer le jeu.");
+				p.getServer().broadcastMessage(ChatColor.GOLD + "Les classes, compétences ou powerups sont " + ChatColor.YELLOW + "susceptibles d'évoluer" + ChatColor.GOLD + ", ceci dans le but d'améliorer et d'équilibrer le jeu.");
 				p.getServer().broadcastMessage(ChatColor.GOLD + "D'autres fonctionnalités pourraient être ajoutées ou modifiées.");
 				p.getServer().broadcastMessage("");
-				p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "N'hésitez pas à nous transmettre votre avis en jeu ou via le forum, pour que nous puissions faire évoluer au mieux le jeu !");
+				p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "N'hésitez pas à nous " + ChatColor.YELLOW + "" + ChatColor.BOLD + "transmettre votre avis" + ChatColor.GOLD + "" + ChatColor.BOLD + " en jeu ou via le forum, pour que nous puissions faire évoluer au mieux le jeu !");
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
 			}
 		}, 60l);
@@ -444,9 +444,9 @@ public class Game implements GameArena {
 
 
 			if (p.getPlayingPlayerCount() == 1) {
-				for (Player pl : p.getServer().getOnlinePlayers()) {
-					if (p.getGamePlayer(pl.getUniqueId()).isPlaying()) {
-						onPlayerWin(pl.getUniqueId());
+				for (GamePlayer pl : p.getGamePlayers().values()) {
+					if (pl.isPlaying()) {
+						onPlayerWin(pl.getPlayerUniqueID());
 						return;
 					}
 				}
