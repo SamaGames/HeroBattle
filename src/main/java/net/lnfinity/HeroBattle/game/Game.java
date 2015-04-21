@@ -290,8 +290,9 @@ public class Game implements GameArena {
 		hbPlayer.setLives(hbPlayer.getLives() - 1);
 
 		// Broadcasts
+		String s = hbPlayer.getLives() <= 1 ? "" : "s";
 		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + hbPlayer.getLives() + ChatColor.DARK_GRAY
-				+ " vies)";
+				+ " vie" + s + ")";
 
 		Player lastDamagerPlayer = hbPlayer.getLastDamager() != null ? p.getServer().getPlayer(hbPlayer.getLastDamager()) : null;
 
@@ -434,14 +435,13 @@ public class Game implements GameArena {
 			player.setFlySpeed(0.1F);
 			enableSpectatorMode(player);
 
-			String s = "s";
-			if (p.getPlayingPlayerCount() == 1)
-				s = "";
+			s = p.getPlayingPlayerCount() <= 1 ? "" : "s";
 
 			p.getServer().broadcastMessage(
 					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
 							+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + p.getPlayingPlayerCount()
 							+ ChatColor.DARK_GRAY + " joueur" + s + ChatColor.DARK_GRAY + "]");
+
 
 			if (p.getPlayingPlayerCount() == 1) {
 				for (Player pl : p.getServer().getOnlinePlayers()) {
