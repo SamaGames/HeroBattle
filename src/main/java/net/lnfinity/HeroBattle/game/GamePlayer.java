@@ -131,6 +131,8 @@ public class GamePlayer {
 		Player player = Bukkit.getPlayer(playerID);
 
 		if(getPercentage() >= getPlayerClass().getMaxResistance()) {
+			if(aggressor != null) setLastDamager(aggressor.getPlayerUniqueID());
+
 			HeroBattle.getInstance().getGame().onPlayerDeath(playerID, DeathType.KO);
 
 			if(player != null) {
@@ -361,6 +363,8 @@ public class GamePlayer {
 
 	public void setRespawning(boolean isRespawning) {
 		this.isRespawning = isRespawning;
+
+		updateNotificationAboveInventory();
 	}
 
 	public void setJumpLocked(boolean jumpLocked) {
@@ -391,7 +395,7 @@ public class GamePlayer {
 				currentStatus.add(ChatColor.GRAY + "Invisible");
 			}
 
-			if(isInvulnerable()) {
+			if(isInvulnerable() || isRespawning()) {
 				currentStatus.add(ChatColor.LIGHT_PURPLE + "Invulnérable");
 			}
 

@@ -180,11 +180,11 @@ public class MasterListener implements Listener {
 								+ ChatColor.RED + ChatColor.MAGIC + "|||"
 								+ ChatColor.GREEN + ChatColor.BOLD + " " + ev.getPlayer().getName() + " "
 								+ ChatColor.RED + ChatColor.MAGIC + "|||"
-								+ ChatColor.YELLOW + " s'est déconnecté");
+								+ ChatColor.YELLOW + " a quitté la partie");
 			} else {
 				plugin.getServer().broadcastMessage(
 						HeroBattle.GAME_TAG + ChatColor.YELLOW + ev.getPlayer().getName() + ChatColor.YELLOW
-								+ " s'est déconnecté");
+								+ " a quitté la partie");
 			}
 		}
 
@@ -215,6 +215,10 @@ public class MasterListener implements Listener {
 		if(plugin.getGame().getStatus() != Status.InGame && plugin.getGame().getStatus() != Status.Stopping) {
 			plugin.removeGamePlayer(ev.getPlayer());
 		}
+
+		ActionBar.removeMessage(ev.getPlayer());
+
+		plugin.getScoreboardManager().removePlayer(ev.getPlayer());
 		
 		GameAPI.getManager().sendArena();
 	}

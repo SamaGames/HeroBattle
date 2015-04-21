@@ -129,7 +129,9 @@ public class Game implements GameArena {
 
 		p.getTutorialDisplayer().stopForAll("Le jeu démarre...");
 
-		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " de la partie " + ChatColor.DARK_GREEN + (getTotalElo() / p.getGamePlayers().size()));
+		Integer partyELO = getTotalElo() / p.getGamePlayers().size();
+
+		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " de la partie " + ChatColor.DARK_GREEN + partyELO);
 		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Que le meilleur gagne !");
 
 		p.getServer().getWorlds().get(0).setTime(p.getArenaConfig().getLong("map.dayTime"));
@@ -141,7 +143,7 @@ public class Game implements GameArena {
 		p.getPowerupManager().getSpawner().startTimer();
 
 		for (Player player : p.getServer().getOnlinePlayers()) {
-			Titles.sendTitle(player, 2, 38, 6, ChatColor.AQUA + "C'est parti !", "");
+			Titles.sendTitle(player, 2, 38, 6, ChatColor.AQUA + "C'est parti !", ChatColor.GREEN + "ELO de la partie : " + ChatColor.DARK_GREEN + partyELO);
 
 			if(MasterBundle.isDbEnabled) {
 				StatsApi.increaseStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "played", 1);
@@ -158,10 +160,10 @@ public class Game implements GameArena {
 				// Bêta olala
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
 				p.getServer().broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Attention : ce jeu est encore en bêta !");
-				p.getServer().broadcastMessage(ChatColor.GOLD + "Les classes, compétences ou powerups sont susceptible d'évoluer, ceci dans le but d'améliorer et d'équilibrer le jeu.");
+				p.getServer().broadcastMessage(ChatColor.GOLD + "Les classes, compétences ou powerups sont " + ChatColor.YELLOW + "susceptibles d'évoluer" + ChatColor.GOLD + ", ceci dans le but d'améliorer et d'équilibrer le jeu.");
 				p.getServer().broadcastMessage(ChatColor.GOLD + "D'autres fonctionnalités pourraient être ajoutées ou modifiées.");
 				p.getServer().broadcastMessage("");
-				p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "N'hésitez pas à nous transmettre votre avis en jeu ou via le forum, pour que nous puissions faire évoluer au mieux le jeu !");
+				p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "N'hésitez pas à nous " + ChatColor.YELLOW + "" + ChatColor.BOLD + "transmettre votre avis" + ChatColor.GOLD + "" + ChatColor.BOLD + " en jeu ou via le forum, pour que nous puissions faire évoluer au mieux le jeu !");
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
 			}
 		}, 60l);
@@ -287,28 +289,32 @@ public class Game implements GameArena {
 		// Technical stuff
 		hbPlayer.setLives(hbPlayer.getLives() - 1);
 
+
 		// Broadcasts
+		String s = hbPlayer.getLives() <= 1 ? "" : "s";
 		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + hbPlayer.getLives() + ChatColor.DARK_GRAY
-				+ " vies)";
+				+ " vie" + s + ")";
 
 		Player lastDamagerPlayer = hbPlayer.getLastDamager() != null ? p.getServer().getPlayer(hbPlayer.getLastDamager()) : null;
 
-		String killedByMessage = ChatColor.RED + "Vous perdez une vie !";
+
+		String killedByMessage = hbPlayer.getLives() >= 1 ? ChatColor.RED + "Vous perdez une vie !" : ChatColor.RED + "C'est fini pour vous !";
+
 		if (hbPlayer.getLastDamager() == null || lastDamagerPlayer == null || lastDamagerPlayer.getGameMode() == GameMode.SPECTATOR) {
 			switch (death) {
 				case FALL:
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
 									+ " est tombé dans le vide" + lives);
 					break;
 				case QUIT:
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
 									+ " a quitté la partie");
 					break;
 				case KO:
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " est K.O. !"
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW + " est K.O. !"
 									+ lives);
 
 					killedByMessage = ChatColor.RED + "Vous êtes K.O. !";
@@ -323,28 +329,36 @@ public class Game implements GameArena {
 					killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a éjecté !";
 
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
-									+ " a été poussé par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
+									+ " a été poussé par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 									+ lives);
+
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
 					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur poussé !");
+
 					break;
+
 				case QUIT:
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
 									+ " a quitté la partie");
+
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
 					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un froussard !");
+
 					break;
+
 				case KO:
 					killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a mis K.O. !";
 
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
-									+ " a été mis K.O. par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
+									+ " a été mis K.O. par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 									+ lives);
+
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
 					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur K.O. !");
+
 					break;
 			}
 
@@ -365,8 +379,14 @@ public class Game implements GameArena {
 			}
 		}, 5);
 
+
 		// Removes the fire
-		player.setFireTicks(0);
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				player.setFireTicks(0);
+			}
+		}, 5l);
 
 
 		// Death message
@@ -417,19 +437,18 @@ public class Game implements GameArena {
 			player.setFlySpeed(0.1F);
 			enableSpectatorMode(player);
 
-			String s = "s";
-			if (p.getPlayingPlayerCount() == 1)
-				s = "";
+			s = p.getPlayingPlayerCount() <= 1 ? "" : "s";
 
 			p.getServer().broadcastMessage(
-					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
+					HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW + " a perdu ! "
 							+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + p.getPlayingPlayerCount()
 							+ ChatColor.DARK_GRAY + " joueur" + s + ChatColor.DARK_GRAY + "]");
 
+
 			if (p.getPlayingPlayerCount() == 1) {
-				for (Player pl : p.getServer().getOnlinePlayers()) {
-					if (p.getGamePlayer(pl.getUniqueId()).isPlaying()) {
-						onPlayerWin(pl.getUniqueId());
+				for (GamePlayer pl : p.getGamePlayers().values()) {
+					if (pl.isPlaying()) {
+						onPlayerWin(pl.getPlayerUniqueID());
 						return;
 					}
 				}
