@@ -304,17 +304,17 @@ public class Game implements GameArena {
 			switch (death) {
 				case FALL:
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
 									+ " est tombé dans le vide" + lives);
 					break;
 				case QUIT:
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
 									+ " a quitté la partie");
 					break;
 				case KO:
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " est K.O. !"
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW + " est K.O. !"
 									+ lives);
 
 					killedByMessage = ChatColor.RED + "Vous êtes K.O. !";
@@ -329,8 +329,8 @@ public class Game implements GameArena {
 					killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a éjecté !";
 
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
-									+ " a été poussé par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
+									+ " a été poussé par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 									+ lives);
 
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
@@ -340,7 +340,7 @@ public class Game implements GameArena {
 
 				case QUIT:
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
 									+ " a quitté la partie");
 
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
@@ -352,8 +352,8 @@ public class Game implements GameArena {
 					killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a mis K.O. !";
 
 					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
-									+ " a été mis K.O. par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
+									+ " a été mis K.O. par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 									+ lives);
 
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
@@ -440,7 +440,7 @@ public class Game implements GameArena {
 			s = p.getPlayingPlayerCount() <= 1 ? "" : "s";
 
 			p.getServer().broadcastMessage(
-					HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + " a perdu ! "
+					HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW + " a perdu ! "
 							+ ChatColor.DARK_GRAY + "[" + ChatColor.RED + p.getPlayingPlayerCount()
 							+ ChatColor.DARK_GRAY + " joueur" + s + ChatColor.DARK_GRAY + "]");
 
