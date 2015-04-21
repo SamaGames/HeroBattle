@@ -129,7 +129,9 @@ public class Game implements GameArena {
 
 		p.getTutorialDisplayer().stopForAll("Le jeu démarre...");
 
-		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " de la partie " + ChatColor.DARK_GREEN + (getTotalElo() / p.getGamePlayers().size()));
+		Integer partyELO = getTotalElo() / p.getGamePlayers().size();
+
+		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " de la partie " + ChatColor.DARK_GREEN + partyELO);
 		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Que le meilleur gagne !");
 
 		p.getServer().getWorlds().get(0).setTime(p.getArenaConfig().getLong("map.dayTime"));
@@ -141,7 +143,7 @@ public class Game implements GameArena {
 		p.getPowerupManager().getSpawner().startTimer();
 
 		for (Player player : p.getServer().getOnlinePlayers()) {
-			Titles.sendTitle(player, 2, 38, 6, ChatColor.AQUA + "C'est parti !", "");
+			Titles.sendTitle(player, 2, 38, 6, ChatColor.AQUA + "C'est parti !", ChatColor.GREEN + "ELO de la partie : " + ChatColor.DARK_GREEN + partyELO);
 
 			if(MasterBundle.isDbEnabled) {
 				StatsApi.increaseStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "played", 1);
