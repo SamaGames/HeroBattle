@@ -23,9 +23,18 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class SystemListener implements Listener {
 
 	private HeroBattle plugin;
+
+	// Longest variable name ever
+	private Map<UUID,Integer> checksIfTheUserIsReallyOnTheGroundAndSoWeCanResetTheLastDamager = new ConcurrentHashMap<>();
+	private final int CHECKS_NEEDED_TO_RESET_THE_LAST_DAMAGER = 10;
+
 
 	public SystemListener(HeroBattle p) {
 		plugin = p;
@@ -67,10 +76,23 @@ public class SystemListener implements Listener {
 
 				e.getPlayer().setAllowFlight(true);
 
-				gamePlayer.setLastDamager(null);
-
 				gamePlayer.playTask(new EarthquakeTask(plugin, e.getPlayer()));
+
+				// Reset of the last damager
+				Integer checksForThisUser = checksIfTheUserIsReallyOnTheGroundAndSoWeCanResetTheLastDamager.get(e.getPlayer().getUniqueId());
+				if(checksForThisUser == null) checksForThisUser = 0;
+
+				if(checksForThisUser >= CHECKS_NEEDED_TO_RESET_THE_LAST_DAMAGER) {
+					gamePlayer.setLastDamager(null);
+					checksIfTheUserIsReallyOnTheGroundAndSoWeCanResetTheLastDamager.put(e.getPlayer().getUniqueId(), 0);
+				}
+				else {
+					checksIfTheUserIsReallyOnTheGroundAndSoWeCanResetTheLastDamager.put(e.getPlayer().getUniqueId(), checksForThisUser + 1);
+				}
 			}
+		}
+		else {
+			checksIfTheUserIsReallyOnTheGroundAndSoWeCanResetTheLastDamager.put(e.getPlayer().getUniqueId(), 0);
 		}
 
 		// Some times the double jump management of the fly cancels the fly for the spectators
