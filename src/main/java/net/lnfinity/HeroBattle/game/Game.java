@@ -295,7 +295,9 @@ public class Game implements GameArena {
 
 		Player lastDamagerPlayer = hbPlayer.getLastDamager() != null ? p.getServer().getPlayer(hbPlayer.getLastDamager()) : null;
 
-		String killedByMessage = ChatColor.RED + "Vous perdez une vie !";
+
+		String killedByMessage = hbPlayer.getLives() >= 1 ? ChatColor.RED + "Vous perdez une vie !" : ChatColor.RED + "C'est fini pour vous !";
+
 		if (hbPlayer.getLastDamager() == null || lastDamagerPlayer == null || lastDamagerPlayer.getGameMode() == GameMode.SPECTATOR) {
 			switch (death) {
 				case FALL:
@@ -328,16 +330,22 @@ public class Game implements GameArena {
 							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
 									+ " a été poussé par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 									+ lives);
+
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
 					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur poussé !");
+
 					break;
+
 				case QUIT:
 					p.getServer().broadcastMessage(
 							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
 									+ " a quitté la partie");
+
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
 					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un froussard !");
+
 					break;
+
 				case KO:
 					killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a mis K.O. !";
 
@@ -345,8 +353,10 @@ public class Game implements GameArena {
 							HeroBattle.GAME_TAG + ChatColor.YELLOW + player.getName() + ChatColor.YELLOW
 									+ " a été mis K.O. par " + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 									+ lives);
+
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
 					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur K.O. !");
+
 					break;
 			}
 
