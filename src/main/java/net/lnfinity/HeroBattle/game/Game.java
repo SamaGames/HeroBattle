@@ -378,7 +378,12 @@ public class Game implements GameArena {
 		}, 5);
 
 		// Removes the fire
-		player.setFireTicks(0);
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				player.setFireTicks(0);
+			}
+		}, 5l);
 
 
 		// Death message
