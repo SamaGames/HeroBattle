@@ -48,7 +48,7 @@ public class CryogenieClass extends PlayerClass {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList("Maître des contrées du froid", "", ChatColor.GRAY + "Classe de type " + ChatColor.GOLD + "Mêlée", ChatColor.GREEN + "+ " + ChatColor.GRAY + "Très résistant, très puissant", ChatColor.RED + "- " + ChatColor.GRAY + "Combats distants");
+		return Arrays.asList("Maître des contrées du froid", "", ChatColor.GRAY + "Classe de type " + ChatColor.GOLD + "Mêlée", ChatColor.GREEN + "+ " + ChatColor.GRAY + "Très résistant, défensif", ChatColor.RED + "- " + ChatColor.GRAY + "Combats distants");
 	}
 
 	@Override
