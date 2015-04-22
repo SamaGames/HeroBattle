@@ -56,7 +56,7 @@ public class SwordVariant6Tool extends SwordTool implements Weapon {
 
 			int duration = sender.getFireTicks() + 2 * 20;
 
-			sender.setFireTicks(duration);
+			victim.setFireTicks(duration);
 
 			p.getGame().getFiresInProgress().put(victim.getUniqueId(), sender.getUniqueId());
 			p.getServer().getScheduler().runTaskLaterAsynchronously(p, new Runnable() {
