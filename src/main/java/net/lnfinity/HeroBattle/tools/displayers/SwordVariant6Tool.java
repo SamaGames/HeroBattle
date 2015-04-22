@@ -45,7 +45,7 @@ public class SwordVariant6Tool extends SwordTool implements Weapon {
 				ChatColor.GRAY + "Cliquez droit pour faire un double saut.",
 				"",
 				ChatColor.AQUA + "Effet spécial",
-				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + (4 + upgrade) + ChatColor.GRAY + "% de chance de brûler votre cible", ChatColor.GRAY + "pendant " + ChatColor.GOLD + "2 " + ChatColor.GRAY + "secondes à chaque coup porté"
+				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + (4 + upgrade) + ChatColor.GRAY + "% de chance de brûler votre cible", ChatColor.GRAY + "pendant " + ChatColor.GOLD + "4 " + ChatColor.GRAY + "secondes à chaque coup porté"
 		);
 	}
 
@@ -54,9 +54,9 @@ public class SwordVariant6Tool extends SwordTool implements Weapon {
 		double n = 0.04 + upgrade * 0.01;
 		if(random.nextDouble() <= n) {
 
-			int duration = sender.getFireTicks() + 2 * 20;
+			int duration = sender.getFireTicks() + 4 * 20;
 
-			sender.setFireTicks(duration);
+			victim.setFireTicks(duration);
 
 			p.getGame().getFiresInProgress().put(victim.getUniqueId(), sender.getUniqueId());
 			p.getServer().getScheduler().runTaskLaterAsynchronously(p, new Runnable() {

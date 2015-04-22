@@ -24,7 +24,7 @@ public class MageClass extends PlayerClass {
 
 		addTool(new SwordVariant2Tool(p));
 		addTool(new SmokeTool(p, 30 - arg1 * 2, 8 + arg2));
-		addTool(new ThunderTool(p, 90 - arg1 * 4));
+		addTool(new ThunderTool(p, 60 - arg1 * 4));
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class MageClass extends PlayerClass {
 
 	@Override
 	public int getMaxResistance() {
-		return 175;
+		return 200;
 	}
 
 	@Override
