@@ -13,6 +13,8 @@ public abstract class PlayerClass {
 	protected HeroBattle p;
 	protected List<PlayerTool> tools = new ArrayList<PlayerTool>();
 
+	protected List<String> detailsLore = null;
+
 	public PlayerClass(HeroBattle plugin) {
 		p = plugin;
 	}
@@ -138,30 +140,35 @@ public abstract class PlayerClass {
 	 * @return The details.
 	 */
 	public List<String> getClassDetailsLore() {
-		ArrayList<String> details = new ArrayList<String>();
 
-		String lives = "";
-		for(int k = 0; k < getLives(); k++) {
-			lives += "❤";
+		if(detailsLore == null) {
+
+			detailsLore = new ArrayList<>();
+
+			String lives = "";
+			for(int k = 0; k < getLives(); k++) {
+				lives += "❤";
+			}
+
+			detailsLore.add(ChatColor.GRAY + "Total des vies : " + ChatColor.RED + lives);
+			detailsLore.add("");
+
+			detailsLore.add(ChatColor.AQUA + "Arme principale");
+			detailsLore.add(ChatColor.GRAY + "Dégâts : de " + ChatColor.GOLD + getMinDamages() + ChatColor.GRAY + " à " + ChatColor.GOLD + getMaxDamages() + ChatColor.GRAY + "%");
+			detailsLore.add("");
+
+			detailsLore.add(ChatColor.AQUA + "Armure");
+			detailsLore.add(ChatColor.GRAY + "Résistance maximale : " + ChatColor.RED + getMaxResistance() + ChatColor.GRAY + "%");
+			detailsLore.add("");
+
+			detailsLore.add(ChatColor.AQUA + "Améliorations boutique");
+			detailsLore.add(ChatColor.GRAY + "Cooldowns : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
+			detailsLore.add(ChatColor.GRAY + "Puissance des capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
+			detailsLore.add(ChatColor.GRAY + "Nouvelles capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "2");
 		}
 
-		details.add(ChatColor.GRAY + "Total des vies : " + ChatColor.RED + lives);
-		details.add("");
 
-		details.add(ChatColor.AQUA + "Arme principale");
-		details.add(ChatColor.GRAY + "Dégâts : de " + ChatColor.GOLD + getMinDamages() + ChatColor.GRAY + " à " + ChatColor.GOLD + getMaxDamages() + ChatColor.GRAY + "%");
-		details.add("");
-
-		details.add(ChatColor.AQUA + "Armure");
-		details.add(ChatColor.GRAY + "Résistance maximale : " + ChatColor.RED + getMaxResistance() + ChatColor.GRAY + "%");
-		details.add("");
-
-		details.add(ChatColor.AQUA + "Améliorations boutique");
-		details.add(ChatColor.GRAY + "Cooldowns : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
-		details.add(ChatColor.GRAY + "Puissance des capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
-		details.add(ChatColor.GRAY + "Nouvelles capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "2");
-
-		return details;
+		return detailsLore;
 	}
 
 
