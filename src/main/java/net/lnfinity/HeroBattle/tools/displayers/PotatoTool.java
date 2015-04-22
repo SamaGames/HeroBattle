@@ -28,7 +28,7 @@ public class PotatoTool extends PlayerTool {
 	public PotatoTool(HeroBattle plugin) {
 		super(plugin);
 
-		COOLDOWN = 90;
+		COOLDOWN = 45;
 		DURATION = 10;
 	}
 
