@@ -861,40 +861,46 @@ public class Game implements GameArena {
 		}
 
 		else {
+
 			ItemStack hat = gamePlayer.getPlayerClass().getHat();
 			ItemMeta hatMeta = hat.getItemMeta();
 			hatMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + gamePlayer.getPlayerClass().getName());
+			hatMeta.setLore(gamePlayer.getPlayerClass().getClassDetailsLore());
 			hat.setItemMeta(hatMeta);
 			player.getInventory().setHelmet(hat);
-			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
+
+
+			// Armor colors
 			int R = 470 - gamePlayer.getPercentage();
 			int G = 255 - gamePlayer.getPercentage();
 			int B = 255 - gamePlayer.getPercentage() * 2;
-			if (R > 255) {
-				R = 255;
-			} else if (R < 0) {
-				R = 0;
-			}
-			if (G > 255) {
-				G = 255;
-			} else if (G < 0) {
-				G = 0;
-			}
-			if (B > 255) {
-				B = 255;
-			} else if (B < 0) {
-				B = 0;
-			}
+
+			if (R > 255)    R = 255;
+			else if (R < 0) R = 0;
+
+			if (G > 255)    G = 255;
+			else if (G < 0) G = 0;
+
+			if (B > 255)    B = 255;
+			else if (B < 0) B = 0;
+
+
+			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+
+			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
 			meta.setColor(Color.fromRGB(R, G, B));
 			meta.spigot().setUnbreakable(true);
+
 			chest.setItemMeta(meta);
-			player.getInventory().setChestplate(chest);
+
 			ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS, 1);
 			leg.setItemMeta(meta);
-			player.getInventory().setLeggings(leg);
+
 			ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
 			boots.setItemMeta(meta);
+
+			player.getInventory().setChestplate(chest);
+			player.getInventory().setLeggings(leg);
 			player.getInventory().setBoots(boots);
 		}
 	}
