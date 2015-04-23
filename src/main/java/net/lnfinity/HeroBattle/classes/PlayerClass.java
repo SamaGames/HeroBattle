@@ -93,6 +93,7 @@ public abstract class PlayerClass {
 	}
 	
 	public PlayerTool getTool(int i) {
+		if(i >= tools.size() || i < 0) return null;
 		return tools.get(i);
 	}
 
