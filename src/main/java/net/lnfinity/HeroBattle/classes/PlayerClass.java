@@ -101,7 +101,7 @@ public abstract class PlayerClass {
 	public List<PlayerTool> getTools() {
 		return tools;
 	}
-
+	
 	/**
 	 * Returns the tool of the slot-th slot of the player.
 	 *
@@ -110,6 +110,7 @@ public abstract class PlayerClass {
 	 * @return The tool in this slot.
 	 */
 	public PlayerTool getTool(int slot) {
+		if(slot >= tools.size() || slot < 0) return null;
 		return tools.get(slot);
 	}
 
