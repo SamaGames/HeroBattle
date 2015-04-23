@@ -384,11 +384,14 @@ public class GamePlayer {
 	}
 
 
-	public void creditCoins(int amount, String why) {
-		amount = (int) Math.ceil(((double) amount) * gainMultiplier);
-		CoinsManager.creditJoueur(playerID, amount, true, true, why);
-
-		coinsGained += amount;
+	public void creditCoins(final int amount, final String why) {
+		Bukkit.getScheduler().runTaskAsynchronously(HeroBattle.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				int realAmount = (int) Math.ceil(((double) amount) * gainMultiplier);
+				coinsGained += CoinsManager.syncCreditJoueur(playerID, realAmount, true, true, why);
+			}
+		});
 	}
 
 	public void creditStars(int amount, String why) {
