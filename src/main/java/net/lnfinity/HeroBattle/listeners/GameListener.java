@@ -14,11 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.inventory.ItemStack;
@@ -166,28 +163,28 @@ public class GameListener implements Listener {
 	}
 
 	@EventHandler
-	public void onentityExplode(EntityExplodeEvent e) {
+	public void onentityExplode(ExplosionPrimeEvent e) {
+
 		Entity entity = e.getEntity();
 		if (!(entity instanceof Fireball)) return;
-		e.blockList().clear();
+		e.setRadius(0);
 
 		GamePlayer damager = plugin.getGamePlayer(plugin.getGame().getFireballsLaunched().get(entity.getUniqueId()));
 
 		for(GamePlayer gamePlayer : plugin.getGamePlayers().values()) {
 			Player player = plugin.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
 			if(player != null) {
-				if(player.getLocation().distance(e.getEntity().getLocation()) <= 4) {
+				if(player.getLocation().distanceSquared(e.getEntity().getLocation()) <= 16) {
 					player.damage(0);
 					gamePlayer.setPercentage(gamePlayer.getPercentage() + Utils.randomNumber(16, 25), damager);
 					player.setLevel(gamePlayer.getPercentage());
 					plugin.getScoreboardManager().update(player);
 				}
 			}
-
 		}
 
 		for(int i = 0; i <= Utils.randomNumber(10, 15); i++) {
-			e.getEntity().getWorld().playEffect(e.getLocation().clone().add(1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2)), Effect.FLAME, 0);
+			e.getEntity().getWorld().playEffect(e.getEntity().getLocation().clone().add(1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2)), Effect.FLAME, 0);
 		}
 	}
 

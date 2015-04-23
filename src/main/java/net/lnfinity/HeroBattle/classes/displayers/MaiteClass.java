@@ -49,12 +49,12 @@ public class MaiteClass extends PlayerClass {
 
 	@Override
 	public int getMaxDamages() {
-		return 4;
+		return 8;
 	}
 
 	@Override
 	public int getMaxResistance() {
-		return 150;
+		return 200;
 	}
 
 	@Override

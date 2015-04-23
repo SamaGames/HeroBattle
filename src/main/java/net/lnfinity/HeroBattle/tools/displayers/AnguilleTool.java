@@ -27,7 +27,7 @@ public class AnguilleTool extends PlayerTool {
 	public AnguilleTool(HeroBattle plugin) {
 		super(plugin);
 
-		COOLDOWN = 60;
+		COOLDOWN = 30;
 		DURATION = 6;
 	}
 

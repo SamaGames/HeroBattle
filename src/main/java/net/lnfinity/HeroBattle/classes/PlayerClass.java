@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.classes;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ public abstract class PlayerClass {
 	protected HeroBattle p;
 	protected List<PlayerTool> tools = new ArrayList<PlayerTool>();
 
+	protected List<String> detailsLore = null;
+
 	public PlayerClass(HeroBattle plugin) {
 		p = plugin;
 	}
@@ -19,7 +22,7 @@ public abstract class PlayerClass {
 	/**
 	 * Returns the name of the class.
 	 *
-	 * @return
+	 * @return The name.
 	 */
 	public abstract String getName();
 
@@ -30,71 +33,85 @@ public abstract class PlayerClass {
 	 *     The display name of this item stack is ignored.
 	 * </p>
 	 *
-	 * @return
+	 * @return The icon, as an ItemStack.
 	 */
 	public abstract ItemStack getIcon();
+
+	/**
+	 * Returns the hat the player will have.
+	 *
+	 * <p>
+	 *     The display name and the lore of this item stack are ignored and will be overwritten.
+	 * </p>
+	 *
+	 * @return The hat.
+	 */
+	public abstract ItemStack getHat();
 
 	/**
 	 * Returns the description of this class, displayed as a lore in the selector.
 	 *
 	 * @return A list of lines displayed in the lore.
 	 */
-	
-	
-	/**
-	 * Returns the hat the player will have.
-	 *
-	 * <p>
-	 *     The display name of this item stack is ignored.
-	 * </p>
-	 *
-	 * @return
-	 */
-	public abstract ItemStack getHat();
-	
-	
 	public abstract List<String> getDescription();
 
 	/**
 	 * Returns the minimum damages a player with this class can inflate.
 	 *
-	 * @return
+	 * @return The minimum damages.
 	 */
 	public abstract int getMinDamages();
 
 	/**
 	 * Returns the maximum damages a player with this class can inflate.
 	 *
-	 * @return
+	 * @return The maximum damages.
 	 */
 	public abstract int getMaxDamages();
 
 	/**
 	 * Returns the maximum damages a player can bear.
 	 *
-	 * @return
+	 * @return The maximum damages a player can bear.
 	 */
 	public abstract int getMaxResistance();
+
 	/**
 	 * Returns the lives a player with this class have.
 	 *
-	 * @return
+	 * @return The lives.
 	 */
 	public abstract int getLives();
+
+	/**
+	 * Returns this class' type in the PlayerClassType enum.
+	 *
+	 * @return The type.
+	 */
+	public abstract PlayerClassType getType();
+
+
 
 
 	/**
 	 * Returns a list of the tools in this class.
 	 *
-	 * @return
+	 * @return The list.
 	 */
 	public List<PlayerTool> getTools() {
 		return tools;
 	}
 	
-	public PlayerTool getTool(int i) {
-		if(i >= tools.size() || i < 0) return null;
-		return tools.get(i);
+	/**
+	 * Returns the tool of the slot-th slot of the player.
+	 *
+	 * @param slot The slot.
+	 *
+	 * @return The tool in this slot.
+	 */
+	public PlayerTool getTool(int slot) {
+		if(slot >= tools.size() || slot < 0) return null;
+		return tools.get(slot);
 	}
 
 	/**
@@ -116,8 +133,44 @@ public abstract class PlayerClass {
 	public boolean removeTool(PlayerTool tool) {
 		return tools.remove(tool);
 	}
-	
-	public abstract PlayerClassType getType();
+
+
+	/**
+	 * Returns the class' details as a list ready to be used somewhere in a lore.
+	 *
+	 * @return The details.
+	 */
+	public List<String> getClassDetailsLore() {
+
+		if(detailsLore == null) {
+
+			detailsLore = new ArrayList<>();
+
+			String lives = "";
+			for(int k = 0; k < getLives(); k++) {
+				lives += "❤";
+			}
+
+			detailsLore.add(ChatColor.GRAY + "Total des vies : " + ChatColor.RED + lives);
+			detailsLore.add("");
+
+			detailsLore.add(ChatColor.AQUA + "Arme principale");
+			detailsLore.add(ChatColor.GRAY + "Dégâts : de " + ChatColor.GOLD + getMinDamages() + ChatColor.GRAY + " à " + ChatColor.GOLD + getMaxDamages() + ChatColor.GRAY + "%");
+			detailsLore.add("");
+
+			detailsLore.add(ChatColor.AQUA + "Armure");
+			detailsLore.add(ChatColor.GRAY + "Résistance maximale : " + ChatColor.RED + getMaxResistance() + ChatColor.GRAY + "%");
+			detailsLore.add("");
+
+			detailsLore.add(ChatColor.AQUA + "Améliorations boutique");
+			detailsLore.add(ChatColor.GRAY + "Cooldowns : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
+			detailsLore.add(ChatColor.GRAY + "Puissance des capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
+			detailsLore.add(ChatColor.GRAY + "Nouvelles capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "2");
+		}
+
+
+		return detailsLore;
+	}
 
 
 	@Override

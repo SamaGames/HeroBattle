@@ -296,7 +296,7 @@ public class Game implements GameArena {
 				+ " vie" + s + ")";
 
 		Player lastDamagerPlayer = hbPlayer.getLastDamager() != null ? p.getServer().getPlayer(hbPlayer.getLastDamager()) : null;
-
+		GamePlayer lastDamagerGPlayer = p.getGamePlayer(lastDamagerPlayer);
 
 		String killedByMessage = hbPlayer.getLives() >= 1 ? ChatColor.RED + "Vous perdez une vie !" : ChatColor.RED + "C'est fini pour vous !";
 
@@ -333,8 +333,9 @@ public class Game implements GameArena {
 									+ " a été poussé par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 									+ lives);
 
+
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur poussé !");
+					lastDamagerGPlayer.creditCoins(3, "Un joueur poussé !");
 
 					break;
 
@@ -344,7 +345,7 @@ public class Game implements GameArena {
 									+ " a quitté la partie");
 
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un froussard !");
+					lastDamagerGPlayer.creditCoins(3, "Un froussard !");
 
 					break;
 
@@ -357,7 +358,7 @@ public class Game implements GameArena {
 									+ lives);
 
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-					CoinsManager.creditJoueur(hbPlayer.getLastDamager(), 3, true, true, "Un joueur K.O. !");
+					lastDamagerGPlayer.creditCoins(3, "Un joueur K.O. !");
 
 					break;
 			}
@@ -469,6 +470,7 @@ public class Game implements GameArena {
 		if(gPlayer == null) {
 			return;
 		}
+
 		if (gPlayer.isPlaying()) {
 			gPlayer.setPlaying(false);
 
@@ -523,8 +525,8 @@ public class Game implements GameArena {
 
 			new WinnerFirework(p, 30, player);
 
-			StarsManager.creditJoueur(player, 1, "Victoire !");
-			CoinsManager.creditJoueur(player.getUniqueId(), 16, true, true, "Victoire !");
+			gPlayer.creditStars(1, "Victoire !");
+			gPlayer.creditCoins(16, "Victoire !");
 			StatsApi.increaseStat(player, p.getName(), "wins", 1);
 		}
 
@@ -611,7 +613,12 @@ public class Game implements GameArena {
 				while (i < 3 && iterKills.hasNext()) {
 					Map.Entry<UUID, Integer> entry = iterKills.next();
 					topsKills[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + entry.getValue() + ")";
-					CoinsManager.creditJoueur(entry.getKey(), i == 0 ? 10 : i == 1 ? 6 : 4, true, true, "Rang " + (i + 1) + " au classement des kills !");
+
+					GamePlayer gPlayer = p.getGamePlayer(entry.getKey());
+					if(gPlayer != null) {
+						gPlayer.creditCoins(i == 0 ? 10 : i == 1 ? 6 : 4, "Rang " + (i + 1) + " au classement des kills !");
+					}
+
 					i++;
 				}
 
@@ -621,7 +628,12 @@ public class Game implements GameArena {
 				while (i < 3 && iterPercentages.hasNext()) {
 					Map.Entry<UUID, Long> entry = iterPercentages.next();
 					topsPercentages[i] = Bukkit.getOfflinePlayer(entry.getKey()).getName() + ChatColor.AQUA + " (" + Utils.formatNumber(entry.getValue()) + "%)";
-					CoinsManager.creditJoueur(entry.getKey(), i == 0 ? 10 : i == 1 ? 6 : 4, true, true, "Rang " + (i + 1) + " au classement des dégâts infligés !");
+
+					GamePlayer gPlayer = p.getGamePlayer(entry.getKey());
+					if(gPlayer != null) {
+						gPlayer.creditCoins(i == 0 ? 10 : i == 1 ? 6 : 4, "Rang " + (i + 1) + " au classement des dégâts infligés !");
+					}
+
 					i++;
 				}
 
@@ -638,9 +650,30 @@ public class Game implements GameArena {
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
 
 			}
-		}, 20 * 4l);
+		}, 20 * 5l);
 
-		
+
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				for (GamePlayer gPlayer : p.getGamePlayers().values()) {
+					Player player = p.getServer().getPlayer(gPlayer.getPlayerUniqueID());
+					if (player != null) {
+						int starsGained = gPlayer.getStarsGained();
+						int coinsGained = gPlayer.getCoinsGained();
+
+						String sStars = starsGained > 1 ? "s" : "";
+						String sCoins = coinsGained > 1 ? "s" : "";
+
+						if (starsGained > 0 || coinsGained > 0) {
+							player.sendMessage(ChatColor.YELLOW + "Vous avez gagné en tout " + ChatColor.GOLD + coinsGained + ChatColor.YELLOW + " pièce" + sCoins + " et " + ChatColor.GOLD + starsGained + ChatColor.YELLOW + " étoile" + sStars + ".");
+						}
+					}
+				}
+			}
+		}, 20 * 8l);
+
+
 		// Analytics to help us improve the game
 		if(!p.getArenaConfig().getBoolean("block-analytics")) {
 
@@ -861,40 +894,46 @@ public class Game implements GameArena {
 		}
 
 		else {
+
 			ItemStack hat = gamePlayer.getPlayerClass().getHat();
 			ItemMeta hatMeta = hat.getItemMeta();
 			hatMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + gamePlayer.getPlayerClass().getName());
+			hatMeta.setLore(gamePlayer.getPlayerClass().getClassDetailsLore());
 			hat.setItemMeta(hatMeta);
 			player.getInventory().setHelmet(hat);
-			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
+
+
+			// Armor colors
 			int R = 470 - gamePlayer.getPercentage();
 			int G = 255 - gamePlayer.getPercentage();
 			int B = 255 - gamePlayer.getPercentage() * 2;
-			if (R > 255) {
-				R = 255;
-			} else if (R < 0) {
-				R = 0;
-			}
-			if (G > 255) {
-				G = 255;
-			} else if (G < 0) {
-				G = 0;
-			}
-			if (B > 255) {
-				B = 255;
-			} else if (B < 0) {
-				B = 0;
-			}
+
+			if (R > 255)    R = 255;
+			else if (R < 0) R = 0;
+
+			if (G > 255)    G = 255;
+			else if (G < 0) G = 0;
+
+			if (B > 255)    B = 255;
+			else if (B < 0) B = 0;
+
+
+			ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+
+			LeatherArmorMeta meta = (LeatherArmorMeta) chest.getItemMeta();
 			meta.setColor(Color.fromRGB(R, G, B));
 			meta.spigot().setUnbreakable(true);
+
 			chest.setItemMeta(meta);
-			player.getInventory().setChestplate(chest);
+
 			ItemStack leg = new ItemStack(Material.LEATHER_LEGGINGS, 1);
 			leg.setItemMeta(meta);
-			player.getInventory().setLeggings(leg);
+
 			ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
 			boots.setItemMeta(meta);
+
+			player.getInventory().setChestplate(chest);
+			player.getInventory().setLeggings(leg);
 			player.getInventory().setBoots(boots);
 		}
 	}

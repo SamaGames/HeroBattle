@@ -209,27 +209,7 @@ public class ClassSelectorListener implements Listener {
 		item.setDurability(classe.getHat().getDurability());
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Classe " + classe.getName());
-		ArrayList<String> lore = new ArrayList<String>();
-
-		String lives = "";
-		for(int k = 0; k < classe.getLives(); k++) {
-			lives+="❤";
-		}
-		lore.add(ChatColor.GRAY + "Total des vies : " + ChatColor.RED + lives);
-		lore.add("");
-		lore.add(ChatColor.AQUA + "Arme principale :");
-		lore.add(ChatColor.GRAY + "Dégâts minimaux : " + ChatColor.GOLD + classe.getMinDamages());
-		lore.add(ChatColor.GRAY + "Dégâts maximaux : " + ChatColor.GOLD + classe.getMaxDamages());
-		lore.add("");
-		lore.add(ChatColor.AQUA + "Armure :");
-		lore.add(ChatColor.GRAY + "Résistance maximale : " + ChatColor.RED + classe.getMaxResistance() + ChatColor.GRAY + "%");
-		lore.add("");
-		lore.add(ChatColor.AQUA + "Améliorations boutique :");
-		lore.add(ChatColor.GRAY + "Cooldowns : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
-		lore.add(ChatColor.GRAY + "Puissance des capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
-		lore.add(ChatColor.GRAY + "Nouvelles capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "2");
-
-		meta.setLore(lore);
+		meta.setLore(classe.getClassDetailsLore());
 		item.setItemMeta(meta);
 		inv.setItem(20, item);
 
@@ -258,7 +238,7 @@ public class ClassSelectorListener implements Listener {
 			meta.setDisplayName(ChatColor.RESET + theClass.getName());
 		}
 
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 
 		for (String descriptionLine : theClass.getDescription()) {
 			lore.add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + descriptionLine);
@@ -266,7 +246,12 @@ public class ClassSelectorListener implements Listener {
 
 		lore.add("");
 
-		if(available) {
+		lore.addAll(theClass.getClassDetailsLore());
+
+		lore.add("");
+		lore.add("");
+
+		if(true || available) { // TODO Temp, remove for production
 			lore.add(ChatColor.GRAY + "• Clic gauche pour jouer avec cette classe");
 		}
 
