@@ -64,7 +64,7 @@ public class MaiteClass extends PlayerClass {
 
 	@Override
 	public PlayerClassType getType() {
-		return null;
+		return PlayerClassType.MAITE;
 	}
 
 }
