@@ -6,6 +6,9 @@ import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
+import net.zyuiop.MasterBundle.StarsManager;
+import net.zyuiop.coinsManager.CoinsManager;
+import net.zyuiop.statsapi.StatsApi;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -23,21 +26,28 @@ public class GamePlayer {
 
 	private UUID playerID;
 	private String playerName;
-	
+
+	private boolean playing = true;
+
+	private double gainMultiplier = 1.0;
+
 	private int originalElo = 0;
-	private int Elo = 0;
+	private int elo = 0;
 
 	private PlayerClass classe = null;
+
 	private int jumps = 2;
 	private int maxJumps = 2;
 	private int percentage = 0;
 	private int lives = 3;
-	private boolean playing = true;
+
 	private boolean doubleDamages = false;
 	private boolean isInvisible = false;
 	private boolean isInvulnerable = false;
 	private boolean isRespawning = false;
+
 	private UUID lastDamager = null;
+
 	private List<PlayerClass> classesAvailable = new ArrayList<PlayerClass>();
 	private List<Task> tasks = new ArrayList<Task>();
 
@@ -218,8 +228,10 @@ public class GamePlayer {
 		this.classe = classe;
 		if (classe != null) {
 			lives = classe.getLives();
+			gainMultiplier = 1.0;
 		} else {
 			lives = 3;
+			gainMultiplier = 1.4;
 		}
 
 		if(classe != null) {
@@ -324,11 +336,11 @@ public class GamePlayer {
 	}
 
 	public int getElo() {
-		return Elo;
+		return elo;
 	}
 
 	public void setElo(int elo) {
-		Elo = elo;
+		this.elo = elo;
 	}
 
 	public long getPercentageInflicted() {
@@ -367,6 +379,16 @@ public class GamePlayer {
 
 	public void setJumpLocked(boolean jumpLocked) {
 		this.jumpLocked = jumpLocked;
+	}
+
+	public void creditCoins(int amount, String why) {
+		amount = (int) Math.ceil(((double) amount) * gainMultiplier);
+		CoinsManager.creditJoueur(playerID, amount, true, true, why);
+	}
+
+	public void creditStars(int amount, String why) {
+		amount = (int) Math.ceil(((double) amount) * gainMultiplier);
+		StarsManager.creditJoueur(playerID, amount, why);
 	}
 
 	private void updateNotificationAboveInventory() {
