@@ -30,6 +30,8 @@ public class GamePlayer {
 	private boolean playing = true;
 
 	private double gainMultiplier = 1.0;
+	private int starsGained = 0;
+	private int coinsGained = 0;
 
 	private int originalElo = 0;
 	private int elo = 0;
@@ -381,15 +383,29 @@ public class GamePlayer {
 		this.jumpLocked = jumpLocked;
 	}
 
+
 	public void creditCoins(int amount, String why) {
 		amount = (int) Math.ceil(((double) amount) * gainMultiplier);
 		CoinsManager.creditJoueur(playerID, amount, true, true, why);
+
+		coinsGained += amount;
 	}
 
 	public void creditStars(int amount, String why) {
 		amount = (int) Math.ceil(((double) amount) * gainMultiplier);
 		StarsManager.creditJoueur(playerID, amount, why);
+
+		starsGained += amount;
 	}
+
+	public int getStarsGained() {
+		return starsGained;
+	}
+
+	public int getCoinsGained() {
+		return coinsGained;
+	}
+
 
 	private void updateNotificationAboveInventory() {
 

@@ -650,9 +650,30 @@ public class Game implements GameArena {
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
 
 			}
-		}, 20 * 4l);
+		}, 20 * 5l);
 
-		
+
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				for (GamePlayer gPlayer : p.getGamePlayers().values()) {
+					Player player = p.getServer().getPlayer(gPlayer.getPlayerUniqueID());
+					if (player != null) {
+						int starsGained = gPlayer.getStarsGained();
+						int coinsGained = gPlayer.getCoinsGained();
+
+						String sStars = starsGained > 1 ? "s" : "";
+						String sCoins = coinsGained > 1 ? "s" : "";
+
+						if (starsGained > 0 || coinsGained > 0) {
+							player.sendMessage(ChatColor.YELLOW + "Vous avez gagné en tout " + ChatColor.GOLD + coinsGained + ChatColor.YELLOW + " pièce" + sCoins + " et " + ChatColor.GOLD + starsGained + ChatColor.YELLOW + " étoile" + sStars + ".");
+						}
+					}
+				}
+			}
+		}, 20 * 8l);
+
+
 		// Analytics to help us improve the game
 		if(!p.getArenaConfig().getBoolean("block-analytics")) {
 
