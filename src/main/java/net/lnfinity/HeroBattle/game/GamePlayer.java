@@ -13,8 +13,10 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -231,9 +233,24 @@ public class GamePlayer {
 		if (classe != null) {
 			lives = classe.getLives();
 			gainMultiplier = 1.0;
-		} else {
+
+			Player player = Bukkit.getPlayer(playerID);
+			if(player != null) {
+				getPlayerClass().getClassTeam().addPlayer(player);
+			}
+		}
+
+		else {
 			lives = 3;
 			gainMultiplier = 1.4;
+
+			Player player = Bukkit.getPlayer(playerID);
+			if(player != null) {
+				Team playerTeam = HeroBattle.getInstance().getScoreboardManager().getScoreboard().getPlayerTeam(player);
+				if (playerTeam != null) {
+					playerTeam.removePlayer(player);
+				}
+			}
 		}
 
 		if(classe != null) {

@@ -4,9 +4,11 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class PlayerClass {
 
@@ -14,6 +16,12 @@ public abstract class PlayerClass {
 	protected List<PlayerTool> tools = new ArrayList<PlayerTool>();
 
 	protected List<String> detailsLore = null;
+
+	/**
+	 * The scoreboard team representing this class, in the tab list.
+	 */
+	protected Team classTeam = null;
+
 
 	public PlayerClass(HeroBattle plugin) {
 		p = plugin;
@@ -170,6 +178,20 @@ public abstract class PlayerClass {
 
 
 		return detailsLore;
+	}
+
+	public Team getClassTeam() {
+		if(classTeam == null) {
+			String teamName = getName().substring(0, Math.min(16, getName().length()));
+
+			classTeam = p.getScoreboardManager().getScoreboard().getTeam(teamName);
+			if(classTeam == null) {
+				classTeam = p.getScoreboardManager().getScoreboard().registerNewTeam(teamName);
+				classTeam.setSuffix(ChatColor.GRAY + " \u2042 " + getName());
+			}
+		}
+
+		return classTeam;
 	}
 
 
