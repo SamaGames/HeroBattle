@@ -288,7 +288,7 @@ public class Game implements GameArena {
 
 		// Technical stuff
 		hbPlayer.setLives(hbPlayer.getLives() - 1);
-
+		player.setVelocity(new Vector());
 
 		// Broadcasts
 		String s = hbPlayer.getLives() <= 1 ? "" : "s";
