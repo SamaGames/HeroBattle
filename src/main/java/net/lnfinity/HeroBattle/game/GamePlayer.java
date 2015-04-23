@@ -232,7 +232,12 @@ public class GamePlayer {
 		this.classe = classe;
 		if (classe != null) {
 			lives = classe.getLives();
-			gainMultiplier = 1.0;
+
+			// Reset of the multiplier, only if the game is not started
+			// (else, the class was effectively chosen randomly).
+			if(HeroBattle.getInstance().getGame().getStatus() != Status.InGame) {
+				gainMultiplier = 1.0;
+			}
 
 			Player player = Bukkit.getPlayer(playerID);
 			if(player != null) {

@@ -129,6 +129,8 @@ public class Game implements GameArena {
 
 		p.getTutorialDisplayer().stopForAll("Le jeu démarre...");
 
+		setStatus(Status.InGame);
+
 		Integer partyELO = getTotalElo() / p.getGamePlayers().size();
 
 		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " de la partie " + ChatColor.DARK_GREEN + partyELO);
@@ -151,8 +153,6 @@ public class Game implements GameArena {
 
 			ActionBar.removeMessage(player);
 		}
-
-		setStatus(Status.InGame);
 
 		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 			@Override
