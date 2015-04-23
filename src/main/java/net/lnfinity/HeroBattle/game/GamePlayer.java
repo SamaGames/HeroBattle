@@ -12,8 +12,6 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.StringUtil;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -40,7 +38,7 @@ public class GamePlayer {
 	private boolean isInvulnerable = false;
 	private boolean isRespawning = false;
 	private UUID lastDamager = null;
-	private List<PlayerClass> avaible = new ArrayList<PlayerClass>();
+	private List<PlayerClass> classesAvailable = new ArrayList<PlayerClass>();
 	private List<Task> tasks = new ArrayList<Task>();
 
 	/**
@@ -306,15 +304,15 @@ public class GamePlayer {
 	}
 
 	public List<PlayerClass> getAvaibleClasses() {
-		return avaible;
+		return classesAvailable;
 	}
 
 	public void setAvaibleClasses(List<PlayerClass> avaible) {
-		this.avaible = avaible;
+		this.classesAvailable = avaible;
 	}
 	
 	public void addAvaibleClass(PlayerClass theClass) {
-		this.avaible.add(theClass);
+		this.classesAvailable.add(theClass);
 	}
 	
 	public int getOriginalElo() {
