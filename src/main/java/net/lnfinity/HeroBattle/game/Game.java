@@ -6,6 +6,7 @@ import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.lnfinity.HeroBattle.utils.WinnerFirework;
+import net.minecraft.server.v1_8_R1.EntityPlayer;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.types.GameArena;
@@ -15,9 +16,10 @@ import net.zyuiop.MasterBundle.MasterBundle;
 import net.zyuiop.MasterBundle.StarsManager;
 import net.zyuiop.coinsManager.CoinsManager;
 import net.zyuiop.statsapi.StatsApi;
+
 import org.bukkit.*;
-import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -180,6 +182,13 @@ public class Game implements GameArena {
 
 			if (hbPlayer.getPlayerClass() == null) {
 				chooseRandomClass(player);
+			}
+			
+			CraftPlayer cp = (CraftPlayer) player;
+			EntityPlayer ep = cp.getHandle();
+			int ping = ep.ping;
+			if(ping > 500) {
+				player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Attention" + ChatColor.RED + ", nous venons de détecter que votre connexion était instable. Des effets secondaires peuvent se faire ressentir en jeu.");
 			}
 
 			int index = rand.nextInt(tempLocs.size());
