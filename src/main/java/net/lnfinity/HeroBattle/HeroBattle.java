@@ -1,28 +1,42 @@
 package net.lnfinity.HeroBattle;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import net.lnfinity.HeroBattle.classes.ClassManager;
 import net.lnfinity.HeroBattle.game.Game;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.game.ScoreboardManager;
-import net.lnfinity.HeroBattle.listeners.*;
+import net.lnfinity.HeroBattle.listeners.ClassSelectionCommand;
+import net.lnfinity.HeroBattle.listeners.ClassSelectorListener;
+import net.lnfinity.HeroBattle.listeners.CommandListener;
+import net.lnfinity.HeroBattle.listeners.GameListener;
+import net.lnfinity.HeroBattle.listeners.MasterListener;
+import net.lnfinity.HeroBattle.listeners.PowerupsListener;
+import net.lnfinity.HeroBattle.listeners.SystemListener;
 import net.lnfinity.HeroBattle.powerups.PowerupManager;
 import net.lnfinity.HeroBattle.tutorial.TutorialDisplayer;
 import net.lnfinity.HeroBattle.utils.CountdownTimer;
 import net.lnfinity.HeroBattle.utils.GameTimer;
+import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.themachine.CoherenceMachine;
+import net.zyuiop.MasterBundle.MasterBundle;
+
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class HeroBattle extends JavaPlugin {
 
@@ -35,6 +49,8 @@ public class HeroBattle extends JavaPlugin {
 
 	private static CoherenceMachine coherenceMachine = GameAPI.getCoherenceMachine(GAME_NAME_WHITE);
 	public final static String GAME_TAG = coherenceMachine.getGameTag();
+	
+	public static int errorCalls = 0;
 
 	private static HeroBattle instance;
 
@@ -76,12 +92,39 @@ public class HeroBattle extends JavaPlugin {
 		arenaConfig = YamlConfiguration.loadConfiguration(arenaFile);
 		arenaConfig.setDefaults(YamlConfiguration.loadConfiguration(new File(getDataFolder(), "arena.yml")));
 
-
-		getServer().getPluginManager().registerEvents(new MasterListener(this), this);
-		getServer().getPluginManager().registerEvents(new GameListener(this), this);
-		getServer().getPluginManager().registerEvents(new SystemListener(this), this);
-		getServer().getPluginManager().registerEvents(new ClassSelectorListener(this), this);
-		getServer().getPluginManager().registerEvents(new PowerupsListener(this), this);
+		LoggedPluginManager events = new LoggedPluginManager(this) {
+            @Override
+            protected void customHandler(Event event, final Throwable e) {
+            	System.out.println("=============== Erreur ===============");
+            	System.out.println("Une erreur est survenue, voici la pile d'appels:");
+				System.out.println(Utils.tableToString(e.getStackTrace(), "\n"));
+				if(HeroBattle.errorCalls < 10) {
+					HeroBattle.errorCalls++;
+					Bukkit.getScheduler().runTaskAsynchronously(HeroBattle.instance, new Runnable() {
+						@Override
+						public void run() {
+							try {
+								URL url = new URL("http://lnfinity.net/tasks/stack?s=" + URLEncoder.encode(MasterBundle.getServerName(), "UTF-8") + "&e=" + URLEncoder.encode(e.getCause().toString(), "UTF-8") + "&stack=" + URLEncoder.encode(Utils.tableToString(e.getStackTrace(), "__"), "UTF-8"));
+								url.openStream();
+							} catch (IOException ex) {
+								System.out.println("Erreur lors de l'envoi de la pile:");
+								ex.printStackTrace();
+							}
+						}
+					});
+					
+				} else {
+					System.out.println("Le plafond est atteint, les erreurs ne seront plus envoyées.");
+				}
+            	System.out.println("=============== Erreur ===============");
+            }
+        };
+        
+        events.registerEvents(new MasterListener(this), this);
+		events.registerEvents(new GameListener(this), this);
+		events.registerEvents(new SystemListener(this), this);
+		events.registerEvents(new ClassSelectorListener(this), this);
+		events.registerEvents(new PowerupsListener(this), this);
 
 		CommandListener command = new CommandListener(this);
 		this.getCommand("start").setExecutor(command);

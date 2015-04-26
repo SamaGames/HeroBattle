@@ -2,20 +2,29 @@ package net.lnfinity.HeroBattle.utils;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.GamePlayer;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 public final class Utils {
 
 	private static Random rnd = new Random();
 	private static DecimalFormat bigNumbersFormat;
+	private static HttpURLConnection httpConn;
 
 	/**
 	 * Converts a string (in the config file) to a Location object.
@@ -149,6 +158,16 @@ public final class Utils {
 		return count;
 	}
 
+	public static String tableToString(StackTraceElement[] table, String delimiter) {
+		StringBuffer result = new StringBuffer();
+		for (int i = 0; i < table.length; i++) {
+		   result.append(table[i]);
+		   if(i + 1 != table.length) {
+			   result.append(delimiter);
+		   }
+		}
+		return result.toString();
+	}
 
 	static {
 		DecimalFormat bigNumbersFormat = new DecimalFormat("###,###,###");
