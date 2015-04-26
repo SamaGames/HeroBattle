@@ -18,25 +18,43 @@
   </build>
    <repositories>
     <repository>
+     <id>spigot-repo</id>
+     <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+     <id>geekpower14-repo</id>
+     <url>http://geekpower14.com/repo/maven</url>
+    </repository>
+    <repository>
      <id>samagames-repo</id>
      <url>http://maven.samagames.net/public/</url>
     </repository>
     <repository>
      <id>bukkit-repo</id>
-     <url>http://repo.md-5.net/content/groups/public/</url>
-    </repository> 
-  </repositories>
+     <url>http://repo.bukkit.org/content/groups/public/</url>
+    </repository>
+   </repositories>
   <dependencies>
+   <dependency>
+    <groupId>org.spigotmc</groupId>
+    <artifactId>spigot</artifactId>
+    <version>1.8.3-R0.1-SNAPSHOT</version>
+   </dependency>
    <dependency>
     <groupId>net.samagames</groupId>
     <artifactId>MasterBundle</artifactId>
     <version>1.8-SNAPSHOT</version>
     <scope>provided</scope>
    </dependency>
-   <dependency>
-    <groupId>org.spigotmc</groupId>
-    <artifactId>spigot</artifactId>
-    <version>1.8.3-R0.1-SNAPSHOT</version>
-   </dependency>
+       <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>1.8-R0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>craftbukkit</artifactId>
+      <version>1.8-R0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>
