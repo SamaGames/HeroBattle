@@ -296,6 +296,9 @@ public class Game implements GameArena {
 		final Player player = p.getServer().getPlayer(id);
 		final GamePlayer hbPlayer = p.getGamePlayer(player);
 
+		// Avoid the death to be handled if the player is aldeady completly dead (no life left)
+		if(hbPlayer.getLives() <= 0) return;
+
 
 		// Avoids this to be called a lot of times
 
