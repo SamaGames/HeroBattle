@@ -307,17 +307,29 @@ public class Game implements GameArena {
 							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
 									+ " est tombé dans le vide" + lives);
 					break;
+
 				case QUIT:
 					p.getServer().broadcastMessage(
 							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
 									+ " a quitté la partie");
 					break;
+
 				case KO:
 					p.getServer().broadcastMessage(
 							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW + " est K.O. !"
 									+ lives);
 
 					killedByMessage = ChatColor.RED + "Vous êtes K.O. !";
+
+					break;
+
+				case WATER:
+					p.getServer().broadcastMessage(
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW + " est tombé dans l'eau !"
+									+ lives);
+
+					killedByMessage = ChatColor.RED + "Vous êtes tombé dans l'eau !";
+
 					break;
 			}
 		}
@@ -359,6 +371,16 @@ public class Game implements GameArena {
 
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
 					lastDamagerGPlayer.creditCoins(3, "Un joueur K.O. !");
+
+					break;
+
+				case WATER:
+					killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a poussé dans l'eau";
+
+					p.getServer().broadcastMessage(
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
+									+ " a été poussé dans l'eau par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+									+ lives);
 
 					break;
 			}

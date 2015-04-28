@@ -45,6 +45,9 @@ map:
     # false, the NightVision powerup will be available.
     permanentNightVision: false
 
+    # If this is set to true, all players will loose a life if they enter in the water.
+    toxicWater: false
+
 game:
 
     # If value set to true, all games will be ranked and players Elo will change

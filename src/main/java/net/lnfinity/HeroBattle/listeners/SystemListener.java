@@ -8,6 +8,7 @@ import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
@@ -99,6 +100,16 @@ public class SystemListener implements Listener {
 		if(e.getPlayer().getGameMode() == GameMode.SPECTATOR && !e.getPlayer().getAllowFlight()) {
 			e.getPlayer().setAllowFlight(true);
 			e.getPlayer().setFlying(true);
+		}
+
+
+		Material blockType = e.getPlayer().getLocation().getBlock().getType();
+
+		// In-water check
+		if(blockType == Material.WATER || blockType == Material.STATIONARY_WATER) {
+			if(plugin.getArenaConfig().getBoolean("map.toxicWater", false)) {
+				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.WATER);
+			}
 		}
 	}
 
