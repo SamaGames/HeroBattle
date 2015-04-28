@@ -50,7 +50,7 @@ public class CountdownTimer {
 					changed = true;
 				}
 				// Full
-				else if (playersCount == p.getGame().getTotalMaxPlayers() && seconds > 15) {
+				else if (playersCount == p.getGame().getMaxPlayers() && seconds > 15) {
 					seconds = 15;
 					changed = true;
 				}

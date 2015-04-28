@@ -6,6 +6,7 @@ import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.lnfinity.HeroBattle.utils.WinnerFirework;
+import net.minecraft.server.v1_8_R1.EntityPlayer;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.types.GameArena;
@@ -15,9 +16,10 @@ import net.zyuiop.MasterBundle.MasterBundle;
 import net.zyuiop.MasterBundle.StarsManager;
 import net.zyuiop.coinsManager.CoinsManager;
 import net.zyuiop.statsapi.StatsApi;
+
 import org.bukkit.*;
-import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -181,6 +183,13 @@ public class Game implements GameArena {
 			if (hbPlayer.getPlayerClass() == null) {
 				chooseRandomClass(player);
 			}
+			
+			CraftPlayer cp = (CraftPlayer) player;
+			EntityPlayer ep = cp.getHandle();
+			int ping = ep.ping;
+			if(ping > 500) {
+				player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Attention" + ChatColor.RED + ", nous venons de détecter que votre connexion était instable. Des effets secondaires peuvent se faire ressentir en jeu.");
+			}
 
 			int index = rand.nextInt(tempLocs.size());
 			player.teleport(tempLocs.get(index));
@@ -288,7 +297,7 @@ public class Game implements GameArena {
 
 		// Technical stuff
 		hbPlayer.setLives(hbPlayer.getLives() - 1);
-
+		player.setVelocity(new Vector());
 
 		// Broadcasts
 		String s = hbPlayer.getLives() <= 1 ? "" : "s";
@@ -347,39 +356,47 @@ public class Game implements GameArena {
 			String groupColor = ChatColor.getLastColors(lastDamagerPlayer.getDisplayName());
 			switch (death) {
 				case FALL:
-					killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a éjecté !";
-
-					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
-									+ " a été poussé par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
-									+ lives);
-
-
-					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-					lastDamagerGPlayer.creditCoins(3, "Un joueur poussé !");
-
+					if(player.getUniqueId().equals(lastDamagerPlayer.getUniqueId())) {
+						p.getServer().broadcastMessage(
+								HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
+										+ " est tombé dans le vide" + lives);
+					} else {
+						killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a éjecté !";
+						p.getServer().broadcastMessage(
+								HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
+										+ " a été poussé par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+										+ lives);
+						StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
+						lastDamagerGPlayer.creditCoins(3, "Un joueur poussé !");
+					}
 					break;
 
 				case QUIT:
+					if(!player.getUniqueId().equals(lastDamagerPlayer.getUniqueId())) {
+						StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
+						lastDamagerGPlayer.creditCoins(3, "Un froussard !");
+					}
 					p.getServer().broadcastMessage(
 							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
 									+ " a quitté la partie");
-
-					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-					lastDamagerGPlayer.creditCoins(3, "Un froussard !");
-
 					break;
 
 				case KO:
 					killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a mis K.O. !";
+					if(player.getUniqueId().equals(lastDamagerPlayer.getUniqueId())) {
+						killedByMessage = ChatColor.RED + "Vous vous êtes suicidé !";
+						p.getServer().broadcastMessage(
+								HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
+										+ " s'est suicidé" + lives);
+					} else {
+						p.getServer().broadcastMessage(
+								HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
+										+ " a été mis K.O. par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+										+ lives);
 
-					p.getServer().broadcastMessage(
-							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
-									+ " a été mis K.O. par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
-									+ lives);
-
-					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-					lastDamagerGPlayer.creditCoins(3, "Un joueur K.O. !");
+						StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
+						lastDamagerGPlayer.creditCoins(3, "Un joueur K.O. !");
+					}
 
 					break;
 
