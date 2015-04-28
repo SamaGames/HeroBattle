@@ -3,18 +3,19 @@
 map:
     name: "HeroBattle"
 
-    maxPlayers: 10  # VIP(+) excluded
+    maxPlayers: 10    # VIP(+) excluded
     maxVIP: 2
 
-    minPlayers: 4   # Minimum players to start the timer
+    minPlayers: 4     # Minimum players to start the timer
 
-    waiting: 120    # Time before begining
+    waiting: 120      # Time before begining
 
-    gameTime: 15    # Maximum time the game should last (in minutes)
+    gameTime: 15      # Maximum time the game should last (in minutes)
 
-    dayTime: 6000   # Set the day period
+    dayTime: 6000     # Set the day period during the game
+    hubDayTime: 6000  # Set the day period in the lobby
 
-    hub: "0;64;0"   # "x;y;z"
+    hub: "0;64;0"     # "x;y;z[;yaw[;pitch]]"
 
     # At least maxPlayers + maxVIP spawns
     spawns:

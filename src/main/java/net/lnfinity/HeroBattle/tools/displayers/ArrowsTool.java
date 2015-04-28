@@ -22,7 +22,7 @@ public class ArrowsTool extends PlayerTool {
 
 	private final int COOLDOWN; // seconds
 	private final int ARROWS_TO_FIRE;
-	private int taskId;
+	private Integer taskId = null;
 
 	public ArrowsTool(HeroBattle plugin, int cooldown, int count) {
 		super(plugin);
@@ -55,6 +55,11 @@ public class ArrowsTool extends PlayerTool {
 	@Override
 	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
 		if (ToolsUtils.isToolAvailable(tool)) {
+			if(taskId != null) {
+				try {
+					p.getServer().getScheduler().cancelTask(taskId);
+				} catch(IllegalStateException ignored) {}
+			}
 			taskId = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
 				int loop = 1;
 
@@ -79,6 +84,7 @@ public class ArrowsTool extends PlayerTool {
 					arrow.setVelocity(vector);
 					if (loop >= ARROWS_TO_FIRE) {
 						p.getServer().getScheduler().cancelTask(taskId);
+						taskId = null;
 					}
 					loop++;
 				}
