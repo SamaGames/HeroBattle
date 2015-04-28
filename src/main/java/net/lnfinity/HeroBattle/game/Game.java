@@ -164,6 +164,26 @@ public class Game implements GameArena {
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
 			}
 		}, 60l);
+
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				// Toxic water
+				if(p.getArenaConfig().getBoolean("map.toxicWater", false)) {
+					p.getServer().broadcastMessage(ChatColor.DARK_AQUA + "-----------------------------------------------------");
+					p.getServer().broadcastMessage(ChatColor.DARK_AQUA + "[×] " + ChatColor.AQUA + "Attention, l'eau est " + ChatColor.DARK_AQUA + "toxique" + ChatColor.AQUA + " sur cette carte !");
+					p.getServer().broadcastMessage(ChatColor.DARK_AQUA + "-----------------------------------------------------");
+				}
+
+				// Toxic lava
+				if(p.getArenaConfig().getBoolean("map.toxicLava", false)) {
+					p.getServer().broadcastMessage(ChatColor.DARK_RED + "-----------------------------------------------------");
+					p.getServer().broadcastMessage(ChatColor.DARK_RED + "[×] " + ChatColor.GOLD + "Attention, la lave est " + ChatColor.RED + "instantanément mortelle" + ChatColor.GOLD + " ici !");
+					p.getServer().broadcastMessage(ChatColor.DARK_RED + "-----------------------------------------------------");
+				}
+
+			}
+		}, 70l);
 	}
 
 	public void teleportPlayers() {
