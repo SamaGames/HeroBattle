@@ -188,12 +188,19 @@ public class ActionBar {
 		nmsver = nmsver.substring(nmsver.lastIndexOf(".") + 1);
 
 		try {
-			craftPlayerClass = Class.forName("org.bukkit.craftbukkit." + nmsver + ".entity.CraftPlayer");
-			packetPlayOutChatClass = Class.forName("net.minecraft.server." + nmsver + ".PacketPlayOutChat");
-			packetClass = Class.forName("net.minecraft.server." + nmsver + ".Packet");
-			chatSerializerClass = Class.forName("net.minecraft.server." + nmsver + ".ChatSerializer");
+
 			iChatBaseComponentClass = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
-			chatComponentTextClass = Class.forName("net.minecraft.server." + nmsver + ".ChatComponentText");
+			packetPlayOutChatClass = Class.forName("net.minecraft.server." + nmsver + ".PacketPlayOutChat");
+			craftPlayerClass = Class.forName("org.bukkit.craftbukkit." + nmsver + ".entity.CraftPlayer");
+			packetClass = Class.forName("net.minecraft.server." + nmsver + ".Packet");
+
+			if (nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_")) {
+				chatSerializerClass = Class.forName("net.minecraft.server." + nmsver + ".ChatSerializer");
+			}
+			else {
+				chatComponentTextClass = Class.forName("net.minecraft.server." + nmsver + ".ChatComponentText");
+			}
+
 		} catch(Exception e) {
 			enabled = false;
 		}
