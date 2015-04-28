@@ -331,6 +331,15 @@ public class Game implements GameArena {
 					killedByMessage = ChatColor.RED + "Vous êtes tombé dans l'eau !";
 
 					break;
+
+				case LAVA:
+					p.getServer().broadcastMessage(
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW + " s'est consumé dans la lave !"
+									+ lives);
+
+					killedByMessage = ChatColor.RED + "Vous vous êtes consumé dans la lave !";
+
+					break;
 			}
 		}
 
@@ -380,6 +389,16 @@ public class Game implements GameArena {
 					p.getServer().broadcastMessage(
 							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
 									+ " a été poussé dans l'eau par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
+									+ lives);
+
+					break;
+
+				case LAVA:
+					killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a poussé dans la lave";
+
+					p.getServer().broadcastMessage(
+							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
+									+ " a été poussé dans la lave par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 									+ lives);
 
 					break;

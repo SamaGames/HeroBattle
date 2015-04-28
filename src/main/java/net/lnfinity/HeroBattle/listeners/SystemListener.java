@@ -111,6 +111,13 @@ public class SystemListener implements Listener {
 				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.WATER);
 			}
 		}
+
+		// In-lava check
+		if(blockType == Material.LAVA || blockType == Material.STATIONARY_LAVA) {
+			if(plugin.getArenaConfig().getBoolean("map.toxicLava", false)) {
+				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.LAVA);
+			}
+		}
 	}
 
 	@EventHandler

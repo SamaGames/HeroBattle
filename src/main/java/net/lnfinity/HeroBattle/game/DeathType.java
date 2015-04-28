@@ -23,5 +23,12 @@ public enum DeathType {
 	 *
 	 * Only if enabled in the map's configuration file.
 	 */
-	WATER
+	WATER,
+
+	/**
+	 * The player entered into a block of lava.
+	 *
+	 * Only if enabled in the map's configuration file.
+	 */
+	LAVA
 }
