@@ -43,13 +43,13 @@ public class ClassSelectorListener implements Listener {
 
 		if (e.getWhoClicked() instanceof Player && e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta()) {
 			Player player = (Player) e.getWhoClicked();
-			GamePlayer gamePlayer = p.getGamePlayer(player);
+			GamePlayer gPlayer = p.getGamePlayer(player);
 			if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
+
 				if (e.getCurrentItem().equals(createExitItem())) {
 					player.closeInventory();
 					return;
 				}
-				GamePlayer gPlayer = p.getGamePlayer(player);
 				
 				PlayerClass clickedClass = p.getClassManager().getClassFromName(player, 
 						ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
@@ -107,17 +107,6 @@ public class ClassSelectorListener implements Listener {
 				}
 
 				e.setCancelled(true);
-			}
-		}
-
-		// Easter egg
-		else if(e.getWhoClicked() instanceof Player && e.getRawSlot() == e.getInventory().getSize() - 8 && e.getSlotType() == InventoryType.SlotType.CONTAINER) {
-			MaiteClass maite = new MaiteClass(p);
-			if (e.getClick().isLeftClick()) {
-				selectClass(((Player) e.getWhoClicked()), maite);
-				e.getWhoClicked().closeInventory();
-			} else if (e.getClick().isRightClick()) {
-				createDetails(((Player) e.getWhoClicked()), maite);
 			}
 		}
 	}
