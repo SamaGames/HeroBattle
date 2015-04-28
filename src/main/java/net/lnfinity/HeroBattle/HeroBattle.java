@@ -15,6 +15,7 @@ import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.themachine.CoherenceMachine;
 import net.zyuiop.MasterBundle.MasterBundle;
+import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -24,8 +25,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -89,28 +92,34 @@ public class HeroBattle extends JavaPlugin {
 		LoggedPluginManager events = new LoggedPluginManager(this) {
             @Override
             protected void customHandler(Event event, final Throwable e) {
-            	System.out.println("=============== Erreur ===============");
-            	System.out.println("Une erreur est survenue, voici la pile d'appels:");
-				System.out.println(Utils.tableToString(e.getStackTrace(), "\n"));
+	            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	            PrintStream printStream = new PrintStream(buffer);
+	            e.printStackTrace(printStream);
+	            final String trace = buffer.toString();
+
+            	System.err.println("=============== Erreur ===============");
+            	System.err.println("Une erreur est survenue, voici la pile d'appels:");
+				System.err.println(trace);
+
 				if(HeroBattle.errorCalls < 10) {
 					HeroBattle.errorCalls++;
 					Bukkit.getScheduler().runTaskAsynchronously(HeroBattle.instance, new Runnable() {
 						@Override
 						public void run() {
 							try {
-								URL url = new URL("http://lnfinity.net/tasks/stack?s=" + URLEncoder.encode(MasterBundle.getServerName(), "UTF-8") + "&e=" + URLEncoder.encode(e.getCause().toString(), "UTF-8") + "&stack=" + URLEncoder.encode(Utils.tableToString(e.getStackTrace(), "__"), "UTF-8"));
+								URL url = new URL("http://lnfinity.net/tasks/stack?s=" + URLEncoder.encode(MasterBundle.getServerName(), "UTF-8") + "&e=" + URLEncoder.encode(e.getCause().toString(), "UTF-8") + "&stack=" + URLEncoder.encode(trace, "UTF-8"));
 								url.openStream();
 							} catch (IOException ex) {
-								System.out.println("Erreur lors de l'envoi de la pile:");
+								System.err.println("Erreur lors de l'envoi de la pile:");
 								ex.printStackTrace();
 							}
 						}
 					});
 					
 				} else {
-					System.out.println("Le plafond est atteint, les erreurs ne seront plus envoyées.");
+					System.err.println("Le plafond est atteint, les erreurs ne seront plus envoyées.");
 				}
-            	System.out.println("=============== Erreur ===============");
+            	System.err.println("=============== Erreur ===============");
             }
         };
         
@@ -143,7 +152,9 @@ public class HeroBattle extends JavaPlugin {
 
 		addOnlinePlayers();
 
-		GameAPI.registerGame(getConfig().getString("gameName"), g);
+		try {
+			GameAPI.registerGame(getConfig().getString("gameName"), g);
+		} catch(NullPointerException ignored) {} // In offline mode
 
 		g.setStatus(Status.Available);
 	}

@@ -22,6 +22,12 @@ public abstract class PlayerClass {
 	 */
 	protected Team classTeam = null;
 
+	/**
+	 * The scoreboard team representing a random class, in the tab list,
+	 * before the beginning of the game.
+	 */
+	protected static Team randomClassTeam = null;
+
 
 	public PlayerClass(HeroBattle plugin) {
 		p = plugin;
@@ -195,6 +201,23 @@ public abstract class PlayerClass {
 		}
 
 		return classTeam;
+	}
+
+	public static Team getRandomClassTeam() {
+		if(randomClassTeam == null) {
+			String teamName = "Aléatoire";
+
+			randomClassTeam = HeroBattle.getInstance().getScoreboardManager().getScoreboard().getTeam(teamName);
+
+			if(randomClassTeam == null) {
+				randomClassTeam = HeroBattle.getInstance().getScoreboardManager().getScoreboard().registerNewTeam(teamName);
+				randomClassTeam.setSuffix(ChatColor.GRAY + " \u2042 " + "Aléatoire");
+				randomClassTeam.setCanSeeFriendlyInvisibles(false);
+				randomClassTeam.setAllowFriendlyFire(true);
+			}
+		}
+
+		return randomClassTeam;
 	}
 
 

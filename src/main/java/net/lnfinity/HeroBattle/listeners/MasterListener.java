@@ -33,6 +33,7 @@ public class MasterListener implements Listener {
 	public void onPlayerJoin(FinishJoinPlayerEvent ev) {
 		final Player p = plugin.getServer().getPlayer(ev.getPlayer());
 		plugin.addGamePlayer(p);
+
 		p.getInventory().clear();
 		p.getInventory().setArmorContents(null);
 		p.setExp(0);

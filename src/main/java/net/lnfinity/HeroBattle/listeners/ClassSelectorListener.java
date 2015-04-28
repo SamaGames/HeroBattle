@@ -274,8 +274,11 @@ public class ClassSelectorListener implements Listener {
 		randomMeta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Classe aléatoire");
 
 		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Indécis ? Laissez le Destin choisir");
-		lore.add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "votre classe !");
+		lore.add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Indécis ? Laissez le Destin choisir votre");
+		lore.add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "classe !");
+		lore.add("");
+		lore.add(ChatColor.LIGHT_PURPLE + "Choisir explicitement une classe aléatoire");
+		lore.add(ChatColor.LIGHT_PURPLE + "vous permet de multiplier vos gains !");
 		lore.add("");
 		lore.add(ChatColor.GRAY + "• Clic gauche pour une classe aléatoire");
 

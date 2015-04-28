@@ -251,10 +251,7 @@ public class GamePlayer {
 
 			Player player = Bukkit.getPlayer(playerID);
 			if(player != null) {
-				Team playerTeam = HeroBattle.getInstance().getScoreboardManager().getScoreboard().getPlayerTeam(player);
-				if (playerTeam != null) {
-					playerTeam.removePlayer(player);
-				}
+				PlayerClass.getRandomClassTeam().addPlayer(player);
 			}
 		}
 
