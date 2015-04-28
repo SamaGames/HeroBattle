@@ -13,6 +13,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.themachine.CoherenceMachine;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -123,6 +124,21 @@ public class HeroBattle extends JavaPlugin {
 		for (Player player : this.getServer().getOnlinePlayers()) {
 			this.addGamePlayer(player);
 			getClassManager().addPlayerClasses(player);
+			player.setScoreboard(getScoreboardManager().getScoreboard());
+			getGame().equipPlayer(player);
+			player.updateInventory();
+
+			player.setExp(0);
+			player.setLevel(0);
+
+			getGame().teleportHub(player.getUniqueId());
+
+			player.setGameMode(GameMode.ADVENTURE);
+
+			player.setMaxHealth(20);
+			player.setHealth(20);
+
+			player.getInventory().setArmorContents(null);
 		}
 	}
 
