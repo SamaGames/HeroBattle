@@ -103,19 +103,21 @@ public class SystemListener implements Listener {
 		}
 
 
-		Material blockType = e.getPlayer().getLocation().getBlock().getType();
+		if (plugin.getGame().getStatus() == Status.InGame) {
+			Material blockType = e.getPlayer().getLocation().getBlock().getType();
 
-		// In-water check
-		if(blockType == Material.WATER || blockType == Material.STATIONARY_WATER) {
-			if(plugin.getArenaConfig().getBoolean("map.toxicWater", false)) {
-				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.WATER);
+			// In-water check
+			if (blockType == Material.WATER || blockType == Material.STATIONARY_WATER) {
+				if (plugin.getArenaConfig().getBoolean("map.toxicWater", false)) {
+					plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.WATER);
+				}
 			}
-		}
 
-		// In-lava check
-		if(blockType == Material.LAVA || blockType == Material.STATIONARY_LAVA) {
-			if(plugin.getArenaConfig().getBoolean("map.toxicLava", false)) {
-				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.LAVA);
+			// In-lava check
+			if (blockType == Material.LAVA || blockType == Material.STATIONARY_LAVA) {
+				if (plugin.getArenaConfig().getBoolean("map.toxicLava", false)) {
+					plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.LAVA);
+				}
 			}
 		}
 	}
