@@ -185,9 +185,12 @@ public abstract class PlayerClass {
 			String teamName = getName().substring(0, Math.min(16, getName().length()));
 
 			classTeam = p.getScoreboardManager().getScoreboard().getTeam(teamName);
+
 			if(classTeam == null) {
 				classTeam = p.getScoreboardManager().getScoreboard().registerNewTeam(teamName);
 				classTeam.setSuffix(ChatColor.GRAY + " \u2042 " + getName());
+				classTeam.setCanSeeFriendlyInvisibles(false);
+				classTeam.setAllowFriendlyFire(true);
 			}
 		}
 

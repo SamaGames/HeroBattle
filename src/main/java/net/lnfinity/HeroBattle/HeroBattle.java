@@ -175,6 +175,8 @@ public class HeroBattle extends JavaPlugin {
 			player.setHealth(20);
 
 			player.getInventory().setArmorContents(null);
+
+
 		}
 	}
 
