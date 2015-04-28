@@ -61,7 +61,7 @@ public class ArcherClass extends PlayerClass {
 
 	@Override
 	public int getMaxResistance() {
-		return 125;
+		return 145;
 	}
 
 	@Override
