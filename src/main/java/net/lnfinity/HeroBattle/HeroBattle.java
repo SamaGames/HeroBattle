@@ -90,15 +90,15 @@ public class HeroBattle extends JavaPlugin {
 		arenaConfig.setDefaults(YamlConfiguration.loadConfiguration(new File(getDataFolder(), "arena.yml")));
 
 		LoggedPluginManager events = new LoggedPluginManager(this) {
-            @Override
-            protected void customHandler(Event event, final Throwable e) {
-	            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-	            PrintStream printStream = new PrintStream(buffer);
-	            e.printStackTrace(printStream);
-	            final String trace = buffer.toString();
+			@Override
+			protected void customHandler(Event event, final Throwable e) {
+				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+				PrintStream printStream = new PrintStream(buffer);
+				e.printStackTrace(printStream);
+				final String trace = buffer.toString();
 
-            	System.err.println("=============== Erreur ===============");
-            	System.err.println("Une erreur est survenue, voici la pile d'appels:");
+				System.err.println("=============== Erreur ===============");
+				System.err.println("Une erreur est survenue, voici la pile d'appels:");
 				System.err.println(trace);
 
 				if(HeroBattle.errorCalls < 10) {
@@ -119,11 +119,11 @@ public class HeroBattle extends JavaPlugin {
 				} else {
 					System.err.println("Le plafond est atteint, les erreurs ne seront plus envoyées.");
 				}
-            	System.err.println("=============== Erreur ===============");
-            }
-        };
-        
-        events.registerEvents(new MasterListener(this), this);
+				System.err.println("=============== Erreur ===============");
+			}
+		};
+
+		events.registerEvents(new MasterListener(this), this);
 		events.registerEvents(new GameListener(this), this);
 		events.registerEvents(new SystemListener(this), this);
 		events.registerEvents(new ClassSelectorListener(this), this);
