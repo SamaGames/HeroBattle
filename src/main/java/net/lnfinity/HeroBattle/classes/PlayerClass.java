@@ -2,13 +2,15 @@ package net.lnfinity.HeroBattle.classes;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public abstract class PlayerClass {
 
@@ -16,17 +18,6 @@ public abstract class PlayerClass {
 	protected List<PlayerTool> tools = new ArrayList<PlayerTool>();
 
 	protected List<String> detailsLore = null;
-
-	/**
-	 * The scoreboard team representing this class, in the tab list.
-	 */
-	protected Team classTeam = null;
-
-	/**
-	 * The scoreboard team representing a random class, in the tab list,
-	 * before the beginning of the game.
-	 */
-	protected static Team randomClassTeam = null;
 
 
 	public PlayerClass(HeroBattle plugin) {
@@ -186,38 +177,55 @@ public abstract class PlayerClass {
 		return detailsLore;
 	}
 
-	public Team getClassTeam() {
-		if(classTeam == null) {
-			String teamName = getName().substring(0, Math.min(16, getName().length()));
-
-			classTeam = p.getScoreboardManager().getScoreboard().getTeam(teamName);
-
-			if(classTeam == null) {
-				classTeam = p.getScoreboardManager().getScoreboard().registerNewTeam(teamName);
-				classTeam.setSuffix(ChatColor.GRAY + " \u2042 " + getName());
-				classTeam.setCanSeeFriendlyInvisibles(false);
-				classTeam.setAllowFriendlyFire(true);
-			}
-		}
-
-		return classTeam;
+	/**
+	 * Sets the team for this class to the given player.
+	 *
+	 * To have a goodly formatted name in the tab.
+	 *
+	 * @param player The player.
+	 */
+	public void setClassTeam(Player player) {
+		setNamedClassTeam(player, getName());
 	}
 
-	public static Team getRandomClassTeam() {
-		if(randomClassTeam == null) {
-			String teamName = "Aléatoire";
+	/**
+	 * Sets the team for a random class to the given player.
+	 *
+	 * To have a goodly formatted name in the tab.
+	 *
+	 * @param player The player.
+	 */
+	public static void setRandomClassTeam(Player player) {
+		setNamedClassTeam(player, "Aléatoire");
+	}
 
-			randomClassTeam = HeroBattle.getInstance().getScoreboardManager().getScoreboard().getTeam(teamName);
+	/**
+	 * Sets the team for a class named “className” to the given player.
+	 *
+	 * To have a goodly formatted name in the tab.
+	 *
+	 * @param player The player.
+	 */
+	private static void setNamedClassTeam(Player player, String className) {
 
-			if(randomClassTeam == null) {
-				randomClassTeam = HeroBattle.getInstance().getScoreboardManager().getScoreboard().registerNewTeam(teamName);
-				randomClassTeam.setSuffix(ChatColor.GRAY + " \u2042 " + "Aléatoire");
-				randomClassTeam.setCanSeeFriendlyInvisibles(false);
-				randomClassTeam.setAllowFriendlyFire(true);
-			}
+		Team oldTeam = HeroBattle.getInstance().getScoreboardManager().getScoreboard().getPlayerTeam(player);
+		if(oldTeam != null) {
+			oldTeam.unregister();
 		}
 
-		return randomClassTeam;
+
+		String playerColor = Utils.getPlayerColor(player);
+
+		Team classTeam = HeroBattle.getInstance().getScoreboardManager().getScoreboard().registerNewTeam(Utils.getRandomAvailableTeamName());
+
+		classTeam.setDisplayName(playerColor + player.getName() + ChatColor.GRAY + " \u2042 " + ChatColor.RESET + className);
+		classTeam.setSuffix(ChatColor.GRAY + " \u2042 " + className);
+		classTeam.setPrefix(playerColor);
+
+		classTeam.setCanSeeFriendlyInvisibles(false);
+		classTeam.setAllowFriendlyFire(true);
+
+		classTeam.addPlayer(player);
 	}
 
 

@@ -3,7 +3,8 @@ package net.lnfinity.HeroBattle.listeners;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.utils.ActionBar;
-import net.md_5.bungee.api.ChatColor;
+import net.lnfinity.HeroBattle.utils.Utils;
+import org.bukkit.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.events.FinishJoinPlayerEvent;
 import net.samagames.gameapi.events.JoinModEvent;
@@ -20,6 +21,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Team;
+
+import java.util.Random;
 
 public class MasterListener implements Listener {
 
@@ -40,6 +44,28 @@ public class MasterListener implements Listener {
 		p.setLevel(0);
 		p.setTotalExperience(0);
 		p.setGameMode(GameMode.ADVENTURE);
+
+		p.setScoreboard(plugin.getScoreboardManager().getScoreboard());
+
+		// Debug
+		if(!MasterBundle.isDbEnabled)
+			p.setDisplayName(ChatColor.values()[new Random().nextInt(ChatColor.values().length)] + p.getName() + ChatColor.RESET);
+
+		// Good color in the tab list
+		plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+			@Override
+			public void run() {
+				String groupColor = Utils.getPlayerColor(p);
+
+				String teamName = "_" + new Random().nextInt(1000) + p.getName();
+				teamName = teamName.substring(0, Math.min(teamName.length(), 16));
+
+				Team playerTeam = plugin.getScoreboardManager().getScoreboard().registerNewTeam(teamName);
+				playerTeam.setDisplayName(p.getName());
+				playerTeam.setPrefix(groupColor);
+				playerTeam.addPlayer(p);
+			}
+		}, 10l);
 
 		// If the player left during a tutorial, this value may be set to 0f.
 		p.setFlySpeed(0.1f);
@@ -69,8 +95,6 @@ public class MasterListener implements Listener {
 		if (!plugin.getTimer().isEnabled() && plugin.getPlayerCount() >= plugin.getGame().getMinPlayers()) {
 			plugin.getTimer().restartTimer();
 		}
-
-		p.setScoreboard(plugin.getScoreboardManager().getScoreboard());
 
 		p.setMaxHealth(20);
 		p.setHealth(20);

@@ -12,6 +12,7 @@ import net.lnfinity.HeroBattle.utils.GameTimer;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
+import net.samagames.gameapi.events.FinishJoinPlayerEvent;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.themachine.CoherenceMachine;
 import net.zyuiop.MasterBundle.MasterBundle;
@@ -32,6 +33,7 @@ import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -150,13 +152,14 @@ public class HeroBattle extends JavaPlugin {
 		powerupManager = new PowerupManager(this);
 		tutorialDisplayer = new TutorialDisplayer(this);
 
-		addOnlinePlayers();
-
 		try {
 			GameAPI.registerGame(getConfig().getString("gameName"), g);
 		} catch(NullPointerException ignored) {} // In offline mode
 
 		g.setStatus(Status.Available);
+
+		// /reload support
+		addOnlinePlayers();
 	}
 
 	public void onDisable() {
@@ -166,27 +169,12 @@ public class HeroBattle extends JavaPlugin {
 		GameAPI.getManager().disable();
 	}
 
-	// For local debuging purpose only (/rl)
+	// For local debugging purposes only (/rl)
 	public void addOnlinePlayers() {
 		for (Player player : this.getServer().getOnlinePlayers()) {
-			this.addGamePlayer(player);
-			getClassManager().addPlayerClasses(player);
-			player.setScoreboard(getScoreboardManager().getScoreboard());
-			getGame().equipPlayer(player);
-			player.updateInventory();
 
-			player.setExp(0);
-			player.setLevel(0);
-
-			getGame().teleportHub(player.getUniqueId());
-
-			player.setGameMode(GameMode.ADVENTURE);
-
-			player.setMaxHealth(20);
-			player.setHealth(20);
-
-			player.getInventory().setArmorContents(null);
-
+			FinishJoinPlayerEvent ev = new FinishJoinPlayerEvent(player.getUniqueId());
+			new MasterListener(this).onPlayerJoin(ev);
 
 		}
 	}

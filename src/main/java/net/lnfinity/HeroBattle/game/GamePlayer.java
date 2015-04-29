@@ -8,15 +8,12 @@ import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
 import net.zyuiop.MasterBundle.StarsManager;
 import net.zyuiop.coinsManager.CoinsManager;
-import net.zyuiop.statsapi.StatsApi;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -241,7 +238,7 @@ public class GamePlayer {
 
 			Player player = Bukkit.getPlayer(playerID);
 			if(player != null) {
-				getPlayerClass().getClassTeam().addPlayer(player);
+				getPlayerClass().setClassTeam(player);
 			}
 		}
 
@@ -251,7 +248,7 @@ public class GamePlayer {
 
 			Player player = Bukkit.getPlayer(playerID);
 			if(player != null) {
-				PlayerClass.getRandomClassTeam().addPlayer(player);
+				PlayerClass.setRandomClassTeam(player);
 			}
 		}
 

@@ -371,7 +371,7 @@ public class Game implements GameArena {
 		}
 
 		else {
-			String groupColor = ChatColor.getLastColors(lastDamagerPlayer.getDisplayName());
+			String groupColor = Utils.getPlayerColor(lastDamagerPlayer);
 			switch (death) {
 				case FALL:
 					if(player.getUniqueId().equals(lastDamagerPlayer.getUniqueId())) {

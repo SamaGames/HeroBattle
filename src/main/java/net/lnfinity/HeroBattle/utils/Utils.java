@@ -5,6 +5,7 @@ import net.lnfinity.HeroBattle.game.GamePlayer;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -65,9 +66,6 @@ public final class Utils {
 	}
 
 	public static String formatNumber(double number) {
-		DecimalFormat bigNumbersFormat = new DecimalFormat("###,###,###");
-		bigNumbersFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.FRANCE));
-
 		return bigNumbersFormat.format(number).replace(" ", " ");
 	}
 
@@ -100,7 +98,8 @@ public final class Utils {
 		if (player.getPlayerClass() == null) {
 			return "";
 		}
-		if (transition == false) {
+
+		if (!transition) {
 			return heartsToString(player.getLives(), player.getPlayerClass().getLives());
 		} else {
 			return heartsToString(player.getLives() + 1, player.getPlayerClass().getLives());
@@ -124,27 +123,32 @@ public final class Utils {
 	}
 
 	public static List<String> getToolDescription(String desc) {
-		List<String> lines = new ArrayList<String>();
+		List<String> lines = new ArrayList<>();
 		String[] words = desc.split(" ");
 		int line = 0;
 		lines.add(line, "");
-		for (int k = 0; k < words.length; k++) {
-			int chars = new String(lines.get(line) + " " + words[k]).length() - countColors(lines.get(line) + " " + words[k]);
-			if(chars >= 45) {
+
+		for (String word : words) {
+			int chars = (lines.get(line) + " " + word).length() - countColors(lines.get(line) + " " + word);
+
+			if (chars >= 45) {
 				line++;
-				lines.add(line, ChatColor.GRAY + words[k]);
-			} else {
-				if(lines.equals("")) {
-					lines.set(line, ChatColor.GRAY + words[k]);
+				lines.add(line, ChatColor.GRAY + word);
+			}
+
+			else {
+				if (lines.get(line).equals("")) {
+					lines.set(line, ChatColor.GRAY + word);
 				} else {
-					lines.set(line, lines.get(line) + " " + words[k]);
+					lines.set(line, lines.get(line) + " " + word);
 				}
 			}
 		}
-		lines.set(0, lines.get(0).trim());
+
 		for(int k = 0; k < lines.size(); k++) {
 			lines.set(k, lines.get(k).trim());
 		}
+
 		return lines;
 	}
 	
@@ -159,15 +163,32 @@ public final class Utils {
 	}
 
 	public static String tableToString(StackTraceElement[] table, String delimiter) {
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
+
 		for (int i = 0; i < table.length; i++) {
 		   result.append(table[i]);
 		   if(i + 1 != table.length) {
 			   result.append(delimiter);
 		   }
 		}
+
 		return result.toString();
 	}
+
+	public static String getRandomAvailableTeamName() {
+		do {
+			String teamName = rnd.nextInt(99999999) + "" + rnd.nextInt(99999999);
+			if(HeroBattle.getInstance().getScoreboardManager().getScoreboard().getTeam(teamName) == null) {
+				return teamName;
+			}
+		} while(true);
+	}
+
+	public static String getPlayerColor(Player player) {
+		return ChatColor.getLastColors(player.getDisplayName().replaceAll(ChatColor.RESET.toString(), ""));
+	}
+
+
 
 	static {
 		DecimalFormat bigNumbersFormat = new DecimalFormat("###,###,###");
