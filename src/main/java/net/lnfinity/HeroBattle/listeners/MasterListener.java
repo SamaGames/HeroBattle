@@ -35,6 +35,12 @@ public class MasterListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerJoin(FinishJoinPlayerEvent ev) {
+
+		if(plugin.getGamePlayers().size() >= plugin.getGame().getTotalMaxPlayers()) {
+			ev.refuse(ChatColor.RED + "Cette partie est complète, désolé !");
+			return;
+		}
+
 		final Player p = plugin.getServer().getPlayer(ev.getPlayer());
 		plugin.addGamePlayer(p);
 
