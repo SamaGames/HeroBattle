@@ -191,7 +191,7 @@ public final class Utils {
 
 
 	static {
-		DecimalFormat bigNumbersFormat = new DecimalFormat("###,###,###");
+		bigNumbersFormat = new DecimalFormat("###,###,###");
 		bigNumbersFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.FRANCE));
 	}
 }
