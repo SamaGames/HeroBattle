@@ -1,41 +1,47 @@
 package net.lnfinity.HeroBattle;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import net.lnfinity.HeroBattle.classes.ClassManager;
 import net.lnfinity.HeroBattle.game.Game;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.game.ScoreboardManager;
-import net.lnfinity.HeroBattle.listeners.*;
+import net.lnfinity.HeroBattle.listeners.ClassSelectionCommand;
+import net.lnfinity.HeroBattle.listeners.ClassSelectorListener;
+import net.lnfinity.HeroBattle.listeners.CommandListener;
+import net.lnfinity.HeroBattle.listeners.GameListener;
+import net.lnfinity.HeroBattle.listeners.MasterListener;
+import net.lnfinity.HeroBattle.listeners.PowerupsListener;
+import net.lnfinity.HeroBattle.listeners.SystemListener;
 import net.lnfinity.HeroBattle.powerups.PowerupManager;
 import net.lnfinity.HeroBattle.tutorial.TutorialDisplayer;
 import net.lnfinity.HeroBattle.utils.CountdownTimer;
 import net.lnfinity.HeroBattle.utils.GameTimer;
-import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.events.FinishJoinPlayerEvent;
 import net.samagames.gameapi.json.Status;
 import net.samagames.gameapi.themachine.CoherenceMachine;
 import net.zyuiop.MasterBundle.MasterBundle;
-import org.apache.commons.lang.ObjectUtils;
+
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class HeroBattle extends JavaPlugin {
 
@@ -94,14 +100,14 @@ public class HeroBattle extends JavaPlugin {
 		LoggedPluginManager events = new LoggedPluginManager(this) {
 			@Override
 			protected void customHandler(Event event, final Throwable e) {
-				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-				PrintStream printStream = new PrintStream(buffer);
-				e.printStackTrace(printStream);
-				final String trace = buffer.toString();
+				final StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				e.printStackTrace(pw);
 
 				System.err.println("=============== Erreur ===============");
 				System.err.println("Une erreur est survenue, voici la pile d'appels:");
-				System.err.println(trace);
+				System.err.println(e.getCause().toString());
+				e.printStackTrace();
 
 				if(HeroBattle.errorCalls < 10) {
 					HeroBattle.errorCalls++;
@@ -109,7 +115,7 @@ public class HeroBattle extends JavaPlugin {
 						@Override
 						public void run() {
 							try {
-								URL url = new URL("http://lnfinity.net/tasks/stack?s=" + URLEncoder.encode(MasterBundle.getServerName(), "UTF-8") + "&e=" + URLEncoder.encode(e.getCause().toString(), "UTF-8") + "&stack=" + URLEncoder.encode(trace, "UTF-8"));
+								URL url = new URL("http://lnfinity.net/tasks/stack?s=" + URLEncoder.encode(MasterBundle.getServerName(), "UTF-8") + "&e=" + URLEncoder.encode(e.getCause().toString(), "UTF-8") + "&stack=" + URLEncoder.encode(sw.getBuffer().toString().replace(System.lineSeparator(), "__"), "UTF-8").replace("%09", ""));
 								url.openStream();
 							} catch (IOException ex) {
 								System.err.println("Erreur lors de l'envoi de la pile:");
