@@ -224,8 +224,9 @@ public abstract class PlayerClass {
 		String playerColor = Utils.getPlayerColor(player);
 
 		Team classTeam = HeroBattle.getInstance().getScoreboardManager().getScoreboard().registerNewTeam(Utils.getRandomAvailableTeamName());
-
-		classTeam.setDisplayName(playerColor + player.getName() + ChatColor.GRAY + " \u2042 " + ChatColor.RESET + className);
+		String displayName = playerColor + player.getName() + ChatColor.GRAY + " \u2042 " + ChatColor.RESET + className;
+		displayName = displayName.substring(0, Math.min(displayName.length(), 31));
+		classTeam.setDisplayName(displayName);
 		classTeam.setSuffix(ChatColor.GRAY + " \u2042 " + className);
 		classTeam.setPrefix(playerColor);
 
