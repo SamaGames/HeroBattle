@@ -56,12 +56,11 @@ public class ClassSelectorListener implements Listener {
 
 				if (clickedClass != null) {
 					if (e.getClick().isLeftClick()) {
-						// TODO Version prod
-						//if(p.getClassManager().playerHasClass(gamePlayer, clickedClass.getType())) {
+						if(p.getClassManager().playerHasClass(gPlayer, clickedClass.getType())) {
 							selectClass(player, clickedClass);
-						//} else {
-						//player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
-						//}
+						} else {
+						player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
+						}
 						player.closeInventory();
 
 					} else if (e.getClick().isRightClick()) {
@@ -92,16 +91,13 @@ public class ClassSelectorListener implements Listener {
 
 					if(className.equals("Maïté")) {
 						selectClass(player, new MaiteClass(p));
-					}
-					// TODO Version prod
-					else {
-					//else if(p.getClassManager().playerHasClass(gamePlayer, p.getClassManager().getClassFromName(player, className).getType())) {
+					} else if(p.getClassManager().playerHasClass(gPlayer, p.getClassManager().getClassFromName(player, className).getType())) {
 						selectClass(player, p.getClassManager().getClassFromName(player, className));
 					}
 
-					//else {
-					//	player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
-					//}
+					else {
+						player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
+					}
 
 					player.closeInventory();
 				}
@@ -219,11 +215,10 @@ public class ClassSelectorListener implements Listener {
 
 		if (isEnabled) {
 			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + ChatColor.BOLD + "" + theClass.getName());
-		// TODO Version prod
-		/*} else if(!available){
+		} else if(!available){
 			meta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + theClass.getName());
-		 */
-			} else {
+		 
+		} else {
 			meta.setDisplayName(ChatColor.RESET + theClass.getName());
 		}
 
@@ -240,7 +235,7 @@ public class ClassSelectorListener implements Listener {
 		lore.add("");
 		lore.add("");
 
-		if(true || available) { // TODO Temp, remove for production
+		if(available) {
 			lore.add(ChatColor.GRAY + "• Clic gauche pour jouer avec cette classe");
 		}
 
@@ -252,9 +247,7 @@ public class ClassSelectorListener implements Listener {
 		}
 		if(!available) {
 			lore.add("");
-			// TODO Version prod
-			// lore.add(ChatColor.RED + "Non débloqué");
-			lore.add(ChatColor.AQUA + "Testable en " + ChatColor.GREEN + "bêta VIP " + ChatColor.AQUA + "!");
+			lore.add(ChatColor.RED + "Non débloqué(e)");
 		}
 
 		meta.setLore(lore);
