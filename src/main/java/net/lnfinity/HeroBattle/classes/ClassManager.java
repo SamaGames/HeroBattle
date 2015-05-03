@@ -3,12 +3,15 @@ package net.lnfinity.HeroBattle.classes;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.displayers.*;
 import net.lnfinity.HeroBattle.game.GamePlayer;
+import net.zyuiop.MasterBundle.FastJedis;
 import net.zyuiop.MasterBundle.MasterBundle;
+
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import redis.clients.jedis.ShardedJedis;
 
 import java.util.ArrayList;
@@ -93,49 +96,45 @@ public class ClassManager {
 
 	public void addPlayerClasses(final Player player) {
 		// TODO Warning, this may cause problems if the request is lost (somehow)
-		p.getServer().getScheduler().runTaskAsynchronously(p, new Runnable() {
-			private final String DEF = "{\"brute\":[\"0\",\"0\",\"0\"],\"guerrier\":[\"0\",\"0\",\"0\"],\"archer\":[\"0\",\"0\",\"0\"],\"mage\":[\"0\",\"0\",\"0\"]}";
-			@Override
-			public void run() {
-				GamePlayer gamePlayer = p.getGamePlayer(player);
-				String json;
-				if (MasterBundle.isDbEnabled) {
-					ShardedJedis jedis = MasterBundle.jedis();
-					json = jedis.hget("herobattle:playerdatas", player.getUniqueId().toString());
-					if(json == null || json == "" || json == "0") {
-						MasterBundle.jedis().hset("herobattle:playerdatas",  player.getUniqueId().toString(), DEF);
-						json = DEF;
-					}
-					jedis.close();
-				} else {
-					// Default
-					json = DEF;
-				}
-
-				JSONParser parser = new JSONParser();
-				try {
-					JSONObject obj = (JSONObject) parser.parse(json);
-					for (int i = 0; i < totalClasses.size(); i++) {
-						JSONArray values = (JSONArray) obj.get(totalClasses.get(i).getId().toLowerCase());
-						if (values != null) {
-							Iterator<String> iterator = values.iterator();
-							int[] vals = { 0, 0, 0 };
-							int k = 0;
-							while (iterator.hasNext()) {
-								vals[k] = Integer.parseInt(iterator.next());
-								k++;
+		final GamePlayer gamePlayer = p.getGamePlayer(player);
+		final String prefix = "shops:" + HeroBattle.GAME_NAME_WHITE + ":";
+		final String sufix = ":" + player.getUniqueId() + ":current";
+		final String has = ".has";
+		final String cooldown = ".cooldown";
+		final String power = ".power";
+		final String tools = ".tools";
+		
+		for(PlayerClass theClass : availableClasses) {
+			final String className = theClass.getType().toString().toLowerCase();
+			final PlayerClass current = theClass;
+			p.getServer().getScheduler().runTaskAsynchronously(p, new Runnable() {
+				@Override
+				public void run() {
+					if (MasterBundle.isDbEnabled) {
+						String data = FastJedis.get(prefix + className + "." + has + sufix);
+						if(data != null && (data.equals("1") || className.equals("brute") || className.equals("guerrier") || className.equals("archer") || className.equals("mage"))) {
+							String A = FastJedis.get(prefix + className + "." + cooldown + sufix);
+							String B = FastJedis.get(prefix + className + "." + power + sufix);
+							String C = FastJedis.get(prefix + className + "." + tools + sufix);
+							try {
+								gamePlayer.addAvaibleClass(constructPlayerClass(current.getType(), Integer.parseInt(A), Integer.parseInt(B), Integer.parseInt(C)));
+							} catch(Exception ex) {
+								ex.printStackTrace();
 							}
-							gamePlayer.addAvaibleClass(constructPlayerClass(getPlayerClassType(totalClasses.get(i).getId()),
-									vals[0], vals[1], vals[2]));
+						} else {
+							// Player doesn't have that class !
 						}
+					} else {
+					// Default
+					gamePlayer.addAvaibleClass(new BruteClass(p, 0, 0, 0));
+					gamePlayer.addAvaibleClass(new GuerrierClass(p, 0, 0, 0));
+					gamePlayer.addAvaibleClass(new ArcherClass(p, 0, 0, 0));
+					gamePlayer.addAvaibleClass(new MageClass(p, 0, 0, 0));
 					}
 
-				} catch (ParseException ex) {
-					p.getLogger().warning("Can't decode Json data from player " + player.getUniqueId().toString());
-					ex.printStackTrace();
 				}
-			}
-		});
+			});
+		}
 	}
 
 	private PlayerClass constructPlayerClass(PlayerClassType type, int arg1, int arg2, int arg3) {
