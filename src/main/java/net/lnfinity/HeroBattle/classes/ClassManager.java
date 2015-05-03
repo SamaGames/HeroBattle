@@ -112,7 +112,7 @@ public class ClassManager {
 				public void run() {
 					if (MasterBundle.isDbEnabled) {
 						String data = FastJedis.get(prefix + className + "." + has + sufix);
-						if(data != null && (data.equals("1") || className.equals("brute") || className.equals("guerrier") || className.equals("archer") || className.equals("mage"))) {
+						if((data != null && (data.equals("1")) || className.equals("brute") || className.equals("guerrier") || className.equals("archer") || className.equals("mage"))) {
 							String A = FastJedis.get(prefix + className + "." + cooldown + sufix);
 							String B = FastJedis.get(prefix + className + "." + power + sufix);
 							String C = FastJedis.get(prefix + className + "." + tools + sufix);
