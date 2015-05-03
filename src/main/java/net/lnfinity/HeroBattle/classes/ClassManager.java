@@ -168,7 +168,7 @@ public class ClassManager {
 
 	public boolean playerHasClass(GamePlayer gamePlayer, PlayerClassType type) {
 		for (int i = 0; i < gamePlayer.getAvaibleClasses().size(); ++i) {
-			if (gamePlayer.getAvaibleClasses() != null && gamePlayer.getAvaibleClasses().get(i).getType() == type) {
+			if (gamePlayer != null && gamePlayer.getAvaibleClasses() != null && gamePlayer.getAvaibleClasses().get(i).getType() == type) {
 				return true;
 			}
 		}
