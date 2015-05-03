@@ -19,9 +19,16 @@ public abstract class PlayerClass {
 
 	protected List<String> detailsLore = null;
 
+	protected int cooldown;
+	protected int power;
+	protected int tool;
 
-	public PlayerClass(HeroBattle plugin) {
+	public PlayerClass(HeroBattle plugin, int cooldown, int power, int tool) {
 		p = plugin;
+		
+		this.cooldown = cooldown;
+		this.power = power;
+		this.tool = tool;
 	}
 	
 	/**
@@ -168,9 +175,9 @@ public abstract class PlayerClass {
 			detailsLore.add("");
 
 			detailsLore.add(ChatColor.AQUA + "Améliorations boutique");
-			detailsLore.add(ChatColor.GRAY + "Cooldowns : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
-			detailsLore.add(ChatColor.GRAY + "Puissance des capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
-			detailsLore.add(ChatColor.GRAY + "Nouvelles capacités : " + ChatColor.GOLD + "0" + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "2");
+			detailsLore.add(ChatColor.GRAY + "Cooldowns : " + ChatColor.GOLD + this.cooldown + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
+			detailsLore.add(ChatColor.GRAY + "Puissance des capacités : " + ChatColor.GOLD + this.power + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "5");
+			detailsLore.add(ChatColor.GRAY + "Nouvelles capacités : " + ChatColor.GOLD + this.tool + ChatColor.GRAY + "/" + ChatColor.DARK_GRAY + "2");
 		}
 
 

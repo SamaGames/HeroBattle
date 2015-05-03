@@ -15,7 +15,7 @@ import java.util.List;
 public class MaiteClass extends PlayerClass {
 
 	public MaiteClass(HeroBattle plugin) {
-		super(plugin);
+		super(plugin, 0, 0, 0);
 		
 		addTool(new SwordVariant8Tool(plugin));
 		addTool(new AnguilleTool(plugin));

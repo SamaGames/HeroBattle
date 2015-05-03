@@ -20,7 +20,7 @@ public class ArcherClass extends PlayerClass {
 	}
 
 	public ArcherClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
-		super(plugin);
+		super(plugin, arg1, arg2, arg3);
 
 		addTool(new SwordVariant3Tool(p));
 		addTool(new ArrowsTool(p, 15 - arg1, 3 + arg2));

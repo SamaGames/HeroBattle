@@ -20,7 +20,7 @@ public class BruteClass extends PlayerClass {
 	}
 
 	public BruteClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
-		super(plugin);
+		super(plugin, arg1, arg2, arg3);
 
 		addTool(new SwordTool(p));
 		addTool(new EarthquakeTool(p, 30 - arg1 * 2));

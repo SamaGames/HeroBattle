@@ -20,7 +20,7 @@ public class GuerrierClass extends PlayerClass {
 	}
 
 	public GuerrierClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
-		super(plugin);
+		super(plugin, arg1, arg2, arg3);
 
 		addTool(new SwordVariant1Tool(p, arg1));
 		addTool(new SpeedTool(p, 30 -  arg1 * 2, 8 + arg2));

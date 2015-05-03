@@ -20,7 +20,7 @@ public class DruideClass extends PlayerClass {
 	}
 	
 	public DruideClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
-		super(plugin);
+		super(plugin, arg1, arg2, arg3);
 		
 		addTool(new SwordVariant4Tool(plugin));
 		addTool(new HealingTool(plugin, 90 - arg1 * 2, 50 + arg2 * 4, 0.4 + arg2 * 0.5));

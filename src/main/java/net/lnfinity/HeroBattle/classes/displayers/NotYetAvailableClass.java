@@ -15,7 +15,7 @@ import java.util.List;
 public class NotYetAvailableClass extends PlayerClass {
 
 	public NotYetAvailableClass(HeroBattle plugin) {
-		super(plugin);
+		super(plugin, 0, 0, 0);
 	}
 
 	@Override

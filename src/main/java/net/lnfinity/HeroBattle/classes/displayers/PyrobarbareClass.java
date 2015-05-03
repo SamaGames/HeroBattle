@@ -20,7 +20,7 @@ public class PyrobarbareClass extends PlayerClass {
 	}
 
 	public PyrobarbareClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
-		super(plugin);
+		super(plugin, arg1, arg2, arg3);
 		
 		addTool(new SwordVariant6Tool(p));
 		addTool(new FireballTool(p, 30 - arg1 * 2));

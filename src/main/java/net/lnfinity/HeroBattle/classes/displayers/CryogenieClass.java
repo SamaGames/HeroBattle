@@ -20,7 +20,7 @@ public class CryogenieClass extends PlayerClass {
 	}
 
 	public CryogenieClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
-		super(plugin);
+		super(plugin, arg1, arg2, arg3);
 
 		addTool(new SwordVariant5Tool(p));
 		addTool(new InvincibleTool(p, 60 - arg1 * 2, 8 + arg2));
