@@ -4,9 +4,11 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.classes.PlayerClassType;
 import net.lnfinity.HeroBattle.tools.displayers.SmokeTool;
+import net.lnfinity.HeroBattle.tools.displayers.SpeedTool;
 import net.lnfinity.HeroBattle.tools.displayers.SwordVariant2Tool;
 import net.lnfinity.HeroBattle.tools.displayers.ThunderTool;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,6 +27,7 @@ public class MageClass extends PlayerClass {
 		addTool(new SwordVariant2Tool(p));
 		addTool(new SmokeTool(p, 30 - arg1 * 2, 8 + arg2));
 		addTool(new ThunderTool(p, 60 - arg1 * 4));
+		if(arg3 >= 1) addTool(new SpeedTool(p, 30 - arg1, (int) Math.floor(1 + arg2), 4 + arg2));
 	}
 
 	@Override

@@ -4,9 +4,11 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.classes.PlayerClassType;
 import net.lnfinity.HeroBattle.tools.displayers.EarthquakeTool;
+import net.lnfinity.HeroBattle.tools.displayers.InkTool;
 import net.lnfinity.HeroBattle.tools.displayers.NauseaTool;
 import net.lnfinity.HeroBattle.tools.displayers.SwordTool;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,6 +27,7 @@ public class BruteClass extends PlayerClass {
 		addTool(new SwordTool(p));
 		addTool(new EarthquakeTool(p, 30 - arg1 * 2));
 		addTool(new NauseaTool(p, 60 - arg1 * 4, 10 + arg2, 0.25 - arg2 * 0.05));
+		if(arg3 >= 1) addTool(new InkTool(p, 90 - arg1 * 4, 5 + arg2, 0.35 - arg2 * 0.05));
 	}
 
 	@Override

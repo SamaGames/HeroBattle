@@ -21,11 +21,13 @@ public class SpeedTool extends PlayerTool {
 
 	private final int COOLDOWN; // seconds
 	private final int EFFECT_DURATION;
+	private final int POWER;
 
-	public SpeedTool(HeroBattle plugin, int cooldown, int duration) {
+	public SpeedTool(HeroBattle plugin, int cooldown, int power, int duration) {
 		super(plugin);
 		COOLDOWN = cooldown;
 		EFFECT_DURATION = duration;
+		POWER = power;
 	}
 
 	@Override
@@ -40,7 +42,7 @@ public class SpeedTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Utils.getToolDescription(ChatColor.GRAY + "Vous ajoute l'effet de potion vitesse " + ChatColor.GOLD + "1 " + ChatColor.GRAY + "pendant " + ChatColor.GOLD + EFFECT_DURATION + " " + ChatColor.GRAY + "secondes. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Vous ajoute l'effet de potion vitesse " + ChatColor.GOLD + POWER + " " + ChatColor.GRAY + "pendant " + ChatColor.GOLD + EFFECT_DURATION + " " + ChatColor.GRAY + "secondes. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class SpeedTool extends PlayerTool {
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		if(ToolsUtils.isToolAvailable(tool)) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, EFFECT_DURATION * 20, 1));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, EFFECT_DURATION * 20, POWER));
 			new ItemCooldown(p, player, this, COOLDOWN);
 		}
 		else {
