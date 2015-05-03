@@ -113,10 +113,19 @@ public class ClassManager {
 					if (MasterBundle.isDbEnabled) {
 						String data = FastJedis.get(prefix + className + "." + has + sufix);
 						if((data != null && (data.equals("1")) || className.equals("brute") || className.equals("guerrier") || className.equals("archer") || className.equals("mage"))) {
-							String A = FastJedis.get(prefix + className + "." + cooldown + sufix);
-							String B = FastJedis.get(prefix + className + "." + power + sufix);
-							String C = FastJedis.get(prefix + className + "." + tools + sufix);
 							try {
+							String A = FastJedis.get(prefix + className + "." + cooldown + sufix);
+							if(A == null || A.equals("")) {
+								A = "0";
+							}
+							String B = FastJedis.get(prefix + className + "." + power + sufix);
+							if(B == null || B.equals("")) {
+								B = "0";
+							}
+							String C = FastJedis.get(prefix + className + "." + tools + sufix);
+							if(C == null || C.equals("")) {
+								C = "0";
+							}
 								gamePlayer.addAvaibleClass(constructPlayerClass(current.getType(), Integer.parseInt(A), Integer.parseInt(B), Integer.parseInt(C)));
 							} catch(Exception ex) {
 								ex.printStackTrace();
@@ -131,7 +140,6 @@ public class ClassManager {
 					gamePlayer.addAvaibleClass(new ArcherClass(p, 0, 0, 0));
 					gamePlayer.addAvaibleClass(new MageClass(p, 0, 0, 0));
 					}
-
 				}
 			});
 		}
