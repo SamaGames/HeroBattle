@@ -98,7 +98,7 @@ public class ClassManager {
 		// TODO Warning, this may cause problems if the request is lost (somehow)
 		final GamePlayer gamePlayer = p.getGamePlayer(player);
 		final String prefix = "shops:" + HeroBattle.GAME_NAME_WHITE + ":";
-		final String sufix = ":" + player.getUniqueId() + ":current";
+		final String sufix = ":" + player.getUniqueId();
 		final String has = ".has";
 		final String cooldown = ".cooldown";
 		final String power = ".power";
