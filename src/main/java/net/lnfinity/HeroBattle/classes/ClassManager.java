@@ -112,6 +112,10 @@ public class ClassManager {
 				@Override
 				public void run() {
 					if (MasterBundle.isDbEnabled) {
+						String debug1 = FastJedis.get(prefix + className + cooldown + sufix + currentStr);
+						String debug2 = FastJedis.get("shops:HeroBattle:brute.cooldown:" + player.getUniqueId().toString() + ":current");
+						System.out.println(debug1);
+						System.out.println(debug2);
 						String data = FastJedis.get(prefix + className + has + sufix);
 						if((data != null && data.equals("1")) || className.equals("brute") || className.equals("guerrier") || className.equals("archer") || className.equals("mage")) {
 							try {
