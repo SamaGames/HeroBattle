@@ -111,7 +111,7 @@ public class ClassManager {
 				@Override
 				public void run() {
 					if (MasterBundle.isDbEnabled) {
-						String data = FastJedis.get(prefix + className + "." + has + sufix);
+						String data = FastJedis.get(prefix + className + has + sufix);
 						if((data != null && data.equals("1")) || className.equals("brute") || className.equals("guerrier") || className.equals("archer") || className.equals("mage")) {
 							try {
 							String A = FastJedis.get(prefix + className + "." + cooldown + sufix);
