@@ -115,15 +115,15 @@ public class ClassManager {
 						String data = FastJedis.get(prefix + className + has + sufix);
 						if((data != null && data.equals("1")) || className.equals("brute") || className.equals("guerrier") || className.equals("archer") || className.equals("mage")) {
 							try {
-							String A = FastJedis.get(prefix + className + "." + cooldown + sufix + currentStr);
+							String A = FastJedis.get(prefix + className + cooldown + sufix + currentStr);
 							if(A == null || A.equals("")) {
 								A = "0";
 							}
-							String B = FastJedis.get(prefix + className + "." + power + sufix + currentStr);
+							String B = FastJedis.get(prefix + className + power + sufix + currentStr);
 							if(B == null || B.equals("")) {
 								B = "0";
 							}
-							String C = FastJedis.get(prefix + className + "." + tools + sufix + currentStr);
+							String C = FastJedis.get(prefix + className + tools + sufix + currentStr);
 							if(C == null || C.equals("")) {
 								C = "0";
 							}
