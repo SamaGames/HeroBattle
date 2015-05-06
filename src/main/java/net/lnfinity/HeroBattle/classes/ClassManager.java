@@ -112,10 +112,6 @@ public class ClassManager {
 				@Override
 				public void run() {
 					if (MasterBundle.isDbEnabled) {
-						String debug1 = FastJedis.get(prefix + className + cooldown + sufix + currentStr);
-						String debug2 = FastJedis.get("shops:HeroBattle:brute.cooldown:" + player.getUniqueId().toString() + ":current");
-						System.out.println(debug1);
-						System.out.println(debug2);
 						String data = FastJedis.get(prefix + className + has + sufix);
 						if((data != null && data.equals("1")) || className.equals("brute") || className.equals("guerrier") || className.equals("archer") || className.equals("mage")) {
 							try {
@@ -140,7 +136,7 @@ public class ClassManager {
 						}
 					} else {
 					// Default
-					gamePlayer.addAvaibleClass(new BruteClass(p, 0, 0, 0));
+					gamePlayer.addAvaibleClass(new BruteClass(p, 0, 1, 0));
 					gamePlayer.addAvaibleClass(new GuerrierClass(p, 0, 0, 0));
 					gamePlayer.addAvaibleClass(new ArcherClass(p, 0, 0, 0));
 					gamePlayer.addAvaibleClass(new MageClass(p, 0, 0, 0));
@@ -153,7 +149,7 @@ public class ClassManager {
 	private PlayerClass constructPlayerClass(PlayerClassType type, int arg1, int arg2, int arg3) {
 		switch (type) {
 		case BRUTE:
-			return new BruteClass(p, arg1, arg2, arg3);
+			return new BruteClass(p, arg1, 1, arg3);
 		case GUERRIER:
 			return new GuerrierClass(p, arg1, arg2, arg3);
 		case ARCHER:
