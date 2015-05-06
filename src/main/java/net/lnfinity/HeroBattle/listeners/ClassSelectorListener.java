@@ -8,6 +8,8 @@ import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
+
+import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +24,10 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class ClassSelectorListener implements Listener {
 
@@ -32,6 +37,8 @@ public class ClassSelectorListener implements Listener {
 	private final String TITLE_CLASS_DETAILS = "Détails de la classe ";
 
 	private final int COMING_SOON_CLASSES_COUNT = 0;
+	
+	private final Map<UUID, Integer> maite = new HashMap<UUID, Integer>();
 
 
 	public ClassSelectorListener(HeroBattle plugin) {
@@ -41,11 +48,12 @@ public class ClassSelectorListener implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
 
-		if (e.getWhoClicked() instanceof Player && e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta()) {
+		if (e.getWhoClicked() instanceof Player) {
 			Player player = (Player) e.getWhoClicked();
 			GamePlayer gPlayer = p.getGamePlayer(player);
+			if(e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta()) {
 			if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
-
+				
 				if (e.getCurrentItem().equals(createExitItem())) {
 					player.closeInventory();
 					return;
@@ -104,6 +112,10 @@ public class ClassSelectorListener implements Listener {
 
 				e.setCancelled(true);
 			}
+			} else if(e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
+				// Mouhahaha
+				tryMaite(player.getUniqueId(), e.getSlot(), e.getInventory().getSize());
+			}
 		}
 	}
 
@@ -111,6 +123,7 @@ public class ClassSelectorListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		if (e.hasItem()) {
 			if (e.getItem().getType() == Material.NETHER_STAR) {
+				maite.put(e.getPlayer().getUniqueId(), 0);
 				createSelector(e.getPlayer());
 			}
 			else if(e.getItem().getType() == Material.BOOK) {
@@ -404,5 +417,32 @@ public class ClassSelectorListener implements Listener {
 			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi une classe "
 					+ ChatColor.DARK_GREEN + "aléatoire" + ChatColor.GREEN + " !");
 		}
+	}
+	
+	public void tryMaite(UUID id, int slot, int size) {
+		Player player = p.getServer().getPlayer(id);
+		if(player == null) return;
+		GamePlayer gamePlayer = p.getGamePlayer(player);
+		if(gamePlayer == null) return;
+		int progress = maite.get(id);
+		int key = -1;
+		if(slot >= size - 18 && slot < size - 9) {
+			key = slot % 9 + 1;
+		} else if(slot == size - 5) {
+			key = 0;
+		}
+		if((gamePlayer.getElo() + "").charAt(progress) == (key + "").charAt(0)) {
+			progress++;
+		} else {
+			progress = 0;
+		}
+		if(progress == (gamePlayer.getElo() + "").length()) {
+			progress = 0;
+			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
+					+ ChatColor.DARK_GREEN + "Maïté" + ChatColor.GREEN + " !");
+			gamePlayer.setPlayerClass(new MaiteClass(p));
+			player.closeInventory();
+		}
+		maite.put(id, progress);
 	}
 }
