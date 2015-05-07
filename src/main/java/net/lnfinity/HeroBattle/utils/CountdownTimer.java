@@ -28,6 +28,10 @@ public class CountdownTimer {
 		isEnabled = false;
 
 		p.getGame().setStatus(Status.Available);
+
+		for(Player player : p.getServer().getOnlinePlayers()) {
+			player.setLevel(0);
+		}
 	}
 
 	public void restartTimer() {
@@ -59,8 +63,12 @@ public class CountdownTimer {
 				if (changed) {
 					p.getServer().broadcastMessage(
 							HeroBattle.GAME_TAG + ChatColor.YELLOW + "Il y a désormais " + ChatColor.RED + playersCount
-									+ ChatColor.YELLOW + " joueurs en jeu : le compteur a été raccourci à "
-									+ ChatColor.RED + seconds + ChatColor.YELLOW + " secondes");
+									+ ChatColor.YELLOW + " joueurs en jeu."
+					);
+					p.getServer().broadcastMessage(
+							HeroBattle.GAME_TAG + ChatColor.YELLOW + "Le compteur a été raccourci à "
+									+ ChatColor.RED + seconds + ChatColor.YELLOW + " secondes."
+					);
 				}
 
 				// Counter display (chat + title)
@@ -68,14 +76,16 @@ public class CountdownTimer {
 						&& seconds != 0) {
 
 					// Messages
-					if (seconds == 1) {
-						p.getServer().broadcastMessage(
-								HeroBattle.GAME_TAG + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED
-										+ seconds + ChatColor.YELLOW + " seconde");
-					} else {
-						p.getServer().broadcastMessage(
-								HeroBattle.GAME_TAG + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED
-										+ seconds + ChatColor.YELLOW + " secondes");
+					if (!changed) {
+						if (seconds == 1) {
+							p.getServer().broadcastMessage(
+									HeroBattle.GAME_TAG + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED
+											+ seconds + ChatColor.YELLOW + " seconde");
+						} else {
+							p.getServer().broadcastMessage(
+									HeroBattle.GAME_TAG + ChatColor.YELLOW + "Le jeu commence dans " + ChatColor.RED
+											+ seconds + ChatColor.YELLOW + " secondes");
+						}
 					}
 
 					// Sound
