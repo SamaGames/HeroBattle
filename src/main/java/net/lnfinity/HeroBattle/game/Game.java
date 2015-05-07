@@ -155,6 +155,7 @@ public class Game implements GameArena {
 			@Override
 			public void run() {
 				// Bêta olala
+				p.getServer().broadcastMessage("");
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
 				p.getServer().broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Attention : ce jeu est encore en bêta !");
 				p.getServer().broadcastMessage(ChatColor.GOLD + "Les classes, compétences ou powerups sont " + ChatColor.YELLOW + "susceptibles d'évoluer" + ChatColor.GOLD + ", ceci dans le but d'améliorer et d'équilibrer le jeu.");
@@ -162,6 +163,7 @@ public class Game implements GameArena {
 				p.getServer().broadcastMessage("");
 				p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "N'hésitez pas à nous " + ChatColor.YELLOW + "" + ChatColor.BOLD + "transmettre votre avis" + ChatColor.GOLD + "" + ChatColor.BOLD + " en jeu ou via le forum, pour que nous puissions faire évoluer au mieux le jeu !");
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
+				p.getServer().broadcastMessage("");
 			}
 		}, 60l);
 
@@ -170,16 +172,20 @@ public class Game implements GameArena {
 			public void run() {
 				// Toxic water
 				if(p.getArenaConfig().getBoolean("map.toxicWater", false)) {
+					p.getServer().broadcastMessage("");
 					p.getServer().broadcastMessage(ChatColor.DARK_AQUA + "-----------------------------------------------------");
 					p.getServer().broadcastMessage(ChatColor.DARK_AQUA + "[×] " + ChatColor.AQUA + "Attention, l'eau est " + ChatColor.DARK_AQUA + "toxique" + ChatColor.AQUA + " sur cette carte !");
 					p.getServer().broadcastMessage(ChatColor.DARK_AQUA + "-----------------------------------------------------");
+					p.getServer().broadcastMessage("");
 				}
 
 				// Toxic lava
 				if(p.getArenaConfig().getBoolean("map.toxicLava", false)) {
+					p.getServer().broadcastMessage("");
 					p.getServer().broadcastMessage(ChatColor.DARK_RED + "-----------------------------------------------------");
 					p.getServer().broadcastMessage(ChatColor.DARK_RED + "[×] " + ChatColor.GOLD + "Attention, la lave est " + ChatColor.RED + "instantanément mortelle" + ChatColor.GOLD + " ici !");
 					p.getServer().broadcastMessage(ChatColor.DARK_RED + "-----------------------------------------------------");
+					p.getServer().broadcastMessage("");
 				}
 
 			}
@@ -203,7 +209,9 @@ public class Game implements GameArena {
 			EntityPlayer ep = cp.getHandle();
 			int ping = ep.ping;
 			if(ping > 500) {
+				player.sendMessage("");
 				player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Attention" + ChatColor.RED + ", nous venons de détecter que votre connexion était instable. Des effets secondaires peuvent se faire ressentir en jeu.");
+				player.sendMessage("");
 			}
 
 			int index = rand.nextInt(tempLocs.size());
@@ -595,9 +603,11 @@ public class Game implements GameArena {
 
 			gPlayer.setPlaying(false);
 
+			Bukkit.broadcastMessage("");
 			Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
 			Bukkit.broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + ChatColor.GREEN + ChatColor.BOLD + " remporte la partie !");
 			Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
+			Bukkit.broadcastMessage("");
 
 			new WinnerFirework(p, 30, player);
 
@@ -713,7 +723,7 @@ public class Game implements GameArena {
 					i++;
 				}
 
-
+				Bukkit.broadcastMessage("");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                        Classement des Kills        ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
@@ -724,6 +734,7 @@ public class Game implements GameArena {
 				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsPercentages[0] + ChatColor.DARK_GRAY + (!topsPercentages[1].isEmpty() ? " ⋅ " : "") + ChatColor.GRAY + topsPercentages[1] + ChatColor.DARK_GRAY + (!topsPercentages[2].isEmpty() ? " ⋅ " : "") + ChatColor.GOLD + topsPercentages[2]);
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
+				Bukkit.broadcastMessage("");
 
 			}
 		}, 20 * 5l);
