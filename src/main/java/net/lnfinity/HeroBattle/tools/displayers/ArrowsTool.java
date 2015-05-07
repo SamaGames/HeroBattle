@@ -119,6 +119,7 @@ public class ArrowsTool extends PlayerTool {
 			arrow.setShooter(player);
 			arrow.setVelocity(vector);
 			arrow.setCustomName(" ");
+			arrow.setFireTicks(Integer.MAX_VALUE);
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
