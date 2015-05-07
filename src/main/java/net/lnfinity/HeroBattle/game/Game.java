@@ -155,7 +155,6 @@ public class Game implements GameArena {
 			@Override
 			public void run() {
 				// Bêta olala
-				p.getServer().broadcastMessage("");
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
 				p.getServer().broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Attention : ce jeu est encore en bêta !");
 				p.getServer().broadcastMessage(ChatColor.GOLD + "Les classes, compétences ou powerups sont " + ChatColor.YELLOW + "susceptibles d'évoluer" + ChatColor.GOLD + ", ceci dans le but d'améliorer et d'équilibrer le jeu.");
@@ -163,7 +162,6 @@ public class Game implements GameArena {
 				p.getServer().broadcastMessage("");
 				p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "N'hésitez pas à nous " + ChatColor.YELLOW + "" + ChatColor.BOLD + "transmettre votre avis" + ChatColor.GOLD + "" + ChatColor.BOLD + " en jeu ou via le forum, pour que nous puissions faire évoluer au mieux le jeu !");
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
-				p.getServer().broadcastMessage("");
 			}
 		}, 60l);
 
