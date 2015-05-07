@@ -28,6 +28,10 @@ public class CountdownTimer {
 		isEnabled = false;
 
 		p.getGame().setStatus(Status.Available);
+
+		for(Player player : p.getServer().getOnlinePlayers()) {
+			player.setLevel(0);
+		}
 	}
 
 	public void restartTimer() {
