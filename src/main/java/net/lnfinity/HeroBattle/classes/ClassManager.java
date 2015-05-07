@@ -82,12 +82,12 @@ public class ClassManager {
 	public PlayerClass getClassFromName(Player player, String name) {
 		GamePlayer gamePlayer = p.getGamePlayer(player);
 		for (PlayerClass theClass : gamePlayer.getAvaibleClasses()) {
-			if (theClass.getName().equals(name)) {
+			if (theClass != null && theClass.getName().equals(name)) {
 				return theClass;
 			}
 		}
 		for (PlayerClass theClass : this.availableClasses) {
-			if (theClass.getName().equals(name)) {
+			if (theClass != null && theClass.getName().equals(name)) {
 				return theClass;
 			}
 		}
@@ -127,7 +127,7 @@ public class ClassManager {
 							if(C == null || C.equals("")) {
 								C = "0";
 							}
-								gamePlayer.addAvaibleClass(constructPlayerClass(current.getType(), Integer.parseInt(A), Integer.parseInt(B), Integer.parseInt(C)));
+							gamePlayer.addAvaibleClass(constructPlayerClass(current.getType(), Integer.parseInt(A), Integer.parseInt(B), Integer.parseInt(C)));
 							} catch(Exception ex) {
 								ex.printStackTrace();
 							}
