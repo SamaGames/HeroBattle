@@ -23,7 +23,7 @@ public class PyrobarbareClass extends PlayerClass {
 		super(plugin, arg1, arg2, arg3);
 		
 		addTool(new SwordVariant6Tool(p));
-		addTool(new FireballTool(p, 30 - arg1 * 2));
+		addTool(new FireballTool(p, 30 - arg1 * 2, 16 + arg2, 25 + 2 * arg2));
 		addTool(new FireTool(p, 60 - arg1 * 2, 10 + arg2));
 	}
 

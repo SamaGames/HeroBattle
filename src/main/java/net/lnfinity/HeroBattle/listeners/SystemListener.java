@@ -4,9 +4,11 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.Game;
 import net.lnfinity.HeroBattle.game.GamePlayer;
+import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
+
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -77,7 +79,7 @@ public class SystemListener implements Listener {
 
 				e.getPlayer().setAllowFlight(true);
 
-				gamePlayer.playTask(new EarthquakeTask(plugin, e.getPlayer()));
+				gamePlayer.playTask(new EarthquakeTask(plugin, e.getPlayer(), 0, 0));
 
 				// Reset of the last damager
 				Integer checksForThisUser = checksIfTheUserIsReallyOnTheGroundAndSoWeCanResetTheLastDamager.get(e.getPlayer().getUniqueId());

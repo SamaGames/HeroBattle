@@ -9,9 +9,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class EarthquakeTask extends Task {
+	
+	private final int MIN_DAMAGES;
+	private final int MAX_DAMAGES;
 
-	public EarthquakeTask(HeroBattle p, Player player) {
+	public EarthquakeTask(HeroBattle p, Player player, int min, int max) {
 		super(p, player);
+		MIN_DAMAGES = min;
+		MAX_DAMAGES = max;
 	}
 
 	@Override
@@ -27,7 +32,7 @@ public class EarthquakeTask extends Task {
 		for(Entity e : player.getNearbyEntities(4, 4, 4)) {
 			if(e instanceof Player) {
 				Player damaged = (Player) e;
-				p.getGamePlayer(damaged).setPercentage(p.getGamePlayer(damaged).getPercentage() + Utils.randomNumber(20, 50), p.getGamePlayer(player));
+				p.getGamePlayer(damaged).setPercentage(p.getGamePlayer(damaged).getPercentage() + Utils.randomNumber(MIN_DAMAGES, MAX_DAMAGES), p.getGamePlayer(player));
 				damaged.damage(0);
 			}
 		}

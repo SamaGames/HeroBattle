@@ -18,11 +18,15 @@ import java.util.List;
 
 public class EarthquakeTool extends PlayerTool {
 
-	public final int COOLDOWN;
+	private final int COOLDOWN;
+	private final int MIN_DAMAGES;
+	private final int MAX_DAMAGES;
 
-	public EarthquakeTool(HeroBattle plugin, int cooldown) {
+	public EarthquakeTool(HeroBattle plugin, int cooldown, int min, int max) {
 		super(plugin);
 		COOLDOWN = cooldown;
+		MIN_DAMAGES = min;
+		MAX_DAMAGES = max;
 	}
 
 	@Override
@@ -37,7 +41,7 @@ public class EarthquakeTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Utils.getToolDescription(ChatColor.GRAY + "Vous fait tomber au sol provoquant ainsi un séisme qui occasionne aux joueurs alentours " + ChatColor.RED + "20 " + ChatColor.GRAY + "à " + ChatColor.RED + "50 " + ChatColor.GRAY + "dégâts. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Vous fait tomber au sol provoquant ainsi un séisme qui occasionne aux joueurs alentours " + ChatColor.RED + MIN_DAMAGES + " " + ChatColor.GRAY + "à " + ChatColor.RED + MAX_DAMAGES + " " + ChatColor.GRAY + "dégâts. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
@@ -56,7 +60,7 @@ public class EarthquakeTool extends PlayerTool {
 				player.setVelocity(player.getVelocity().setY(-1));
 				player.setFallDistance(10);
 
-				p.getGamePlayer(player).addTask(new EarthquakeTask(p, player));
+				p.getGamePlayer(player).addTask(new EarthquakeTask(p, player, MIN_DAMAGES, MAX_DAMAGES));
 
 			} else {
 				player.sendMessage(ChatColor.RED + "Vous ne chutez pas d'assez haut, vous échouez !");

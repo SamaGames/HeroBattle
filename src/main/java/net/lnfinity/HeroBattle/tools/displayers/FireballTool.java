@@ -18,12 +18,16 @@ import java.util.List;
 
 public class FireballTool extends PlayerTool {
 	
-	public final int COOLDOWN;
+	private final int COOLDOWN;
+	public final int MIN_DAMAGES;
+	public final int MAX_DAMAGES;
 
-	public FireballTool(HeroBattle plugin, int cooldown) {
+	public FireballTool(HeroBattle plugin, int cooldown, int min, int max) {
 		super(plugin);
 		
 		COOLDOWN = cooldown;
+		MIN_DAMAGES = min;
+		MAX_DAMAGES = max;
 	}
 
 	@Override
@@ -38,7 +42,7 @@ public class FireballTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Utils.getToolDescription(ChatColor.GRAY + "Tire une boule de feu qui occasionne " + ChatColor.RED + "16 " + ChatColor.GRAY + "à " + ChatColor.RED + "25 " + ChatColor.GRAY + "pourcents aux joueurs situés près de l'impact. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Tire une boule de feu qui occasionne " + ChatColor.RED + MIN_DAMAGES + " " + ChatColor.GRAY + "à " + ChatColor.RED + MAX_DAMAGES + " " + ChatColor.GRAY + "pourcents aux joueurs situés près de l'impact. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
@@ -64,5 +68,4 @@ public class FireballTool extends PlayerTool {
 	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event) {
 		
 	}
-
 }
