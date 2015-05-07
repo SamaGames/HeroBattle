@@ -81,6 +81,10 @@ public class ClassManager {
 	 */
 	public PlayerClass getClassFromName(Player player, String name) {
 		GamePlayer gamePlayer = p.getGamePlayer(player);
+		return getClassFromName(gamePlayer, name);
+	}
+	
+	public PlayerClass getClassFromName(GamePlayer gamePlayer, String name) {
 		for (PlayerClass theClass : gamePlayer.getAvaibleClasses()) {
 			if (theClass != null && theClass.getName().equals(name)) {
 				return theClass;
@@ -136,7 +140,7 @@ public class ClassManager {
 						}
 					} else {
 					// Default
-					gamePlayer.addAvaibleClass(new BruteClass(p, 0, 1, 0));
+					gamePlayer.addAvaibleClass(new BruteClass(p, 0, 0, 0));
 					gamePlayer.addAvaibleClass(new GuerrierClass(p, 0, 0, 0));
 					gamePlayer.addAvaibleClass(new ArcherClass(p, 0, 0, 0));
 					gamePlayer.addAvaibleClass(new MageClass(p, 0, 0, 0));
@@ -149,7 +153,7 @@ public class ClassManager {
 	private PlayerClass constructPlayerClass(PlayerClassType type, int arg1, int arg2, int arg3) {
 		switch (type) {
 		case BRUTE:
-			return new BruteClass(p, arg1, 1, arg3);
+			return new BruteClass(p, arg1, arg2, arg3);
 		case GUERRIER:
 			return new GuerrierClass(p, arg1, arg2, arg3);
 		case ARCHER:
