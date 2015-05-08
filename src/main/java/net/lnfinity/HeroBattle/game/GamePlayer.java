@@ -304,7 +304,7 @@ public class GamePlayer {
 
 			// The velocity is applied
 			Vector direction = player.getLocation().getDirection().multiply(0.5);
-			Vector vector = new Vector(direction.getX(), 0.85, direction.getZ());
+			Vector vector = new Vector(direction.getX(), 0.9, direction.getZ());
 			player.setVelocity(vector);
 		}
 	}
