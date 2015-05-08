@@ -22,11 +22,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 public class GameListener implements Listener {
 
 	private HeroBattle plugin;
+
+	private Random random = new Random();
 
 	public GameListener(HeroBattle p) {
 		plugin = p;
@@ -217,6 +220,18 @@ public class GameListener implements Listener {
 		e.getDrops().clear();
 		e.setDroppedExp(0);
 		plugin.getGame().onPlayerDeath(e.getEntity().getUniqueId(), DeathType.QUIT);
+	}
+
+
+	@EventHandler
+	public void onPlayerEntersATeleportationPortal(EntityPortalEnterEvent ev) {
+		if(plugin.getGame().getTeleportationPortalsDestinations().size() != 0
+				&& ev.getEntityType() == EntityType.PLAYER
+				&& ev.getLocation().getBlock().getType() == Material.ENDER_PORTAL) {
+
+			ev.getEntity().teleport(plugin.getGame().getTeleportationPortalsDestinations().get(random.nextInt(plugin.getGame().getTeleportationPortalsDestinations().size())));
+			
+		}
 	}
 
 

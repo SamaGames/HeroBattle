@@ -44,6 +44,9 @@ public class Game implements GameArena {
 
 	private ArrayList<Location> tutorialLocations = new ArrayList<Location>();
 
+	private ArrayList<Location> teleportationPortalsDestinations = new ArrayList<Location>();
+
+
 
 	/**
 	 * We store here the last players who launched a lightning bolt and where,
@@ -119,6 +122,21 @@ public class Game implements GameArena {
 			}
 		} catch (Exception ex) {
 			p.getLogger().warning("No tutorial locations set in arena.yml");
+		}
+
+
+		try {
+			for (Object location : p.getArenaConfig().getList("map.teleportationPortalsDestinations")) {
+				if (location instanceof String) {
+					try {
+						teleportationPortalsDestinations.add(Utils.stringToLocation(p, (String) location));
+					} catch (IllegalArgumentException e) {
+						p.getLogger().log(Level.SEVERE, "Invalid teleportation portal location in arena.yml! " + e.getMessage());
+					}
+				}
+			}
+		} catch (Exception ex) {
+			p.getLogger().info("No teleportation portal locations set in arena.yml. Feature disabled.");
 		}
 	}
 
@@ -947,6 +965,17 @@ public class Game implements GameArena {
 		return fireballsLaunched;
 	}
 
+
+	public ArrayList<Location> getTutorialLocations() {
+		return tutorialLocations;
+	}
+
+	public ArrayList<Location> getTeleportationPortalsDestinations() {
+		return teleportationPortalsDestinations;
+	}
+
+
+
 	public Block getTargetBlock(Player player, int maxRange) {
 		Block block;
 		Location loc = player.getEyeLocation().clone();
@@ -1021,10 +1050,6 @@ public class Game implements GameArena {
 		}
 	}
 
-	public ArrayList<Location> getTutorialLocations() {
-		return tutorialLocations;
-	}
-	
 	public void equipPlayer(Player player) {
 
 		player.getInventory().clear();
