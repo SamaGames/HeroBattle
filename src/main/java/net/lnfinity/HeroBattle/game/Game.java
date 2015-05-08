@@ -721,7 +721,6 @@ public class Game implements GameArena {
 					i++;
 				}
 
-				Bukkit.broadcastMessage("");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                        Classement des Kills        ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
@@ -732,7 +731,6 @@ public class Game implements GameArena {
 				Bukkit.broadcastMessage(ChatColor.YELLOW + " " + topsPercentages[0] + ChatColor.DARK_GRAY + (!topsPercentages[1].isEmpty() ? " ⋅ " : "") + ChatColor.GRAY + topsPercentages[1] + ChatColor.DARK_GRAY + (!topsPercentages[2].isEmpty() ? " ⋅ " : "") + ChatColor.GOLD + topsPercentages[2]);
 				Bukkit.broadcastMessage(ChatColor.GOLD + "                                                    ");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
-				Bukkit.broadcastMessage("");
 
 			}
 		}, 20 * 5l);
