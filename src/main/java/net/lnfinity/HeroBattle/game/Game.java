@@ -297,12 +297,17 @@ public class Game implements GameArena {
 
 	public void chooseRandomClass(Player player) {
 		GamePlayer gamePlayer = p.getGamePlayer(player);
+
+		if(gamePlayer == null || gamePlayer.getAvaibleClasses().size() == 0) return;
+
 		Random rnd = new Random();
+
 		int r = rnd.nextInt(gamePlayer.getAvaibleClasses().size());
 		int i = 0;
+
 		for (PlayerClass classe : gamePlayer.getAvaibleClasses()) {
 			if (i == r) {
-				p.getGamePlayer(player).setPlayerClass(classe);
+				gamePlayer.setPlayerClass(classe);
 				player.sendMessage(ChatColor.GREEN + "La classe " + ChatColor.DARK_GREEN + classe.getName()
 						+ ChatColor.GREEN + " vous a été attribuée suite à un complexe jeu de dés !");
 				return;
@@ -320,12 +325,11 @@ public class Game implements GameArena {
 		final Player player = p.getServer().getPlayer(id);
 		final GamePlayer hbPlayer = p.getGamePlayer(player);
 
-		// Avoid the death to be handled if the player is aldeady completly dead (no life left)
+		// Avoid the death to be handled if the player is already completely dead (no life left)
 		if(hbPlayer.getLives() <= 0) return;
 
 
 		// Avoids this to be called a lot of times
-
 		if(hbPlayer.isDeathHandled()) return;
 
 		hbPlayer.setDeathHandled(true);

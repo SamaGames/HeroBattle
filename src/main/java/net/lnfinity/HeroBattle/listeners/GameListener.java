@@ -4,6 +4,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.tools.Weapon;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.gameapi.json.Status;
@@ -200,8 +201,12 @@ public class GameListener implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		e.setCancelled(true);
+
 		final Player p = e.getPlayer();
 		final GamePlayer gamePlayer = plugin.getGamePlayer(p);
+
+		if(gamePlayer == null || gamePlayer.getPlayerClass() == null) return;
+
 
 		if (e.hasItem() && e.getItem().getType() != Material.AIR && e.getItem().hasItemMeta()
 				&& e.getItem().getItemMeta().hasDisplayName()) {
@@ -209,10 +214,14 @@ public class GameListener implements Listener {
 			ItemStack item = e.getItem();
 
 			if (item != null && plugin.getGame().getStatus() == Status.InGame) {
+
+				PlayerTool tool = gamePlayer.getPlayerClass().getTool(p.getInventory().getHeldItemSlot());
+				if(tool == null) return;
+
 				if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-					gamePlayer.getPlayerClass().getTool(p.getInventory().getHeldItemSlot()).onRightClick(p, item, e);
+					tool.onRightClick(p, item, e);
 				} else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-					gamePlayer.getPlayerClass().getTool(p.getInventory().getHeldItemSlot()).onLeftClick(p, item, e);
+					tool.onLeftClick(p, item, e);
 				}
 			}
 		}
