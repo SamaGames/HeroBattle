@@ -19,8 +19,10 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -30,6 +32,9 @@ public class GameListener implements Listener {
 	private HeroBattle plugin;
 
 	private Random random = new Random();
+
+	private Map<UUID,BukkitTask> tpSoundsTasks = new HashMap<>();
+
 
 	public GameListener(HeroBattle p) {
 		plugin = p;
@@ -230,7 +235,30 @@ public class GameListener implements Listener {
 				&& ev.getLocation().getBlock().getType() == Material.ENDER_PORTAL) {
 
 			ev.getEntity().teleport(plugin.getGame().getTeleportationPortalsDestinations().get(random.nextInt(plugin.getGame().getTeleportationPortalsDestinations().size())));
-			
+
+
+			if(plugin.getArenaConfig().getBoolean("map.marioTeleportationSound")) {
+				if(!tpSoundsTasks.containsKey(ev.getEntity().getUniqueId())) {
+
+					final Player player = ((Player) ev.getEntity());
+
+					tpSoundsTasks.put(ev.getEntity().getUniqueId(), plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+
+						private int runs = 0;
+
+						@Override
+						public void run() {
+							player.playSound(player.getLocation(), Sound.BURP, 3, 6);
+
+							runs++;
+							if(runs >= 3) {
+								tpSoundsTasks.get(player.getUniqueId()).cancel();
+								tpSoundsTasks.remove(player.getUniqueId());
+							}
+						}
+					}, 1l, 6l));
+				}
+			}
 		}
 	}
 

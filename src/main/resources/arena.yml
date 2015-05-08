@@ -52,11 +52,15 @@ map:
     # If this is set to true, all players will loose a life if they enter in the lava.
     toxicLava: false
 
+
     # For maps with teleportation portals, this is the list of the locations the players will be teleported
     # to when they enter in an End portal.
     # The location is randomly choosen.
     teleportationPortalsDestinations:
      - "0;70;0"
+
+    # Play a mario-like teleportation sound?
+    marioTeleportationSound: false
 
 game:
 
