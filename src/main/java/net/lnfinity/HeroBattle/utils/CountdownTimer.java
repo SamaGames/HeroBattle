@@ -15,8 +15,14 @@ public class CountdownTimer {
 	private int task = -1;
 	private boolean isEnabled = false;
 
+	private final Integer COUNTER_REDUCTION_WHEN_HALF_FULL;
+	private final Integer COUNTER_REDUCTION_WHEN_FULL;
+
 	public CountdownTimer(HeroBattle plugin) {
 		p = plugin;
+
+		COUNTER_REDUCTION_WHEN_HALF_FULL = p.getArenaConfig().getInt("waiting") / 2;
+		COUNTER_REDUCTION_WHEN_FULL = p.getArenaConfig().getInt("waiting") / 5;
 	}
 
 	public boolean isEnabled() {
@@ -49,13 +55,13 @@ public class CountdownTimer {
 
 				// Half-full
 				if (playersCount == Math.max(p.getGame().getMinPlayers(), p.getGame().getTotalMaxPlayers() / 2)
-						&& seconds > 60) {
-					seconds = 60;
+						&& seconds > COUNTER_REDUCTION_WHEN_HALF_FULL) {
+					seconds = COUNTER_REDUCTION_WHEN_HALF_FULL;
 					changed = true;
 				}
 				// Full
-				else if (playersCount == p.getGame().getMaxPlayers() && seconds > 15) {
-					seconds = 15;
+				else if (playersCount == p.getGame().getMaxPlayers() && seconds > COUNTER_REDUCTION_WHEN_FULL) {
+					seconds = COUNTER_REDUCTION_WHEN_FULL;
 					changed = true;
 				}
 
