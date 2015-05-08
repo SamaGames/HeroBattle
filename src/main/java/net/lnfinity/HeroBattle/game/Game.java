@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.game;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.displayers.BruteClass;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.lnfinity.HeroBattle.utils.Utils;
@@ -14,6 +15,7 @@ import net.samagames.utils.GlowEffect;
 import net.samagames.utils.Titles;
 import net.zyuiop.MasterBundle.MasterBundle;
 import net.zyuiop.statsapi.StatsApi;
+
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
@@ -169,6 +171,8 @@ public class Game implements GameArena {
 			ActionBar.removeMessage(player);
 		}
 
+		// Old stuff
+		/*
 		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 			@Override
 			public void run() {
@@ -181,7 +185,7 @@ public class Game implements GameArena {
 				p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "N'hésitez pas à nous " + ChatColor.YELLOW + "" + ChatColor.BOLD + "transmettre votre avis" + ChatColor.GOLD + "" + ChatColor.BOLD + " en jeu ou via le forum, pour que nous puissions faire évoluer au mieux le jeu !");
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
 			}
-		}, 60l);
+		}, 60l);*/
 
 		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 			@Override
@@ -304,7 +308,13 @@ public class Game implements GameArena {
 
 		int r = rnd.nextInt(gamePlayer.getAvaibleClasses().size());
 		int i = 0;
-
+		
+		// Avoid game crashing
+		if(gamePlayer.getAvaibleClasses() == null || gamePlayer.getAvaibleClasses().isEmpty()) {
+			gamePlayer.setPlayerClass(new BruteClass(p, 0, 0, 0));
+			return;
+		}
+		
 		for (PlayerClass classe : gamePlayer.getAvaibleClasses()) {
 			if (i == r) {
 				gamePlayer.setPlayerClass(classe);
