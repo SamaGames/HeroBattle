@@ -151,6 +151,7 @@ public class GameListener implements Listener {
 				GamePlayer damagerGPlayer = plugin.getGamePlayer(((Player) arrow.getShooter()));
 
 				if (arrow.getCustomName() != null && arrow.getCustomName().equals(" ")) {
+					arrow.setFireTicks(0);
 					arrow.getWorld().playEffect(arrow.getLocation(), Effect.EXPLOSION_HUGE, 1);
 					arrow.getWorld().playSound(arrow.getLocation(), Sound.EXPLODE, 1L, 1L);
 					damages = 20 + (int) (Math.random() * ((40 - 20) + 20));
