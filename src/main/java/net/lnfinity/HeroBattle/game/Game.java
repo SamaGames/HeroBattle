@@ -151,7 +151,7 @@ public class Game implements GameArena {
 		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " de la partie " + ChatColor.DARK_GREEN + partyELO);
 		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Que le meilleur gagne !");
 
-		p.getServer().getWorlds().get(0).setTime(p.getArenaConfig().getLong("map.dayTime"));
+		p.getServer().getWorlds().get(0).setFullTime(p.getArenaConfig().getLong("map.dayTime"));
 
 		teleportPlayers();
 
