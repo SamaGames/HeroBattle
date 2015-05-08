@@ -199,7 +199,7 @@ public class MasterListener implements Listener {
 			public void run() {
 				moderator.setGameMode(GameMode.SPECTATOR);
 			}
-		}, 2l);
+		}, 10l);
 	}
 
 	@EventHandler
