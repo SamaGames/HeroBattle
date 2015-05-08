@@ -171,6 +171,8 @@ public class Game implements GameArena {
 			ActionBar.removeMessage(player);
 		}
 
+		// Old stuff
+		/*
 		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 			@Override
 			public void run() {
@@ -183,7 +185,7 @@ public class Game implements GameArena {
 				p.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "N'hésitez pas à nous " + ChatColor.YELLOW + "" + ChatColor.BOLD + "transmettre votre avis" + ChatColor.GOLD + "" + ChatColor.BOLD + " en jeu ou via le forum, pour que nous puissions faire évoluer au mieux le jeu !");
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "------------------------------------------------");
 			}
-		}, 60l);
+		}, 60l);*/
 
 		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 			@Override
