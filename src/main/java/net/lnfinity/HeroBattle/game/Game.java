@@ -836,14 +836,14 @@ public class Game implements GameArena {
 						GameAPI.kickPlayer(player);
 					}
 				}
-			}, 25 * 20L);
+			}, 14 * 20L);
 
 			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
 					Bukkit.shutdown();
 				}
-			}, 30 * 20L);
+			}, 18 * 20L);
 		}
 	}
 
