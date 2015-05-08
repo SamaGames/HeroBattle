@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -184,6 +185,12 @@ public class SystemListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerChat(PlayerChatEvent e) {
 		GamePlayer gamePlayer = plugin.getGamePlayer(e.getPlayer().getUniqueId());
+		if(gamePlayer == null) return; // /btp or /stp
 		e.setFormat(ChatColor.DARK_GREEN + "" + gamePlayer.getElo() + ChatColor.GREEN + " ▏ " + ChatColor.RESET + e.getFormat());
+	}
+	
+	@EventHandler
+	public void onBlockSpread(BlockSpreadEvent e) {
+		e.setCancelled(true);
 	}
 }
