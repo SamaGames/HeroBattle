@@ -37,9 +37,8 @@ public class ClassSelectorListener implements Listener {
 	private final String TITLE_CLASS_DETAILS = "Détails de la classe ";
 
 	private final int COMING_SOON_CLASSES_COUNT = 0;
-	
-	private final Map<UUID, Integer> maite = new HashMap<UUID, Integer>();
 
+	private final Map<UUID, Integer> maite = new HashMap<UUID, Integer>();
 
 	public ClassSelectorListener(HeroBattle plugin) {
 		p = plugin;
@@ -51,68 +50,71 @@ public class ClassSelectorListener implements Listener {
 		if (e.getWhoClicked() instanceof Player) {
 			Player player = (Player) e.getWhoClicked();
 			GamePlayer gPlayer = p.getGamePlayer(player);
-			if(e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta()) {
-			if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
-				
-				if (e.getCurrentItem().equals(createExitItem())) {
-					player.closeInventory();
-					return;
-				}
-				
-				PlayerClass clickedClass = p.getClassManager().getClassFromName(player, 
-						ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+			if (e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta()) {
+				if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
 
-				if (clickedClass != null) {
-					if (e.getClick().isLeftClick()) {
-						if(p.getClassManager().playerHasClass(gPlayer, clickedClass.getType())) {
-							selectClass(player, clickedClass);
-						} else {
-						player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
-						}
+					if (e.getCurrentItem().equals(createExitItem())) {
 						player.closeInventory();
-
-					} else if (e.getClick().isRightClick()) {
-						createDetails(player, clickedClass);
-					}
-				} else if (e.getCurrentItem().getItemMeta().getDisplayName()
-						.equals(createItemRandom(gPlayer.getPlayerClass() == null).getItemMeta().getDisplayName())) {
-
-					selectClass(player, null);
-					player.closeInventory();
-				} else {
-					player.closeInventory();
-				}
-
-				e.setCancelled(true);
-			}
-
-			else if (e.getInventory().getName().startsWith(TITLE_CLASS_DETAILS)) {
-				if (e.getCurrentItem().equals(createBackToListItem())) {
-					// Go back to the menu
-					createSelector(player);
-				}
-
-				else if (e.getCurrentItem().getItemMeta().getDisplayName()
-						.equals(createUseThisClassItem(null).getItemMeta().getDisplayName())) {
-
-					String className = e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "");
-
-					if(className.equals("Maïté")) {
-						selectClass(player, new MaiteClass(p));
-					} else if(p.getClassManager().playerHasClass(gPlayer, p.getClassManager().getClassFromName(player, className).getType())) {
-						selectClass(player, p.getClassManager().getClassFromName(player, className));
+						return;
 					}
 
-					else {
-						player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
+					PlayerClass clickedClass = p.getClassManager().getClassFromName(player,
+							ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+
+					if (clickedClass != null) {
+						if (e.getClick().isLeftClick()) {
+							if (p.getClassManager().playerHasClass(gPlayer, clickedClass.getType())) {
+								selectClass(player, clickedClass);
+							} else {
+								player.sendMessage(ChatColor.RED
+										+ "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
+							}
+							player.closeInventory();
+
+						} else if (e.getClick().isRightClick()) {
+							createDetails(player, clickedClass);
+						}
+					} else if (e.getCurrentItem().getItemMeta().getDisplayName()
+							.equals(createItemRandom(gPlayer.getPlayerClass() == null).getItemMeta().getDisplayName())) {
+
+						selectClass(player, null);
+						player.closeInventory();
+					} else {
+						player.closeInventory();
 					}
 
-					player.closeInventory();
+					e.setCancelled(true);
 				}
 
-				e.setCancelled(true);
-			}
-			} else if(e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
+				else if (e.getInventory().getName().startsWith(TITLE_CLASS_DETAILS)) {
+					if (e.getCurrentItem().equals(createBackToListItem())) {
+						// Go back to the menu
+						createSelector(player);
+					}
+
+					else if (e.getCurrentItem().getItemMeta().getDisplayName()
+							.equals(createUseThisClassItem(null).getItemMeta().getDisplayName())) {
+
+						String className = e.getInventory().getName().replace(TITLE_CLASS_DETAILS, "");
+
+						if (className.equals("Maïté")) {
+							selectClass(player, new MaiteClass(p));
+						} else if (p.getClassManager().playerHasClass(gPlayer,
+								p.getClassManager().getClassFromName(player, className).getType())) {
+							selectClass(player, p.getClassManager().getClassFromName(player, className));
+						}
+
+						else {
+							player.sendMessage(ChatColor.RED
+									+ "Vous ne possédez pas cette classe. Vous pouvez acheter des classes et les améliorer depuis la boutique.");
+						}
+
+						player.closeInventory();
+					}
+
+					e.setCancelled(true);
+				}
+			} else if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
 				// Mouhahaha
 				tryMaite(player.getUniqueId(), e.getSlot(), e.getInventory().getSize());
 			}
@@ -125,8 +127,7 @@ public class ClassSelectorListener implements Listener {
 			if (e.getItem().getType() == Material.NETHER_STAR) {
 				maite.put(e.getPlayer().getUniqueId(), 0);
 				createSelector(e.getPlayer());
-			}
-			else if(e.getItem().getType() == Material.BOOK) {
+			} else if (e.getItem().getType() == Material.BOOK) {
 				p.getTutorialDisplayer().start(e.getPlayer().getUniqueId());
 			}
 		}
@@ -148,16 +149,18 @@ public class ClassSelectorListener implements Listener {
 		// Available classes
 		Integer i = 9;
 		for (PlayerClass theClass : classes) {
-			if(p.getClassManager().playerHasClass(gamePlayer, theClass.getType())) {
-				inv.setItem(isOnLastLine(i - 9, classesCount) ? shift + i : i,
-						createItem(theClass, p.getGamePlayer(player).getPlayerClass() != null
+			if (p.getClassManager().playerHasClass(gamePlayer, theClass.getType())) {
+				theClass = p.getClassManager().getClassFromName(gamePlayer, theClass.getName());
+				inv.setItem(
+						isOnLastLine(i - 9, classesCount) ? shift + i : i,
+						createItem(gamePlayer, theClass, p.getGamePlayer(player).getPlayerClass() != null
 								&& p.getGamePlayer(player).getPlayerClass().equals(theClass)));
 			} else {
-				inv.setItem(isOnLastLine(i - 9, classesCount) ? shift + i : i,
-						createItem(theClass, p.getGamePlayer(player).getPlayerClass() != null
+				inv.setItem(
+						isOnLastLine(i - 9, classesCount) ? shift + i : i,
+						createItem(gamePlayer, theClass, p.getGamePlayer(player).getPlayerClass() != null
 								&& p.getGamePlayer(player).getPlayerClass().equals(theClass), false));
 			}
-			
 
 			i++;
 		}
@@ -166,7 +169,7 @@ public class ClassSelectorListener implements Listener {
 		Integer notYetFinalIndex = i + COMING_SOON_CLASSES_COUNT;
 		for (; i < notYetFinalIndex; i++) {
 			inv.setItem(isOnLastLine(i - 9, classesCount) ? shift + i : i,
-					createItem(new NotYetAvailableClass(p), false, false));
+					createItem(gamePlayer, new NotYetAvailableClass(p), false, false));
 		}
 
 		inv.setItem(inv.getSize() - 1, createExitItem());
@@ -218,19 +221,19 @@ public class ClassSelectorListener implements Listener {
 		player.openInventory(inv);
 	}
 
-	public ItemStack createItem(PlayerClass theClass, boolean isEnabled) {
-		return createItem(theClass, isEnabled, true);	
+	public ItemStack createItem(GamePlayer gamePlayer, PlayerClass theClass, boolean isEnabled) {
+		return createItem(gamePlayer, theClass, isEnabled, true);
 	}
-	
-	public ItemStack createItem(PlayerClass theClass, boolean isEnabled, boolean available) {
+
+	public ItemStack createItem(GamePlayer gamePlayer, PlayerClass theClass, boolean isEnabled, boolean available) {
 		ItemStack item = new ItemStack(theClass.getIcon());
 		ItemMeta meta = item.getItemMeta();
 
 		if (isEnabled) {
 			meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + ChatColor.BOLD + "" + theClass.getName());
-		} else if(!available){
+		} else if (!available) {
 			meta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + theClass.getName());
-		 
+
 		} else {
 			meta.setDisplayName(ChatColor.RESET + theClass.getName());
 		}
@@ -248,7 +251,7 @@ public class ClassSelectorListener implements Listener {
 		lore.add("");
 		lore.add("");
 
-		if(available) {
+		if (available) {
 			lore.add(ChatColor.GRAY + "• Clic gauche pour jouer avec cette classe");
 		}
 
@@ -258,7 +261,7 @@ public class ClassSelectorListener implements Listener {
 			lore.add("");
 			lore.add(ChatColor.LIGHT_PURPLE + "Sélectionné");
 		}
-		if(!available) {
+		if (!available) {
 			lore.add("");
 			lore.add(ChatColor.RED + "Non débloqué(e)");
 		}
@@ -346,11 +349,8 @@ public class ClassSelectorListener implements Listener {
 		ItemStack item = new ItemStack(Material.EMERALD);
 		ItemMeta meta = item.getItemMeta();
 		if (theClass != null) {
-			meta.setLore(Arrays.asList(
-					"",
-					ChatColor.GRAY + "Clic droit pour sélectionner",
-					ChatColor.GRAY + "la classe " + theClass.getName()
-			));
+			meta.setLore(Arrays.asList("", ChatColor.GRAY + "Clic droit pour sélectionner", ChatColor.GRAY
+					+ "la classe " + theClass.getName()));
 		}
 		meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Utiliser cette classe");
 		item.setItemMeta(meta);
@@ -418,25 +418,27 @@ public class ClassSelectorListener implements Listener {
 					+ ChatColor.DARK_GREEN + "aléatoire" + ChatColor.GREEN + " !");
 		}
 	}
-	
+
 	public void tryMaite(UUID id, int slot, int size) {
 		Player player = p.getServer().getPlayer(id);
-		if(player == null) return;
+		if (player == null)
+			return;
 		GamePlayer gamePlayer = p.getGamePlayer(player);
-		if(gamePlayer == null) return;
+		if (gamePlayer == null)
+			return;
 		int progress = maite.get(id);
 		int key = -1;
-		if(slot >= size - 18 && slot < size - 9) {
+		if (slot >= size - 18 && slot < size - 9) {
 			key = slot % 9 + 1;
-		} else if(slot == size - 5) {
+		} else if (slot == size - 5) {
 			key = 0;
 		}
-		if((gamePlayer.getElo() + "").charAt(progress) == (key + "").charAt(0)) {
+		if ((gamePlayer.getElo() + "").charAt(progress) == (key + "").charAt(0)) {
 			progress++;
 		} else {
 			progress = 0;
 		}
-		if(progress == (gamePlayer.getElo() + "").length()) {
+		if (progress == (gamePlayer.getElo() + "").length()) {
 			progress = 0;
 			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
 					+ ChatColor.DARK_GREEN + "Maïté" + ChatColor.GREEN + " !");

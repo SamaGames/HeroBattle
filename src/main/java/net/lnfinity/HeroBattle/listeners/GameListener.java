@@ -59,7 +59,7 @@ public class GameListener implements Listener {
 
 			e.setDamage(0);
 
-
+			// ### ThunderTool ###
 			if (e.getCause() == DamageCause.LIGHTNING) {
 				UUID nearest = null;
 				Double distanceS = Double.MAX_VALUE;
@@ -74,15 +74,18 @@ public class GameListener implements Listener {
 
 				gp.setPercentage(gp.getPercentage() + 25 + (int) (Math.random() * ((50 - 25) + 25)), nearest == null ? null : plugin.getGamePlayer(nearest));
 			}
-
+			
+			// ### Tools that use fire ###
 			else if (e.getCause() == DamageCause.FIRE_TICK || e.getCause() == DamageCause.FIRE) {
 				gp.setPercentage(gp.getPercentage() + 2, plugin.getGamePlayer(plugin.getGame().getFiresInProgress().get(gp.getPlayerUniqueID())));
 			}
-
+			
+			// ### Tools that use poison ###
 			else if (e.getCause() == DamageCause.POISON) {
 				gp.setPercentage(gp.getPercentage() + 3, plugin.getGamePlayer(plugin.getGame().getPoisonsInProgress().get(gp.getPlayerUniqueID())));
 			}
 
+			// ### Tools that use wither effects ###
 			else if (e.getCause() == DamageCause.WITHER) {
 				gp.setPercentage(gp.getPercentage() + 4, null);
 			}
@@ -136,6 +139,7 @@ public class GameListener implements Listener {
 				gamePlayer.setPercentage(damages, gameDamager);
 				gamePlayer.setLastDamager(damager.getUniqueId());
 				
+			// ### ArrowsTool ###
 			} else if (e.getDamager() instanceof Arrow) {
 				Arrow arrow = (Arrow) e.getDamager();
 				int damages;
@@ -173,8 +177,9 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onentityExplode(ExplosionPrimeEvent e) {
-
 		Entity entity = e.getEntity();
+		
+		// ### FireballTool ###
 		if (!(entity instanceof Fireball)) return;
 		e.setRadius(0);
 

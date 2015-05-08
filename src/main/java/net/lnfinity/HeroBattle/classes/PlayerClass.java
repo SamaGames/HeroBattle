@@ -25,7 +25,6 @@ public abstract class PlayerClass {
 
 	public PlayerClass(HeroBattle plugin, int cooldown, int power, int tool) {
 		p = plugin;
-		
 		this.cooldown = cooldown;
 		this.power = power;
 		this.tool = tool;
