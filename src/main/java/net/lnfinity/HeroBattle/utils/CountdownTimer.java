@@ -21,8 +21,8 @@ public class CountdownTimer {
 	public CountdownTimer(HeroBattle plugin) {
 		p = plugin;
 
-		COUNTER_REDUCTION_WHEN_HALF_FULL = p.getArenaConfig().getInt("waiting") / 2;
-		COUNTER_REDUCTION_WHEN_FULL = p.getArenaConfig().getInt("waiting") / 5;
+		COUNTER_REDUCTION_WHEN_HALF_FULL = p.getArenaConfig().getInt("map.waiting") / 2;
+		COUNTER_REDUCTION_WHEN_FULL = p.getArenaConfig().getInt("map.waiting") / 5;
 	}
 
 	public boolean isEnabled() {
