@@ -192,11 +192,18 @@ public class Game implements GameArena {
 			public void run() {
 				// Toxic water
 				if(p.getArenaConfig().getBoolean("map.toxicWater", false)) {
+
+					// Chat
 					p.getServer().broadcastMessage("");
 					p.getServer().broadcastMessage(ChatColor.DARK_AQUA + "-----------------------------------------------------");
 					p.getServer().broadcastMessage(ChatColor.DARK_AQUA + "[×] " + ChatColor.AQUA + "Attention, l'eau est " + ChatColor.DARK_AQUA + "toxique" + ChatColor.AQUA + " sur cette carte !");
 					p.getServer().broadcastMessage(ChatColor.DARK_AQUA + "-----------------------------------------------------");
 					p.getServer().broadcastMessage("");
+
+					// Title
+					for(Player player : p.getServer().getOnlinePlayers()) {
+						Titles.sendTitle(player, 15, 40, 15, ChatColor.DARK_AQUA + "\u26A0", ChatColor.AQUA + "L'eau est " + ChatColor.DARK_AQUA + "toxique" + ChatColor.AQUA + " ici !");
+					}
 				}
 
 				// Toxic lava
@@ -206,6 +213,11 @@ public class Game implements GameArena {
 					p.getServer().broadcastMessage(ChatColor.DARK_RED + "[×] " + ChatColor.GOLD + "Attention, la lave est " + ChatColor.RED + "instantanément mortelle" + ChatColor.GOLD + " ici !");
 					p.getServer().broadcastMessage(ChatColor.DARK_RED + "-----------------------------------------------------");
 					p.getServer().broadcastMessage("");
+
+					// Title
+					for(Player player : p.getServer().getOnlinePlayers()) {
+						Titles.sendTitle(player, 15, 40, 15, ChatColor.DARK_RED + "\u26A0", ChatColor.GOLD + "La lave est " + ChatColor.RED + "instantanément mortelle" + ChatColor.GOLD + " !");
+					}
 				}
 
 			}
@@ -632,24 +644,35 @@ public class Game implements GameArena {
 		p.getScoreboardManager().refreshTab();
 
 		if(id != null) {
-			Player player = p.getServer().getPlayer(id);
-			GamePlayer gPlayer = p.getGamePlayer(player);
+			final Player winner = p.getServer().getPlayer(id);
+			GamePlayer gWinner = p.getGamePlayer(winner);
 
-			player.getInventory().clear();
+			winner.getInventory().clear();
 
-			gPlayer.setPlaying(false);
+			gWinner.setPlaying(false);
 
-			Bukkit.broadcastMessage("");
-			Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
-			Bukkit.broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + player.getDisplayName() + ChatColor.GREEN + ChatColor.BOLD + " remporte la partie !");
-			Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
-			Bukkit.broadcastMessage("");
 
-			new WinnerFirework(p, 30, player);
+			Bukkit.getScheduler().runTaskLater(HeroBattle.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					Bukkit.broadcastMessage("");
+					Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
+					Bukkit.broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + winner.getDisplayName() + ChatColor.GREEN + ChatColor.BOLD + " remporte la partie !");
+					Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
+					Bukkit.broadcastMessage("");
 
-			gPlayer.creditStars(1, "Victoire !");
-			gPlayer.creditCoins(16, "Victoire !");
-			StatsApi.increaseStat(player, p.getName(), "wins", 1);
+					new WinnerFirework(p, 30, winner);
+
+					for(Player player : Bukkit.getOnlinePlayers()) {
+						Titles.sendTitle(player, 10, 60, 30, Utils.getPlayerColor(winner) + winner.getName(), ChatColor.YELLOW + "remporte la partie !");
+					}
+				}
+			}, 30l);
+
+
+			gWinner.creditStars(1, "Victoire !");
+			gWinner.creditCoins(16, "Victoire !");
+			StatsApi.increaseStat(winner, p.getName(), "wins", 1);
 		}
 
 		p.getPowerupManager().getSpawner().stopTimer();
