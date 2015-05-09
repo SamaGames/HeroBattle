@@ -162,10 +162,10 @@ public class ClassManager {
 			return new MageClass(p, arg1, arg2, arg3);
 		case DRUIDE:
 			return new DruideClass(p, arg1, arg2, arg3);
-		case CRYOGENIE:
-			return new CryogenieClass(p, arg1, arg2, arg3);
-		case PYROBARBARE:
+		case CRYOGENIE: // Wut wut wut
 			return new PyrobarbareClass(p, arg1, arg2, arg3);
+		case PYROBARBARE:
+			return new CryogenieClass(p, arg1, arg2, arg3);
 		default:
 			return new BruteClass(p, arg1, arg2, arg3);
 		}
