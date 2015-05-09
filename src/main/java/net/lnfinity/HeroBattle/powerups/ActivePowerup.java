@@ -4,6 +4,7 @@ package net.lnfinity.HeroBattle.powerups;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.utils.ParticleEffect;
 import net.lnfinity.HeroBattle.utils.Utils;
+import net.samagames.utils.Titles;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Firework;
@@ -87,6 +88,7 @@ public class ActivePowerup {
 
 		for (Player player : p.getServer().getOnlinePlayers()) {
 			player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 1);
+			Titles.sendTitle(player, 5, 30, 5, ChatColor.DARK_GREEN + "\u272F", "");
 		}
 
 		final Location itemLocation = Utils.blockLocation(location).add(0, 1, 0);
