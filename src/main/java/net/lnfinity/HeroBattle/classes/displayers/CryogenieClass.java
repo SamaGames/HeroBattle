@@ -5,8 +5,11 @@ import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.classes.PlayerClassType;
 import net.lnfinity.HeroBattle.tools.displayers.IceTool;
 import net.lnfinity.HeroBattle.tools.displayers.InvincibleTool;
+import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
+import net.lnfinity.HeroBattle.tools.displayers.RemoveFireTool;
 import net.lnfinity.HeroBattle.tools.displayers.SwordVariant5Tool;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,6 +28,8 @@ public class CryogenieClass extends PlayerClass {
 		addTool(new SwordVariant5Tool(p));
 		addTool(new InvincibleTool(p, 60 - arg1 * 2, 8 + arg2));
 		addTool(new IceTool(p, 30 - arg1 * 2, 6 + arg2));
+		if(arg3 >= 1) addTool(new RemoveFireTool(p, 25 - arg1));
+		if(arg3 >= 2) addTool(new NotYetAvaibleTool(p));
 	}
 
 	@Override
