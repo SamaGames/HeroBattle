@@ -464,6 +464,9 @@ public class Game implements GameArena {
 									+ " a été poussé dans l'eau par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 									+ lives);
 
+					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
+					lastDamagerGPlayer.creditCoins(3, "Un joueur poussé à l'eau !");
+
 					break;
 
 				case LAVA:
@@ -473,6 +476,9 @@ public class Game implements GameArena {
 							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
 									+ " a été poussé dans la lave par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 									+ lives);
+
+					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
+					lastDamagerGPlayer.creditCoins(3, "Un joueur poussé dans la lave !");
 
 					break;
 			}
