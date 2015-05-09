@@ -23,8 +23,11 @@ public class DruideClass extends PlayerClass {
 		super(plugin, arg1, arg2, arg3);
 		
 		addTool(new SwordVariant4Tool(plugin));
-		addTool(new HealingTool(plugin, 90 - arg1 * 2, 50 + arg2 * 4, 0.4 + arg2 * 0.5));
+		double probability = 0.4 - arg2 * 0.05;
+		probability = probability < 0 ? 0 : probability;
+		addTool(new HealingTool(plugin, 90 - arg1 * 2, 50 + arg2 * 2, probability));
 		addTool(new InkTool(plugin, 60 - arg1 * 2, 6 + arg2, 0.25 - arg2 * 0.05));
+		
 	}
 
 	@Override
