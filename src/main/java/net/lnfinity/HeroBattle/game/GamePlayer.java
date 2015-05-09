@@ -72,6 +72,9 @@ public class GamePlayer {
 
 	private long percentageInflicted = 0l;
 	private int playersKilled = 0;
+	
+	private int killsRank = 0;
+	private int percentageRank = 0;
 
 
 	public GamePlayer(UUID id) {
@@ -463,5 +466,21 @@ public class GamePlayer {
 				ActionBar.sendPermanentMessage(player, StringUtils.join(currentStatus, ChatColor.DARK_GRAY + " - " + ChatColor.RESET));
 			}
 		}
+	}
+
+	public int getKillsRank() {
+		return killsRank;
+	}
+
+	public void setKillsRank(int killsRank) {
+		this.killsRank = killsRank;
+	}
+
+	public int getPercentageRank() {
+		return percentageRank;
+	}
+
+	public void setPercentageRank(int percentageRank) {
+		this.percentageRank = percentageRank;
 	}
 }
