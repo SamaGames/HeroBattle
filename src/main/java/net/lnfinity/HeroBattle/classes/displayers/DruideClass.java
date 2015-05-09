@@ -3,10 +3,13 @@ package net.lnfinity.HeroBattle.classes.displayers;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.tools.displayers.EarthquakeTool;
 import net.lnfinity.HeroBattle.tools.displayers.HealingTool;
 import net.lnfinity.HeroBattle.tools.displayers.InkTool;
+import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
 import net.lnfinity.HeroBattle.tools.displayers.SwordVariant4Tool;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,7 +30,8 @@ public class DruideClass extends PlayerClass {
 		probability = probability < 0 ? 0 : probability;
 		addTool(new HealingTool(plugin, 90 - arg1 * 2, 50 + arg2 * 2, probability));
 		addTool(new InkTool(plugin, 60 - arg1 * 2, 6 + arg2, 0.25 - arg2 * 0.05));
-		
+		if(arg3 >= 1) addTool(new EarthquakeTool(plugin, 60 - arg1 * 2, 18 + arg2, 30 + arg2 * 2));
+		if(arg3 >= 2) addTool(new NotYetAvaibleTool(p));
 	}
 
 	@Override

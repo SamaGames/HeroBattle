@@ -5,8 +5,11 @@ import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.classes.PlayerClassType;
 import net.lnfinity.HeroBattle.tools.displayers.FireTool;
 import net.lnfinity.HeroBattle.tools.displayers.FireballTool;
+import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
+import net.lnfinity.HeroBattle.tools.displayers.RemoveFireTool;
 import net.lnfinity.HeroBattle.tools.displayers.SwordVariant6Tool;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,6 +28,8 @@ public class PyrobarbareClass extends PlayerClass {
 		addTool(new SwordVariant6Tool(p));
 		addTool(new FireballTool(p, 30 - arg1 * 2, 16 + arg2, 25 + 2 * arg2));
 		addTool(new FireTool(p, 60 - arg1 * 2, 10 + arg2));
+		if(arg3 >= 1) addTool(new RemoveFireTool(p, 25 - arg1));
+		if(arg3 >= 2) addTool(new NotYetAvaibleTool(p));
 	}
 
 	@Override

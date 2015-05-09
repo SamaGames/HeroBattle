@@ -4,6 +4,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.classes.PlayerClassType;
 import net.lnfinity.HeroBattle.tools.displayers.ArrowsTool;
+import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
 import net.lnfinity.HeroBattle.tools.displayers.SmokeTool;
 import net.lnfinity.HeroBattle.tools.displayers.SpeedTool;
 import net.lnfinity.HeroBattle.tools.displayers.SwordVariant3Tool;
@@ -28,6 +29,7 @@ public class ArcherClass extends PlayerClass {
 		addTool(new ArrowsTool(p, 15 - arg1, 3 + arg2));
 		addTool(new SpeedTool(p, 20 - arg1 * 2, (int) Math.floor(1 + arg2 * 0.5), 5 + arg2));
 		if(arg3 >= 1) addTool(new SmokeTool(p, 45 - arg1, 4 + arg2));
+		if(arg3 >= 2) addTool(new NotYetAvaibleTool(p));
 	}
 
 	@Override
