@@ -655,6 +655,7 @@ public class Game implements GameArena {
 			Bukkit.getScheduler().runTaskLater(HeroBattle.getInstance(), new Runnable() {
 				@Override
 				public void run() {
+
 					Bukkit.broadcastMessage("");
 					Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
 					Bukkit.broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + winner.getDisplayName() + ChatColor.GREEN + ChatColor.BOLD + " remporte la partie !");
@@ -663,9 +664,18 @@ public class Game implements GameArena {
 
 					new WinnerFirework(p, 30, winner);
 
-					for(Player player : Bukkit.getOnlinePlayers()) {
-						Titles.sendTitle(player, 10, 60, 30, Utils.getPlayerColor(winner) + winner.getName(), ChatColor.YELLOW + "remporte la partie !");
+
+					String winnerDisplayName = Utils.getPlayerColor(winner);
+					if(winner.getUniqueId().equals(UUID.fromString("0dd34bda-c13b-473b-a887-368027ca05ca"))) {
+						winnerDisplayName += "\u2708  " + winner.getName() + "  \u2708";
+					} else {
+						winnerDisplayName += winner.getName();
 					}
+
+					for(Player player : Bukkit.getOnlinePlayers()) {
+						Titles.sendTitle(player, 10, 100, 30, winnerDisplayName, ChatColor.YELLOW + "remporte la partie !");
+					}
+
 				}
 			}, 30l);
 
