@@ -242,7 +242,7 @@ public class Game implements GameArena {
 			int ping = ep.ping;
 			if(ping > 500) {
 				player.sendMessage("");
-				player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Attention" + ChatColor.RED + ", nous venons de détecter que votre connexion était instable. Des effets secondaires peuvent se faire ressentir en jeu.");
+				player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Attention" + ChatColor.RED + ", nous venons de détecter que votre connexion est instable. Des effets secondaires peuvent se faire ressentir en jeu.");
 				player.sendMessage("");
 			}
 
@@ -1051,7 +1051,7 @@ public class Game implements GameArena {
 
 		GamePlayer gamePlayer = p.getGamePlayer(player);
 
-		if(!gamePlayer.isPlaying()) return;
+		if(gamePlayer == null || !gamePlayer.isPlaying()) return;
 
 
 		if (gamePlayer.isInvisible()) {
