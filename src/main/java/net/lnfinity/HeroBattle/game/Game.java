@@ -688,7 +688,50 @@ public class Game implements GameArena {
 		p.getPowerupManager().getSpawner().stopTimer();
 		p.getGameTimer().pauseTimer();
 
+		
+		
+		
+		
+		
+		final Map<UUID, Long> percentagesInflicted = new TreeMap<>(new Comparator<UUID>() {
+			@Override
+			public int compare(UUID a, UUID b) {
+				try {
+					Long prcA = p.getGamePlayer(a).getPercentageInflicted();
+					Long prcB = p.getGamePlayer(b).getPercentageInflicted();
 
+					if (prcA >= prcB) return -1;
+					else return 1;
+
+				} catch (NullPointerException e) {
+					return 0;
+				}
+			}
+		});
+		final Map<UUID, Integer> kills = new TreeMap<>(new Comparator<UUID>() {
+			@Override
+			public int compare(UUID a, UUID b) {
+				try {
+					Integer killsA = p.getGamePlayer(a).getPlayersKilled();
+					Integer killsB = p.getGamePlayer(b).getPlayersKilled();
+
+					if (killsA >= killsB) return -1;
+					else return 1;
+
+				} catch (NullPointerException e) {
+					return 0;
+				}
+			}
+		});
+		int i = 1;
+		for (GamePlayer player : p.getGamePlayers().values()) {
+			percentagesInflicted.put(player.getPlayerUniqueID(), player.getPercentageInflicted());
+			kills.put(player.getPlayerUniqueID(), player.getPlayersKilled());
+			player.setPercentageRank(i);
+			player.setKillsRank(i);
+			i++;
+		}
+		
 		calculateElos(id);
 
 		
@@ -720,44 +763,6 @@ public class Game implements GameArena {
 		p.getServer().getScheduler().runTaskLaterAsynchronously(p, new Runnable() {
 			@Override
 			public void run() {
-				Map<UUID, Long> percentagesInflicted = new TreeMap<>(new Comparator<UUID>() {
-					@Override
-					public int compare(UUID a, UUID b) {
-						try {
-							Long prcA = p.getGamePlayer(a).getPercentageInflicted();
-							Long prcB = p.getGamePlayer(b).getPercentageInflicted();
-
-							if (prcA >= prcB) return -1;
-							else return 1;
-
-						} catch (NullPointerException e) {
-							return 0;
-						}
-					}
-				});
-
-				Map<UUID, Integer> kills = new TreeMap<>(new Comparator<UUID>() {
-					@Override
-					public int compare(UUID a, UUID b) {
-						try {
-							Integer killsA = p.getGamePlayer(a).getPlayersKilled();
-							Integer killsB = p.getGamePlayer(b).getPlayersKilled();
-
-							if (killsA >= killsB) return -1;
-							else return 1;
-
-						} catch (NullPointerException e) {
-							return 0;
-						}
-					}
-				});
-
-				for (GamePlayer player : p.getGamePlayers().values()) {
-					percentagesInflicted.put(player.getPlayerUniqueID(), player.getPercentageInflicted());
-					kills.put(player.getPlayerUniqueID(), player.getPlayersKilled());
-				}
-
-
 				String[] topsPercentages = new String[]{"", "", ""};
 				String[] topsKills       = new String[]{"", "", ""};
 
@@ -897,6 +902,10 @@ public class Game implements GameArena {
 		for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
 			double esp = (gamePlayer.getElo() / total); // Espérance de gain pour gamePlayer
 			double k = 16;
+			
+			double extraK = gamePlayer.getKillsRank() == 0 ? 0 : 4 - gamePlayer.getKillsRank();
+			double extraP = gamePlayer.getPercentageRank() == 0 ? 0 : 4 - gamePlayer.getPercentageRank();
+			double extra = extraK + extraP; // Extra par rapport au classement
 
 			if(gamePlayer.getPlayerUniqueID() == winner) { // Le joueur a gagné
 				int elo = gamePlayer.getElo();
@@ -904,7 +913,7 @@ public class Game implements GameArena {
 				int elo1 = (int) (k * (1 - esp));
 				double mult = 1 / Utils.logb((elo + 1000)/1000, 2);
 
-				gamePlayer.setElo((int) (mult * elo1 + elo));
+				gamePlayer.setElo((int) (mult * elo1 + elo + extra * p.getGamePlayers().size() / 2));
 
 				if(gamePlayer.getElo() > 10000) {
 					gamePlayer.setElo(10000);
@@ -916,7 +925,7 @@ public class Game implements GameArena {
 				int elo1 = (int) (k * - esp);
 				double mult = Utils.logb((elo + 1000)/1000, 2);
 
-				gamePlayer.setElo((int) (mult * elo1 + elo));
+				gamePlayer.setElo((int) (mult * elo1 + elo - extra * p.getGamePlayers().size() / 4));
 
 				if(gamePlayer.getElo() < 1000) {
 					gamePlayer.setElo(1000);
