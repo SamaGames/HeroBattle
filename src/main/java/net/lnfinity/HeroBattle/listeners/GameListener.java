@@ -56,6 +56,8 @@ public class GameListener implements Listener {
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
 			GamePlayer gp = plugin.getGamePlayer(p);
+			
+			if(gp == null) return;
 
 			e.setDamage(0);
 
