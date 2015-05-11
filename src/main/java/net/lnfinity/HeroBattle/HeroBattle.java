@@ -17,13 +17,7 @@ import net.lnfinity.HeroBattle.classes.ClassManager;
 import net.lnfinity.HeroBattle.game.Game;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.game.ScoreboardManager;
-import net.lnfinity.HeroBattle.listeners.ClassSelectionCommand;
-import net.lnfinity.HeroBattle.listeners.ClassSelectorListener;
-import net.lnfinity.HeroBattle.listeners.CommandListener;
-import net.lnfinity.HeroBattle.listeners.GameListener;
-import net.lnfinity.HeroBattle.listeners.MasterListener;
-import net.lnfinity.HeroBattle.listeners.PowerupsListener;
-import net.lnfinity.HeroBattle.listeners.SystemListener;
+import net.lnfinity.HeroBattle.listeners.*;
 import net.lnfinity.HeroBattle.powerups.PowerupManager;
 import net.lnfinity.HeroBattle.tutorial.TutorialDisplayer;
 import net.lnfinity.HeroBattle.utils.CountdownTimer;
@@ -132,6 +126,7 @@ public class HeroBattle extends JavaPlugin {
 		};
 
 		events.registerEvents(new MasterListener(this), this);
+		events.registerEvents(new PlayersConnectionsListener(this), this);
 		events.registerEvents(new GameListener(this), this);
 		events.registerEvents(new SystemListener(this), this);
 		events.registerEvents(new ClassSelectorListener(this), this);
