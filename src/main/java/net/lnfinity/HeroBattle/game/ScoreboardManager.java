@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 public class ScoreboardManager {
 
@@ -119,6 +120,12 @@ public class ScoreboardManager {
 	 */
 	public void removePlayer(Player player) {
 		board.resetScores(player.getName());
+
+		Team playerTeam = board.getPlayerTeam(player);
+		if(playerTeam != null) {
+			playerTeam.removePlayer(player);
+			playerTeam.unregister();
+		}
 	}
 
 	/**

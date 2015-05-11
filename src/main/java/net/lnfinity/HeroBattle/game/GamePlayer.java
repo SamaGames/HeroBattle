@@ -205,6 +205,7 @@ public class GamePlayer {
 		this.isInvisible = isInvisible;
 
 		updateNotificationAboveInventory();
+		HeroBattle.getInstance().getGame().updatePlayerArmor(Bukkit.getPlayer(playerID));
 	}
 
 	public boolean isInvulnerable() {

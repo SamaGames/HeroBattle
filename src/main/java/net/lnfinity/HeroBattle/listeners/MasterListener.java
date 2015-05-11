@@ -87,6 +87,7 @@ public class MasterListener implements Listener {
 
 		plugin.getCoherenceMachine().getMessageManager().writeWelcomeInGameMessage(p);
 
+		/*
 		if (p.getName().equals("6infinity8") || p.getName().equals("AmauryPi")) {
 			plugin.getServer().broadcastMessage(
 					HeroBattle.GAME_TAG
@@ -97,6 +98,7 @@ public class MasterListener implements Listener {
 		} else {
 			plugin.getCoherenceMachine().getMessageManager().writePlayerJoinArenaMessage(p, plugin.getGame());
 		}
+		*/
 
 		if (!plugin.getTimer().isEnabled() && plugin.getPlayerCount() >= plugin.getGame().getMinPlayers()) {
 			plugin.getTimer().restartTimer();
@@ -178,7 +180,7 @@ public class MasterListener implements Listener {
 					public void run() {
 						p.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " est actuellement de " + ChatColor.DARK_GREEN + gamePlayer.getElo());
 					}
-				}, 20L);
+				}, 30L);
 			}
 		});
 
@@ -204,6 +206,8 @@ public class MasterListener implements Listener {
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent ev) {
+
+		/*
 		if (plugin.getGame().getStatus() == Status.Available || plugin.getGame().getStatus() == Status.Starting) {
 			if (ev.getPlayer().getName().equals("6infinity8") || ev.getPlayer().getName().equals("AmauryPi")) {
 				plugin.getServer().broadcastMessage(
@@ -218,6 +222,7 @@ public class MasterListener implements Listener {
 								+ " a quitté la partie");
 			}
 		}
+		*/
 
 		if (plugin.getGame().getStatus() == Status.Starting) {
 			if (plugin.getTimer().isEnabled() && plugin.getPlayerCount() - 1 < plugin.getGame().getMinPlayers()) {
@@ -236,7 +241,6 @@ public class MasterListener implements Listener {
 				plugin.getGame().onPlayerQuit(ev.getPlayer().getUniqueId());
 			}
 		}
-		ev.setQuitMessage(null);
 		
 		for (Player player : plugin.getServer().getOnlinePlayers()) {
 				player.showPlayer(ev.getPlayer());
