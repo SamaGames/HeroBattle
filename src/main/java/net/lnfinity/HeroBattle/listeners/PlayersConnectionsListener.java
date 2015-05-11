@@ -114,7 +114,7 @@ public class PlayersConnectionsListener implements Listener {
 		if(players.size() == 0) return;
 
 
-		if(players.size() <= 0) {
+		if(players.size() <= 2) {
 			Bukkit.broadcastMessage(HeroBattle.GAME_TAG + StringUtils.join(players, ChatColor.YELLOW + " et ") + ChatColor.YELLOW + " " + (players.size() == 1 ? endOfTheMessageSolo : endOfTheMessageMultiple));
 		}
 
