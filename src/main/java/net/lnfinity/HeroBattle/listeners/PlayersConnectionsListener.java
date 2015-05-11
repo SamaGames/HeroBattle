@@ -53,7 +53,7 @@ public class PlayersConnectionsListener implements Listener {
 			@Override
 			public void run() {
 				if(playersConnectedNotAnnounced.size() != 0) {
-					String playersCount = ChatColor.DARK_GRAY + " [" + ChatColor.RED + p.getGame().countGamePlayers() + ChatColor.DARK_GRAY + "/" + ChatColor.RED + p.getGame().getMaxPlayers() + ChatColor.DARK_GRAY + "]";
+					String playersCount = " " + ChatColor.DARK_GRAY + "[" + ChatColor.RED + p.getGame().countGamePlayers() + ChatColor.DARK_GRAY + "/" + ChatColor.RED + p.getGame().getMaxPlayers() + ChatColor.DARK_GRAY + "]";
 
 					if(p.getGame().countGamePlayers() > p.getGame().getMaxPlayers()) {
 						playersCount = playersCount + ChatColor.GREEN + " [Slots VIP]";
@@ -93,7 +93,7 @@ public class PlayersConnectionsListener implements Listener {
 					+ ChatColor.GREEN + "" + ChatColor.MAGIC + "||" + ChatColor.RESET;
 		}
 		else {
-			return Utils.getPlayerColor(player) + player.getName() + ChatColor.RESET;
+			return Utils.getPlayerColor(player) + player.getName();
 		}
 	}
 
@@ -114,25 +114,32 @@ public class PlayersConnectionsListener implements Listener {
 		if(players.size() == 0) return;
 
 
-		if(players.size() <= 2) {
+		if(players.size() <= 0) {
 			Bukkit.broadcastMessage(HeroBattle.GAME_TAG + StringUtils.join(players, ChatColor.YELLOW + " et ") + ChatColor.YELLOW + " " + (players.size() == 1 ? endOfTheMessageSolo : endOfTheMessageMultiple));
 		}
 
 		else {
-			String[] newPlayers = new String[players.size() - 1];
-			int i = 0;
-			for(String player : players.subList(1, players.size())) {
-				newPlayers[i] = player;
-				i++;
+			ChatColor colorFirstPlayer = null;
+			String lastColorsFirstPlayer = ChatColor.getLastColors(players.get(0)).replace("" + ChatColor.COLOR_CHAR, "");
+			for(Character colorChar : lastColorsFirstPlayer.toCharArray()) {
+				ChatColor color = ChatColor.getByChar(colorChar);
+				if(color != null && color.isColor()) {
+					colorFirstPlayer = color;
+				}
 			}
+			if(colorFirstPlayer == null) colorFirstPlayer = ChatColor.YELLOW;
 
-			new FancyMessage().text(HeroBattle.GAME_TAG)
-					.then().text(players.get(0))
+			FancyMessage message = new FancyMessage().text(HeroBattle.GAME_TAG)
+					.then().text(players.get(0)).color(colorFirstPlayer)
 					.then().text(" et ").color(ChatColor.YELLOW)
 					.then().text((players.size() - 1) + " autres")
-					       .tooltip(newPlayers).color(ChatColor.YELLOW)
-					.then().text(" " + endOfTheMessageMultiple).color(ChatColor.YELLOW)
-					.send((Iterable<Player>) Bukkit.getOnlinePlayers());
+					       .tooltip(StringUtils.join(players.subList(1, players.size()), "\n")).color(ChatColor.GOLD)
+					.then().text(" " + endOfTheMessageMultiple).color(ChatColor.YELLOW);
+
+			System.out.println(message.toJSONString());
+
+			message.send(((Iterable<Player>) Bukkit.getOnlinePlayers()));
+			p.getServer().getConsoleSender().sendMessage(message.toOldMessageFormat());
 		}
 	}
 
