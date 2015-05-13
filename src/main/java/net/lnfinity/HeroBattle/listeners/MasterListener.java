@@ -184,6 +184,10 @@ public class MasterListener implements Listener {
 			}
 		});
 
+
+		ActionBar.sendPermanentMessage(p, ChatColor.GREEN + "Classe sélectionnée : " + ChatColor.DARK_RED + "aucune" + ChatColor.GRAY + " (aléatoire sans bonus)");
+
+
 		GameAPI.getManager().sendArena();
 	}
 
