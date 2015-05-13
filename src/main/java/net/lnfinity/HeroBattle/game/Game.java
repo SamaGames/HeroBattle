@@ -913,7 +913,7 @@ public class Game implements GameArena {
 				int elo1 = (int) (k * (1 - esp));
 				double mult = 1 / Utils.logb((elo + 1000)/1000, 2);
 
-				gamePlayer.setElo((int) (mult * elo1 + elo + extra * p.getGamePlayers().size() / 2));
+				gamePlayer.setElo((int) (mult * elo1 + elo));
 
 				if(gamePlayer.getElo() > 10000) {
 					gamePlayer.setElo(10000);
@@ -925,7 +925,7 @@ public class Game implements GameArena {
 				int elo1 = (int) (k * - esp);
 				double mult = Utils.logb((elo + 1000)/1000, 2);
 
-				gamePlayer.setElo((int) (mult * elo1 + elo - extra * p.getGamePlayers().size() / 4));
+				gamePlayer.setElo((int) (mult * elo1 + elo));
 
 				if(gamePlayer.getElo() < 1000) {
 					gamePlayer.setElo(1000);
