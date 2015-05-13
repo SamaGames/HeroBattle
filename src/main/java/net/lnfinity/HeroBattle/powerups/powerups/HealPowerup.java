@@ -20,14 +20,10 @@ public class HealPowerup implements PositivePowerup {
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
 		GamePlayer gamePlayer = p.getGamePlayer(player);
-		if(gamePlayer.getLives() == gamePlayer.getPlayerClass().getLives()) {
-			player.sendMessage(ChatColor.GREEN + "Vous êtes déjà en pleine forme !");
-		} else {
-			player.sendMessage(ChatColor.GREEN + "Vous gagnez " + ChatColor.DARK_GREEN + "1 " + ChatColor.GREEN + "vie !");
-			gamePlayer.setLives(gamePlayer.getLives() + 1);
-			player.setHealth(player.getHealth() + 2);
-			p.getScoreboardManager().refresh();
-		}
+
+		player.sendMessage(ChatColor.GREEN + "Vous gagnez " + ChatColor.DARK_GREEN + "une " + ChatColor.GREEN + "vie !");
+		gamePlayer.gainLife();
+		p.getScoreboardManager().refresh();
 	}
 
 	@Override

@@ -348,7 +348,7 @@ public class Game implements GameArena {
 		final GamePlayer hbPlayer = p.getGamePlayer(player);
 
 		// Avoid the death to be handled if the player is already completely dead (no life left)
-		if(hbPlayer.getLives() <= 0) return;
+		if(hbPlayer.getTotalLives() <= 0) return;
 
 
 		// Avoids this to be called a lot of times
@@ -364,18 +364,18 @@ public class Game implements GameArena {
 
 
 		// Technical stuff
-		hbPlayer.setLives(hbPlayer.getLives() - 1);
+		hbPlayer.looseLife();
 		player.setVelocity(new Vector());
 
 		// Broadcasts
-		String s = hbPlayer.getLives() <= 1 ? "" : "s";
-		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + hbPlayer.getLives() + ChatColor.DARK_GRAY
+		String s = hbPlayer.getTotalLives() <= 1 ? "" : "s";
+		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + hbPlayer.getTotalLives() + ChatColor.DARK_GRAY
 				+ " vie" + s + ")";
 
 		Player lastDamagerPlayer = hbPlayer.getLastDamager() != null ? p.getServer().getPlayer(hbPlayer.getLastDamager()) : null;
 		GamePlayer lastDamagerGPlayer = p.getGamePlayer(lastDamagerPlayer);
 
-		String killedByMessage = hbPlayer.getLives() >= 1 ? ChatColor.RED + "Vous perdez une vie !" : ChatColor.RED + "C'est fini pour vous !";
+		String killedByMessage = hbPlayer.getTotalLives() >= 1 ? ChatColor.RED + "Vous perdez une vie !" : ChatColor.RED + "C'est fini pour vous !";
 
 		if (hbPlayer.getLastDamager() == null || lastDamagerPlayer == null || lastDamagerPlayer.getGameMode() == GameMode.SPECTATOR) {
 			switch (death) {
@@ -526,22 +526,22 @@ public class Game implements GameArena {
 		final String finalKilledByMessage = killedByMessage;
 		if (hbPlayer.getLives() >= 1) {
 
-			Titles.sendTitle(player, 3, 150, 10, Utils.heartsToString(hbPlayer, true), killedByMessage);
+			Titles.sendTitle(player, 3, 150, 10, Utils.heartsToString(hbPlayer, true, false), killedByMessage);
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
-					Titles.sendTitle(player, 15, 50, 8, Utils.heartsToString(hbPlayer), ChatColor.RED
+					Titles.sendTitle(player, 15, 50, 8, Utils.heartsToString(hbPlayer, false, true), ChatColor.RED
 							+ finalKilledByMessage);
 				}
 			}, 10L);
 
 		} else {
-			Titles.sendTitle(player, 3, 150, 0, Utils.heartsToString(hbPlayer, true), ChatColor.RED
+			Titles.sendTitle(player, 3, 150, 0, Utils.heartsToString(hbPlayer, true, false), ChatColor.RED
 					+ killedByMessage);
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
-					Titles.sendTitle(player, 15, 100, 18, Utils.heartsToString(hbPlayer), ChatColor.RED
+					Titles.sendTitle(player, 15, 100, 18, Utils.heartsToString(hbPlayer, false, true), ChatColor.RED
 							+ finalKilledByMessage);
 				}
 			}, 10L);

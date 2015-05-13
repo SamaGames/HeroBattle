@@ -3,22 +3,17 @@ package net.lnfinity.HeroBattle.utils;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 
 public final class Utils {
@@ -87,35 +82,69 @@ public final class Utils {
 	}
 
 	public static String heartsToString(GamePlayer player) {
+		return heartsToString(player, false, false);
+	}
+
+	/**
+	 * Returns a representation of the hearts of a player.
+	 *
+	 * @param player The player
+	 * @param transitionBegin True if this is the beginning of a transition on the death screen
+	 * @param transitionEnd  True if this is the end of a transition on the death screen
+	 * @return
+	 */
+	public static String heartsToString(GamePlayer player, boolean transitionBegin, boolean transitionEnd) {
 		if (player.getPlayerClass() == null) {
 			return "";
 		}
 
-		return heartsToString(player.isPlaying() ? player.getLives() : 0, player.getPlayerClass().getLives());
-	}
+		Integer displayedLives;
+		Integer displayedAdditionalLives;
+		Integer displayedLostLives;
+		Integer displayedLostAdditionalLives = 0;
 
-	public static String heartsToString(GamePlayer player, boolean transition) {
-		if (player.getPlayerClass() == null) {
-			return "";
-		}
+		if(!transitionBegin) {
+			displayedLives = player.getLives();
+			displayedAdditionalLives = player.getAdditionalLives();
+			displayedLostLives = player.getPlayerClass().getLives() - displayedLives;
 
-		if (!transition) {
-			return heartsToString(player.getLives(), player.getPlayerClass().getLives());
-		} else {
-			return heartsToString(player.getLives() + 1, player.getPlayerClass().getLives());
-		}
-	}
-
-	public static String heartsToString(int hearts, int maxHearts) {
-		String str = ChatColor.RED + "";
-		for (int i = 1; i <= maxHearts; i++) {
-			if (i <= hearts) {
-				str += "❤";
-			} else {
-				str += ChatColor.GRAY + "❤";
+			// In this case the player just lost an additional live, because he lost a live when
+			// this is displayed with one of the transitions to true.
+			if(transitionEnd && displayedLostLives == 0) {
+				displayedLostAdditionalLives = 1;
 			}
 		}
-		return str;
+		else {
+			if(player.getLives() == player.getPlayerClass().getLives()) {
+				// The player just lost an additional live
+				displayedLives = player.getLives();
+				displayedAdditionalLives = player.getAdditionalLives() + 1;
+				displayedLostLives = 0;
+			}
+			else {
+				// No additional live here
+				displayedLives = player.getLives() + 1;
+				displayedAdditionalLives = 0;
+				displayedLostLives = player.getPlayerClass().getLives() - displayedLives;
+			}
+		}
+
+		Bukkit.getLogger().info("Lives: " + displayedLives + "; lost: " + displayedLostLives + "; adds: " + displayedAdditionalLives + "; adds lost: " + displayedLostAdditionalLives);
+
+		return    (displayedLives != 0 ? ChatColor.RED + getNHearts(displayedLives) : "")
+				+ (displayedLostLives != 0 ? ChatColor.GRAY + getNHearts(displayedLostLives) : "")
+				+ (displayedAdditionalLives != 0 ? ChatColor.DARK_RED + getNHearts(displayedAdditionalLives) : "")
+				+ (displayedLostAdditionalLives != 0 ? ChatColor.GRAY + getNHearts(displayedLostAdditionalLives) : "");
+	}
+
+	private static String getNHearts(int n) {
+		String hearts = "";
+
+		for (int i = 0; i < n; i++) {
+			hearts += "❤";
+		}
+
+		return hearts;
 	}
 
 	public static double logb(double a, double b) {

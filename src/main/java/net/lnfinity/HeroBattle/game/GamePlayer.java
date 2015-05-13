@@ -9,6 +9,7 @@ import net.samagames.gameapi.json.Status;
 import net.zyuiop.MasterBundle.StarsManager;
 import net.zyuiop.coinsManager.CoinsManager;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -41,6 +42,7 @@ public class GamePlayer {
 	private int maxJumps = 2;
 	private int percentage = 0;
 	private int lives = 3;
+	private int additionalLives = 0;
 
 	private boolean doubleDamages = false;
 	private boolean isInvisible = false;
@@ -171,12 +173,62 @@ public class GamePlayer {
 		HeroBattle.getInstance().getScoreboardManager().update(this);
 	}
 
+	public int getTotalLives() {
+		return lives + additionalLives;
+	}
+
 	public int getLives() {
 		return lives;
 	}
 
 	public void setLives(int lives) {
 		this.lives = lives;
+	}
+
+	public int getAdditionalLives() {
+		return additionalLives;
+	}
+
+	public void setAdditionalLives(int additionalLives) {
+		this.additionalLives = additionalLives;
+	}
+
+	public void gainLife() {
+		Player player = Bukkit.getPlayer(playerID);
+		Validate.notNull(player, "Bukkit Player object null in GamePlayer.gainLife ?! (UUID " + playerID + ")");
+
+		if(getLives() < getPlayerClass().getLives()) {
+			lives++;
+		}
+		else {
+			additionalLives++;
+			player.setMaxHealth(player.getMaxHealth() + 2);
+		}
+
+		player.setHealth(player.getHealth() + 2);
+	}
+
+	public void looseLife() {
+		final Player player = Bukkit.getPlayer(playerID);
+		Validate.notNull(player, "Bukkit Player object null in GamePlayer.gainLife ?! (UUID " + playerID + ")");
+
+		if(additionalLives != 0) {
+			additionalLives--;
+			player.setMaxHealth(player.getMaxHealth() - 2);
+			Bukkit.getScheduler().runTaskLater(HeroBattle.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					player.setHealth(player.getMaxHealth());
+				}
+			}, 2l);
+		}
+		else {
+			lives--;
+
+			if(lives != 0) {
+				player.setHealth(player.getHealth() - 2);
+			}
+		}
 	}
 
 	public boolean isPlaying() {
