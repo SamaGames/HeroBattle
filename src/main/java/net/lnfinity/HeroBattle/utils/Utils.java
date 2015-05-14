@@ -129,8 +129,7 @@ public final class Utils {
 			}
 		}
 
-		Bukkit.getLogger().info("Lives: " + displayedLives + "; lost: " + displayedLostLives + "; adds: " + displayedAdditionalLives + "; adds lost: " + displayedLostAdditionalLives);
-
+		
 		return    (displayedLives != 0 ? ChatColor.RED + getNHearts(displayedLives) : "")
 				+ (displayedLostLives != 0 ? ChatColor.GRAY + getNHearts(displayedLostLives) : "")
 				+ (displayedAdditionalLives != 0 ? ChatColor.DARK_RED + getNHearts(displayedAdditionalLives) : "")

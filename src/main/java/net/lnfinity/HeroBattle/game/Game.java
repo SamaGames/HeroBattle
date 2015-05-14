@@ -668,7 +668,11 @@ public class Game implements GameArena {
 					String winnerDisplayName = Utils.getPlayerColor(winner);
 					if(winner.getUniqueId().equals(UUID.fromString("0dd34bda-c13b-473b-a887-368027ca05ca"))) {
 						winnerDisplayName += "\u2708  " + winner.getName() + "  \u2708";
-					} else {
+					}
+					else if(winner.getUniqueId().equals(UUID.fromString("7caf2af6-b149-47eb-8b76-7f58c07d8f5a"))) {
+						winnerDisplayName += ChatColor.GOLD + "\u272F  " + Utils.getPlayerColor(winner) + winner.getName() + ChatColor.GOLD + "  \u272F";
+					}
+					else {
 						winnerDisplayName += winner.getName();
 					}
 
