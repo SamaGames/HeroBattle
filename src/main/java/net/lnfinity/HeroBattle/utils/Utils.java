@@ -3,6 +3,9 @@ package net.lnfinity.HeroBattle.utils;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 
+import net.samagames.permissionsapi.PermissionsAPI;
+import net.samagames.permissionsbukkit.PermissionsBukkit;
+import net.zyuiop.MasterBundle.MasterBundle;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -213,7 +216,11 @@ public final class Utils {
 	}
 
 	public static String getPlayerColor(Player player) {
-		return ChatColor.getLastColors(player.getDisplayName().replaceAll(ChatColor.RESET.toString(), ""));
+		if(MasterBundle.isDbEnabled) {
+			return PermissionsBukkit.getPrefix(PermissionsAPI.permissionsAPI.getUser(player.getUniqueId()));
+		} else {
+			return ChatColor.getLastColors(player.getDisplayName().replaceAll(ChatColor.RESET.toString(), ""));
+		}
 	}
 
 
