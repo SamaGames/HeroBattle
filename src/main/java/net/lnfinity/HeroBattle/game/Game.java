@@ -564,6 +564,15 @@ public class Game implements GameArena {
 			// Très important ! Sinon le joueur conserve sa vélocité
 			player.setVelocity(player.getVelocity().zero());
 
+			// Effet de lenteur pour éviter les chutes non désirées
+			player.setFlying(true);
+			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+				@Override
+				public void run() {
+					// Annulation
+					player.setFlying(false);
+				}
+			}, 20L);
 		}
 
 		else {
