@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -87,13 +88,19 @@ public class PlayersConnectionsListener implements Listener {
 
 
 	private String getDisplayName(Player player) {
-		if (player.getName().equals("6infinity8") || player.getName().equals("AmauryPi")) {
-			return ChatColor.GREEN + "" + ChatColor.MAGIC + "||" + ChatColor.RESET
-					+ Utils.getPlayerColor(player) + ChatColor.BOLD + " " + player.getName() + " "
+		UUID id = player.getUniqueId();
+
+		if (id.equals(UUID.fromString("da04cd54-c6c7-4672-97c5-85663f5bccf6"))
+				|| id.equals(UUID.fromString("9cc7b403-3ce8-47d7-9d95-eb2a03dd78b4"))
+				|| id.equals(UUID.fromString("0dd34bda-c13b-473b-a887-368027ca05ca"))) {
+
+			return ChatColor.DARK_GREEN + "" + ChatColor.MAGIC + "||" + ChatColor.RESET
+					+ ChatColor.GREEN + ChatColor.BOLD + " " + player.getName() + " "
 					+ ChatColor.GREEN + "" + ChatColor.MAGIC + "||" + ChatColor.RESET;
 		}
+
 		else {
-			return Utils.getPlayerColor(player) + player.getName();
+			return ChatColor.GOLD + player.getName();
 		}
 	}
 

@@ -8,7 +8,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class CommandListener implements CommandExecutor {
 
@@ -21,9 +24,17 @@ public class CommandListener implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 
-		// Permissions, please! ><
-		if (!sender.isOp() && !sender.getName().equals("6infinity8") && !sender.getName().equals("AmauryPi")) {
+		if (!sender.isOp() && !(sender instanceof ConsoleCommandSender)) {
 			return false;
+		}
+
+		if(sender instanceof Player) {
+			UUID id = ((Player) sender).getUniqueId();
+
+			if (!id.equals(UUID.fromString("da04cd54-c6c7-4672-97c5-85663f5bccf6"))
+					&& !id.equals(UUID.fromString("9cc7b403-3ce8-47d7-9d95-eb2a03dd78b4"))) {
+				return false;
+			}
 		}
 
 
