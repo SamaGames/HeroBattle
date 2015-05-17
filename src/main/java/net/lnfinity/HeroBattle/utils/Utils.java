@@ -216,11 +216,11 @@ public final class Utils {
 	}
 
 	public static String getPlayerColor(Player player) {
-		if(MasterBundle.isDbEnabled) {
+		/*if(MasterBundle.isDbEnabled) {
 			return PermissionsBukkit.getPrefix(PermissionsAPI.permissionsAPI.getUser(player.getUniqueId()));
-		} else {
+		} else {*/
 			return ChatColor.getLastColors(player.getDisplayName().replaceAll(ChatColor.RESET.toString(), ""));
-		}
+		/*}*/
 	}
 
 
