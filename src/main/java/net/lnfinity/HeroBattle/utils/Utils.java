@@ -135,7 +135,7 @@ public final class Utils {
 		
 		return    (displayedLives != 0 ? ChatColor.RED + getNHearts(displayedLives) : "")
 				+ (displayedLostLives != 0 ? ChatColor.GRAY + getNHearts(displayedLostLives) : "")
-				+ (displayedAdditionalLives != 0 ? ChatColor.DARK_RED + getNHearts(displayedAdditionalLives) : "")
+				+ (displayedAdditionalLives != 0 ? ChatColor.GOLD + getNHearts(displayedAdditionalLives) : "")
 				+ (displayedLostAdditionalLives != 0 ? ChatColor.GRAY + getNHearts(displayedLostAdditionalLives) : "");
 	}
 
