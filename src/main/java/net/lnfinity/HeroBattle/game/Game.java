@@ -581,6 +581,7 @@ public class Game implements GameArena {
 			player.setVelocity(player.getVelocity().zero());
 
 			// Effet de lenteur pour éviter les chutes non désirées
+			player.setAllowFlight(true);
 			player.setFlying(true);
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
@@ -630,6 +631,7 @@ public class Game implements GameArena {
 
 		if (gPlayer.isPlaying()) {
 			gPlayer.setPlaying(false);
+			gPlayer.setLives(0);
 
 			String s = "s";
 			if (p.getPlayingPlayerCount() == 1)
