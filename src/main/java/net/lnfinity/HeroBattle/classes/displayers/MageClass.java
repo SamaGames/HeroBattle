@@ -6,7 +6,7 @@ import net.lnfinity.HeroBattle.classes.PlayerClassType;
 import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
 import net.lnfinity.HeroBattle.tools.displayers.SmokeTool;
 import net.lnfinity.HeroBattle.tools.displayers.SpeedTool;
-import net.lnfinity.HeroBattle.tools.displayers.SwordVariant2Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant2Tool;
 import net.lnfinity.HeroBattle.tools.displayers.ThunderTool;
 import net.md_5.bungee.api.ChatColor;
 

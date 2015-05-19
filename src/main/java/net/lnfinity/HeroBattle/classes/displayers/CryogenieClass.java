@@ -7,7 +7,7 @@ import net.lnfinity.HeroBattle.tools.displayers.IceTool;
 import net.lnfinity.HeroBattle.tools.displayers.InvincibleTool;
 import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
 import net.lnfinity.HeroBattle.tools.displayers.RemoveFireTool;
-import net.lnfinity.HeroBattle.tools.displayers.SwordVariant5Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant5Tool;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;

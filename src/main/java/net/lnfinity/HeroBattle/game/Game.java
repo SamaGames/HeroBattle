@@ -367,6 +367,8 @@ public class Game implements GameArena {
 		hbPlayer.looseLife();
 		player.setVelocity(new Vector());
 
+		final Location deathLocation = player.getLocation();
+
 		// Broadcasts
 		String s = hbPlayer.getTotalLives() <= 1 ? "" : "s";
 		String lives = ChatColor.DARK_GRAY + " (" + ChatColor.RED + hbPlayer.getTotalLives() + ChatColor.DARK_GRAY
@@ -510,7 +512,21 @@ public class Game implements GameArena {
 			public void run() {
 				player.playSound(player.getLocation(), Sound.IRONGOLEM_DEATH, 1, 1);
 			}
-		}, 5);
+		}, 5l);
+
+		deathLocation.getWorld().strikeLightningEffect(deathLocation);
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				deathLocation.getWorld().strikeLightningEffect(deathLocation);
+			}
+		}, 4l);
+		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			@Override
+			public void run() {
+				deathLocation.getWorld().strikeLightningEffect(deathLocation);
+			}
+		}, 8l);
 
 
 		// Removes the fire

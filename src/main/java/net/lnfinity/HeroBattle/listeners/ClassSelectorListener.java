@@ -10,6 +10,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
 
 import org.apache.logging.log4j.core.config.plugins.Plugin;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,7 +39,8 @@ public class ClassSelectorListener implements Listener {
 
 	private final int COMING_SOON_CLASSES_COUNT = 0;
 
-	private final Map<UUID, Integer> maite = new HashMap<UUID, Integer>();
+	private final Map<UUID, Integer> maite = new HashMap<>();
+	private static final Map<UUID, Integer> dewotine = new HashMap<>();
 
 	public ClassSelectorListener(HeroBattle plugin) {
 		p = plugin;
@@ -117,6 +119,7 @@ public class ClassSelectorListener implements Listener {
 			} else if (e.getInventory().getName().equals(TITLE_CLASS_SELECTOR)) {
 				// Mouhahaha
 				tryMaite(player.getUniqueId(), e.getSlot(), e.getInventory().getSize());
+				tryDewoitine(player.getUniqueId(), e.getSlot(), e.getInventory().getSize());
 			}
 		}
 	}
@@ -421,23 +424,31 @@ public class ClassSelectorListener implements Listener {
 
 	public void tryMaite(UUID id, int slot, int size) {
 		Player player = p.getServer().getPlayer(id);
+
 		if (player == null)
 			return;
+
 		GamePlayer gamePlayer = p.getGamePlayer(player);
 		if (gamePlayer == null)
 			return;
-		int progress = maite.get(id);
+
+		Integer progress = maite.get(id);
+		if(progress == null) progress = 0;
+
 		int key = -1;
+
 		if (slot >= size - 18 && slot < size - 9) {
 			key = slot % 9 + 1;
 		} else if (slot == size - 5) {
 			key = 0;
 		}
+
 		if ((gamePlayer.getElo() + "").charAt(progress) == (key + "").charAt(0)) {
 			progress++;
 		} else {
 			progress = 0;
 		}
+
 		if (progress == (gamePlayer.getElo() + "").length()) {
 			progress = 0;
 			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
@@ -445,6 +456,38 @@ public class ClassSelectorListener implements Listener {
 			gamePlayer.setPlayerClass(new MaiteClass(p));
 			player.closeInventory();
 		}
+
 		maite.put(id, progress);
+	}
+
+	public void tryDewoitine(UUID id, int slot, int size) {
+		String code = "401710";
+
+		if(id == null) {
+			return;
+		}
+
+		Integer progress = dewotine.get(id);
+		if(progress == null) progress = 0;
+
+		Integer key = -1;
+
+		if (slot >= size - 18 && slot < size - 9) {
+			key = slot % 9 + 1;
+		} else if (slot == size - 5) {
+			key = 0;
+		}
+
+		if (code.charAt(progress) == (key + "").charAt(0)) {
+			progress++;
+		} else {
+			progress = 0;
+		}
+
+		dewotine.put(id, progress);
+	}
+
+	public static Map<UUID, Integer> getDewotineTries() {
+		return dewotine;
 	}
 }

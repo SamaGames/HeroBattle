@@ -7,7 +7,7 @@ import net.lnfinity.HeroBattle.tools.displayers.ArrowsTool;
 import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
 import net.lnfinity.HeroBattle.tools.displayers.SmokeTool;
 import net.lnfinity.HeroBattle.tools.displayers.SpeedTool;
-import net.lnfinity.HeroBattle.tools.displayers.SwordVariant3Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant3Tool;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;

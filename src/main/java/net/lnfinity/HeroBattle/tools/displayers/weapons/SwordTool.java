@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.tools.displayers;
+package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
