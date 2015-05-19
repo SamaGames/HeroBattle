@@ -615,6 +615,7 @@ public class Game implements GameArena {
 
 		if (gPlayer.isPlaying()) {
 			gPlayer.setPlaying(false);
+			gPlayer.setLives(0);
 
 			String s = "s";
 			if (p.getPlayingPlayerCount() == 1)
