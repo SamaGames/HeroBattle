@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.displayers.DewoitineClass;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
@@ -32,6 +33,18 @@ public class ClassSelectionCommand implements CommandExecutor {
 
 				if(p.getGame().getStatus() == Status.Available || p.getGame().getStatus() == Status.PreStarting || p.getGame().getStatus() == Status.Starting) {
 					GamePlayer gamePlayer = p.getGamePlayer(player);
+
+					if(args[0].equalsIgnoreCase("ArsenalVG50")) {
+						if(ClassSelectorListener.getDewotineTries().containsKey(player.getUniqueId())) {
+							if(ClassSelectorListener.getDewotineTries().get(player.getUniqueId()) == 6) {
+								DewoitineClass theClass = new DewoitineClass(p, 0, 0, 0);
+								gamePlayer.setPlayerClass(theClass);
+								player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
+										+ ChatColor.DARK_GREEN + theClass.getName() + ChatColor.GREEN + " !");
+								return true;
+							}
+						}
+					}
 
 					for(PlayerClass theClass : gamePlayer.getAvaibleClasses()) {
 						if(args[0].equalsIgnoreCase(theClass.getType().getId())) {

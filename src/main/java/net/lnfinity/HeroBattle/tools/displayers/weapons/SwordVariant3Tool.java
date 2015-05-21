@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.tools.displayers;
+package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
@@ -6,26 +6,25 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class SwordVariant1Tool extends SwordTool {
+public class SwordVariant3Tool extends SwordTool {
 
-	public SwordVariant1Tool(HeroBattle plugin, int arg1) {
+	public SwordVariant3Tool(HeroBattle plugin) {
 		super(plugin);
-		upgrade = arg1;
 	}
 	
 	@Override
 	public String getToolID() {
-		return "tool.sword.variant1";
+		return "tool.sword.variant3";
 	}
 
 	@Override
 	public String getName() {
-		return ChatColor.RED + "" + ChatColor.BOLD + "Poignard";
+		return ChatColor.GRAY + "" + ChatColor.BOLD + "Sabre de l'archer";
 	}
 
 	@Override
 	public ItemStack getItem() {
-		ItemStack item = new ItemStack(Material.DIAMOND_SWORD, 1);
+		ItemStack item = new ItemStack(Material.STONE_SWORD, 1);
 
 		ItemMeta meta = item.getItemMeta();
 		meta.spigot().setUnbreakable(true);

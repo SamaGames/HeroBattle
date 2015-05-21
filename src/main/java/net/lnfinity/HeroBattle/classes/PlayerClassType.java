@@ -10,7 +10,8 @@ public enum PlayerClassType {
 	CRYOGENIE("cryogenie"),
 	PYROBARBARE("pyrobarbare"),
 	
-	MAITE("maite");
+	MAITE("maite"),
+	DEWOITINE("Dewoitine");
 	
 	private final String id;
 	

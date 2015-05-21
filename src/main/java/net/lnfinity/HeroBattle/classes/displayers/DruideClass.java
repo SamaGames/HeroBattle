@@ -7,7 +7,7 @@ import net.lnfinity.HeroBattle.tools.displayers.EarthquakeTool;
 import net.lnfinity.HeroBattle.tools.displayers.HealingTool;
 import net.lnfinity.HeroBattle.tools.displayers.InkTool;
 import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
-import net.lnfinity.HeroBattle.tools.displayers.SwordVariant4Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant4Tool;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;

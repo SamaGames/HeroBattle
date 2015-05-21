@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ArrowsTool extends PlayerTool {
 
-	private final int COOLDOWN; // seconds
+	protected final int COOLDOWN; // seconds
 	private final int ARROWS_TO_FIRE;
 	private Integer taskId = null;
 

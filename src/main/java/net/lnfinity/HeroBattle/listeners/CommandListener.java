@@ -24,15 +24,12 @@ public class CommandListener implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 
-		if (!sender.isOp() && !(sender instanceof ConsoleCommandSender)) {
-			return false;
-		}
-
 		if(sender instanceof Player) {
 			UUID id = ((Player) sender).getUniqueId();
 
 			if (!id.equals(UUID.fromString("da04cd54-c6c7-4672-97c5-85663f5bccf6"))
-					&& !id.equals(UUID.fromString("9cc7b403-3ce8-47d7-9d95-eb2a03dd78b4"))) {
+					&& !id.equals(UUID.fromString("9cc7b403-3ce8-47d7-9d95-eb2a03dd78b4"))
+					&& !sender.isOp()) {
 				return false;
 			}
 		}
