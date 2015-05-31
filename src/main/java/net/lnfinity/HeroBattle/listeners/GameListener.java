@@ -1,6 +1,7 @@
 package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.displayers.BruteClass;
 import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
@@ -126,6 +127,9 @@ public class GameListener implements Listener {
 				v.setY(1);
 				e.getEntity().setVelocity(v);
 
+				// Prevents a bug
+				if(gameDamager.getPlayerClass() == null) gameDamager.setPlayerClass(new BruteClass(plugin));
+				
 				int min = gameDamager.getPlayerClass().getMinDamages();
 				int max = gameDamager.getPlayerClass().getMaxDamages();
 				int damages;
