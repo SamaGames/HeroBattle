@@ -18,7 +18,7 @@ public class DewoitineClass extends PlayerClass {
 		super(plugin, cooldown, power, tool);
 
 		addTool(new SwordVariant9Tool(plugin));
-		addTool(new Cannon20mmTool(plugin, 25, 1));
+		addTool(new Cannon20mmTool(plugin, 20, 1));
 		addTool(new TripleJumpTool(plugin, 30, 4));
 	}
 

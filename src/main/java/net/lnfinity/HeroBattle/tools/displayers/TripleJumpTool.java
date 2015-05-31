@@ -61,6 +61,7 @@ public class TripleJumpTool extends PlayerTool {
 			new ItemCooldown(p, player, this, COOLDOWN);
 
 			gPlayer.setMaxJumps(3);
+			gPlayer.setJumps(0);
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
