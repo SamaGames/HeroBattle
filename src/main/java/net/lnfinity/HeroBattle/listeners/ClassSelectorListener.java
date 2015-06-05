@@ -478,7 +478,7 @@ public class ClassSelectorListener implements Listener {
 			key = 0;
 		}
 
-		if (code.charAt(progress) == (key + "").charAt(0)) {
+		if (progress < 6 && code.charAt(progress) == (key + "").charAt(0)) {
 			progress++;
 		} else {
 			progress = 0;
