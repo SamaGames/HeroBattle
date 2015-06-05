@@ -25,3 +25,8 @@ commands:
     description: Permet de choisir une classe.
     aliases: [class]
     usage: /classe <classe>
+  
+  elo:
+    description: Modifie l'elo d'un joueur.
+    aliases: [elo]
+    usage: Vous n'avez pas les permissions requises !
