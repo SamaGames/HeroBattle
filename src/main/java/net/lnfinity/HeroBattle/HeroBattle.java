@@ -138,6 +138,8 @@ public class HeroBattle extends JavaPlugin {
 		this.getCommand("powerup").setExecutor(command);
 
 		this.getCommand("classe").setExecutor(new ClassSelectionCommand(this));
+		
+		this.getCommand("elo").setExecutor(command);
 
 
 		World world = getServer().getWorlds().get(0);

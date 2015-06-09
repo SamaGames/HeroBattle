@@ -1100,6 +1100,8 @@ public class Game implements GameArena {
 
 		else {
 
+			if(gamePlayer.getPlayerClass() == null)
+				gamePlayer.setPlayerClass(new BruteClass(p));
 			ItemStack hat = gamePlayer.getPlayerClass().getHat();
 			ItemMeta hatMeta = hat.getItemMeta();
 			hatMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + gamePlayer.getPlayerClass().getName());

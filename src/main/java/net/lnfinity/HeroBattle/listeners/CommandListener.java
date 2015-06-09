@@ -1,10 +1,14 @@
 package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
 import net.zyuiop.MasterBundle.MasterBundle;
+import net.zyuiop.statsapi.StatsApi;
+
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +26,7 @@ public class CommandListener implements CommandExecutor {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
+	public boolean onCommand(final CommandSender sender, Command cmd, String alias, String[] args) {
 
 		if(sender instanceof Player) {
 			UUID id = ((Player) sender).getUniqueId();
@@ -63,6 +67,41 @@ public class CommandListener implements CommandExecutor {
 				sender.sendMessage(ChatColor.RED + "Impossible de faire apparaître un powerup si le jeu n'est pas démarré.");
 			}
 
+		}  else if (cmd.getName().equalsIgnoreCase("elo")) {
+			
+			if(args == null || args.length < 2) {
+				sender.sendMessage(ChatColor.RED + "/elo <joueur> <elo>");
+			} else if(args.length >= 2) {
+				final OfflinePlayer player = p.getServer().getOfflinePlayer(args[0]);
+				final GamePlayer gamePlayer = player instanceof Player ? p.getGamePlayer((Player) player) : null;
+				
+				if(player != null) {
+					try {
+						final int val = Integer.parseInt(args[1]);
+						if(val >= 1000 && val <= 10000) {
+							p.getServer().getScheduler().runTaskAsynchronously(p, new Runnable() {
+								@Override
+								public void run() {
+									StatsApi.increaseStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "elo", val - StatsApi.getPlayerStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "elo"));
+									if(gamePlayer != null) {
+										gamePlayer.setElo(val - gamePlayer.getElo());
+										((CommandSender) player).sendMessage(ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + val);
+										((CommandSender) player).sendMessage(ChatColor.GOLD + "Merci de rejoindre à nouveau la partie pour que les changements visuels soient appliqués.");
+									}
+									sender.sendMessage(ChatColor.GREEN + "L'" + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " du joueur " + ChatColor.DARK_GREEN + player.getName() + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + val);
+								}
+							});
+						} else {
+							sender.sendMessage(ChatColor.RED + "L'Elo doit être compris entre 1000 et 10000.");
+						}
+						
+					} catch(Exception ex) {
+						sender.sendMessage(ChatColor.RED + "La valeur de l'Elo indiquée n'est pas correcte.");
+					}
+				} else {
+					sender.sendMessage(ChatColor.RED + "Le joueur n'est pas connecté/introuvable.");
+				}
+			}
 		} else return false;
 
 
