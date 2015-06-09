@@ -208,7 +208,7 @@ public final class Utils {
 
 	public static String getRandomAvailableTeamName() {
 		do {
-			String teamName = rnd.nextInt(99999999) + "" + rnd.nextInt(99999999);
+			String teamName = rnd.nextInt(99999999) + "";
 			if(HeroBattle.getInstance().getScoreboardManager().getScoreboard().getTeam(teamName) == null) {
 				return teamName;
 			}

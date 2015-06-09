@@ -14,6 +14,11 @@ import java.util.List;
 
 
 public class DewoitineClass extends PlayerClass {
+
+	public DewoitineClass(HeroBattle plugin) {
+		super(plugin, 0, 0, 0);
+	}
+
 	public DewoitineClass(HeroBattle plugin, int cooldown, int power, int tool) {
 		super(plugin, cooldown, power, tool);
 
@@ -54,7 +59,7 @@ public class DewoitineClass extends PlayerClass {
 
 	@Override
 	public int getMaxResistance() {
-		return 175;
+		return 200;
 	}
 
 	@Override
