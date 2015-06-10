@@ -39,6 +39,9 @@ public class MasterListener implements Listener {
 		if(plugin.getGamePlayers().size() >= plugin.getGame().getTotalMaxPlayers()) {
 			ev.refuse(ChatColor.RED + "Cette partie est complète, désolé !");
 			return;
+		} else if(plugin.getTimer().isEnabled() && plugin.getTimer().getSecondsLeft() < 6) {
+			ev.refuse(ChatColor.RED + "La partie est sur le point de démarrer !");
+			return;
 		}
 
 		final Player p = plugin.getServer().getPlayer(ev.getPlayer());
