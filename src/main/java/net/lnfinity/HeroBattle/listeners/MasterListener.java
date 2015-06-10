@@ -4,14 +4,18 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.lnfinity.HeroBattle.utils.Utils;
+
 import org.bukkit.ChatColor;
+
 import net.samagames.gameapi.GameAPI;
 import net.samagames.gameapi.events.FinishJoinPlayerEvent;
 import net.samagames.gameapi.events.JoinModEvent;
+import net.samagames.gameapi.events.PreJoinPlayerEvent;
 import net.samagames.gameapi.json.Status;
 import net.samagames.utils.Titles;
 import net.zyuiop.MasterBundle.MasterBundle;
 import net.zyuiop.statsapi.StatsApi;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -34,15 +38,16 @@ public class MasterListener implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onPlayerJoin(FinishJoinPlayerEvent ev) {
-
-		if(plugin.getGamePlayers().size() >= plugin.getGame().getTotalMaxPlayers()) {
-			ev.refuse(ChatColor.RED + "Cette partie est complète, désolé !");
-			return;
-		} else if(plugin.getTimer().isEnabled() && plugin.getTimer().getSecondsLeft() < 6) {
+	public void onPreJoinPlayer(PreJoinPlayerEvent ev) {
+		if(plugin.getTimer().isEnabled() && plugin.getTimer().getSecondsLeft() < 6) {
 			ev.refuse(ChatColor.RED + "La partie est sur le point de démarrer !");
 			return;
 		}
+	}
+	
+	@EventHandler(ignoreCancelled = true)
+	public void onFinishJoinPlayer(FinishJoinPlayerEvent ev) {
+		if(ev.isCancelled()) return;
 
 		final Player p = plugin.getServer().getPlayer(ev.getPlayer());
 		plugin.addGamePlayer(p);

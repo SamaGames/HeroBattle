@@ -1,12 +1,9 @@
 package net.lnfinity.HeroBattle;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -17,7 +14,14 @@ import net.lnfinity.HeroBattle.classes.ClassManager;
 import net.lnfinity.HeroBattle.game.Game;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.game.ScoreboardManager;
-import net.lnfinity.HeroBattle.listeners.*;
+import net.lnfinity.HeroBattle.listeners.ClassSelectionCommand;
+import net.lnfinity.HeroBattle.listeners.ClassSelectorListener;
+import net.lnfinity.HeroBattle.listeners.CommandListener;
+import net.lnfinity.HeroBattle.listeners.GameListener;
+import net.lnfinity.HeroBattle.listeners.MasterListener;
+import net.lnfinity.HeroBattle.listeners.PlayersConnectionsListener;
+import net.lnfinity.HeroBattle.listeners.PowerupsListener;
+import net.lnfinity.HeroBattle.listeners.SystemListener;
 import net.lnfinity.HeroBattle.powerups.PowerupManager;
 import net.lnfinity.HeroBattle.tutorial.TutorialDisplayer;
 import net.lnfinity.HeroBattle.utils.CountdownTimer;
@@ -177,7 +181,7 @@ public class HeroBattle extends JavaPlugin {
 		for (Player player : this.getServer().getOnlinePlayers()) {
 
 			FinishJoinPlayerEvent ev = new FinishJoinPlayerEvent(player.getUniqueId());
-			new MasterListener(this).onPlayerJoin(ev);
+			new MasterListener(this).onFinishJoinPlayer(ev);
 
 		}
 	}
