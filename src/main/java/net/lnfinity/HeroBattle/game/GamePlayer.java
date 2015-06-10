@@ -137,9 +137,12 @@ public class GamePlayer {
 		if(!isPlaying() || getPlayerClass() == null) return;
 		if(isInvulnerable() && percentage >= this.percentage) return;
 
+		if(aggressor != null)
+			percentage = HeroBattle.getInstance().getGame().getDamagesMultiplicator() * (percentage - this.percentage) + this.percentage;
+		
 		int oldPercentage = this.percentage;
 		this.percentage = percentage;
-
+		
 		if(aggressor != null) aggressor.addPercentageInflicted(percentage - oldPercentage);
 
 

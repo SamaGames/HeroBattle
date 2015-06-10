@@ -48,8 +48,6 @@ public class Game implements GameArena {
 
 	private ArrayList<Location> teleportationPortalsDestinations = new ArrayList<Location>();
 
-
-
 	/**
 	 * We store here the last players who launched a lightning bolt and where,
 	 * to associate the damages to the good damager.
@@ -73,6 +71,8 @@ public class Game implements GameArena {
 
 
 	private Random random = new Random();
+	
+	private int damagesMultiplicator = 1;
 
 	public Game(HeroBattle plugin) {
 		p = plugin;
@@ -1179,5 +1179,13 @@ public class Game implements GameArena {
 		player.updateInventory();
 		player.getInventory().setHeldItemSlot(0);
 
+	}
+
+	public int getDamagesMultiplicator() {
+		return damagesMultiplicator;
+	}
+
+	public void setDamagesMultiplicator(int damagesMultiplicator) {
+		this.damagesMultiplicator = damagesMultiplicator;
 	}
 }

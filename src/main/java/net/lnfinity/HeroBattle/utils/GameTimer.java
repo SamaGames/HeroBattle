@@ -1,7 +1,11 @@
 package net.lnfinity.HeroBattle.utils;
 
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
+import net.samagames.utils.Titles;
 
 public class GameTimer {
 
@@ -37,6 +41,26 @@ public class GameTimer {
 				if(minutes >= maxMinutes) {
 					pauseTimer();
 				}
+				
+				if(minutes == 10 && seconds == 0) {
+					p.getGame().setDamagesMultiplicator(2);
+					p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.YELLOW + "10 minutes de jeu se sont écoulées");
+					p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.RED + "" + ChatColor.BOLD + "Tous les dégâts infligés sont multipliés par 2 !");
+					for (Player player : p.getServer().getOnlinePlayers()) {
+						player.playSound(player.getLocation(), Sound.ZOMBIE_UNFECT, 1, 1);
+						Titles.sendTitle(player, 5, 40, 5, ChatColor.RED + "Dégâts globaux " + ChatColor.BOLD + "x2", "");
+					}
+				}
+				if(minutes == 12 && seconds == 30) {
+					p.getGame().setDamagesMultiplicator(3);
+					p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.YELLOW + "12 minutes et 30 secondes de jeu se sont écoulées");
+					p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.RED + "" + ChatColor.BOLD + "Tous les dégâts infligés sont multipliés par 3 !");
+					for (Player player : p.getServer().getOnlinePlayers()) {
+						player.playSound(player.getLocation(), Sound.ZOMBIE_UNFECT, 1, 1);
+						Titles.sendTitle(player, 5, 40, 5, ChatColor.RED + "Dégâts globaux " + ChatColor.BOLD + "x3", "");
+					}
+				}
+				
 				if(minutes == maxMinutes - 1 && seconds == 0) {
 					p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.YELLOW + "La partie se termine dans 1 minute !");
 				}
