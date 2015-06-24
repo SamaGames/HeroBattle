@@ -443,13 +443,15 @@ public class ClassSelectorListener implements Listener {
 			key = 0;
 		}
 
-		if ((gamePlayer.getElo() + "").charAt(progress) == (key + "").charAt(0)) {
+        String textToType = gamePlayer.getElo() + "42";
+
+		if (textToType.charAt(progress) == (key + "").charAt(0)) {
 			progress++;
 		} else {
 			progress = 0;
 		}
 
-		if (progress == (gamePlayer.getElo() + "").length()) {
+		if (progress == textToType.length()) {
 			progress = 0;
 			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
 					+ ChatColor.DARK_GREEN + "Maïté" + ChatColor.GREEN + " !");
