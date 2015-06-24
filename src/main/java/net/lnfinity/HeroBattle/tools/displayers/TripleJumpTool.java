@@ -60,14 +60,7 @@ public class TripleJumpTool extends PlayerTool {
 
 			new ItemCooldown(p, player, this, COOLDOWN);
 
-			gPlayer.setMaxJumps(3);
-			gPlayer.setJumps(3);
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					gPlayer.setMaxJumps(2);
-				}
-			}, TRIPLE_JUMP_DURATION * 20l);
+			gPlayer.setMaxJumps(3, TRIPLE_JUMP_DURATION);
 		}
 		else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");

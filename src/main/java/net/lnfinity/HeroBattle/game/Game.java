@@ -307,8 +307,9 @@ public class Game implements GameArena {
 		player.setGameMode(GameMode.SPECTATOR);
 		player.getInventory().clear();
 		player.getInventory().setArmorContents(null);
+        player.setFlySpeed(0.1F);
 
-		teleportRandomSpot(player);
+        teleportRandomSpot(player);
 	}
 
 	public void chooseRandomClass(Player player) {
@@ -566,12 +567,12 @@ public class Game implements GameArena {
 
 		// Respawn
 		if (hbPlayer.getLives() >= 1) {
-			hbPlayer.setRespawning(true);
+			hbPlayer.setRespawning();
 
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
-					hbPlayer.setRespawning(false);
+					hbPlayer.setRespawning();
 				}
 			}, 40L);
 
@@ -593,8 +594,9 @@ public class Game implements GameArena {
 		}
 
 		else {
-			player.setFlySpeed(0.1F);
 			enableSpectatorMode(player);
+
+            ActionBar.removeMessage(player);
 
 			s = p.getPlayingPlayerCount() <= 1 ? "" : "s";
 
@@ -1094,7 +1096,7 @@ public class Game implements GameArena {
 		if(gamePlayer == null || !gamePlayer.isPlaying()) return;
 
 
-		if (gamePlayer.isInvisible()) {
+		if (gamePlayer.getRemainingInvisibility() != 0) {
 			player.getInventory().setArmorContents(null);
 		}
 

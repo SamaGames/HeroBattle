@@ -61,15 +61,7 @@ public class SmokeTool extends PlayerTool {
 			}
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, EFFECT_DURATION * 20, 0, false, false));
 			player.getWorld().playSound(player.getLocation(), Sound.BAT_LOOP, 1, 2);
-			p.getGamePlayer(player).setInvisible(true);
-			p.getGame().updatePlayerArmor(player);
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					p.getGamePlayer(player).setInvisible(false);
-					p.getGame().updatePlayerArmor(player);
-				}
-			}, 8 * 20L);
+			p.getGamePlayer(player).addRemainingInvisibility(EFFECT_DURATION);
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}

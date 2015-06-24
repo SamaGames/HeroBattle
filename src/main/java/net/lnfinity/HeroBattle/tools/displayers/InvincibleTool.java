@@ -59,16 +59,11 @@ public class InvincibleTool extends PlayerTool {
 			}
 			
 			final GamePlayer gamePlayer = p.getGamePlayer(player);
-			gamePlayer.setInvulnerable(true);
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					gamePlayer.setInvulnerable(false);
-				}
-			}, DURATION * 20L);
-		} else {
-			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
+			gamePlayer.addRemainingReducedIncomingDamages(DURATION);
 		}
+        else {
+            player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
+        }
 	}
 
 	@Override

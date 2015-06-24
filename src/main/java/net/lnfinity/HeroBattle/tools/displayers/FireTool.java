@@ -72,15 +72,8 @@ public class FireTool extends PlayerTool {
 			
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, DURATION * 20, 0));
 			final GamePlayer gamePlayer = p.getGamePlayer(player);
-			gamePlayer.setDoubleDamages(true);
-			gamePlayer.setInvulnerable(true);
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					gamePlayer.setDoubleDamages(false);
-					gamePlayer.setInvulnerable(false);
-				}
-			}, DURATION * 20L);
+			gamePlayer.addRemainingDoubleDamages(DURATION);
+			gamePlayer.addRemainingReducedIncomingDamages(DURATION - (DURATION / 4));
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
@@ -88,7 +81,7 @@ public class FireTool extends PlayerTool {
 
 	@Override
 	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-		
+		onRightClick(player, tool, event);
 	}
 
 }

@@ -59,7 +59,7 @@ public class PowerTool extends PlayerTool {
 			new ItemCooldown(p, player, this, COOLDOWN);
 
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, EFFECT_DURATION * 20, 9));
-			p.getGamePlayer(player).setDoubleDamages(true);
+			p.getGamePlayer(player).addRemainingDoubleDamages(EFFECT_DURATION);
 
 			final UUID playerID = player.getUniqueId();
 			
@@ -74,7 +74,6 @@ public class PowerTool extends PlayerTool {
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
-					p.getGamePlayer(playerID).setDoubleDamages(false);
 					p.getServer().getScheduler().cancelTask(taskId);
 				}
 			}, EFFECT_DURATION * 20L);

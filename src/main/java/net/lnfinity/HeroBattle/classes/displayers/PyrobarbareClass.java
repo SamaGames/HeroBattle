@@ -66,7 +66,7 @@ public class PyrobarbareClass extends PlayerClass {
 
 	@Override
 	public int getMaxResistance() {
-		return 175;
+		return 165;
 	}
 
 	@Override

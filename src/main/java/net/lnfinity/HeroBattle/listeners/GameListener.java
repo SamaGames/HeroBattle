@@ -4,7 +4,6 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.displayers.BruteClass;
 import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.tools.Weapon;
 import net.lnfinity.HeroBattle.utils.Utils;
@@ -102,10 +101,11 @@ public class GameListener implements Listener {
 			final Player player = (Player) e.getEntity();
 			final GamePlayer gamePlayer = plugin.getGamePlayer(player);
 			if(gamePlayer == null) return;
-			if(gamePlayer.isRespawning()) {
+			if(gamePlayer.getRemainingRespawnInvincibility() != 0) {
 				e.setCancelled(true);
 				return;
 			}
+
 			if (e.getDamager() instanceof Player) {
 				// Devrait *enfin* fonctionner !
 				final float reducer = 15.0F;
@@ -133,7 +133,7 @@ public class GameListener implements Listener {
 				int min = gameDamager.getPlayerClass().getMinDamages();
 				int max = gameDamager.getPlayerClass().getMaxDamages();
 				int damages;
-				if (gameDamager.hasDoubleDamages()) {
+				if (gameDamager.getRemainingDoubleDamages() != 0) {
 					damages = gamePlayer.getPercentage() + 2 * (min + (int) (Math.random() * ((max - min) + min)));
 				} else {
 					damages = gamePlayer.getPercentage() + min + (int) (Math.random() * ((max - min) + min));

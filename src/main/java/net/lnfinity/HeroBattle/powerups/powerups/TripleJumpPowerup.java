@@ -19,16 +19,12 @@ public class TripleJumpPowerup implements PositivePowerup {
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
 		final GamePlayer gamePlayer = p.getGamePlayer(player);
-		player.sendMessage(ChatColor.GREEN + "Vous pouvez désormais faire des triple sauts !");
-		gamePlayer.setMaxJumps(3);
-		
-		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-			@Override
-			public void run() {
-				gamePlayer.setMaxJumps(2);
-			}
-		}, 15 * 20L);
-	}
+
+        if(gamePlayer != null) {
+            player.sendMessage(ChatColor.GREEN + "Vous pouvez désormais faire des triple sauts !");
+            gamePlayer.setMaxJumps(3, 15);
+        }
+    }
 
 	@Override
 	public ItemStack getItem() {
