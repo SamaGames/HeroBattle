@@ -898,7 +898,7 @@ public class Game implements GameArena {
 				@Override
 				public void run() {
 					try {
-						URL u = new URL("http://lnfinity.net/tasks/herobattle-stats?v=1&s=" + URLEncoder.encode(serverName, "UTF-8") + "&m=" + URLEncoder.encode(mapName, "UTF-8") + "&p=" + playersCount + "&d=" + URLEncoder.encode(duration, "UTF-8") + "&w=" + URLEncoder.encode(winnerName, "UTF-8") + "&we=" + winnerELO + "&wc=" + URLEncoder.encode(winnerClass, "UTF-8"));
+						URL u = new URL("http://lnfinity.net/tasks/herobattle-stats.php?v=1&s=" + URLEncoder.encode(serverName, "UTF-8") + "&m=" + URLEncoder.encode(mapName, "UTF-8") + "&p=" + playersCount + "&d=" + URLEncoder.encode(duration, "UTF-8") + "&w=" + URLEncoder.encode(winnerName, "UTF-8") + "&we=" + winnerELO + "&wc=" + URLEncoder.encode(winnerClass, "UTF-8"));
 						u.openStream();
 					} catch (Exception ex) {
 						ex.printStackTrace();
