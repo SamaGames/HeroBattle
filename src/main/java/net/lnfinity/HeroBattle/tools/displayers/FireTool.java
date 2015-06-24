@@ -41,7 +41,7 @@ public class FireTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Utils.getToolDescription(ChatColor.GRAY + "Vous protège d'une couche de magma qui absorbe tous les dégâts et double votre puissance d'attaque pendant " + ChatColor.GOLD + DURATION + " " + ChatColor.GRAY + "secondes. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Vous protège d'une couche de magma qui absorbe une bonne partie des dégâts et double votre puissance d'attaque pendant " + ChatColor.GOLD + DURATION + " " + ChatColor.GRAY + "secondes. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
