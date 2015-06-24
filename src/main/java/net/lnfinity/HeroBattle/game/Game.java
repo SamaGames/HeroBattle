@@ -15,7 +15,6 @@ import net.samagames.utils.GlowEffect;
 import net.samagames.utils.Titles;
 import net.zyuiop.MasterBundle.MasterBundle;
 import net.zyuiop.statsapi.StatsApi;
-
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
@@ -701,6 +700,9 @@ public class Game implements GameArena {
 					else if(winner.getUniqueId().equals(UUID.fromString("7caf2af6-b149-47eb-8b76-7f58c07d8f5a"))) {
 						winnerDisplayName += ChatColor.GOLD + "\u272F  " + Utils.getPlayerColor(winner) + winner.getName() + ChatColor.GOLD + "  \u272F";
 					}
+                    else if(winner.getUniqueId().equals(UUID.fromString("da04cd54-c6c7-4672-97c5-85663f5bccf6"))) {
+                        winnerDisplayName += winner.getName() + ChatColor.GRAY + " (nofake)";
+                    }
 					else {
 						winnerDisplayName += winner.getName();
 					}
