@@ -19,8 +19,8 @@ public class PowerPowerup implements PositivePowerup {
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
 		final GamePlayer gamePlayer = p.getGamePlayer(player);
-		player.sendMessage(ChatColor.GREEN + "Vous " + ChatColor.DARK_GREEN + "doublez votre puissance" + ChatColor.GREEN + " pour 15 secondes !");
-		gamePlayer.addRemainingDoubleDamages(15);
+		player.sendMessage(ChatColor.GREEN + "Vous " + ChatColor.DARK_GREEN + "doublez votre puissance" + ChatColor.GREEN + " pour 24 secondes !");
+		gamePlayer.addRemainingDoubleDamages(24);
 	}
 
 	@Override
