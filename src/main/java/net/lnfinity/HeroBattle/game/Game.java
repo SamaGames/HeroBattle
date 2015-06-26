@@ -692,14 +692,17 @@ public class Game implements GameArena {
 
 
 					String winnerDisplayName = Utils.getPlayerColor(winner);
-					if(winner.getUniqueId().equals(UUID.fromString("0dd34bda-c13b-473b-a887-368027ca05ca"))) {
+					if(winner.getUniqueId().equals(UUID.fromString("0dd34bda-c13b-473b-a887-368027ca05ca"))) { // Jenjeur
 						winnerDisplayName += "\u2708  " + winner.getName() + "  \u2708";
 					}
-					else if(winner.getUniqueId().equals(UUID.fromString("7caf2af6-b149-47eb-8b76-7f58c07d8f5a"))) {
+					else if(winner.getUniqueId().equals(UUID.fromString("7caf2af6-b149-47eb-8b76-7f58c07d8f5a"))) { // Vayan91
 						winnerDisplayName += ChatColor.GOLD + "\u272F  " + Utils.getPlayerColor(winner) + winner.getName() + ChatColor.GOLD + "  \u272F";
 					}
-                    else if(winner.getUniqueId().equals(UUID.fromString("da04cd54-c6c7-4672-97c5-85663f5bccf6"))) {
+                    else if(winner.getUniqueId().equals(UUID.fromString("da04cd54-c6c7-4672-97c5-85663f5bccf6"))) { // AmauryPi
                         winnerDisplayName += winner.getName() + ChatColor.GRAY + " (nofake)";
+                    }
+                    else if(winner.getUniqueId().equals(UUID.fromString("95dec9f8-ed6d-4aa1-b787-e776adabcec6"))) { // RyuPichu
+                        winnerDisplayName += ChatColor.GOLD + "\u26A1 " + ChatColor.YELLOW + winner.getName() + ChatColor.GOLD + " \u26A1";
                     }
 					else {
 						winnerDisplayName += winner.getName();
