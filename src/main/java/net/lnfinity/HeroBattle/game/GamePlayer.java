@@ -5,6 +5,7 @@ import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.md_5.bungee.api.ChatColor;
+import net.minecraft.server.v1_8_R1.ChatClickable;
 import net.samagames.gameapi.json.Status;
 import net.zyuiop.MasterBundle.StarsManager;
 import net.zyuiop.coinsManager.CoinsManager;
@@ -15,6 +16,8 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
@@ -100,14 +103,6 @@ public class GamePlayer {
                 if(!(HeroBattle.getInstance().getGame().getStatus() == Status.InGame))
                     return;
 
-                if(remainingDoubleDamages == 0
-                        && remainingInvisibility == 0
-                        && remainingReducedIncomingDamages == 0
-                        && remainingRespawnInvincibility == 0
-                        && remainingTimeWithMoreJumps == 0) {
-                    return;
-                }
-
 
                 if(remainingTimeWithMoreJumps != 0) {
                     remainingTimeWithMoreJumps--;
@@ -138,6 +133,7 @@ public class GamePlayer {
                 if(remainingReducedIncomingDamages != 0) {
                     remainingReducedIncomingDamages--;
                 }
+
 
                 updateActionBar();
             }
@@ -579,7 +575,11 @@ public class GamePlayer {
 
 
 		Player player = Bukkit.getPlayer(playerID);
-		List<String> currentStatus = new ArrayList<>();
+        if(player == null || !player.isOnline()) return;
+
+
+        List<String> currentStatus = new ArrayList<>();
+
 
 		if(remainingTimeWithMoreJumps != 0) {
 			if (getMaxJumps() == 3)
@@ -604,8 +604,35 @@ public class GamePlayer {
 			currentStatus.add(ChatColor.LIGHT_PURPLE + "Dommages reçus réduits (" + remainingReducedIncomingDamages + ")");
 		}
 
+        for(PotionEffect effect : player.getActivePotionEffects()) {
+            int duration = (int) Math.rint(((double) effect.getDuration()) / 20d);
+            PotionEffectType type = effect.getType();
 
-		if(player == null || !player.isOnline()) return;
+
+            if(type.equals(PotionEffectType.BLINDNESS)) {
+                currentStatus.add(ChatColor.DARK_GRAY + "Cécité (" + duration + ")");
+            }
+
+            else if(type.equals(PotionEffectType.CONFUSION)) {
+                currentStatus.add(ChatColor.YELLOW + "Nausée (" + duration + ")");
+            }
+
+            else if(type.equals(PotionEffectType.NIGHT_VISION)) {
+                currentStatus.add(ChatColor.DARK_BLUE + "Nyctalopie (" + duration + ")");
+            }
+
+            else if(type.equals(PotionEffectType.POISON)) {
+                currentStatus.add(ChatColor.YELLOW + "Poison (" + duration + ")");
+            }
+
+            else if(type.equals(PotionEffectType.SPEED)) {
+                currentStatus.add(ChatColor.AQUA + "Vitesse (" + duration + ")");
+            }
+
+            else if(type.equals(PotionEffectType.SLOW)) {
+                currentStatus.add(ChatColor.DARK_AQUA + "Lenteur (" + duration + ")");
+            }
+        }
 
 		if(currentStatus.size() == 0) {
 			ActionBar.removeMessage(player, true);
