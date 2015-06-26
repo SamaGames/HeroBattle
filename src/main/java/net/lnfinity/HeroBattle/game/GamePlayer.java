@@ -198,7 +198,7 @@ public class GamePlayer {
                         final String lastUsedClassName = lastUsedClass.get();
 
                         if(lastUsedClassName != null && !lastUsedClassName.isEmpty()) {
-                            Bukkit.getScheduler().runTaskLater(HeroBattle.getInstance(), new Runnable() {
+                            Bukkit.getScheduler().runTask(HeroBattle.getInstance(), new Runnable() {
                                 @Override
                                 public void run() {
                                     PlayerClass clazz = HeroBattle.getInstance().getClassManager().getClassFromName(thiz, lastUsedClassName);
@@ -207,7 +207,7 @@ public class GamePlayer {
                                         setPlayerClass(clazz, true);
                                     }
                                 }
-                            }, 20l);
+                            });
                         }
 
 
