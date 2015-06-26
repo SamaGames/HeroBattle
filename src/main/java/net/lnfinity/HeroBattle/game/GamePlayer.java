@@ -2,11 +2,14 @@ package net.lnfinity.HeroBattle.game;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.classes.displayers.DewoitineClass;
+import net.lnfinity.HeroBattle.classes.displayers.MaiteClass;
 import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_8_R1.ChatClickable;
 import net.samagames.gameapi.json.Status;
+import net.zyuiop.MasterBundle.MasterBundle;
 import net.zyuiop.MasterBundle.StarsManager;
 import net.zyuiop.coinsManager.CoinsManager;
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +27,8 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.*;
+import java.util.logging.Level;
 
 
 public class GamePlayer {
@@ -31,22 +36,59 @@ public class GamePlayer {
 	private UUID playerID;
 	private String playerName;
 
+
+    /**
+     * True if the player is playing.
+     *
+     * True in the lobby. This is set to false when the player die.
+     */
 	private boolean playing = true;
 
+
+
+    /**
+     * The coins and stars gained will be multiplied by this.
+     *
+     * Used to increase gains with a random class selected.
+     */
 	private double gainMultiplier = 1.0;
 	private int starsGained = 0;
 	private int coinsGained = 0;
 
+    /**
+     * The ELO of the player when the game starts.
+     */
 	private int originalElo = 0;
 	private int elo = 0;
 
+
+
+    /**
+     * The current class of the player.
+     *
+     * Before the game (in the lobby), can be null (= random class).
+     */
 	private PlayerClass classe = null;
 
+
+
+    /**
+     * The jumps left in this combo.
+     */
 	private int jumps = 2;
+
+    /**
+     * The maximal amount of jumps this player can do.
+     */
 	private int maxJumps = 2;
+
+
+
 	private int percentage = 0;
 	private int lives = 3;
 	private int additionalLives = 0;
+
+
 
 	private int remainingDoubleDamages = 0;
 	private int remainingInvisibility = 0;
@@ -55,17 +97,26 @@ public class GamePlayer {
 
 	private int remainingTimeWithMoreJumps = 0;
 
+
 	private UUID lastDamager = null;
 
-	private List<PlayerClass> classesAvailable = new ArrayList<PlayerClass>();
-	private List<Task> tasks = new ArrayList<Task>();
+	private List<PlayerClass> classesAvailable = new CopyOnWriteArrayList<>();
+	private List<Task> tasks = new ArrayList<>();
 
+
+    /**
+     * The task used to update the effects and the action bar of the player.
+     */
 	private BukkitTask updateEffectsTask;
+
+
 
 	/**
 	 * Avoid the death to be handled multiple times.
 	 */
 	private boolean deathHandled = false;
+
+
 
 	/**
 	 * The jumps left count can only be reset every ten ticks
@@ -87,11 +138,100 @@ public class GamePlayer {
 	private int percentageRank = 0;
 
 
-	public GamePlayer(UUID id) {
+    /* ** Storage keys ** */
+
+    private final String STORAGE_NAMESPACE = "herobattle:";
+
+    private final String STORAGE_LAST_USED_CLASS    = STORAGE_NAMESPACE + "lastUsedClass";
+    private final String STORAGE_MAITE_UNLOCKED     = STORAGE_NAMESPACE + "easterEggs:maite";
+    private final String STORAGE_DEWOITINE_UNLOCKED = STORAGE_NAMESPACE + "easterEggs:dewoitine";
+
+
+
+    public GamePlayer(UUID id) {
 		playerID = id;
 		playerName = Bukkit.getServer().getPlayer(id).getName();
 
 		startEffectsUpdaterTask();
+
+        /* ** Load data from the database: easter eggs unlocks and last used class ** */
+
+        final GamePlayer thiz = this;
+
+        if(MasterBundle.isDbEnabled) {
+            Bukkit.getScheduler().runTaskAsynchronously(HeroBattle.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+
+                    final String uuid = playerID.toString();
+
+                    Future<String> lastUsedClass = HeroBattle.getExecutorPool().submit(new Callable<String>() {
+                        @Override
+                        public String call() throws Exception {
+                            return MasterBundle.jedis().hget(STORAGE_LAST_USED_CLASS, uuid);
+                        }
+                    });
+
+                    Future<Boolean> isMaiteUnlocked = HeroBattle.getExecutorPool().submit(new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            String unlock = MasterBundle.jedis().hget(STORAGE_MAITE_UNLOCKED, uuid);
+
+                            return unlock != null && !unlock.isEmpty() && unlock.equalsIgnoreCase("true");
+                        }
+                    });
+
+                    Future<Boolean> isDewoitineUnlocked = HeroBattle.getExecutorPool().submit(new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            String unlock = MasterBundle.jedis().hget(STORAGE_DEWOITINE_UNLOCKED, uuid);
+
+                            return unlock != null && !unlock.isEmpty() && unlock.equalsIgnoreCase("true");
+                        }
+                    });
+
+
+                    try {
+
+                        /* ** Last class used ** */
+
+                        final String lastUsedClassName = lastUsedClass.get();
+
+                        if(lastUsedClassName != null && !lastUsedClassName.isEmpty()) {
+                            Bukkit.getScheduler().runTask(HeroBattle.getInstance(), new Runnable() {
+                                @Override
+                                public void run() {
+                                    PlayerClass clazz = HeroBattle.getInstance().getClassManager().getClassFromName(thiz, lastUsedClassName);
+
+                                    if(clazz != null) {
+                                        setPlayerClass(clazz, true);
+                                    }
+                                }
+                            });
+                        }
+
+
+                        /* ** Easter eggs ** */
+
+
+                        if(isMaiteUnlocked.get()) {
+                            addAvaibleClass(new MaiteClass(HeroBattle.getInstance()));
+                        }
+
+                        if(isDewoitineUnlocked.get()) {
+                            addAvaibleClass(new DewoitineClass(HeroBattle.getInstance()));
+                        }
+
+
+                    } catch (InterruptedException | ExecutionException e) {
+                        HeroBattle.getInstance().getLogger().log(Level.SEVERE, "Cannot load easter-eggs/last class from Jedis for player " + playerName + "(" + playerID + ")!");
+
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
 	}
 
     private void startEffectsUpdaterTask() {
@@ -352,8 +492,26 @@ public class GamePlayer {
 		return classe;
 	}
 
-	public void setPlayerClass(PlayerClass classe) {
-		this.classe = classe;
+    /**
+     * Sets the class of the given player.
+     *
+     * @param classe The class to use.
+     */
+    public void setPlayerClass(PlayerClass classe) {
+        setPlayerClass(classe, false);
+    }
+
+    /**
+     * Sets the class of the given player.
+     *
+     * @param classe The class to use.
+     * @param given True if this class was given by /class {class} {player} or by a random choice.
+     */
+    public void setPlayerClass(final PlayerClass classe, final boolean given) {
+
+        /* ** Application ** */
+
+        this.classe = classe;
 		if (classe != null) {
 			lives = classe.getLives();
 
@@ -379,12 +537,40 @@ public class GamePlayer {
 			}
 		}
 
+
+        /* ** Action bar ** */
+
 		if(classe != null) {
 			ActionBar.sendPermanentMessage(Bukkit.getPlayer(playerID), ChatColor.GREEN + "Classe sélectionnée : " + ChatColor.DARK_GREEN + classe.getName());
 		}
 		else {
 			ActionBar.sendPermanentMessage(Bukkit.getPlayer(playerID), ChatColor.GREEN + "Classe sélectionnée : " + ChatColor.DARK_GREEN + "aléatoire");
 		}
+
+
+
+        /* ** Last-used class & easter-eggs usage storage ** */
+
+        if(!given) {
+
+            final String className    = classe != null ? classe.getName() : "";
+            final Boolean isMaite     = classe != null && classe.getType() == PlayerClassType.MAITE;
+            final Boolean isDewoitine = classe != null && classe.getType() == PlayerClassType.DEWOITINE;
+
+            Bukkit.getScheduler().runTaskAsynchronously(HeroBattle.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+
+                    String uuid = playerID.toString();
+
+                    MasterBundle.jedis().hset(STORAGE_LAST_USED_CLASS, uuid, className);
+
+                    if(isMaite)     MasterBundle.jedis().hset(STORAGE_MAITE_UNLOCKED,     uuid, "true");
+                    if(isDewoitine) MasterBundle.jedis().hset(STORAGE_DEWOITINE_UNLOCKED, uuid, "true");
+
+                }
+            });
+        }
 	}
 
 	public List<Task> getTasks() {
@@ -568,7 +754,7 @@ public class GamePlayer {
 	}
 
 
-	private void updateActionBar() {
+    private void updateActionBar() {
 
 		if(!(HeroBattle.getInstance().getGame().getStatus() == Status.InGame))
 			return;
