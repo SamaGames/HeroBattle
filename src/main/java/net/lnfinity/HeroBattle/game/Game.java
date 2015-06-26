@@ -733,29 +733,47 @@ public class Game implements GameArena {
 					Long prcA = p.getGamePlayer(a).getPercentageInflicted();
 					Long prcB = p.getGamePlayer(b).getPercentageInflicted();
 
-					if (prcA >= prcB) return -1;
-					else return 1;
+                    Integer killsA = p.getGamePlayer(a).getPlayersKilled();
+                    Integer killsB = p.getGamePlayer(b).getPlayersKilled();
+
+					if      (prcA >= prcB) return -1;
+                    else if (prcA < prcB)  return  1;
+
+                    else {
+                        if (killsA >= killsB) return -1;
+                        else return 1;
+                    }
 
 				} catch (NullPointerException e) {
 					return 0;
 				}
 			}
 		});
+
 		final Map<UUID, Integer> kills = new TreeMap<>(new Comparator<UUID>() {
 			@Override
 			public int compare(UUID a, UUID b) {
 				try {
-					Integer killsA = p.getGamePlayer(a).getPlayersKilled();
-					Integer killsB = p.getGamePlayer(b).getPlayersKilled();
+                    Long prcA = p.getGamePlayer(a).getPercentageInflicted();
+                    Long prcB = p.getGamePlayer(b).getPercentageInflicted();
 
-					if (killsA >= killsB) return -1;
-					else return 1;
+                    Integer killsA = p.getGamePlayer(a).getPlayersKilled();
+                    Integer killsB = p.getGamePlayer(b).getPlayersKilled();
+
+					if      (killsA >= killsB) return -1;
+                    else if (killsA < killsB)  return  1;
+
+                    else {
+                        if (prcA >= prcB) return -1;
+                        else return 1;
+                    }
 
 				} catch (NullPointerException e) {
 					return 0;
 				}
 			}
 		});
+
 		int i = 1;
 		for (GamePlayer player : p.getGamePlayers().values()) {
 			percentagesInflicted.put(player.getPlayerUniqueID(), player.getPercentageInflicted());
