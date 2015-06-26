@@ -57,7 +57,7 @@ public class GamePlayer {
 	private List<PlayerClass> classesAvailable = new ArrayList<PlayerClass>();
 	private List<Task> tasks = new ArrayList<Task>();
 
-	private final BukkitTask updateTimersTask;
+	private BukkitTask updateEffectsTask;
 
 	/**
 	 * Avoid the death to be handled multiple times.
@@ -88,58 +88,63 @@ public class GamePlayer {
 		playerID = id;
 		playerName = Bukkit.getServer().getPlayer(id).getName();
 
-		// TODO Better way than these ugly variables
-		updateTimersTask = Bukkit.getScheduler().runTaskTimer(HeroBattle.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				if(!(HeroBattle.getInstance().getGame().getStatus() == Status.InGame))
-					return;
+		startEffectsUpdaterTask();
+	}
+
+    private void startEffectsUpdaterTask() {
+        // TODO Better way than these ugly variables
+
+        updateEffectsTask = Bukkit.getScheduler().runTaskTimer(HeroBattle.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                if(!(HeroBattle.getInstance().getGame().getStatus() == Status.InGame))
+                    return;
 
                 if(remainingDoubleDamages == 0
-						&& remainingInvisibility == 0
-						&& remainingReducedIncomingDamages == 0
-						&& remainingRespawnInvincibility == 0
-						&& remainingTimeWithMoreJumps == 0) {
-					return;
-				}
+                        && remainingInvisibility == 0
+                        && remainingReducedIncomingDamages == 0
+                        && remainingRespawnInvincibility == 0
+                        && remainingTimeWithMoreJumps == 0) {
+                    return;
+                }
 
 
-				if(remainingTimeWithMoreJumps != 0) {
-					remainingTimeWithMoreJumps--;
+                if(remainingTimeWithMoreJumps != 0) {
+                    remainingTimeWithMoreJumps--;
 
-					if(remainingTimeWithMoreJumps == 0) {
+                    if(remainingTimeWithMoreJumps == 0) {
                         setMaxJumps(2, 0);
                     }
-				}
+                }
 
-				if(remainingDoubleDamages != 0) {
-					remainingDoubleDamages--;
-				}
+                if(remainingDoubleDamages != 0) {
+                    remainingDoubleDamages--;
+                }
 
-				if(remainingInvisibility != 0) {
-					remainingInvisibility--;
+                if(remainingInvisibility != 0) {
+                    remainingInvisibility--;
 
-					if(remainingInvisibility == 0) {
-						Player player = Bukkit.getPlayer(playerID);
-						if(player != null && player.isOnline())
-							HeroBattle.getInstance().getGame().updatePlayerArmor(player);
-					}
-				}
+                    if(remainingInvisibility == 0) {
+                        Player player = Bukkit.getPlayer(playerID);
+                        if(player != null && player.isOnline())
+                            HeroBattle.getInstance().getGame().updatePlayerArmor(player);
+                    }
+                }
 
-				if(remainingRespawnInvincibility != 0) {
-					remainingRespawnInvincibility--;
-				}
+                if(remainingRespawnInvincibility != 0) {
+                    remainingRespawnInvincibility--;
+                }
 
-				if(remainingReducedIncomingDamages != 0) {
-					remainingReducedIncomingDamages--;
-				}
+                if(remainingReducedIncomingDamages != 0) {
+                    remainingReducedIncomingDamages--;
+                }
 
                 updateActionBar();
             }
-		}, 20l, 20l);
-	}
+        }, 20l, 20l);
+    }
 
-	public int getJumps() {
+    public int getJumps() {
 		return jumps;
 	}
 
@@ -295,6 +300,10 @@ public class GamePlayer {
 			if(lives != 0) {
 				player.setHealth(player.getHealth() - 2);
 			}
+            else {
+                updateEffectsTask.cancel();
+                ActionBar.removeMessage(playerID);
+            }
 		}
 	}
 

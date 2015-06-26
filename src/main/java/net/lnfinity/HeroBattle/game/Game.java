@@ -595,8 +595,6 @@ public class Game implements GameArena {
 		else {
 			enableSpectatorMode(player);
 
-            ActionBar.removeMessage(player);
-
 			s = p.getPlayingPlayerCount() <= 1 ? "" : "s";
 
 			p.getServer().broadcastMessage(
