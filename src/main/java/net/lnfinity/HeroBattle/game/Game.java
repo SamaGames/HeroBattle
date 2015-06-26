@@ -329,7 +329,7 @@ public class Game implements GameArena {
 		
 		for (PlayerClass classe : gamePlayer.getAvaibleClasses()) {
 			if (i == r) {
-				gamePlayer.setPlayerClass(classe, true);
+				gamePlayer.setPlayerClass(classe);
 				player.sendMessage(ChatColor.GREEN + "La classe " + ChatColor.DARK_GREEN + classe.getName()
 						+ ChatColor.GREEN + " vous a été attribuée suite à un complexe jeu de dés !");
 				return;

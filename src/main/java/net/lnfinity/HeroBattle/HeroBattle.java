@@ -9,8 +9,6 @@ import java.net.URLEncoder;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import net.lnfinity.HeroBattle.classes.ClassManager;
 import net.lnfinity.HeroBattle.game.Game;
@@ -74,11 +72,6 @@ public class HeroBattle extends JavaPlugin {
 	private Configuration arenaConfig;
 
 	private Map<UUID, GamePlayer> players = new ConcurrentHashMap<>();
-
-    /**
-     * The executor used to get Jedis data through {@link java.util.concurrent.Future}s.
-     */
-    private final static ExecutorService executorPool = Executors.newFixedThreadPool(10);
 
 	@Override
 	public void onEnable() {
@@ -270,11 +263,7 @@ public class HeroBattle extends JavaPlugin {
 		return coherenceMachine;
 	}
 
-    public static ExecutorService getExecutorPool() {
-        return executorPool;
-    }
-
-    public static HeroBattle getInstance() {
+	public static HeroBattle getInstance() {
 		return instance;
 	}
 }

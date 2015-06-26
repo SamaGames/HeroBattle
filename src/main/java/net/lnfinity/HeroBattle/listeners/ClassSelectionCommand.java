@@ -97,24 +97,21 @@ public class ClassSelectionCommand implements CommandExecutor {
 				case "maïte":
 				case "maité":
 				case "maïté":
-					target.setPlayerClass(new MaiteClass(p), true);
+					target.setPlayerClass(new MaiteClass(p));
 					break;
 
 				case "dewoitine":
-					target.setPlayerClass(new DewoitineClass(p, 0, 0, 0), true);
+					target.setPlayerClass(new DewoitineClass(p, 0, 0, 0));
 					break;
 
 				case "dewoitined550":
-					target.setPlayerClass(new DewoitineD550Class(p, 0, 0, 0), true);
+					target.setPlayerClass(new DewoitineD550Class(p, 0, 0, 0));
 					break;
-
-                case "random":
-                    target.setPlayerClass(null, true);
 
 				default:
 					PlayerClass playerClass = p.getClassManager().getClassFromName(target, args[0]);
 					if(playerClass != null) {
-						target.setPlayerClass(playerClass, true);
+						target.setPlayerClass(playerClass);
 					}
 			}
 
