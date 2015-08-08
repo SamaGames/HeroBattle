@@ -202,6 +202,8 @@ public class GamePlayer {
 
 		int oldPercentage = this.percentage;
 
+		if(percentage < 0) percentage = 0;
+
 		if(getRemainingReducingIncomingDamages() != 0 && percentage >= oldPercentage) {
 			percentage -= (percentage - oldPercentage) / 2;
 		}

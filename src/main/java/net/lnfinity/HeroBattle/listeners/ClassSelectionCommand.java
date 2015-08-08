@@ -39,9 +39,12 @@ public class ClassSelectionCommand implements CommandExecutor {
 			if(p.getGame().getStatus() == Status.Available || p.getGame().getStatus() == Status.PreStarting || p.getGame().getStatus() == Status.Starting) {
 				GamePlayer gamePlayer = p.getGamePlayer(player);
 
-				if(args[0].equalsIgnoreCase("ArsenalVG50")) {
-					if(ClassSelectorListener.getDewotineTries().containsKey(player.getUniqueId())) {
-						if(ClassSelectorListener.getDewotineTries().get(player.getUniqueId()) == 6) {
+				if(args[0].equalsIgnoreCase("ArsenalVG50"))
+				{
+					if(ClassSelectorListener.getDewotineTries().containsKey(player.getUniqueId()))
+					{
+						if(ClassSelectorListener.getDewotineTries().get(player.getUniqueId()) == 6)
+						{
 							DewoitineClass theClass = new DewoitineClass(p, 0, 0, 0);
 							gamePlayer.setPlayerClass(theClass);
 							player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
@@ -51,9 +54,12 @@ public class ClassSelectionCommand implements CommandExecutor {
 					}
 				}
 
-				else if(args[0].equalsIgnoreCase("ArsenalVG39")) {
-					if(ClassSelectorListener.getDewotineTries().containsKey(player.getUniqueId())) {
-						if(ClassSelectorListener.getDewotineTries().get(player.getUniqueId()) == 6) {
+				else if(args[0].equalsIgnoreCase("ArsenalVG39"))
+				{
+					if(ClassSelectorListener.getDewotineTries().containsKey(player.getUniqueId()))
+					{
+						if(ClassSelectorListener.getDewotineTries().get(player.getUniqueId()) == 6)
+						{
 							DewoitineClass theClass = new DewoitineD550Class(p, 0, 0, 0);
 							gamePlayer.setPlayerClass(theClass);
 							player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
@@ -61,6 +67,14 @@ public class ClassSelectionCommand implements CommandExecutor {
 							return true;
 						}
 					}
+				}
+
+				else if(args[0].equalsIgnoreCase("Pommeeeh"))
+				{
+					ClassSelectorListener.getPommeUnlocked().add(player.getUniqueId());
+					player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe, ou elle n'existe pas !");
+
+					return true;
 				}
 
 				for(PlayerClass theClass : gamePlayer.getAvaibleClasses()) {
