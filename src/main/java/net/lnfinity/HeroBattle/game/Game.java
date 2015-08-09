@@ -48,6 +48,16 @@ public class Game implements GameArena {
 	private ArrayList<Location> teleportationPortalsDestinations = new ArrayList<Location>();
 
 
+	private final Integer COINS_PER_KILL = 4;
+	private final Integer COINS_PER_ASSIST = 3;
+
+	private final Integer COINS_PER_VICTORY = 16;
+	private final Integer STARS_PER_VICTORY = 1;
+
+	private final Integer COINS_IF_FIRST_RANKED = 10;
+	private final Integer COINS_IF_SECOND_RANKED = 6;
+	private final Integer COINS_IF_THIRD_RANKED = 4;
+
 
 	/**
 	 * We store here the last players who launched a lightning bolt and where,
@@ -437,14 +447,14 @@ public class Game implements GameArena {
 										+ " a été poussé par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 										+ lives);
 						StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-						lastDamagerGPlayer.creditCoins(3, "Un joueur poussé !");
+						lastDamagerGPlayer.creditCoins(COINS_PER_KILL, "Un joueur poussé !");
 					}
 					break;
 
 				case QUIT:
 					if(!player.getUniqueId().equals(lastDamagerPlayer.getUniqueId())) {
 						StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-						lastDamagerGPlayer.creditCoins(3, "Un froussard !");
+						lastDamagerGPlayer.creditCoins(COINS_PER_KILL, "Un froussard !");
 					}
 					p.getServer().broadcastMessage(
 							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
@@ -465,7 +475,7 @@ public class Game implements GameArena {
 										+ lives);
 
 						StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-						lastDamagerGPlayer.creditCoins(3, "Un joueur K.O. !");
+						lastDamagerGPlayer.creditCoins(COINS_PER_KILL, "Un joueur K.O. !");
 					}
 
 					break;
@@ -479,7 +489,7 @@ public class Game implements GameArena {
 									+ lives);
 
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-					lastDamagerGPlayer.creditCoins(3, "Un joueur poussé à l'eau !");
+					lastDamagerGPlayer.creditCoins(COINS_PER_KILL, "Un joueur poussé à l'eau !");
 
 					break;
 
@@ -492,7 +502,7 @@ public class Game implements GameArena {
 									+ lives);
 
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-					lastDamagerGPlayer.creditCoins(3, "Un joueur poussé dans la lave !");
+					lastDamagerGPlayer.creditCoins(COINS_PER_KILL, "Un joueur poussé dans la lave !");
 
 					break;
 			}
@@ -527,7 +537,7 @@ public class Game implements GameArena {
 						GamePlayer assistGPlayer = p.getGamePlayer(uuid);
 						if(assistGPlayer != null)
 						{
-							assistGPlayer.creditCoins(3, "Assistance contre " + hbPlayer.getPlayerName() + " !");
+							assistGPlayer.creditCoins(COINS_PER_ASSIST, "Assistance contre " + hbPlayer.getPlayerName() + " !");
 						}
 					}
 				}
@@ -752,8 +762,8 @@ public class Game implements GameArena {
 			}, 30l);
 
 
-			gWinner.creditStars(1, "Victoire !");
-			gWinner.creditCoins(16, "Victoire !");
+			gWinner.creditStars(STARS_PER_VICTORY, "Victoire !");
+			gWinner.creditCoins(COINS_PER_VICTORY, "Victoire !");
 			StatsApi.increaseStat(winner, p.getName(), "wins", 1);
 		}
 
@@ -866,7 +876,7 @@ public class Game implements GameArena {
 
 					GamePlayer gPlayer = p.getGamePlayer(entry.getKey());
 					if(gPlayer != null) {
-						gPlayer.creditCoins(i == 0 ? 10 : i == 1 ? 6 : 4, "Rang " + (i + 1) + " au classement des kills !");
+						gPlayer.creditCoins(i == 0 ? COINS_IF_FIRST_RANKED : i == 1 ? COINS_IF_SECOND_RANKED : COINS_IF_THIRD_RANKED, "Rang " + (i + 1) + " au classement des kills !");
 					}
 
 					i++;
@@ -881,7 +891,7 @@ public class Game implements GameArena {
 
 					GamePlayer gPlayer = p.getGamePlayer(entry.getKey());
 					if(gPlayer != null) {
-						gPlayer.creditCoins(i == 0 ? 10 : i == 1 ? 6 : 4, "Rang " + (i + 1) + " au classement des dégâts infligés !");
+						gPlayer.creditCoins(i == 0 ? COINS_IF_FIRST_RANKED : i == 1 ? COINS_IF_SECOND_RANKED : COINS_IF_THIRD_RANKED, "Rang " + (i + 1) + " au classement des dégâts infligés !");
 					}
 
 					i++;
