@@ -501,6 +501,42 @@ public class Game implements GameArena {
 		}
 
 
+		// Assist (only for real deaths)
+		if(lastDamagerGPlayer != null && lastDamagerGPlayer.isPlaying())
+		{
+			if(death != DeathType.QUIT)
+			{
+				// An assist is agreed only if:
+				//  - the player made more than 38% of the whole damages made to the player, or
+				//  - the player made at least 20 damages in the last ten seconds.
+				final Double  ASSIST_WHOLE_DAMAGES_PERCENTAGE_MIN = 0.38;
+				final Integer ASSIST_RECENT_DAMAGES_MIN           = 20;
+				final Long    ASSIST_RECENT_DAMAGES_TIME          = 10000l; // 10 seconds
+
+				Integer minimalDamages = ((int) (hbPlayer.getPercentage() * ASSIST_WHOLE_DAMAGES_PERCENTAGE_MIN));
+
+				for(Map.Entry<UUID, Assist> assistEntry : hbPlayer.getAssists().entrySet())
+				{
+					Assist assist = assistEntry.getValue();
+					UUID   uuid   = assistEntry.getKey();
+
+					if(assist.getTotalAssist() >= minimalDamages || assist.getRecentAssists(ASSIST_RECENT_DAMAGES_TIME) >= ASSIST_RECENT_DAMAGES_MIN)
+					{
+						StatsApi.increaseStat(uuid, p.getName(), "assists", 1);
+
+						GamePlayer assistGPlayer = p.getGamePlayer(uuid);
+						if(assistGPlayer != null)
+						{
+							assistGPlayer.creditCoins(3, "Assistance contre " + hbPlayer.getPlayerName() + " !");
+						}
+					}
+				}
+			}
+		}
+
+		hbPlayer.resetAssists();
+
+
 		// Effects on the player
 		for(PotionEffect effect : player.getActivePotionEffects()) {
 			// Clears current effects

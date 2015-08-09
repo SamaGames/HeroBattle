@@ -5,7 +5,6 @@ import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_8_R1.ChatClickable;
 import net.samagames.gameapi.json.Status;
 import net.zyuiop.MasterBundle.StarsManager;
 import net.zyuiop.coinsManager.CoinsManager;
@@ -21,9 +20,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 public class GamePlayer {
@@ -56,6 +53,7 @@ public class GamePlayer {
 	private int remainingTimeWithMoreJumps = 0;
 
 	private UUID lastDamager = null;
+	private Map<UUID,Assist> assists = new HashMap<>();
 
 	private List<PlayerClass> classesAvailable = new ArrayList<PlayerClass>();
 	private List<Task> tasks = new ArrayList<Task>();
@@ -204,13 +202,29 @@ public class GamePlayer {
 
 		if(percentage < 0) percentage = 0;
 
+		final int percentageInflicted = percentage - oldPercentage;
+
 		if(getRemainingReducingIncomingDamages() != 0 && percentage >= oldPercentage) {
-			percentage -= (percentage - oldPercentage) / 2;
+			percentage -= (percentageInflicted) / 2;
 		}
 
 		this.percentage = percentage;
 
-		if(aggressor != null) aggressor.addPercentageInflicted(percentage - oldPercentage);
+		if(aggressor != null) {
+			aggressor.addPercentageInflicted(percentageInflicted);
+
+
+			Assist assist = assists.get(aggressor.getPlayerUniqueID());
+			if(assist == null)
+			{
+				assist = new Assist(percentageInflicted);
+				assists.put(aggressor.getPlayerUniqueID(), assist);
+			}
+			else
+			{
+				assist.addAssist(percentageInflicted);
+			}
+		}
 
 
 		Player player = Bukkit.getPlayer(playerID);
@@ -348,6 +362,14 @@ public class GamePlayer {
 
 	public void setLastDamager(UUID lastDamager) {
 		this.lastDamager = lastDamager;
+	}
+
+	public Map<UUID, Assist> getAssists() {
+		return assists;
+	}
+
+	public void resetAssists() {
+		assists = new HashMap<>();
 	}
 
 	public PlayerClass getPlayerClass() {
