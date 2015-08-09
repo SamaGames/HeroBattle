@@ -785,7 +785,7 @@ public class Game implements GameArena {
                     Integer killsA = p.getGamePlayer(a).getPlayersKilled();
                     Integer killsB = p.getGamePlayer(b).getPlayersKilled();
 
-					if      (prcA >= prcB) return -1;
+					if      (prcA > prcB) return -1;
                     else if (prcA < prcB)  return  1;
 
                     else {
@@ -809,7 +809,7 @@ public class Game implements GameArena {
                     Integer killsA = p.getGamePlayer(a).getPlayersKilled();
                     Integer killsB = p.getGamePlayer(b).getPlayersKilled();
 
-					if      (killsA >= killsB) return -1;
+					if      (killsA > killsB) return -1;
                     else if (killsA < killsB)  return  1;
 
                     else {
