@@ -92,7 +92,7 @@ public class ScoreboardManager {
 	}
 
 	/**
-	 * Refreshes the whole scoreboards.
+	 * Refreshes the whole scoreboard.
 	 */
 	public void refresh() {
 		percentageSidebar.unregister();

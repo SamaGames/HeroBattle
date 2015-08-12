@@ -19,51 +19,27 @@ public class EffectsManager {
 		final GamePlayer gamePlayer = p.getGamePlayer(player);
 		if(gamePlayer == null) return;
 		switch(type) {
-		case STRENGH :
-			gamePlayer.setDoubleDamages(true);
-			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, duration * 20, 0));
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					gamePlayer.setDoubleDamages(false);
-				}
-			}, duration * 20L);
-			break;
-		case INVULNERABLE :
-			gamePlayer.setInvulnerable(true);
-			player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, duration * 20, 0));
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					gamePlayer.setInvulnerable(false);
-				}
-			}, duration * 20L);
-		case RESPAWN :
-			gamePlayer.setRespawning(true);
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					gamePlayer.setRespawning(false);
-				}
-			}, duration * 20L);
-		case JUMP :
-			gamePlayer.setMaxJumps(3);
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					gamePlayer.setMaxJumps(2);
-				}
-			}, duration * 20L);
-		case INVISIBLE :
-			gamePlayer.setInvisible(true);
-			p.getGame().updatePlayerArmor(player);
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					gamePlayer.setInvisible(false);
-					p.getGame().updatePlayerArmor(player);
-				}
-			}, duration * 20L);
+            case STRENGH :
+                gamePlayer.addRemainingDoubleDamages(duration);
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, duration * 20, 0));
+                break;
+
+            case INVULNERABLE :
+                gamePlayer.addRemainingReducedIncomingDamages(duration);
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, duration * 20, 0));
+                break;
+
+            case RESPAWN :
+                gamePlayer.setRespawning();
+                break;
+
+            case JUMP :
+                gamePlayer.setMaxJumps(3, duration);
+                break;
+
+            case INVISIBLE :
+                gamePlayer.addRemainingInvisibility(duration);
+                break;
 		}
 	}
 	

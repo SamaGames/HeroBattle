@@ -7,6 +7,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.md_5.bungee.api.ChatColor;
 
+import net.samagames.utils.Titles;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -25,7 +26,7 @@ public class NotYetAvaibleTool extends PlayerTool {
 
 	@Override
 	public String getName() {
-		return ChatColor.RED + "" + ChatColor.BOLD + "???";
+		return ChatColor.RED + "" + ChatColor.BOLD + "?¿?";
 	}
 
 	@Override
@@ -40,10 +41,12 @@ public class NotYetAvaibleTool extends PlayerTool {
 
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
+        Titles.sendTitle(player, 10, 40, 10, ChatColor.RED + "Nope", ChatColor.RED + "Pas encore disponible");
 	}
 
 	@Override
 	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event) {
+        onRightClick(player, tool, event);
 	}
 
 }

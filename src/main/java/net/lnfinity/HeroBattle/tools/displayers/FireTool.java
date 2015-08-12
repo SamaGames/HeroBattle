@@ -41,7 +41,7 @@ public class FireTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Utils.getToolDescription(ChatColor.GRAY + "Vous protège d'une couche de magma qui absorbe tous les dégâts et double votre puissance d'attaque pendant " + ChatColor.GOLD + DURATION + " " + ChatColor.GRAY + "secondes. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Vous protège d'une couche de magma qui absorbe une bonne partie des dégâts et double votre puissance d'attaque pendant " + ChatColor.GOLD + DURATION + " " + ChatColor.GRAY + "secondes. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
@@ -72,15 +72,8 @@ public class FireTool extends PlayerTool {
 			
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, DURATION * 20, 0));
 			final GamePlayer gamePlayer = p.getGamePlayer(player);
-			gamePlayer.setDoubleDamages(true);
-			gamePlayer.setInvulnerable(true);
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					gamePlayer.setDoubleDamages(false);
-					gamePlayer.setInvulnerable(false);
-				}
-			}, DURATION * 20L);
+			gamePlayer.addRemainingDoubleDamages(DURATION);
+			gamePlayer.addRemainingReducedIncomingDamages(DURATION - (DURATION / 4));
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
@@ -88,7 +81,7 @@ public class FireTool extends PlayerTool {
 
 	@Override
 	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-		
+		onRightClick(player, tool, event);
 	}
 
 }

@@ -8,27 +8,20 @@ import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
-
-import org.apache.logging.log4j.core.config.plugins.Plugin;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
+
 
 public class ClassSelectorListener implements Listener {
 
@@ -41,6 +34,7 @@ public class ClassSelectorListener implements Listener {
 
 	private final Map<UUID, Integer> maite = new HashMap<>();
 	private static final Map<UUID, Integer> dewotine = new HashMap<>();
+	private static final Set<UUID> pommeUnlocked = new CopyOnWriteArraySet<>();
 
 	public ClassSelectorListener(HeroBattle plugin) {
 		p = plugin;
@@ -443,13 +437,15 @@ public class ClassSelectorListener implements Listener {
 			key = 0;
 		}
 
-		if ((gamePlayer.getElo() + "").charAt(progress) == (key + "").charAt(0)) {
+        String textToType = gamePlayer.getElo() + "42";
+
+		if (textToType.charAt(progress) == (key + "").charAt(0)) {
 			progress++;
 		} else {
 			progress = 0;
 		}
 
-		if (progress == (gamePlayer.getElo() + "").length()) {
+		if (progress == textToType.length()) {
 			progress = 0;
 			player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
 					+ ChatColor.DARK_GREEN + "Maïté" + ChatColor.GREEN + " !");
@@ -489,5 +485,9 @@ public class ClassSelectorListener implements Listener {
 
 	public static Map<UUID, Integer> getDewotineTries() {
 		return dewotine;
+	}
+
+	public static Set<UUID> getPommeUnlocked() {
+		return pommeUnlocked;
 	}
 }

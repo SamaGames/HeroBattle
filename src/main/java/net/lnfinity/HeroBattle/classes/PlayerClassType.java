@@ -11,13 +11,15 @@ public enum PlayerClassType {
 	PYROBARBARE("pyrobarbare"),
 	
 	MAITE("maite"),
+
 	DEWOITINE("Dewoitine"),
-	DEWOITINE_D550("DewoitineD");
+	DEWOITINE_D550("DewoitineD"),
+	POMME("Pomme");
 
 
 	private final String id;
 	
-	private PlayerClassType(String id) {
+	PlayerClassType(String id) {
 		this.id = id;
 	}
 	

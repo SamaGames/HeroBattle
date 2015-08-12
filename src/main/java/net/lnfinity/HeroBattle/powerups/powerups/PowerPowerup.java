@@ -7,8 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public class PowerPowerup implements PositivePowerup {
 
@@ -21,16 +19,8 @@ public class PowerPowerup implements PositivePowerup {
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
 		final GamePlayer gamePlayer = p.getGamePlayer(player);
-		player.sendMessage(ChatColor.GREEN + "Vous " + ChatColor.DARK_GREEN + "doublez votre puissance" + ChatColor.GREEN + " pour 15 secondes !");
-		gamePlayer.setDoubleDamages(true);
-		player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 15 * 20, 0));
-		p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-			@Override
-			public void run() {
-				gamePlayer.setDoubleDamages(false);
-			}
-		}, 15 * 20L);
-		
+		player.sendMessage(ChatColor.GREEN + "Vous " + ChatColor.DARK_GREEN + "doublez votre puissance" + ChatColor.GREEN + " pour 24 secondes !");
+		gamePlayer.addRemainingDoubleDamages(24);
 	}
 
 	@Override

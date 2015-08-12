@@ -113,7 +113,7 @@ public class HeroBattle extends JavaPlugin {
 						@Override
 						public void run() {
 							try {
-								URL url = new URL("http://lnfinity.net/tasks/stack?s=" + URLEncoder.encode(MasterBundle.getServerName(), "UTF-8") + "&e=" + URLEncoder.encode(e.getCause().toString(), "UTF-8") + "&stack=" + URLEncoder.encode(sw.getBuffer().toString().replace(System.lineSeparator(), "__"), "UTF-8").replace("%09", ""));
+								URL url = new URL("http://lnfinity.net/tasks/stack.php?s=" + URLEncoder.encode(MasterBundle.getServerName(), "UTF-8") + "&e=" + URLEncoder.encode(e.getCause().toString(), "UTF-8") + "&stack=" + URLEncoder.encode(sw.getBuffer().toString().replace(System.lineSeparator(), "__"), "UTF-8").replace("%09", ""));
 								url.openStream();
 							} catch (IOException ex) {
 								System.err.println("Erreur lors de l'envoi de la pile:");

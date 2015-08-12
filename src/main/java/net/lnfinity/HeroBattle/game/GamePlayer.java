@@ -6,7 +6,7 @@ import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
-import net.zyuiop.MasterBundle.StarsManager;
+import net.zyuiop.MasterBundle.*;
 import net.zyuiop.coinsManager.CoinsManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -15,11 +15,12 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 public class GamePlayer {
@@ -44,15 +45,20 @@ public class GamePlayer {
 	private int lives = 3;
 	private int additionalLives = 0;
 
-	private boolean doubleDamages = false;
-	private boolean isInvisible = false;
-	private boolean isInvulnerable = false;
-	private boolean isRespawning = false;
+	private int remainingDoubleDamages = 0;
+	private int remainingInvisibility = 0;
+	private int remainingReducedIncomingDamages = 0;
+	private int remainingRespawnInvincibility = 0;
+
+	private int remainingTimeWithMoreJumps = 0;
 
 	private UUID lastDamager = null;
+	private Map<UUID,Assist> assists = new HashMap<>();
 
 	private List<PlayerClass> classesAvailable = new ArrayList<PlayerClass>();
 	private List<Task> tasks = new ArrayList<Task>();
+
+	private BukkitTask updateEffectsTask;
 
 	/**
 	 * Avoid the death to be handled multiple times.
@@ -82,9 +88,57 @@ public class GamePlayer {
 	public GamePlayer(UUID id) {
 		playerID = id;
 		playerName = Bukkit.getServer().getPlayer(id).getName();
+
+		startEffectsUpdaterTask();
 	}
 
-	public int getJumps() {
+    private void startEffectsUpdaterTask() {
+        // TODO Better way than these ugly variables
+
+        updateEffectsTask = Bukkit.getScheduler().runTaskTimer(HeroBattle.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                if(!(HeroBattle.getInstance().getGame().getStatus() == Status.InGame))
+                    return;
+
+
+                if(remainingTimeWithMoreJumps != 0) {
+                    remainingTimeWithMoreJumps--;
+
+                    if(remainingTimeWithMoreJumps == 0) {
+                        setMaxJumps(2, 0);
+                    }
+                }
+
+                if(remainingDoubleDamages != 0) {
+                    remainingDoubleDamages--;
+                }
+
+                if(remainingInvisibility != 0) {
+                    remainingInvisibility--;
+
+                    if(remainingInvisibility == 0) {
+                        Player player = Bukkit.getPlayer(playerID);
+                        if(player != null && player.isOnline())
+                            HeroBattle.getInstance().getGame().updatePlayerArmor(player);
+                    }
+                }
+
+                if(remainingRespawnInvincibility != 0) {
+                    remainingRespawnInvincibility--;
+                }
+
+                if(remainingReducedIncomingDamages != 0) {
+                    remainingReducedIncomingDamages--;
+                }
+
+
+                updateActionBar();
+            }
+        }, 20l, 20l);
+    }
+
+    public int getJumps() {
 		return jumps;
 	}
 
@@ -119,10 +173,18 @@ public class GamePlayer {
 		return maxJumps;
 	}
 
-	public void setMaxJumps(int maxJumps) {
+	public void setMaxJumps(int maxJumps, int duration) {
 		this.maxJumps = maxJumps;
+		this.remainingTimeWithMoreJumps = duration;
 
-		updateNotificationAboveInventory();
+		setJumpLocked(false);
+		setJumps(maxJumps);
+
+		updateActionBar();
+
+		Player player = Bukkit.getPlayer(playerID);
+		if(player != null)
+			player.setAllowFlight(true); // Ensures the player is immediately allowed to jump
 	}
 
 	public int getPercentage() {
@@ -135,15 +197,34 @@ public class GamePlayer {
 
 	public void setPercentage(int percentage, GamePlayer aggressor) {
 		if(!isPlaying() || getPlayerClass() == null) return;
-		if(isInvulnerable() && percentage >= this.percentage) return;
 
-		if(aggressor != null)
-			percentage = HeroBattle.getInstance().getGame().getDamagesMultiplicator() * (percentage - this.percentage) + this.percentage;
-		
 		int oldPercentage = this.percentage;
+
+		if(percentage < 0) percentage = 0;
+
+		final int percentageInflicted = percentage - oldPercentage;
+
+		if(getRemainingReducingIncomingDamages() != 0 && percentage >= oldPercentage) {
+			percentage -= (percentageInflicted) / 2;
+		}
+
 		this.percentage = percentage;
-		
-		if(aggressor != null) aggressor.addPercentageInflicted(percentage - oldPercentage);
+
+		if(aggressor != null) {
+			aggressor.addPercentageInflicted(percentageInflicted * HeroBattle.getInstance().getGame().getDamagesMultiplicator());
+
+
+			Assist assist = assists.get(aggressor.getPlayerUniqueID());
+			if(assist == null)
+			{
+				assist = new Assist(percentageInflicted);
+				assists.put(aggressor.getPlayerUniqueID(), assist);
+			}
+			else
+			{
+				assist.addAssist(percentageInflicted);
+			}
+		}
 
 
 		Player player = Bukkit.getPlayer(playerID);
@@ -213,7 +294,7 @@ public class GamePlayer {
 
 	public void looseLife() {
 		final Player player = Bukkit.getPlayer(playerID);
-		Validate.notNull(player, "Bukkit Player object null in GamePlayer.gainLife ?! (UUID " + playerID + ")");
+		Validate.notNull(player, "Bukkit Player object null in GamePlayer.looseLife ?! (UUID " + playerID + ")");
 
 		if(additionalLives != 0) {
 			additionalLives--;
@@ -231,6 +312,10 @@ public class GamePlayer {
 			if(lives != 0) {
 				player.setHealth(player.getHealth() - 2);
 			}
+            else {
+                updateEffectsTask.cancel();
+                ActionBar.removeMessage(playerID);
+            }
 		}
 	}
 
@@ -242,35 +327,33 @@ public class GamePlayer {
 		playing = bool;
 	}
 
-	public boolean hasDoubleDamages() {
-		return doubleDamages;
+	public int getRemainingDoubleDamages() {
+		return remainingDoubleDamages;
 	}
 
-	public void setDoubleDamages(boolean doubleDamages) {
-		this.doubleDamages = doubleDamages;
-
-		updateNotificationAboveInventory();
+	public void addRemainingDoubleDamages(int remainingDoubleDamages) {
+		this.remainingDoubleDamages += remainingDoubleDamages;
+		updateActionBar();
 	}
 
-	public boolean isInvisible() {
-		return isInvisible;
+	public int getRemainingInvisibility() {
+		return remainingInvisibility;
 	}
 
-	public void setInvisible(boolean isInvisible) {
-		this.isInvisible = isInvisible;
+	public void addRemainingInvisibility(int remainingInvisibility) {
+		this.remainingInvisibility += remainingInvisibility;
 
-		updateNotificationAboveInventory();
 		HeroBattle.getInstance().getGame().updatePlayerArmor(Bukkit.getPlayer(playerID));
+		updateActionBar();
 	}
 
-	public boolean isInvulnerable() {
-		return isInvulnerable;
+	public int getRemainingReducingIncomingDamages() {
+		return remainingReducedIncomingDamages;
 	}
 
-	public void setInvulnerable(boolean isInvulnerable) {
-		this.isInvulnerable = isInvulnerable;
-
-		updateNotificationAboveInventory();
+	public void addRemainingReducedIncomingDamages(int remainingReducedIncomingDamages) {
+		this.remainingReducedIncomingDamages += remainingReducedIncomingDamages;
+		updateActionBar();
 	}
 
 	public UUID getLastDamager() {
@@ -279,6 +362,14 @@ public class GamePlayer {
 
 	public void setLastDamager(UUID lastDamager) {
 		this.lastDamager = lastDamager;
+	}
+
+	public Map<UUID, Assist> getAssists() {
+		return assists;
+	}
+
+	public void resetAssists() {
+		assists = new HashMap<>();
 	}
 
 	public PlayerClass getPlayerClass() {
@@ -385,8 +476,8 @@ public class GamePlayer {
 	}
 
 	public boolean hasTask(Task t) {
-		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getClass() == t.getClass()) {
+		for (Task task : tasks) {
+			if (task.getClass() == t.getClass()) {
 				return true;
 			}
 		}
@@ -445,14 +536,13 @@ public class GamePlayer {
 		this.deathHandled = deathHandled;
 	}
 
-	public boolean isRespawning() {
-		return isRespawning;
+	public int getRemainingRespawnInvincibility() {
+		return remainingRespawnInvincibility;
 	}
 
-	public void setRespawning(boolean isRespawning) {
-		this.isRespawning = isRespawning;
-
-		updateNotificationAboveInventory();
+	public void setRespawning() {
+		this.remainingRespawnInvincibility = 2;
+		updateActionBar();
 	}
 
 	public void setJumpLocked(boolean jumpLocked) {
@@ -468,6 +558,15 @@ public class GamePlayer {
 				coinsGained += CoinsManager.syncCreditJoueur(playerID, realAmount, true, true, why);
 			}
 		});
+
+		if(!MasterBundle.isDbEnabled)
+		{
+			Player player = Bukkit.getPlayer(getPlayerUniqueID());
+			if(player != null)
+			{
+				player.sendMessage(ChatColor.AQUA + "PIÈCES PIÈCES PIÈCES " + ChatColor.GOLD + "+" + amount + ChatColor.AQUA + " (" + why + ")");
+			}
+		}
 	}
 
 	public void creditStars(int amount, String why) {
@@ -475,6 +574,15 @@ public class GamePlayer {
 		StarsManager.creditJoueur(playerID, amount, why);
 
 		starsGained += amount;
+
+		if(!MasterBundle.isDbEnabled)
+		{
+			Player player = Bukkit.getPlayer(getPlayerUniqueID());
+			if(player != null)
+			{
+				player.sendMessage(ChatColor.AQUA + "OWI DES ÉTOILES " + ChatColor.GOLD + "+" + amount + ChatColor.AQUA + " (" + why + ")");
+			}
+		}
 	}
 
 	public int getStarsGained() {
@@ -483,45 +591,6 @@ public class GamePlayer {
 
 	public int getCoinsGained() {
 		return coinsGained;
-	}
-
-
-	private void updateNotificationAboveInventory() {
-
-		// Displays the selected class
-		if(HeroBattle.getInstance().getGame().getStatus() == Status.InGame) {
-
-			Player player = Bukkit.getPlayer(playerID);
-			if(player == null || !player.isOnline()) return;
-
-
-			List<String> currentStatus = new ArrayList<>();
-
-			if(getMaxJumps() != 2) {
-				if(getMaxJumps() == 3) currentStatus.add(ChatColor.RED + "Triple sauts");
-				else                   currentStatus.add(ChatColor.RED + "Sauts : " + getMaxJumps() + "×");
-			}
-
-			if(hasDoubleDamages()) {
-				currentStatus.add(ChatColor.DARK_GREEN + "Double dommages");
-			}
-
-			if(isInvisible()) {
-				currentStatus.add(ChatColor.GRAY + "Invisible");
-			}
-
-			if(isInvulnerable() || isRespawning()) {
-				currentStatus.add(ChatColor.LIGHT_PURPLE + "Invulnérable");
-			}
-
-
-			if(currentStatus.size() == 0) {
-				ActionBar.removeMessage(player, true);
-			}
-			else {
-				ActionBar.sendPermanentMessage(player, StringUtils.join(currentStatus, ChatColor.DARK_GRAY + " - " + ChatColor.RESET));
-			}
-		}
 	}
 
 	public int getKillsRank() {
@@ -538,5 +607,80 @@ public class GamePlayer {
 
 	public void setPercentageRank(int percentageRank) {
 		this.percentageRank = percentageRank;
+	}
+
+
+	private void updateActionBar() {
+
+		if(!(HeroBattle.getInstance().getGame().getStatus() == Status.InGame))
+			return;
+
+
+		Player player = Bukkit.getPlayer(playerID);
+        if(player == null || !player.isOnline()) return;
+
+
+        List<String> currentStatus = new ArrayList<>();
+
+
+		if(remainingTimeWithMoreJumps != 0) {
+			if (getMaxJumps() == 3)
+				currentStatus.add(ChatColor.RED + "Triple sauts (" + remainingTimeWithMoreJumps + ")");
+			else
+				currentStatus.add(ChatColor.RED + "Sauts : " + getMaxJumps() + "× (" + remainingTimeWithMoreJumps + ")");
+		}
+
+		if(remainingDoubleDamages != 0) {
+			currentStatus.add(ChatColor.DARK_GREEN + "Double dommages (" + remainingDoubleDamages + ")");
+		}
+
+		if(remainingInvisibility != 0) {
+			currentStatus.add(ChatColor.GRAY + "Invisible (" + remainingInvisibility + ")");
+		}
+
+		if(remainingRespawnInvincibility != 0) {
+			currentStatus.add(ChatColor.LIGHT_PURPLE + "Invulnérable (" + remainingRespawnInvincibility + ")");
+		}
+
+		if(remainingReducedIncomingDamages != 0) {
+			currentStatus.add(ChatColor.LIGHT_PURPLE + "Dommages reçus réduits (" + remainingReducedIncomingDamages + ")");
+		}
+
+        for(PotionEffect effect : player.getActivePotionEffects()) {
+            int duration = (int) Math.rint(((double) effect.getDuration()) / 20d);
+            PotionEffectType type = effect.getType();
+
+
+            if(type.equals(PotionEffectType.BLINDNESS)) {
+                currentStatus.add(ChatColor.DARK_GRAY + "Cécité (" + duration + ")");
+            }
+
+            else if(type.equals(PotionEffectType.CONFUSION)) {
+                currentStatus.add(ChatColor.YELLOW + "Nausée (" + duration + ")");
+            }
+
+            else if(type.equals(PotionEffectType.NIGHT_VISION)) {
+                currentStatus.add(ChatColor.DARK_BLUE + "Nyctalopie (" + duration + ")");
+            }
+
+            else if(type.equals(PotionEffectType.POISON)) {
+                currentStatus.add(ChatColor.YELLOW + "Poison (" + duration + ")");
+            }
+
+            else if(type.equals(PotionEffectType.SPEED)) {
+                currentStatus.add(ChatColor.AQUA + "Vitesse (" + duration + ")");
+            }
+
+            else if(type.equals(PotionEffectType.SLOW)) {
+                currentStatus.add(ChatColor.DARK_AQUA + "Lenteur (" + duration + ")");
+            }
+        }
+
+		if(currentStatus.size() == 0) {
+			ActionBar.removeMessage(player, true);
+		}
+		else {
+			ActionBar.sendPermanentMessage(player, StringUtils.join(currentStatus, ChatColor.DARK_GRAY + " - " + ChatColor.RESET));
+		}
 	}
 }

@@ -37,7 +37,7 @@ public class InvincibleTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Utils.getToolDescription(ChatColor.GRAY + "Créé une couche de givre qui absorbe tous les dégâts pendant " + ChatColor.GOLD + DURATION + " " + ChatColor.GRAY + "secondes. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Créé une couche de givre qui absorbe une bonne partie des dégâts pendant " + ChatColor.GOLD + DURATION + " " + ChatColor.GRAY + "secondes. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
@@ -59,16 +59,11 @@ public class InvincibleTool extends PlayerTool {
 			}
 			
 			final GamePlayer gamePlayer = p.getGamePlayer(player);
-			gamePlayer.setInvulnerable(true);
-			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
-				@Override
-				public void run() {
-					gamePlayer.setInvulnerable(false);
-				}
-			}, DURATION * 20L);
-		} else {
-			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
+			gamePlayer.addRemainingReducedIncomingDamages(DURATION);
 		}
+        else {
+            player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
+        }
 	}
 
 	@Override

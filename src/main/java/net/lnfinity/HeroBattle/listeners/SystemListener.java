@@ -1,6 +1,8 @@
 package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.displayers.PommeClass;
 import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.Game;
 import net.lnfinity.HeroBattle.game.GamePlayer;
@@ -183,9 +185,29 @@ public class SystemListener implements Listener {
 
 
 	@EventHandler (priority = EventPriority.HIGHEST)
-	public void onPlayerChat(PlayerChatEvent e) {
+	public void onPlayerChat(AsyncPlayerChatEvent e) {
 		GamePlayer gamePlayer = plugin.getGamePlayer(e.getPlayer().getUniqueId());
 		if(gamePlayer == null) return; // /btp or /stp
+
+		// Pomme Easter-Egg
+		if(HeroBattle.getInstance().getGame().getStatus() == Status.Available || HeroBattle.getInstance().getGame().getStatus() == Status.PreStarting || HeroBattle.getInstance().getGame().getStatus() == Status.Starting)
+		{
+			if(ClassSelectorListener.getPommeUnlocked().contains(e.getPlayer().getUniqueId()))
+			{
+				if(e.getMessage().equalsIgnoreCase("MEH"))
+				{
+					PlayerClass pomme = new PommeClass();
+
+					gamePlayer.setPlayerClass(pomme);
+					e.getPlayer().sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
+							+ ChatColor.DARK_GREEN + pomme.getName() + ChatColor.GREEN + " !");
+
+					e.setCancelled(true);
+					return;
+				}
+			}
+		}
+
 		e.setFormat(ChatColor.DARK_GREEN + "" + gamePlayer.getElo() + ChatColor.GREEN + " ▏ " + ChatColor.RESET + e.getFormat());
 	}
 	

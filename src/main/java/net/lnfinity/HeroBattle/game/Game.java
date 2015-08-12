@@ -15,7 +15,6 @@ import net.samagames.utils.GlowEffect;
 import net.samagames.utils.Titles;
 import net.zyuiop.MasterBundle.MasterBundle;
 import net.zyuiop.statsapi.StatsApi;
-
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
@@ -48,6 +47,16 @@ public class Game implements GameArena {
 
 	private ArrayList<Location> teleportationPortalsDestinations = new ArrayList<Location>();
 
+	private final Integer COINS_PER_KILL = 5;
+	private final Integer COINS_PER_ASSIST = 3;
+
+	private final Integer COINS_PER_VICTORY = 16;
+	private final Integer STARS_PER_VICTORY = 1;
+
+	private final Integer COINS_IF_FIRST_RANKED = 10;
+	private final Integer COINS_IF_SECOND_RANKED = 6;
+	private final Integer COINS_IF_THIRD_RANKED = 4;
+	
 	/**
 	 * We store here the last players who launched a lightning bolt and where,
 	 * to associate the damages to the good damager.
@@ -307,8 +316,9 @@ public class Game implements GameArena {
 		player.setGameMode(GameMode.SPECTATOR);
 		player.getInventory().clear();
 		player.getInventory().setArmorContents(null);
+        player.setFlySpeed(0.1F);
 
-		teleportRandomSpot(player);
+        teleportRandomSpot(player);
 	}
 
 	public void chooseRandomClass(Player player) {
@@ -437,14 +447,14 @@ public class Game implements GameArena {
 										+ " a été poussé par " + ChatColor.DARK_GREEN + p.getServer().getPlayer(hbPlayer.getLastDamager()).getName()
 										+ lives);
 						StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-						lastDamagerGPlayer.creditCoins(3, "Un joueur poussé !");
+						lastDamagerGPlayer.creditCoins(COINS_PER_KILL, "Un joueur poussé !");
 					}
 					break;
 
 				case QUIT:
 					if(!player.getUniqueId().equals(lastDamagerPlayer.getUniqueId())) {
 						StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-						lastDamagerGPlayer.creditCoins(3, "Un froussard !");
+						lastDamagerGPlayer.creditCoins(COINS_PER_KILL, "Un froussard !");
 					}
 					p.getServer().broadcastMessage(
 							HeroBattle.GAME_TAG + ChatColor.DARK_RED + player.getName() + ChatColor.YELLOW
@@ -465,7 +475,7 @@ public class Game implements GameArena {
 										+ lives);
 
 						StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-						lastDamagerGPlayer.creditCoins(3, "Un joueur K.O. !");
+						lastDamagerGPlayer.creditCoins(COINS_PER_KILL, "Un joueur K.O. !");
 					}
 
 					break;
@@ -479,7 +489,7 @@ public class Game implements GameArena {
 									+ lives);
 
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-					lastDamagerGPlayer.creditCoins(3, "Un joueur poussé à l'eau !");
+					lastDamagerGPlayer.creditCoins(COINS_PER_KILL, "Un joueur poussé à l'eau !");
 
 					break;
 
@@ -492,13 +502,51 @@ public class Game implements GameArena {
 									+ lives);
 
 					StatsApi.increaseStat(hbPlayer.getLastDamager(), p.getName(), "kills", 1);
-					lastDamagerGPlayer.creditCoins(3, "Un joueur poussé dans la lave !");
+					lastDamagerGPlayer.creditCoins(COINS_PER_KILL, "Un joueur poussé dans la lave !");
 
 					break;
 			}
 
 			p.getGamePlayer(hbPlayer.getLastDamager()).addPlayersKilled();
 		}
+
+
+		// Assist (only for real deaths)
+		if(lastDamagerGPlayer != null && lastDamagerGPlayer.isPlaying())
+		{
+			if(death != DeathType.QUIT)
+			{
+				// An assist is agreed only if:
+				//  - the player made more than 38% of the whole damages made to the player, or
+				//  - the player made at least 20 damages in the last ten seconds.
+				final Double  ASSIST_WHOLE_DAMAGES_PERCENTAGE_MIN = 0.38;
+				final Integer ASSIST_RECENT_DAMAGES_MIN           = 20;
+				final Long    ASSIST_RECENT_DAMAGES_TIME          = 10000l; // 10 seconds
+
+				Integer minimalDamages = ((int) (hbPlayer.getPercentage() * ASSIST_WHOLE_DAMAGES_PERCENTAGE_MIN));
+
+				for(Map.Entry<UUID, Assist> assistEntry : hbPlayer.getAssists().entrySet())
+				{
+					Assist assist = assistEntry.getValue();
+					UUID   uuid   = assistEntry.getKey();
+
+					if(uuid.equals(hbPlayer.getLastDamager())) continue;
+
+					if(assist.getTotalAssist() >= minimalDamages || assist.getRecentAssists(ASSIST_RECENT_DAMAGES_TIME) >= ASSIST_RECENT_DAMAGES_MIN)
+					{
+						StatsApi.increaseStat(uuid, p.getName(), "assists", 1);
+
+						GamePlayer assistGPlayer = p.getGamePlayer(uuid);
+						if(assistGPlayer != null)
+						{
+							assistGPlayer.creditCoins(COINS_PER_ASSIST, "Assistance contre " + hbPlayer.getPlayerName() + " !");
+						}
+					}
+				}
+			}
+		}
+
+		hbPlayer.resetAssists();
 
 
 		// Effects on the player
@@ -566,12 +614,12 @@ public class Game implements GameArena {
 
 		// Respawn
 		if (hbPlayer.getLives() >= 1) {
-			hbPlayer.setRespawning(true);
+			hbPlayer.setRespawning();
 
 			p.getServer().getScheduler().runTaskLater(p, new Runnable() {
 				@Override
 				public void run() {
-					hbPlayer.setRespawning(false);
+					hbPlayer.setRespawning();
 				}
 			}, 40L);
 
@@ -593,7 +641,6 @@ public class Game implements GameArena {
 		}
 
 		else {
-			player.setFlySpeed(0.1F);
 			enableSpectatorMode(player);
 
 			s = p.getPlayingPlayerCount() <= 1 ? "" : "s";
@@ -693,12 +740,18 @@ public class Game implements GameArena {
 
 
 					String winnerDisplayName = Utils.getPlayerColor(winner);
-					if(winner.getUniqueId().equals(UUID.fromString("0dd34bda-c13b-473b-a887-368027ca05ca"))) {
+					if(winner.getUniqueId().equals(UUID.fromString("0dd34bda-c13b-473b-a887-368027ca05ca"))) { // Jenjeur
 						winnerDisplayName += "\u2708  " + winner.getName() + "  \u2708";
 					}
-					else if(winner.getUniqueId().equals(UUID.fromString("7caf2af6-b149-47eb-8b76-7f58c07d8f5a"))) {
+					else if(winner.getUniqueId().equals(UUID.fromString("7caf2af6-b149-47eb-8b76-7f58c07d8f5a"))) { // Vayan91
 						winnerDisplayName += ChatColor.GOLD + "\u272F  " + Utils.getPlayerColor(winner) + winner.getName() + ChatColor.GOLD + "  \u272F";
 					}
+                    else if(winner.getUniqueId().equals(UUID.fromString("da04cd54-c6c7-4672-97c5-85663f5bccf6"))) { // AmauryPi
+                        winnerDisplayName += winner.getName() + ChatColor.GRAY + " (nofake)";
+                    }
+                    else if(winner.getUniqueId().equals(UUID.fromString("95dec9f8-ed6d-4aa1-b787-e776adabcec6"))) { // RyuPichu
+                        winnerDisplayName += ChatColor.GOLD + "\u26A1 " + ChatColor.YELLOW + winner.getName() + ChatColor.GOLD + " \u26A1";
+                    }
 					else {
 						winnerDisplayName += winner.getName();
 					}
@@ -711,8 +764,8 @@ public class Game implements GameArena {
 			}, 30l);
 
 
-			gWinner.creditStars(1, "Victoire !");
-			gWinner.creditCoins(16, "Victoire !");
+			gWinner.creditStars(STARS_PER_VICTORY, "Victoire !");
+			gWinner.creditCoins(COINS_PER_VICTORY, "Victoire !");
 			StatsApi.increaseStat(winner, p.getName(), "wins", 1);
 		}
 
@@ -731,29 +784,47 @@ public class Game implements GameArena {
 					Long prcA = p.getGamePlayer(a).getPercentageInflicted();
 					Long prcB = p.getGamePlayer(b).getPercentageInflicted();
 
-					if (prcA >= prcB) return -1;
-					else return 1;
+                    Integer killsA = p.getGamePlayer(a).getPlayersKilled();
+                    Integer killsB = p.getGamePlayer(b).getPlayersKilled();
+
+					if      (prcA > prcB) return -1;
+                    else if (prcA < prcB)  return  1;
+
+                    else {
+                        if (killsA >= killsB) return -1;
+                        else return 1;
+                    }
 
 				} catch (NullPointerException e) {
 					return 0;
 				}
 			}
 		});
+
 		final Map<UUID, Integer> kills = new TreeMap<>(new Comparator<UUID>() {
 			@Override
 			public int compare(UUID a, UUID b) {
 				try {
-					Integer killsA = p.getGamePlayer(a).getPlayersKilled();
-					Integer killsB = p.getGamePlayer(b).getPlayersKilled();
+                    Long prcA = p.getGamePlayer(a).getPercentageInflicted();
+                    Long prcB = p.getGamePlayer(b).getPercentageInflicted();
 
-					if (killsA >= killsB) return -1;
-					else return 1;
+                    Integer killsA = p.getGamePlayer(a).getPlayersKilled();
+                    Integer killsB = p.getGamePlayer(b).getPlayersKilled();
+
+					if      (killsA > killsB) return -1;
+                    else if (killsA < killsB)  return  1;
+
+                    else {
+                        if (prcA >= prcB) return -1;
+                        else return 1;
+                    }
 
 				} catch (NullPointerException e) {
 					return 0;
 				}
 			}
 		});
+
 		int i = 1;
 		for (GamePlayer player : p.getGamePlayers().values()) {
 			percentagesInflicted.put(player.getPlayerUniqueID(), player.getPercentageInflicted());
@@ -807,7 +878,7 @@ public class Game implements GameArena {
 
 					GamePlayer gPlayer = p.getGamePlayer(entry.getKey());
 					if(gPlayer != null) {
-						gPlayer.creditCoins(i == 0 ? 10 : i == 1 ? 6 : 4, "Rang " + (i + 1) + " au classement des kills !");
+						gPlayer.creditCoins(i == 0 ? COINS_IF_FIRST_RANKED : i == 1 ? COINS_IF_SECOND_RANKED : COINS_IF_THIRD_RANKED, "Rang " + (i + 1) + " au classement des kills !");
 					}
 
 					i++;
@@ -822,7 +893,7 @@ public class Game implements GameArena {
 
 					GamePlayer gPlayer = p.getGamePlayer(entry.getKey());
 					if(gPlayer != null) {
-						gPlayer.creditCoins(i == 0 ? 10 : i == 1 ? 6 : 4, "Rang " + (i + 1) + " au classement des dégâts infligés !");
+						gPlayer.creditCoins(i == 0 ? COINS_IF_FIRST_RANKED : i == 1 ? COINS_IF_SECOND_RANKED : COINS_IF_THIRD_RANKED, "Rang " + (i + 1) + " au classement des dégâts infligés !");
 					}
 
 					i++;
@@ -894,7 +965,7 @@ public class Game implements GameArena {
 				@Override
 				public void run() {
 					try {
-						URL u = new URL("http://lnfinity.net/tasks/herobattle-stats?v=1&s=" + URLEncoder.encode(serverName, "UTF-8") + "&m=" + URLEncoder.encode(mapName, "UTF-8") + "&p=" + playersCount + "&d=" + URLEncoder.encode(duration, "UTF-8") + "&w=" + URLEncoder.encode(winnerName, "UTF-8") + "&we=" + winnerELO + "&wc=" + URLEncoder.encode(winnerClass, "UTF-8"));
+						URL u = new URL("http://lnfinity.net/tasks/herobattle-stats.php?v=1&s=" + URLEncoder.encode(serverName, "UTF-8") + "&m=" + URLEncoder.encode(mapName, "UTF-8") + "&p=" + playersCount + "&d=" + URLEncoder.encode(duration, "UTF-8") + "&w=" + URLEncoder.encode(winnerName, "UTF-8") + "&we=" + winnerELO + "&wc=" + URLEncoder.encode(winnerClass, "UTF-8"));
 						u.openStream();
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -1094,7 +1165,7 @@ public class Game implements GameArena {
 		if(gamePlayer == null || !gamePlayer.isPlaying()) return;
 
 
-		if (gamePlayer.isInvisible()) {
+		if (gamePlayer.getRemainingInvisibility() != 0) {
 			player.getInventory().setArmorContents(null);
 		}
 
