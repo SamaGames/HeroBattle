@@ -6,7 +6,7 @@ import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
-import net.zyuiop.MasterBundle.StarsManager;
+import net.zyuiop.MasterBundle.*;
 import net.zyuiop.coinsManager.CoinsManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -558,6 +558,15 @@ public class GamePlayer {
 				coinsGained += CoinsManager.syncCreditJoueur(playerID, realAmount, true, true, why);
 			}
 		});
+
+		if(!MasterBundle.isDbEnabled)
+		{
+			Player player = Bukkit.getPlayer(getPlayerUniqueID());
+			if(player != null)
+			{
+				player.sendMessage(ChatColor.AQUA + "PIÈCES PIÈCES PIÈCES " + ChatColor.GOLD + "+" + amount + ChatColor.AQUA + " (" + why + ")");
+			}
+		}
 	}
 
 	public void creditStars(int amount, String why) {
@@ -565,6 +574,15 @@ public class GamePlayer {
 		StarsManager.creditJoueur(playerID, amount, why);
 
 		starsGained += amount;
+
+		if(!MasterBundle.isDbEnabled)
+		{
+			Player player = Bukkit.getPlayer(getPlayerUniqueID());
+			if(player != null)
+			{
+				player.sendMessage(ChatColor.AQUA + "OWI DES ÉTOILES " + ChatColor.GOLD + "+" + amount + ChatColor.AQUA + " (" + why + ")");
+			}
+		}
 	}
 
 	public int getStarsGained() {
