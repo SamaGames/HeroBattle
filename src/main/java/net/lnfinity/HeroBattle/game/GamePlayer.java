@@ -4,10 +4,12 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.utils.ActionBar;
+import net.lnfinity.HeroBattle.utils.DamageTag;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
 import net.zyuiop.MasterBundle.*;
 import net.zyuiop.coinsManager.CoinsManager;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -197,13 +199,15 @@ public class GamePlayer {
 
 	public void setPercentage(int percentage, GamePlayer aggressor) {
 		if(!isPlaying() || getPlayerClass() == null) return;
-
+		
 		int oldPercentage = this.percentage;
 
 		if(percentage < 0) percentage = 0;
 
-		final int percentageInflicted = percentage - oldPercentage;
+		final int percentageInflicted = (percentage - oldPercentage) * HeroBattle.getInstance().getGame().getDamagesMultiplicator();
 
+		new DamageTag(percentageInflicted, Bukkit.getPlayer(this.playerID).getLocation()).play();
+		
 		if(getRemainingReducingIncomingDamages() != 0 && percentage >= oldPercentage) {
 			percentage -= (percentageInflicted) / 2;
 		}
@@ -211,7 +215,7 @@ public class GamePlayer {
 		this.percentage = percentage;
 
 		if(aggressor != null) {
-			aggressor.addPercentageInflicted(percentageInflicted * HeroBattle.getInstance().getGame().getDamagesMultiplicator());
+			aggressor.addPercentageInflicted(percentageInflicted);
 
 
 			Assist assist = assists.get(aggressor.getPlayerUniqueID());
@@ -682,5 +686,9 @@ public class GamePlayer {
 		else {
 			ActionBar.sendPermanentMessage(player, StringUtils.join(currentStatus, ChatColor.DARK_GRAY + " - " + ChatColor.RESET));
 		}
+	}
+	
+	public void resetPercentage() {
+		this.percentage = 0;
 	}
 }

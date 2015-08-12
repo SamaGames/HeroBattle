@@ -298,7 +298,7 @@ public class Game implements GameArena {
 	public void spawnPlayer(Player player) {
 		GamePlayer hbPlayer = p.getGamePlayer(player);
 
-		hbPlayer.setPercentage(0, null);
+		hbPlayer.resetPercentage();
 		player.setExp(0);
 		player.setLevel(0);
 		player.setTotalExperience(0);
