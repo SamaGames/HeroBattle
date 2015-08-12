@@ -48,7 +48,7 @@ public class Game implements GameArena {
 	private ArrayList<Location> teleportationPortalsDestinations = new ArrayList<Location>();
 
 
-	private final Integer COINS_PER_KILL = 4;
+	private final Integer COINS_PER_KILL = 5;
 	private final Integer COINS_PER_ASSIST = 3;
 
 	private final Integer COINS_PER_VICTORY = 16;
@@ -529,6 +529,8 @@ public class Game implements GameArena {
 				{
 					Assist assist = assistEntry.getValue();
 					UUID   uuid   = assistEntry.getKey();
+
+					if(uuid.equals(hbPlayer.getLastDamager())) continue;
 
 					if(assist.getTotalAssist() >= minimalDamages || assist.getRecentAssists(ASSIST_RECENT_DAMAGES_TIME) >= ASSIST_RECENT_DAMAGES_MIN)
 					{
