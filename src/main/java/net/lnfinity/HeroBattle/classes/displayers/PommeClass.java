@@ -53,7 +53,7 @@ public class PommeClass extends PlayerClass
 	@Override
 	public String getName()
 	{
-		return "POOOME";
+		return "POOOMME";
 	}
 
 	@Override

@@ -21,16 +21,15 @@ package net.lnfinity.HeroBattle.tools.displayers;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
-import net.lnfinity.HeroBattle.utils.ItemCooldown;
-import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import net.lnfinity.HeroBattle.utils.*;
+import net.samagames.utils.*;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.block.*;
+import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionType;
+import org.bukkit.inventory.meta.*;
+import org.bukkit.potion.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -42,6 +41,8 @@ public class PommEhxploseTool extends PlayerTool
 
 	private Integer DAMAGES_MIN = 25;
 	private Integer DAMAGES_MAX = 35;
+
+	private Double BLINDNESS_PROBABILITY = 0.06;
 
 	private Integer COOLDOWN = 15;
 
@@ -60,7 +61,7 @@ public class PommEhxploseTool extends PlayerTool
 	@Override
 	public String getName()
 	{
-		return "POMMEHXPLOSE";
+		return ChatColor.RED + "" + ChatColor.BOLD + "POMMEHXPLOSE";
 	}
 
 	@Override
@@ -96,7 +97,7 @@ public class PommEhxploseTool extends PlayerTool
 		if(gPlayer == null || !gPlayer.isPlaying()) return;
 
 		final Item apple = world.dropItem(player.getLocation().add(0, 1, 0), new ItemStack(Material.APPLE));
-		apple.setVelocity(player.getLocation().getDirection().normalize().multiply(3));
+		apple.setVelocity(player.getLocation().getDirection().normalize().multiply(2));
 		apple.setPickupDelay(32767); // Cannot be picked up
 
 
@@ -107,24 +108,32 @@ public class PommEhxploseTool extends PlayerTool
 			@Override
 			public void run()
 			{
-				if(apple.isOnGround() || delay <= 0)
+				if(apple.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR || delay <= 0)
 				{
 					Location boomLocation = apple.getLocation();
 					apple.remove();
 
 
 					// Explosions
-					Set<Location> explosions = new HashSet<>();
-					explosions.add(boomLocation);
-					explosions.add(boomLocation.add(1,  0,  0));
-					explosions.add(boomLocation.add(0,  0,  1));
-					explosions.add(boomLocation.add(-1, 0,  0));
-					explosions.add(boomLocation.add(0,  0, -1));
+					final Location fwLocation = net.lnfinity.HeroBattle.utils.Utils.blockLocation(boomLocation).add(0, 1, 0);
 
-					for(Location explosion : explosions)
+					final Firework fw = boomLocation.getWorld().spawn(fwLocation, Firework.class);
+					FireworkMeta fwm = fw.getFireworkMeta();
+					FireworkEffect effect = FireworkEffect.builder()
+							.withColor(Color.RED).with(FireworkEffect.Type.BALL_LARGE)
+							.withFade(Color.RED.mixColors(Color.YELLOW)).build();
+					fwm.addEffects(effect);
+					fwm.setPower(0);
+					fw.setFireworkMeta(fwm);
+
+					Bukkit.getScheduler().runTaskLater(p, new Runnable()
 					{
-						world.playEffect(explosion, Effect.POTION_BREAK, new Potion(PotionType.STRENGTH));
-					}
+						@Override
+						public void run()
+						{
+							fw.detonate();
+						}
+					}, 1l);
 
 
 					// Sounds
@@ -145,13 +154,18 @@ public class PommEhxploseTool extends PlayerTool
 							Double distanceSquared = victim.getLocation().distanceSquared(player.getLocation());
 
 							// Damages
-							Integer damages = ((int) ((random.nextInt(DAMAGES_MAX - DAMAGES_MIN) + DAMAGES_MIN) * Math.max(0.5, 1 - (distanceSquared / 50))));
+							Integer damages = ((int) ((random.nextInt(DAMAGES_MAX - DAMAGES_MIN) + DAMAGES_MIN) * Math.max(0.7, 1 - (distanceSquared / 50))));
 							gVictim.setPercentage(gVictim.getPercentage() + damages, gPlayer);
 
 							// Motion
-							if(distanceSquared < 35)
+							if(distanceSquared < 68 && !gVictim.getPlayerUniqueID().equals(player.getUniqueId()))
 							{
-								player.setVelocity(player.getLocation().toVector().subtract(boomLocation.toVector()).normalize().multiply(distanceSquared / 100));
+								player.setVelocity(player.getLocation().toVector().subtract(boomLocation.toVector()).normalize().multiply(distanceSquared / 38));
+							}
+
+							// Blindness (apple juice c:)
+							if(random.nextDouble() <= BLINDNESS_PROBABILITY) {
+								victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3*20, 0, true, false));
 							}
 
 							// Title
@@ -163,9 +177,9 @@ public class PommEhxploseTool extends PlayerTool
 					cancel();
 				}
 
-				delay -= 5;
+				delay -= 2;
 			}
-		}.runTaskTimer(HeroBattle.getInstance(), 10, 5);
+		}.runTaskTimer(HeroBattle.getInstance(), 10, 2);
 
 
 		new ItemCooldown(HeroBattle.getInstance(), player, this, COOLDOWN);

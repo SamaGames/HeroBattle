@@ -59,5 +59,4 @@ public class SwordVariant10Tool extends SwordTool implements Weapon {
 			victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3*20, 0, true, false));
 		}
 	}
-
 }
