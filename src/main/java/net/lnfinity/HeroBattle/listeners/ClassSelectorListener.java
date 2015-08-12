@@ -133,41 +133,42 @@ public class ClassSelectorListener implements Listener {
 	public void createSelector(Player player) {
 		GamePlayer gamePlayer = p.getGamePlayer(player);
 		List<PlayerClass> classes = p.getClassManager().getAvailableClasses();
-		Integer inventorySize = (int) (Math.ceil(classes.size() / 9d) * 9) + 27;
+		Integer inventorySize = (int) (3 * 9 + 9 * Math.ceil((double) classes.size() / 7));
 
 		Inventory inv = p.getServer().createInventory(player, inventorySize, TITLE_CLASS_SELECTOR);
-
-		int classesCount = classes.size() + COMING_SOON_CLASSES_COUNT, shift = calculateShiftNeededToCenter(classesCount);
 
 		// Random
 
 		inv.setItem(4, createItemRandom(p.getGamePlayer(player).getPlayerClass() == null));
 
 		// Available classes
-		Integer i = 9;
+		Integer i = 10;
+		
 		for (PlayerClass theClass : classes) {
 			if (p.getClassManager().playerHasClass(gamePlayer, theClass.getType())) {
 				theClass = p.getClassManager().getClassFromName(gamePlayer, theClass.getName());
-				inv.setItem(
-						isOnLastLine(i - 9, classesCount) ? shift + i : i,
-						createItem(gamePlayer, theClass, p.getGamePlayer(player).getPlayerClass() != null
+				inv.setItem(i, createItem(gamePlayer, theClass, p.getGamePlayer(player).getPlayerClass() != null
 								&& p.getGamePlayer(player).getPlayerClass().equals(theClass)));
 			} else {
-				inv.setItem(
-						isOnLastLine(i - 9, classesCount) ? shift + i : i,
-						createItem(gamePlayer, theClass, p.getGamePlayer(player).getPlayerClass() != null
+				inv.setItem(i, createItem(gamePlayer, theClass, p.getGamePlayer(player).getPlayerClass() != null
 								&& p.getGamePlayer(player).getPlayerClass().equals(theClass), false));
 			}
 
-			i++;
+			if(i % 9 == 7) {
+				i += 3;
+			} else {
+				i++;
+			}
 		}
 
+		// Don't need that anymore (never used :c)
+		
 		// Placeholder for the other cases
-		Integer notYetFinalIndex = i + COMING_SOON_CLASSES_COUNT;
+		/* Integer notYetFinalIndex = i + COMING_SOON_CLASSES_COUNT;
 		for (; i < notYetFinalIndex; i++) {
 			inv.setItem(isOnLastLine(i - 9, classesCount) ? shift + i : i,
 					createItem(gamePlayer, new NotYetAvailableClass(p), false, false));
-		}
+		} */
 
 		inv.setItem(inv.getSize() - 1, createExitItem());
 
