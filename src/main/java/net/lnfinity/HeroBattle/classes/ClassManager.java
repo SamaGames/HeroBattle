@@ -36,6 +36,7 @@ public class ClassManager {
 		registerClass(new GuerrierClass(p));
 		registerClass(new ArcherClass(p));
 		registerClass(new MageClass(p));
+		registerClass(new MinerClass(p));
 		registerClass(new DruideClass(p));
 		registerClass(new CryogenieClass(p));
 		registerClass(new PyrobarbareClass(p));
@@ -45,6 +46,7 @@ public class ClassManager {
 		totalClasses.add(PlayerClassType.ARCHER);
 		totalClasses.add(PlayerClassType.MAGE);
 		totalClasses.add(PlayerClassType.DRUIDE);
+		totalClasses.add(PlayerClassType.MINEUR);
 		totalClasses.add(PlayerClassType.CRYOGENIE);
 		totalClasses.add(PlayerClassType.PYROBARBARE);
 
@@ -117,7 +119,7 @@ public class ClassManager {
 				public void run() {
 					if (MasterBundle.isDbEnabled) {
 						String data = FastJedis.get(prefix + className + has + sufix);
-						if((data != null && data.equals("1")) || className.equals("brute") || className.equals("guerrier") || className.equals("archer") || className.equals("mage")) {
+						if((data != null && data.equals("1")) || className.equals("brute") || className.equals("guerrier") || className.equals("archer") || className.equals("mage") || className.equals("mineur")) {
 							try {
 							String A = FastJedis.get(prefix + className + cooldown + sufix + currentStr);
 							if(A == null || A.equals("")) {
@@ -144,6 +146,7 @@ public class ClassManager {
 					gamePlayer.addAvaibleClass(new GuerrierClass(p, 0, 0, 0));
 					gamePlayer.addAvaibleClass(new ArcherClass(p, 0, 0, 0));
 					gamePlayer.addAvaibleClass(new MageClass(p, 0, 0, 0));
+					gamePlayer.addAvaibleClass(new MinerClass(p, 0, 0, 0));
 					}
 				}
 			});
@@ -160,11 +163,13 @@ public class ClassManager {
 			return new ArcherClass(p, arg1, arg2, arg3);
 		case MAGE:
 			return new MageClass(p, arg1, arg2, arg3);
+		case MINEUR:
+			return new MinerClass(p, arg1, arg2, arg3);
 		case DRUIDE:
 			return new DruideClass(p, arg1, arg2, arg3);
-		case CRYOGENIE: // Wut wut wut
+		case CRYOGENIE: // /!\ Inverted with token `pyrobarbare` /!\
 			return new PyrobarbareClass(p, arg1, arg2, arg3);
-		case PYROBARBARE:
+		case PYROBARBARE: // /!\ Inverted with token `cryogenie` /!\
 			return new CryogenieClass(p, arg1, arg2, arg3);
 		default:
 			return new BruteClass(p, arg1, arg2, arg3);

@@ -2,16 +2,22 @@ package net.lnfinity.HeroBattle.classes;
 
 public enum PlayerClassType {
 
+	// ** Free Classes **
 	BRUTE("brute"),
 	GUERRIER("guerrier"),
 	ARCHER("archer"),
 	MAGE("mage"),
+	MINEUR("mineur"),
+	
+	// ** Payable Classes **
 	DRUIDE("druide"),
 	CRYOGENIE("cryogenie"),
 	PYROBARBARE("pyrobarbare"),
 	
+	// ** Hidden Classes **
 	MAITE("maite"),
 
+	// ** Very Hidden / Reserved Classes **
 	DEWOITINE("Dewoitine"),
 	DEWOITINE_D550("DewoitineD"),
 	POMME("Pomme");
