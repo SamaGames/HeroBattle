@@ -1,8 +1,7 @@
 package net.lnfinity.HeroBattle.classes.displayers;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.PlayerClass;
-import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.classes.*;
 import net.lnfinity.HeroBattle.tools.displayers.TripleJumpTool;
 import net.lnfinity.HeroBattle.tools.displayers.Cannon20mmTool;
 import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant9Tool;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class DewoitineClass extends PlayerClass {
+public class DewoitineClass extends EasterEggPlayerClass {
 
 	public DewoitineClass(HeroBattle plugin) {
 		super(plugin, 0, 0, 0);

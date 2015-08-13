@@ -19,8 +19,7 @@
 package net.lnfinity.HeroBattle.classes.displayers;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.PlayerClass;
-import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.classes.*;
 import net.lnfinity.HeroBattle.tools.displayers.PommEhxploseTool;
 import net.lnfinity.HeroBattle.tools.displayers.PommeBoostTool;
 import net.lnfinity.HeroBattle.tools.displayers.SaintePommeTool;
@@ -32,7 +31,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class PommeClass extends PlayerClass
+public class PommeClass extends EasterEggPlayerClass
 {
 
 	public PommeClass()
