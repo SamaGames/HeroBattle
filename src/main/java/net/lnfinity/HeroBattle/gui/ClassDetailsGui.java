@@ -84,7 +84,7 @@ public class ClassDetailsGui extends ActionGui
 			throw new IllegalStateException("Cannot open the selector GUI of a non-player! - UUID: " + getPlayer().getUniqueId());
 
 
-		if(displayedClass instanceof EasterEggPlayerClass)
+		if(displayedClass instanceof EasterEggClass)
 			canBeUsed = false;
 		else
 			canBeUsed = HeroBattle.getInstance().getClassManager().playerHasClass(gPlayer, displayedClass.getType());
@@ -149,7 +149,7 @@ public class ClassDetailsGui extends ActionGui
 	{
 		Material button;
 
-		if(displayedClass instanceof EasterEggPlayerClass)
+		if(displayedClass instanceof EasterEggClass)
 		{
 			button = Material.RECORD_11;
 		}
@@ -185,7 +185,7 @@ public class ClassDetailsGui extends ActionGui
 			lore.add(ChatColor.GRAY + "Vous ne pouvez pas sélectionner");
 			lore.add(ChatColor.GRAY + "la classe " + displayedClass.getName() + ".");
 
-			if(displayedClass instanceof EasterEggPlayerClass)
+			if(displayedClass instanceof EasterEggClass)
 			{
 				lore.add("");
 				lore.add(ChatColor.WHITE + "Envie d'easter-eggs ?");

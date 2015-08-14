@@ -12,7 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class DewoitineClass extends EasterEggPlayerClass {
+public class DewoitineClass extends PlayerClass implements EasterEggClass
+{
 
 	public DewoitineClass(HeroBattle plugin) {
 		super(plugin, 0, 0, 0);

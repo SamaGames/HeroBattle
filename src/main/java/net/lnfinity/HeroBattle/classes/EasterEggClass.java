@@ -17,17 +17,10 @@
 
 package net.lnfinity.HeroBattle.classes;
 
-import net.lnfinity.HeroBattle.*;
-
-
 /**
- * A class used to differentiate the easter-egg classes.
+ * Marks a class as an easter-egg, not selectable in the preview screens.
  */
-public abstract class EasterEggPlayerClass extends PlayerClass
+public interface EasterEggClass
 {
 
-	public EasterEggPlayerClass(HeroBattle plugin, int cooldown, int power, int tool)
-	{
-		super(plugin, cooldown, power, tool);
-	}
 }

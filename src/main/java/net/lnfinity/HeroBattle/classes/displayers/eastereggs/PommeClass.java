@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class PommeClass extends EasterEggPlayerClass
+public class PommeClass extends PlayerClass implements EasterEggClass
 {
 
 	public PommeClass()
