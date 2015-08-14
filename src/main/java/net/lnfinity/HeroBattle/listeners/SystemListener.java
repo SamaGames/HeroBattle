@@ -192,7 +192,7 @@ public class SystemListener implements Listener {
 		// Pomme Easter-Egg
 		if(HeroBattle.getInstance().getGame().getStatus() == Status.Available || HeroBattle.getInstance().getGame().getStatus() == Status.PreStarting || HeroBattle.getInstance().getGame().getStatus() == Status.Starting)
 		{
-			if(ClassSelectorListener.getPommeUnlocked().contains(e.getPlayer().getUniqueId()))
+			if(HeroBattle.getInstance().getClassManager().getPommeUnlocks().contains(e.getPlayer().getUniqueId()))
 			{
 				if(e.getMessage().equalsIgnoreCase("MEH"))
 				{

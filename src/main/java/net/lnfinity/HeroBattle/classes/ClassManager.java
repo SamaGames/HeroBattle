@@ -3,20 +3,14 @@ package net.lnfinity.HeroBattle.classes;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.displayers.*;
 import net.lnfinity.HeroBattle.game.GamePlayer;
+import net.md_5.bungee.api.*;
 import net.zyuiop.MasterBundle.FastJedis;
 import net.zyuiop.MasterBundle.MasterBundle;
 
 import org.bukkit.entity.Player;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import redis.clients.jedis.ShardedJedis;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class ClassManager {
 
@@ -24,6 +18,9 @@ public class ClassManager {
 	private List<PlayerClassType> totalClasses = new ArrayList<PlayerClassType>();
 
 	private List<PlayerClass> availableClasses = new ArrayList<PlayerClass>();
+
+	private Set<UUID> dewoitineUnlocks = new HashSet<>();
+	private Set<UUID> pommeUnlocks = new HashSet<>();
 
 	public ClassManager(HeroBattle plugin) {
 
@@ -86,12 +83,12 @@ public class ClassManager {
 	
 	public PlayerClass getClassFromName(GamePlayer gamePlayer, String name) {
 		for (PlayerClass theClass : gamePlayer.getAvaibleClasses()) {
-			if (theClass != null && theClass.getName().equals(name)) {
+			if (theClass != null && theClass.getName().equalsIgnoreCase(name)) {
 				return theClass;
 			}
 		}
 		for (PlayerClass theClass : this.availableClasses) {
-			if (theClass != null && theClass.getName().equals(name)) {
+			if (theClass != null && theClass.getName().equalsIgnoreCase(name)) {
 				return theClass;
 			}
 		}
@@ -188,5 +185,68 @@ public class ClassManager {
 			}
 		}
 		return false;
+	}
+
+	public void setPlayerClass(Player player, PlayerClass theClass, boolean notify)
+	{
+		if(player == null) return;
+
+		p.getGamePlayer(player).setPlayerClass(theClass);
+
+
+		if(notify)
+		{
+			if (theClass != null)
+			{
+				player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
+						+ ChatColor.DARK_GREEN + theClass.getName() + ChatColor.GREEN + " !");
+			}
+			else
+			{
+				player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi une classe "
+						+ ChatColor.DARK_GREEN + "aléatoire" + ChatColor.GREEN + " !");
+			}
+		}
+	}
+
+	public PlayerClass getAnyClassByFriendlyName(String friendlyName, GamePlayer target)
+	{
+		switch(friendlyName.toLowerCase()) {
+			case "maite":
+			case "maïte":
+			case "maité":
+			case "maïté":
+				return new MaiteClass(p);
+
+			case "dewoitine":
+				return new DewoitineClass(p, 0, 0, 0);
+
+			case "dewoitined550":
+				return new DewoitineD550Class(p, 0, 0, 0);
+
+			case "pooomme":
+				return new PommeClass();
+
+			default:
+				PlayerClass playerClass = p.getClassManager().getClassFromName(target, friendlyName);
+
+				if(playerClass != null)
+				{
+					return playerClass;
+				}
+
+				return null;
+		}
+	}
+
+
+	public Set<UUID> getDewoitineUnlocks()
+	{
+		return dewoitineUnlocks;
+	}
+
+	public Set<UUID> getPommeUnlocks()
+	{
+		return pommeUnlocks;
 	}
 }
