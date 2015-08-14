@@ -14,15 +14,15 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.Weapon;
 import net.md_5.bungee.api.ChatColor;
 
-public class SwordVariant11Tool extends SwordTool implements Weapon {
+public class DrillSwordTool extends SwordTool implements Weapon {
 
-	public SwordVariant11Tool(HeroBattle plugin) {
+	public DrillSwordTool(HeroBattle plugin) {
 		super(plugin);
 	}
 
 	@Override
 	public String getToolID() {
-		return "tool.sword.variant11";
+		return "tool.sword.drill";
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package net.lnfinity.HeroBattle.tools.displayers.weapons;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.Weapon;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.utils.GlowEffect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -14,27 +13,26 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Arrays;
 import java.util.List;
 
-public class SwordVariant2Tool extends SwordTool implements Weapon {
+public class ColdScepterSwordTool extends SwordTool implements Weapon {
 
-	public SwordVariant2Tool(HeroBattle plugin) {
+	public ColdScepterSwordTool(HeroBattle plugin) {
 		super(plugin);
 	}
 	
 	@Override
 	public String getToolID() {
-		return "tool.sword.variant2";
+		return "tool.sword.coldScepter";
 	}
 
 	@Override
 	public String getName() {
-		return ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Baguette Magique";
+		return ChatColor.WHITE + "" + ChatColor.BOLD + "Sceptre du froid";
 	}
 
 	@Override
 	public ItemStack getItem() {
-		ItemStack item = new ItemStack(Material.BLAZE_ROD, 1);
+		ItemStack item = new ItemStack(Material.IRON_HOE, 1);
 
-		GlowEffect.addGlow(item);
 		ItemMeta meta = item.getItemMeta();
 		meta.spigot().setUnbreakable(true);
 		item.setItemMeta(meta);
@@ -49,17 +47,15 @@ public class SwordVariant2Tool extends SwordTool implements Weapon {
 				ChatColor.GRAY + "Cliquez droit pour faire un double saut.",
 				"",
 				ChatColor.AQUA + "Effet spécial:",
-				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + ((int) 5 + upgrade) + ChatColor.GRAY + "% de chance gagner un effet", ChatColor.GRAY + "de vitesse de " + ChatColor.GOLD + "2 " + ChatColor.GRAY + "secondes à chaque coup porté"
+				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + (10 + upgrade * 2) + ChatColor.GRAY + "% de chance de geler votre cible", ChatColor.GRAY + "pendant " + ChatColor.GOLD + "2 " + ChatColor.GRAY + "secondes à chaque coup porté"
 		);
 	}
 
 	@Override
 	public void onPlayerHit(Player sender, Player victim) {
-		double n = 0.05 + upgrade * 0.01;
+		double n = 0.1 + upgrade * 0.02;
 		if(random.nextDouble() <= n) {
-			sender.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 2 * 20, 0));
+			victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2 * 20, 1));
 		}
-		
 	}
-
 }

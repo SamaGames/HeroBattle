@@ -13,15 +13,15 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Arrays;
 import java.util.List;
 
-public class SwordVariant10Tool extends SwordTool implements Weapon {
+public class AppleWhipSwordTool extends WroughtIronSwordTool implements Weapon {
 
-	public SwordVariant10Tool(HeroBattle plugin) {
+	public AppleWhipSwordTool(HeroBattle plugin) {
 		super(plugin);
 	}
 
 	@Override
 	public String getToolID() {
-		return "tool.sword.variant10";
+		return "tool.sword.appleWhip";
 	}
 
 	@Override

@@ -6,25 +6,26 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class SwordVariant8Tool extends SwordTool {
 
-	public SwordVariant8Tool(HeroBattle plugin) {
+public class Mac34SwordTool extends SwordTool
+{
+	public Mac34SwordTool(HeroBattle plugin) {
 		super(plugin);
 	}
 
 	@Override
 	public String getToolID() {
-		return "tool.sword.variant8";
+		return "tool.sword.mac34";
 	}
 
 	@Override
 	public String getName() {
-		return ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Maryse";
+		return ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "MAC-34";
 	}
 
 	@Override
 	public ItemStack getItem() {
-		ItemStack item = new ItemStack(Material.WOOD_SPADE, 1);
+		ItemStack item = new ItemStack(Material.DIAMOND_HOE, 1);
 
 		ItemMeta meta = item.getItemMeta();
 		meta.spigot().setUnbreakable(true);

@@ -4,14 +4,14 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClassType;
 import net.lnfinity.HeroBattle.tools.displayers.Cannon20mmTool;
 import net.lnfinity.HeroBattle.tools.displayers.TripleJumpTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant9Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.Mac34SwordTool;
 
 
 public class DewoitineD550Class extends DewoitineClass {
 	public DewoitineD550Class(HeroBattle plugin, int cooldown, int power, int tool) {
 		super(plugin);
 
-		addTool(new SwordVariant9Tool(plugin));
+		addTool(new Mac34SwordTool(plugin));
 		addTool(new Cannon20mmTool(plugin, 2, 1));
 		addTool(new TripleJumpTool(plugin, 2, 25));
 	}

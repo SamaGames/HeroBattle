@@ -7,7 +7,7 @@ import net.lnfinity.HeroBattle.tools.displayers.ArrowsTool;
 import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
 import net.lnfinity.HeroBattle.tools.displayers.PowerTool;
 import net.lnfinity.HeroBattle.tools.displayers.SpeedTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant1Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.DaggerSwordTool;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ public class GuerrierClass extends PlayerClass {
 	public GuerrierClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
 		super(plugin, arg1, arg2, arg3);
 
-		addTool(new SwordVariant1Tool(p, arg1));
+		addTool(new DaggerSwordTool(p, arg1));
 		addTool(new SpeedTool(p, 30 - arg1 * 2, (int) Math.floor(arg2 * 0.4), 8 + arg2));
 		addTool(new PowerTool(p, 60 - arg1 * 4, 10 + arg2));
 		if(arg3 >= 1) addTool(new ArrowsTool(p, 30 - arg1 * 2, 2));

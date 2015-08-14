@@ -23,7 +23,7 @@ import net.lnfinity.HeroBattle.classes.*;
 import net.lnfinity.HeroBattle.tools.displayers.PommEhxploseTool;
 import net.lnfinity.HeroBattle.tools.displayers.PommeBoostTool;
 import net.lnfinity.HeroBattle.tools.displayers.SaintePommeTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant10Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.AppleWhipSwordTool;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -43,7 +43,7 @@ public class PommeClass extends EasterEggPlayerClass
 	{
 		super(plugin, cooldown, power, tool);
 
-		addTool(new SwordVariant10Tool(plugin));
+		addTool(new AppleWhipSwordTool(plugin));
 		addTool(new PommEhxploseTool(plugin));
 		addTool(new PommeBoostTool(plugin));
 		addTool(new SaintePommeTool(plugin));

@@ -4,7 +4,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.*;
 import net.lnfinity.HeroBattle.tools.displayers.AnguilleTool;
 import net.lnfinity.HeroBattle.tools.displayers.PotatoTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant8Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.MaryseSwordTool;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,7 +16,7 @@ public class MaiteClass extends EasterEggPlayerClass {
 	public MaiteClass(HeroBattle plugin) {
 		super(plugin, 0, 0, 0);
 		
-		addTool(new SwordVariant8Tool(plugin));
+		addTool(new MaryseSwordTool(plugin));
 		addTool(new AnguilleTool(plugin));
 		addTool(new PotatoTool(plugin));
 	}

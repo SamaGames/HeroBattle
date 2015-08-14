@@ -11,15 +11,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 import java.util.List;
 
-public class SwordVariant6Tool extends SwordTool implements Weapon {
+public class GoldenBladeSwordTool extends SwordTool implements Weapon {
 
-	public SwordVariant6Tool(HeroBattle plugin) {
+	public GoldenBladeSwordTool(HeroBattle plugin) {
 		super(plugin);
 	}
 	
 	@Override
 	public String getToolID() {
-		return "tool.sword.variant6";
+		return "tool.sword.goldenBlade";
 	}
 
 	@Override

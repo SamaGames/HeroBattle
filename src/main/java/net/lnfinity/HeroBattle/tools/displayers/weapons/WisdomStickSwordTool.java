@@ -6,15 +6,16 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class SwordVariant4Tool extends SwordTool {
+public class WisdomStickSwordTool extends SwordTool
+{
 
-	public SwordVariant4Tool(HeroBattle plugin) {
+	public WisdomStickSwordTool(HeroBattle plugin) {
 		super(plugin);
 	}
 	
 	@Override
 	public String getToolID() {
-		return "tool.sword.variant4";
+		return "tool.sword.wisdomStick";
 	}
 
 	@Override

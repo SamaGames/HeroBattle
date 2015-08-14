@@ -7,7 +7,7 @@ import net.lnfinity.HeroBattle.tools.displayers.EarthquakeTool;
 import net.lnfinity.HeroBattle.tools.displayers.HealingTool;
 import net.lnfinity.HeroBattle.tools.displayers.InkTool;
 import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant4Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.WisdomStickSwordTool;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ public class DruideClass extends PlayerClass {
 	public DruideClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
 		super(plugin, arg1, arg2, arg3);
 		
-		addTool(new SwordVariant4Tool(plugin));
+		addTool(new WisdomStickSwordTool(plugin));
 		double probability = 0.4 - arg2 * 0.05;
 		probability = probability < 0 ? 0 : probability;
 		addTool(new HealingTool(plugin, 90 - arg1 * 2, 50 + arg2 * 2, probability));
