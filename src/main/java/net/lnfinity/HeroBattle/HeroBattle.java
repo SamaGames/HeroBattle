@@ -123,7 +123,7 @@ public class HeroBattle extends JavaPlugin {
 			}
 		};
 
-		events.registerEvents(new MasterListener(this), this);
+		events.registerEvents(new ConnectionsListener(this), this);
 		events.registerEvents(new PlayersConnectionsListener(this), this);
 		events.registerEvents(new GameListener(this), this);
 		events.registerEvents(new SystemListener(this), this);
@@ -182,7 +182,7 @@ public class HeroBattle extends JavaPlugin {
 		for (Player player : this.getServer().getOnlinePlayers()) {
 
 			FinishJoinPlayerEvent ev = new FinishJoinPlayerEvent(player.getUniqueId());
-			new MasterListener(this).onFinishJoinPlayer(ev);
+			new ConnectionsListener(this).onFinishJoinPlayer(ev);
 
 		}
 	}
