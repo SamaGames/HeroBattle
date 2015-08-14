@@ -174,8 +174,10 @@ public class ConnectionsListener implements Listener {
 					// Default
 					elo = 2000;
 				}
-				if(elo < 1000) {
+				if(elo == 0) {
 					elo = 2000;
+				} else if(elo < 1000) {
+					elo = 1000;
 				}
 				if(elo > 10000) {
 					elo = 10000;
