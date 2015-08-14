@@ -222,8 +222,6 @@ public class GameListener implements Listener {
 					if(player.getLocation().distanceSquared(e.getEntity().getLocation()) <= 16) {
 						player.damage(0);
 						gamePlayer.setPercentage(gamePlayer.getPercentage() + Utils.randomNumber(10, 18), damager);
-						player.setLevel(gamePlayer.getPercentage());
-						plugin.getScoreboardManager().update(player);
 					}
 				}
 			}
