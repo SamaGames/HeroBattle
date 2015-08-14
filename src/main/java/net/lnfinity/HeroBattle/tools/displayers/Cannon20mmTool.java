@@ -13,8 +13,8 @@ import java.util.List;
 
 
 public class Cannon20mmTool extends ArrowsTool {
-	public Cannon20mmTool(HeroBattle plugin, int cooldown, int count) {
-		super(plugin, cooldown, count);
+	public Cannon20mmTool(HeroBattle plugin, int cooldown, int count, int min, int max) {
+		super(plugin, cooldown, count, 0, 0, min, max);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class Cannon20mmTool extends ArrowsTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Utils.getToolDescription(ChatColor.GRAY + "Clic pour lancer une flèche explosive causant " + ChatColor.RED + "20 " + ChatColor.GRAY + "à " + ChatColor.RED + "40 " + ChatColor.GRAY + "dégâts au joueur touché. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Clic pour lancer une flèche explosive causant " + ChatColor.RED + MIN_EXPLOSION + " " + ChatColor.GRAY + "à " + ChatColor.RED + MAX_EXPLOSION + " " + ChatColor.GRAY + "dégâts au joueur touché. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override

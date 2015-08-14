@@ -63,7 +63,7 @@ public class CrackTool extends PlayerTool
 	{
 		if (ToolsUtils.isToolAvailable(tool))
 		{
-			if (player.getLocation().clone().add(0, -1, 0).getBlock().getType() != Material.AIR && player.getLocation().clone().add(0, -1, 0).getBlock().getType().isBlock())
+			if (player.getLocation().add(0, -1, 0).getBlock().getType() != Material.AIR && player.getLocation().clone().add(0, -1, 0).getBlock().getType().isBlock())
 			{
 				new ItemCooldown(p, player, this, COOLDOWN);
 

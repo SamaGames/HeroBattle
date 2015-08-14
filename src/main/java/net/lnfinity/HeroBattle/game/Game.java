@@ -5,6 +5,7 @@ import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.classes.displayers.free.BruteClass;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.utils.ActionBar;
+import net.lnfinity.HeroBattle.utils.TripleParameters;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.lnfinity.HeroBattle.utils.WinnerFirework;
 import net.minecraft.server.v1_8_R1.EntityPlayer;
@@ -79,7 +80,11 @@ public class Game implements GameArena {
 	 */
 	private Map<UUID,UUID> fireballsLaunched = new ConcurrentHashMap<>();
 
-
+	/**
+	 * Attaches stats to an entity (such as power, range...)
+	 */
+	private Map<UUID, TripleParameters> entitiesData = new ConcurrentHashMap<>();
+	
 	private Random random = new Random();
 	
 	private int damagesMultiplicator = 1;
@@ -1328,5 +1333,26 @@ public class Game implements GameArena {
 	 */
 	public void setDamagesMultiplicator(int damagesMultiplicator) {
 		this.damagesMultiplicator = damagesMultiplicator;
+	}
+	
+	/**
+	 * Attaches parameters to an entity.
+	 * @param id
+	 * @param params
+	 */
+	public void addEntityParameters(UUID id, TripleParameters params) {
+		entitiesData.put(id, params);
+	}
+	
+	/**
+	 * Get parameters for an entity.
+	 * Also removes the parameters from the map.
+	 * @param id
+	 * @return
+	 */
+	public TripleParameters getParameters(UUID id) {
+		TripleParameters params = entitiesData.get(id);
+		entitiesData.remove(id);
+		return params;
 	}
 }

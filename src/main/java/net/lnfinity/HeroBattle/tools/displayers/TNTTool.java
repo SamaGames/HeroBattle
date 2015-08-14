@@ -69,6 +69,7 @@ public class TNTTool extends PlayerTool
 			TNTPrimed tnt = (TNTPrimed) event.getPlayer().getWorld().spawnEntity(event.getPlayer().getLocation().clone().add(0, 1, 0), EntityType.PRIMED_TNT);
 			tnt.setVelocity(event.getPlayer().getLocation().getDirection().normalize().multiply(0.5));
 			tnt.setFuseTicks(IGNITION_TIME * 20);
+			p.getGame().addEntityParameters(tnt.getUniqueId(), new TripleParameters(DAMAGES_MIN, DAMAGES_MAX));
 		}
 		else
 		{

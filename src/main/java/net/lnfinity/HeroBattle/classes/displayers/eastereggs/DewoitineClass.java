@@ -23,7 +23,7 @@ public class DewoitineClass extends PlayerClass implements EasterEggClass
 		super(plugin, cooldown, power, tool);
 
 		addTool(new Mac34SwordTool(plugin));
-		addTool(new Cannon20mmTool(plugin, 12, 1));
+		addTool(new Cannon20mmTool(plugin, 12, 1, 28, 34));
 		addTool(new TripleJumpTool(plugin, 20, 4));
 	}
 

@@ -12,7 +12,7 @@ public class DewoitineD550Class extends DewoitineClass {
 		super(plugin);
 
 		addTool(new Mac34SwordTool(plugin));
-		addTool(new Cannon20mmTool(plugin, 2, 1));
+		addTool(new Cannon20mmTool(plugin, 2, 1, 10, 14));
 		addTool(new TripleJumpTool(plugin, 2, 25));
 	}
 

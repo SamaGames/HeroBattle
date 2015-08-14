@@ -26,7 +26,7 @@ public class ArcherClass extends PlayerClass {
 		super(plugin, arg1, arg2, arg3);
 
 		addTool(new SaberSwordTool(p));
-		addTool(new ArrowsTool(p, 15 - arg1, 3 + arg2));
+		addTool(new ArrowsTool(p, 15 - arg1, 3 + arg2, 8 + arg2 * 2, 20 + arg2 * 2, 20 + arg2 * 2, (int) (40 + 2.5 * arg2)));
 		addTool(new SpeedTool(p, 20 - arg1 * 2, (int) Math.floor(1 + arg2 * 0.5), 5 + arg2));
 		if(arg3 >= 1) addTool(new SmokeTool(p, 45 - arg1, 4 + arg2));
 		if(arg3 >= 2) addTool(new NotYetAvaibleTool(p));

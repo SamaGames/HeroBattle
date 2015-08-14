@@ -28,7 +28,7 @@ public class GuerrierClass extends PlayerClass {
 		addTool(new DaggerSwordTool(p, arg1));
 		addTool(new SpeedTool(p, 30 - arg1 * 2, (int) Math.floor(arg2 * 0.4), 8 + arg2));
 		addTool(new PowerTool(p, 60 - arg1 * 4, 10 + arg2));
-		if(arg3 >= 1) addTool(new ArrowsTool(p, 30 - arg1 * 2, 2));
+		if(arg3 >= 1) addTool(new ArrowsTool(p, 30 - arg1 * 2, 2, 5 + arg2, 16 + arg2 * 2, (int) (12 + 1.5 * arg2), 24 + 2 * arg2));
 		if(arg3 >= 2) addTool(new NotYetAvaibleTool(p));
 	}
 

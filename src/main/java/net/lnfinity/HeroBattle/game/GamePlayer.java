@@ -7,6 +7,7 @@ import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.lnfinity.HeroBattle.utils.DamageTag;
 import net.lnfinity.HeroBattle.utils.ParticleEffect;
 import net.lnfinity.HeroBattle.utils.ParticleEffect.ParticleData;
+import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
 import net.zyuiop.MasterBundle.*;
@@ -779,7 +780,7 @@ public class GamePlayer {
 	 * @param origin
 	 */
 	public void damage(int percentageMin, int percentageMax, GamePlayer aggressor, Location origin) {
-		damage((int) (Math.random() * (percentageMax + 1) + percentageMax - percentageMin), aggressor, origin);
+		damage(Utils.randomNumber(percentageMin, percentageMax), aggressor, origin);
 	}
 	
 	/**

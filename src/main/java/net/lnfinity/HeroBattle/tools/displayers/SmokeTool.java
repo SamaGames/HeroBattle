@@ -53,7 +53,7 @@ public class SmokeTool extends PlayerTool {
 		if (ToolsUtils.isToolAvailable(tool)) {
 			new ItemCooldown(p, player, this, COOLDOWN);
 			for (int i = 0; i <= 100; i++) {
-				Location loc = player.getLocation().clone();
+				Location loc = player.getLocation();
 				loc.setX(loc.getX() + 5 - ((int) (Math.random() * ((10 - 0) + 0))));
 				loc.setY(loc.getY() + 5 - ((int) (Math.random() * ((10 - 0) + 0))));
 				loc.setZ(loc.getZ() + 5 - ((int) (Math.random() * ((10 - 0) + 0))));

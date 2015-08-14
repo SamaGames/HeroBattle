@@ -8,6 +8,7 @@ import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.tools.Weapon;
 import net.lnfinity.HeroBattle.utils.ParticleEffect;
+import net.lnfinity.HeroBattle.utils.TripleParameters;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.gameapi.json.Status;
 
@@ -76,6 +77,7 @@ public class GameListener implements Listener {
 					}
 				}
 
+				TripleParameters params = plugin.getGame().getParameters(e.getEntity().getUniqueId());
 				gp.setPercentage(gp.getPercentage() + 25 + (int) (Math.random() * ((50 - 25) + 25)), nearest == null ? null : plugin.getGamePlayer(nearest));
 			}
 			
@@ -166,7 +168,8 @@ public class GameListener implements Listener {
 			// ### ArrowsTool ###
 			} else if (e.getDamager() instanceof Arrow) {
 				Arrow arrow = (Arrow) e.getDamager();
-				int damages;
+				TripleParameters params = plugin.getGame().getParameters(arrow.getUniqueId());
+
 				if (arrow.getShooter().equals(e.getEntity()) || !(arrow.getShooter() instanceof Player)) {
 					e.setCancelled(true);
 					return;
@@ -178,17 +181,14 @@ public class GameListener implements Listener {
 					arrow.setFireTicks(0);
 					arrow.getWorld().playEffect(arrow.getLocation(), Effect.EXPLOSION_HUGE, 1);
 					arrow.getWorld().playSound(arrow.getLocation(), Sound.EXPLODE, 1L, 1L);
-					damages = 20 + (int) (Math.random() * ((40 - 20) + 20));
 					
-					// TODO Get the correct damages
-					for(Entity entity : player.getNearbyEntities(3, 3, 3)) {
-						if(entity instanceof Player) {
-							GamePlayer victim = HeroBattle.getInstance().getGamePlayer(((Player) entity));
-							victim.damage(15, 25, damagerGPlayer, e.getDamager().getLocation());
+					for(GamePlayer potential : plugin.getGamePlayers().values()) {
+						if(!potential.equals(damagerGPlayer) && potential.getPlayer().getLocation().distanceSquared(e.getDamager().getLocation()) < 16) {
+							potential.damage(params.getMinDamages(), params.getMaxDamages(), damagerGPlayer, e.getDamager().getLocation());
 						}
 					}
 				} else {
-					gamePlayer.damage(8, 20, damagerGPlayer, e.getDamager().getLocation());
+					gamePlayer.damage(params.getMinDamages(), params.getMaxDamages(), damagerGPlayer, e.getDamager().getLocation());
 				}
 				
 			}
@@ -214,7 +214,9 @@ public class GameListener implements Listener {
 			if(player != null) {
 				if(player.getLocation().distanceSquared(e.getEntity().getLocation()) <= 16) {
 					
-					gamePlayer.damage(16, 25, damager, e.getEntity().getLocation());
+					TripleParameters params = plugin.getGame().getParameters(e.getEntity().getUniqueId());
+					
+					gamePlayer.damage(params.getMinDamages(), params.getMaxDamages(), damager, e.getEntity().getLocation());
 					
 				}
 			}
@@ -236,7 +238,8 @@ public class GameListener implements Listener {
 				if(player != null && !(gamePlayer.getPlayerClass() instanceof MinerClass)) {
 					if(player.getLocation().distanceSquared(e.getEntity().getLocation()) <= 16) {
 						
-						gamePlayer.damage(10, 18, damager, e.getEntity().getLocation());
+						TripleParameters params = plugin.getGame().getParameters(entity.getUniqueId());
+						gamePlayer.damage(params.getMinDamages(), params.getMaxDamages(), damager, e.getEntity().getLocation());
 						
 					}
 				}

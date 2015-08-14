@@ -4,8 +4,10 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.utils.ItemCooldown;
 import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import net.lnfinity.HeroBattle.utils.TripleParameters;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.utils.GlowEffect;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -59,6 +61,9 @@ public class FireballTool extends PlayerTool {
 			Fireball fireball = (Fireball) player.getWorld().spawnEntity(player.getLocation().add(player.getLocation().getDirection().normalize().multiply(2)), EntityType.FIREBALL);
 			fireball.setVelocity(player.getLocation().getDirection().normalize());
 			p.getGame().getFireballsLaunched().put(fireball.getUniqueId(), player.getUniqueId());
+			
+			p.getGame().addEntityParameters(fireball.getUniqueId(), new TripleParameters(MIN_DAMAGES, MAX_DAMAGES));
+			
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}

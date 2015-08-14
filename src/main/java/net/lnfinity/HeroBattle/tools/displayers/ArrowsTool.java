@@ -4,9 +4,11 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.utils.ItemCooldown;
 import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import net.lnfinity.HeroBattle.utils.TripleParameters;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.GlowEffect;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -22,12 +24,21 @@ public class ArrowsTool extends PlayerTool {
 
 	protected final int COOLDOWN; // seconds
 	private final int ARROWS_TO_FIRE;
+	private final int MIN_POWER;
+	private final int MAX_POWER;
+	protected final int MIN_EXPLOSION;
+	protected final int MAX_EXPLOSION;
+	
 	private Integer taskId = null;
 
-	public ArrowsTool(HeroBattle plugin, int cooldown, int count) {
+	public ArrowsTool(HeroBattle plugin, int cooldown, int count, int min, int max, int minExplosion, int maxExplosion) {
 		super(plugin);
 		COOLDOWN = cooldown;
 		ARROWS_TO_FIRE = count;
+		MIN_POWER = min;
+		MAX_POWER = max;
+		MIN_EXPLOSION = minExplosion;
+		MAX_EXPLOSION = maxExplosion;
 	}
 
 	@Override
@@ -42,7 +53,7 @@ public class ArrowsTool extends PlayerTool {
 
 	@Override
 	public List<String> getDescription() {
-		return Utils.getToolDescription(ChatColor.GRAY + "Clic gauche pour lancer une flèche explosive causant " + ChatColor.RED + "20 " + ChatColor.GRAY + "à " + ChatColor.RED + "40 " + ChatColor.GRAY + "dégâts au joueur touché. Clic droit pour lancer une pluie de " + ChatColor.GOLD + ARROWS_TO_FIRE + " " + ChatColor.GRAY + "flèches occasionant chacune " + ChatColor.RED + "8 " + ChatColor.GRAY + "à " + ChatColor.RED + "20 " + ChatColor.GRAY + "dégâts. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Clic gauche pour lancer une flèche explosant uniquement au contact d'un joueur. A son explosion, elle cause entre " + ChatColor.RED + MIN_EXPLOSION + " " + ChatColor.GRAY + "à " + ChatColor.RED + MAX_EXPLOSION + " " + ChatColor.GRAY + "dégâts au joueur touché et à ceux dans un rayon de " + ChatColor.GOLD + "3 " + ChatColor.GRAY + "autour. Clic droit pour lancer une pluie de " + ChatColor.GOLD + ARROWS_TO_FIRE + " " + ChatColor.GRAY + "flèches occasionant chacune " + ChatColor.RED + MIN_POWER + " " + ChatColor.GRAY + "à " + ChatColor.RED + MAX_POWER + " " + ChatColor.GRAY + "dégâts. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
@@ -76,12 +87,15 @@ public class ArrowsTool extends PlayerTool {
 					Vector vector = new Vector(x, z, y);
 					vector.multiply(2);
 
-					Location loc = player.getLocation().clone();
+					Location loc = player.getLocation();
 					loc.setY(loc.getY() + 1);
 
 					Arrow arrow = player.getWorld().spawn(loc, Arrow.class);
 					arrow.setShooter(player);
 					arrow.setVelocity(vector);
+					
+					p.getGame().addEntityParameters(arrow.getUniqueId(), new TripleParameters(MIN_POWER, MAX_POWER));
+					
 					if (loop >= ARROWS_TO_FIRE) {
 						p.getServer().getScheduler().cancelTask(taskId);
 						taskId = null;
@@ -112,7 +126,7 @@ public class ArrowsTool extends PlayerTool {
 			Vector vector = new Vector(x, z, y);
 			vector.multiply(2);
 
-			Location loc = player.getLocation().clone();
+			Location loc = player.getLocation();
 			loc.setY(loc.getY() + 1);
 
 			Arrow arrow = player.getWorld().spawn(loc, Arrow.class);
@@ -120,6 +134,9 @@ public class ArrowsTool extends PlayerTool {
 			arrow.setVelocity(vector);
 			arrow.setCustomName(" ");
 			arrow.setFireTicks(Integer.MAX_VALUE);
+			
+			p.getGame().addEntityParameters(arrow.getUniqueId(), new TripleParameters(MIN_EXPLOSION, MAX_EXPLOSION));
+			
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
