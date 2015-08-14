@@ -7,6 +7,7 @@ import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.tools.Weapon;
+import net.lnfinity.HeroBattle.utils.ParticleEffect;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.gameapi.json.Status;
 
@@ -96,7 +97,7 @@ public class GameListener implements Listener {
 	}
 
 	@EventHandler
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+	public void onEntityDamageByEntity(final EntityDamageByEntityEvent e) {
 		// A condenser
 		if (e.getEntity() instanceof Player && plugin.getGame().getStatus() == Status.InGame) {
 			final Player player = (Player) e.getEntity();
@@ -135,9 +136,9 @@ public class GameListener implements Listener {
 				int max = gameDamager.getPlayerClass().getMaxDamages();
 				int damages;
 				if (gameDamager.getRemainingDoubleDamages() != 0) {
-					damages = gamePlayer.getPercentage() + 2 * (min + (int) (Math.random() * ((max - min) + min)));
+					damages = gamePlayer.getPercentage() + 2 * (min + random.nextInt(max - min + 1));
 				} else {
-					damages = gamePlayer.getPercentage() + min + (int) (Math.random() * ((max - min) + min));
+					damages = gamePlayer.getPercentage() + min + random.nextInt(max - min + 1);
 				}
 				if (damager.getInventory().getHeldItemSlot() != 0) {
 					damages = gamePlayer.getPercentage() + 1;
@@ -145,6 +146,21 @@ public class GameListener implements Listener {
 
 				gamePlayer.setPercentage(damages, gameDamager);
 				gamePlayer.setLastDamager(damager.getUniqueId());
+				
+				for(int i = 0; i < Math.min(gamePlayer.getPercentage() / 20, 5); i++)
+					e.getEntity().getWorld().playEffect(e.getEntity().getLocation().add(0.5 - Math.random(), Math.random() + 0.5, 0.5 - Math.random()), Effect.SMALL_SMOKE, 0);
+				
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					@Override
+					public void run() {
+						for(int i = 0; i < Math.min(gamePlayer.getPercentage() / 30, 5); i++)
+							e.getEntity().getWorld().playEffect(e.getEntity().getLocation().add(0.5 - Math.random(), Math.random() + 0.5, 0.5 - Math.random()), Effect.SMOKE, 4);	
+					}
+				}, 1L);
+				
+				if(gamePlayer.getPercentage() > 150 && random.nextInt(4) == 0)
+					e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ZOMBIE_WOODBREAK, 0.5F, 1);
+					
 				
 			// ### ArrowsTool ###
 			} else if (e.getDamager() instanceof Arrow) {
@@ -163,7 +179,7 @@ public class GameListener implements Listener {
 					arrow.getWorld().playSound(arrow.getLocation(), Sound.EXPLODE, 1L, 1L);
 					damages = 20 + (int) (Math.random() * ((40 - 20) + 20));
 					
-					// TODO Damage this entities
+					// TODO Damage these entities
 					for(Entity entity : player.getNearbyEntities(3, 3, 3)) {
 						if(entity instanceof Player) {
 							((Player) entity).damage(0);
