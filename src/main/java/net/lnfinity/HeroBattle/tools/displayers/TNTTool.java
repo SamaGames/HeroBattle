@@ -20,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class TNTTool extends PlayerTool {
 
+	// TODO not finished yet
+	
 	private final int COOLDOWN; // seconds
 	private final int IGNITION_TIME; // seconds
 	
