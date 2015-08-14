@@ -212,12 +212,14 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		e.setCancelled(true);
 
 		final Player p = e.getPlayer();
 		final GamePlayer gamePlayer = plugin.getGamePlayer(p);
 
 		if(gamePlayer == null || gamePlayer.getPlayerClass() == null) return;
+
+
+		if(p.getGameMode() != GameMode.CREATIVE) e.setCancelled(true);
 
 
 		if (e.hasItem() && e.getItem().getType() != Material.AIR && e.getItem().hasItemMeta()
