@@ -114,11 +114,8 @@ public class CrackTool extends PlayerTool
 
 									touched.add(victim);
 
-									p.getGame().createKnockback(victim, am.getLocation());
-
-									int inflicted = (int) (Math.random() * 20 + POWER + potential.getPercentage());
-									potential.setPercentage(inflicted, potential);
-									p.getGamePlayer(player).addPercentageInflicted(inflicted);
+									// TODO : correct damage
+									potential.damage(20, POWER + 20, p.getGamePlayer(player), am.getLocation());
 								}
 
 								if (k < 10)

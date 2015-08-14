@@ -152,6 +152,10 @@ public class Game implements GameArena {
 		}
 	}
 
+	/**
+	 * Starts the game, handles everything including teleportations, messages, task timers...
+	 * Should be called once.
+	 */
 	public void start() {
 
 		p.getTutorialDisplayer().stopForAll("Le jeu démarre...");
@@ -234,6 +238,10 @@ public class Game implements GameArena {
 		}, 70l);
 	}
 
+	/**
+	 * Teleports every playing players to a random spot and fills inventories.
+	 * Should be called once.
+	 */
 	public void teleportPlayers() {
 		List<Location> tempLocs = new LinkedList<>(spawnPoints);
 		Random rand = new Random();
@@ -283,20 +291,40 @@ public class Game implements GameArena {
 		}
 	}
 
+	/**
+	 * Teleport the player to the map's hub.
+	 * (Teleportation only, nothing else is edited)
+	 * @param id
+	 */
 	public void teleportHub(UUID id) {
 		p.getServer().getPlayer(id).teleport(hub);
 	}
 
+	/**
+	 * Teleport the player to a registered random spot on the map.
+	 * (Teleportation only, nothing else is edited)
+	 * @param id
+	 */
 	public void teleportRandomSpot(UUID id) {
 		teleportRandomSpot(p.getServer().getPlayer(id));
 	}
 
+	/**
+	 * Teleport the player to a registered random spot on the map.
+	 * (Teleportation only, nothing else is edited)
+	 * @param player
+	 */
 	public void teleportRandomSpot(Player player) {
 		p.getGame().updatePlayerArmor(player);
 		player.teleport(spawnPoints.get(random.nextInt(spawnPoints.size())));
 	}
 
-	public void spawnPlayer(Player player) {
+	/**
+	 * Makes the player respawns.
+	 * Visual effects are processed.
+	 * @param player
+	 */
+	public void respawnPlayer(Player player) {
 		GamePlayer hbPlayer = p.getGamePlayer(player);
 
 		hbPlayer.resetPercentage();
@@ -322,6 +350,11 @@ public class Game implements GameArena {
         teleportRandomSpot(player);
 	}
 
+	/**
+	 * Chooses a random class according to the classes owned.
+	 * Should be called just before the begining of the game, if the player hasn't choosen one yet.
+	 * @param player
+	 */
 	public void chooseRandomClass(Player player) {
 		GamePlayer gamePlayer = p.getGamePlayer(player);
 
@@ -349,6 +382,12 @@ public class Game implements GameArena {
 		}
 	}
 
+	/**
+	 * Handles the player death.
+	 * Also handles elimination.
+	 * @param id the player
+	 * @param death the way he died
+	 */
 	public void onPlayerDeath(UUID id, DeathType death) {
 		if (getStatus() != Status.InGame) {
 			teleportHub(id);
@@ -624,7 +663,7 @@ public class Game implements GameArena {
 				}
 			}, 40L);
 
-			spawnPlayer(player);
+			respawnPlayer(player);
 
 			// Très important ! Sinon le joueur conserve sa vélocité
 			player.setVelocity(player.getVelocity().zero());
@@ -671,6 +710,10 @@ public class Game implements GameArena {
 		StatsApi.increaseStat(player, p.getName(), "deaths", 1);
 	}
 
+	/**
+	 * Handles a player disconnection.
+	 * @param id
+	 */
 	public void onPlayerQuit(UUID id) {
 		GamePlayer gPlayer = p.getGamePlayer(id);
 		if(gPlayer == null) {
@@ -1039,6 +1082,10 @@ public class Game implements GameArena {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return the sum of all the players elos
+	 */
 	public int getTotalElo() {
 		int total = 0; // Total
 		for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
@@ -1142,7 +1189,12 @@ public class Game implements GameArena {
 	}
 
 
-
+	/**
+	 * Gets the first block targeted by the play.
+	 * @param player
+	 * @param maxRange
+	 * @return
+	 */
 	public Block getTargetBlock(Player player, int maxRange) {
 		Block block;
 		Location loc = player.getEyeLocation().clone();
@@ -1160,7 +1212,10 @@ public class Game implements GameArena {
 		return null;
 	}
 
-
+	/**
+	 * Updates the color of the armor according to his percentage.
+	 * @param player
+	 */
 	public void updatePlayerArmor(Player player) {
 
 		GamePlayer gamePlayer = p.getGamePlayer(player);
@@ -1219,6 +1274,10 @@ public class Game implements GameArena {
 		}
 	}
 
+	/**
+	 * Fills the player's inventory with lobby items such as the class selector, tutorial and exit item.
+	 * @param player
+	 */
 	public void equipPlayer(Player player) {
 
 		player.getInventory().clear();
@@ -1241,7 +1300,7 @@ public class Game implements GameArena {
 		ItemStack tutorialItem = new ItemStack(Material.BOOK);
 		ItemMeta meta = tutorialItem.getItemMeta();
 			meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Voir le Tutoriel");
-			meta.setLore(Arrays.asList("", ChatColor.GRAY + "Assistez à un tutoriel interactif !"));
+			meta.setLore(Arrays.asList(ChatColor.GRAY + "Assistez à un tutoriel interactif !"));
 		tutorialItem.setItemMeta(meta);
 		GlowEffect.addGlow(tutorialItem);
 		player.getInventory().setItem(4, tutorialItem);
@@ -1255,24 +1314,19 @@ public class Game implements GameArena {
 
 	}
 
+	/**
+	 * 
+	 * @return The current global damages multiplier of the game.
+	 */
 	public int getDamagesMultiplicator() {
 		return damagesMultiplicator;
 	}
 
+	/**
+	 * Sets the global damages multiplier of the game.
+	 * @param damagesMultiplicator
+	 */
 	public void setDamagesMultiplicator(int damagesMultiplicator) {
 		this.damagesMultiplicator = damagesMultiplicator;
-	}
-	
-	public void createKnockback(Player player, Location origin) {
-		GamePlayer gamePlayer = p.getGamePlayer(player);
-		if(gamePlayer == null) return;
-		
-		player.damage(0);
-		
-		final float reducer = 15.0F;
-
-		Vector v = player.getVelocity().add(player.getLocation().toVector().subtract(origin.toVector()).normalize().multiply(gamePlayer.getPercentage() / reducer));
-		v.setY(0.5);
-		player.setVelocity(v);
 	}
 }

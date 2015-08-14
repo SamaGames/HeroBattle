@@ -17,6 +17,7 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -27,10 +28,14 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-
+/**
+ * Represents a player in the game.
+ * Every player has a wrapper except moderators.
+ * Instances can be retrieved using `HeroBattle.getGamePlayer(UUID)`
+ */
 public class GamePlayer {
 
-	private UUID playerID;
+	private final UUID playerID;
 	private String playerName;
 
 	private boolean playing = true;
@@ -89,7 +94,11 @@ public class GamePlayer {
 	private int killsRank = 0;
 	private int percentageRank = 0;
 
-
+	/**
+	 * Creates a new playing player.
+	 * Should be invoked just after joining.
+	 * @param id
+	 */
 	public GamePlayer(UUID id) {
 		playerID = id;
 		playerName = Bukkit.getServer().getPlayer(id).getName();
@@ -196,10 +205,20 @@ public class GamePlayer {
 		return percentage;
 	}
 
+	/**
+	 * Custom player percentage changing (ae player walking in fire).
+	 * @param percentage
+	 */
 	public void setPercentage(int percentage) {
 		setPercentage(percentage, null);
 	}
 
+	/**
+	 * Change the current percentage of the player if the last damage comes from a player
+	 * 
+	 * @param percentage
+	 * @param aggressor
+	 */
 	public void setPercentage(int percentage, GamePlayer aggressor) {
 		if(!isPlaying() || getPlayerClass() == null) return;
 		
@@ -284,6 +303,10 @@ public class GamePlayer {
 		this.additionalLives = additionalLives;
 	}
 
+	/**
+	 * Adds a new life to the player.
+	 * Player's hearts changing animation handled.
+	 */
 	public void gainLife() {
 		Player player = Bukkit.getPlayer(playerID);
 		Validate.notNull(player, "Bukkit Player object null in GamePlayer.gainLife ?! (UUID " + playerID + ")");
@@ -299,6 +322,10 @@ public class GamePlayer {
 		player.setHealth(player.getHealth() + 2);
 	}
 
+	/**
+	 * Removes a life to the player.
+	 * Player's hearts changing animation handled.
+	 */
 	public void looseLife() {
 		final Player player = Bukkit.getPlayer(playerID);
 		Validate.notNull(player, "Bukkit Player object null in GamePlayer.looseLife ?! (UUID " + playerID + ")");
@@ -326,6 +353,9 @@ public class GamePlayer {
 		}
 	}
 
+	/**
+	 * @return true if the player is currently playing and not dead.
+	 */
 	public boolean isPlaying() {
 		return playing;
 	}
@@ -383,6 +413,11 @@ public class GamePlayer {
 		return classe;
 	}
 
+	/**
+	 * Sets the player class
+	 * Updates the TAB list & the player's action bar
+	 * @param classe
+	 */
 	public void setPlayerClass(PlayerClass classe) {
 		this.classe = classe;
 		if (classe != null) {
@@ -430,6 +465,10 @@ public class GamePlayer {
 		return playerName;
 	}
 
+	/**
+	 * The player makes a big jump.
+	 * Can only be used two times in the air. Gets reseted by touching the ground.
+	 */
 	public void doubleJump() {
 
 		if(jumpLocked) return; // nop
@@ -693,7 +732,68 @@ public class GamePlayer {
 		}
 	}
 	
+	/**
+	 * Resets the percentage, should only be used for respawn
+	 * (prevents damage tags to be displayed)
+	 */
 	public void resetPercentage() {
 		this.percentage = 0;
+	}
+	
+	/**
+	 * Get the bukkit Player instance
+	 * @return Player
+	 */
+	public Player getPlayer() {
+		return Bukkit.getPlayer(playerID);
+	}
+	
+	/**
+	 * Global method for player damaging.
+	 * Adds percentage and creates a knockback effect.
+	 * @param player
+	 * @param origin
+	 */
+	public void damage(int percentageAdded, GamePlayer aggressor, Location origin) {
+		Player player = getPlayer();
+		
+		player.damage(0);
+		
+		final float reducer = 15.0F;
+
+		Vector v = player.getVelocity().add(player.getLocation().toVector().subtract(origin.toVector()).normalize().multiply(percentage / reducer));
+		v.setY(0.5);
+		player.setVelocity(v);
+		
+		if(aggressor == null) {
+			setPercentage(percentageAdded + percentage);
+		} else {
+			setPercentage(percentageAdded + percentage, aggressor);
+		}
+	}
+	
+	/**
+	 * Global method for player damaging.
+	 * Adds random percentage between two values and creates a knockback effect.
+	 * @param player
+	 * @param origin
+	 */
+	public void damage(int percentageMin, int percentageMax, GamePlayer aggressor, Location origin) {
+		damage((int) (Math.random() * (percentageMax + 1) + percentageMax - percentageMin), aggressor, origin);
+	}
+	
+	/**
+	 * Basic damaging method.
+	 * Adds percentage to player.
+	 * @param percentageAdded
+	 */
+	public void basicDamage(int percentageAdded, GamePlayer aggressor) {
+		getPlayer().damage(0);
+		
+		if(aggressor == null) {
+			setPercentage(percentageAdded + percentage);
+		} else {
+			setPercentage(percentageAdded + percentage, aggressor);
+		}
 	}
 }

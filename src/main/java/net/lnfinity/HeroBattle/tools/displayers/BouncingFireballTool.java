@@ -108,14 +108,13 @@ public class BouncingFireballTool extends PlayerTool {
 						
 						Location loc = am.getLocation().clone();
 						loc.setY(target.getLocation().getY());
+						
 						if(target.getLocation().distanceSquared(loc) < 1 && Math.abs(target.getLocation().getY() - am.getLocation().getY()) < 2) {
-							target.damage(0);
-							gamePlayer.setPercentage((int) (gamePlayer.getPercentage() + 10 + Math.random() * 20), p.getGamePlayer(player));
-							p.getGame().createKnockback(target, am.getLocation());
+							
+							gamePlayer.damage(10, 20, p.getGamePlayer(player), am.getLocation());
 							am.remove();
 							
 							task.cancel();
-							
 							return;
 						}
 					}

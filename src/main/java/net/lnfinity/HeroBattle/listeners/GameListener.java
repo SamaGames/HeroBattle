@@ -81,17 +81,17 @@ public class GameListener implements Listener {
 			
 			// ### Tools that use fire ###
 			else if (e.getCause() == DamageCause.FIRE_TICK || e.getCause() == DamageCause.FIRE) {
-				gp.setPercentage(gp.getPercentage() + 2, plugin.getGamePlayer(plugin.getGame().getFiresInProgress().get(gp.getPlayerUniqueID())));
+				gp.basicDamage(2, plugin.getGamePlayer(plugin.getGame().getFiresInProgress().get(gp.getPlayerUniqueID())));
 			}
 			
 			// ### Tools that use poison ###
 			else if (e.getCause() == DamageCause.POISON) {
-				gp.setPercentage(gp.getPercentage() + 3, plugin.getGamePlayer(plugin.getGame().getPoisonsInProgress().get(gp.getPlayerUniqueID())));
+				gp.basicDamage(3, plugin.getGamePlayer(plugin.getGame().getPoisonsInProgress().get(gp.getPlayerUniqueID())));
 			}
 
 			// ### Tools that use wither effects ###
 			else if (e.getCause() == DamageCause.WITHER) {
-				gp.setPercentage(gp.getPercentage() + 4, null);
+				gp.basicDamage(4, null);
 			}
 		}
 	}
@@ -100,6 +100,7 @@ public class GameListener implements Listener {
 	public void onEntityDamageByEntity(final EntityDamageByEntityEvent e) {
 		// A condenser
 		if (e.getEntity() instanceof Player && plugin.getGame().getStatus() == Status.InGame) {
+			
 			final Player player = (Player) e.getEntity();
 			final GamePlayer gamePlayer = plugin.getGamePlayer(player);
 			if(gamePlayer == null) return;
@@ -109,11 +110,16 @@ public class GameListener implements Listener {
 			}
 
 			if (e.getDamager() instanceof Player) {
+				// v- old
 				// Devrait *enfin* fonctionner !
-				final float reducer = 15.0F;
+				
 				final Player damager = (Player) e.getDamager();
 				final GamePlayer gameDamager = plugin.getGamePlayer(damager);
 				
+				// Prevents a bug
+				if(gameDamager.getPlayerClass() == null) gameDamager.setPlayerClass(new BruteClass(plugin));
+				
+
 				if (damager.getItemInHand() != null && damager.getItemInHand().getType() != Material.AIR && damager.getItemInHand().hasItemMeta()
 						&& damager.getItemInHand().getItemMeta().hasDisplayName()) {
 
@@ -123,30 +129,25 @@ public class GameListener implements Listener {
 						
 				}
 				
-				Vector v = player.getVelocity().add(
-						player.getLocation().toVector().subtract(damager.getLocation().toVector()).normalize()
-								.multiply(gamePlayer.getPercentage() / reducer));
-				v.setY(1);
-				e.getEntity().setVelocity(v);
-
-				// Prevents a bug
-				if(gameDamager.getPlayerClass() == null) gameDamager.setPlayerClass(new BruteClass(plugin));
-				
 				int min = gameDamager.getPlayerClass().getMinDamages();
 				int max = gameDamager.getPlayerClass().getMaxDamages();
 				int damages;
+				
+				// Double damage for weapon only
 				if (gameDamager.getRemainingDoubleDamages() != 0) {
-					damages = gamePlayer.getPercentage() + 2 * (min + random.nextInt(max - min + 1));
+					damages = 2 * (min + random.nextInt(max - min + 1));
 				} else {
-					damages = gamePlayer.getPercentage() + min + random.nextInt(max - min + 1);
+					damages = min + random.nextInt(max - min + 1);
 				}
+				
+				// Hitting with something else than the main weapon
 				if (damager.getInventory().getHeldItemSlot() != 0) {
-					damages = gamePlayer.getPercentage() + 1;
+					damages = 1;
 				}
 
-				gamePlayer.setPercentage(damages, gameDamager);
-				gamePlayer.setLastDamager(damager.getUniqueId());
+				gamePlayer.damage(damages, gameDamager, e.getDamager().getLocation());
 				
+				// Cool effects
 				for(int i = 0; i < Math.min(gamePlayer.getPercentage() / 20, 5); i++)
 					e.getEntity().getWorld().playEffect(e.getEntity().getLocation().add(0.5 - Math.random(), Math.random() + 0.5, 0.5 - Math.random()), Effect.SMALL_SMOKE, 0);
 				
@@ -179,23 +180,22 @@ public class GameListener implements Listener {
 					arrow.getWorld().playSound(arrow.getLocation(), Sound.EXPLODE, 1L, 1L);
 					damages = 20 + (int) (Math.random() * ((40 - 20) + 20));
 					
-					// TODO Damage these entities
+					// TODO Get the correct damages
 					for(Entity entity : player.getNearbyEntities(3, 3, 3)) {
 						if(entity instanceof Player) {
-							((Player) entity).damage(0);
+							GamePlayer victim = HeroBattle.getInstance().getGamePlayer(((Player) entity));
+							victim.damage(15, 25, damagerGPlayer, e.getDamager().getLocation());
 						}
 					}
 				} else {
-					damages = 8 + (int) (Math.random() * ((20 - 8) + 8));
+					gamePlayer.damage(8, 20, damagerGPlayer, e.getDamager().getLocation());
 				}
-
-				gamePlayer.setPercentage(damages + gamePlayer.getPercentage(), damagerGPlayer);
-				gamePlayer.setLastDamager(((Player) arrow.getShooter()).getUniqueId());
+				
 			}
 		}
 
 		else if(e.getEntityType() == EntityType.ARMOR_STAND || e.getEntityType() == EntityType.DROPPED_ITEM) {
-			e.setCancelled(true); // Avoid the lightning bolts from destroying the powerups.
+			e.setCancelled(true); // Avoid the lightning bolts from destroying the powerups (among other things).
 		}
 	}
 
@@ -213,10 +213,9 @@ public class GameListener implements Listener {
 			Player player = plugin.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
 			if(player != null) {
 				if(player.getLocation().distanceSquared(e.getEntity().getLocation()) <= 16) {
-					player.damage(0);
-					gamePlayer.setPercentage(gamePlayer.getPercentage() + Utils.randomNumber(16, 25), damager);
-					player.setLevel(gamePlayer.getPercentage());
-					plugin.getScoreboardManager().update(player);
+					
+					gamePlayer.damage(16, 25, damager, e.getEntity().getLocation());
+					
 				}
 			}
 		}
@@ -236,8 +235,9 @@ public class GameListener implements Listener {
 				Player player = plugin.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
 				if(player != null && !(gamePlayer.getPlayerClass() instanceof MinerClass)) {
 					if(player.getLocation().distanceSquared(e.getEntity().getLocation()) <= 16) {
-						player.damage(0);
-						gamePlayer.setPercentage(gamePlayer.getPercentage() + Utils.randomNumber(10, 18), damager);
+						
+						gamePlayer.damage(10, 18, damager, e.getEntity().getLocation());
+						
 					}
 				}
 			}
