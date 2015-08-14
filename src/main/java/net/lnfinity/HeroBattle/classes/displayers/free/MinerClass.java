@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.classes.displayers;
+package net.lnfinity.HeroBattle.classes.displayers.free;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +12,7 @@ import net.lnfinity.HeroBattle.classes.PlayerClassType;
 import net.lnfinity.HeroBattle.tools.displayers.CrackTool;
 import net.lnfinity.HeroBattle.tools.displayers.MinerSpecialTool;
 import net.lnfinity.HeroBattle.tools.displayers.TNTTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant11Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.DrillSwordTool;
 import net.md_5.bungee.api.ChatColor;
 
 public class MinerClass extends PlayerClass {
@@ -24,7 +24,7 @@ public class MinerClass extends PlayerClass {
 	public MinerClass(HeroBattle plugin, int cooldown, int power, int tool) {
 		super(plugin, cooldown, power, tool);
 		
-		addTool(new SwordVariant11Tool(p));
+		addTool(new DrillSwordTool(p));
 		addTool(new TNTTool(p, 25 - cooldown, (int) (6 - power * 0.5)));
 		addTool(new CrackTool(p, 55 - cooldown * 2, 25 + power * 2));
 		if(tool >= 1) addTool(new MinerSpecialTool(p, 30 - cooldown, (int) (5 + 0.5 * power)));

@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.classes.displayers;
+package net.lnfinity.HeroBattle.classes.displayers.free;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +10,7 @@ import net.lnfinity.HeroBattle.tools.displayers.EarthquakeTool;
 import net.lnfinity.HeroBattle.tools.displayers.InkTool;
 import net.lnfinity.HeroBattle.tools.displayers.NauseaTool;
 import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordTool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.WroughtIronSwordTool;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ public class BruteClass extends PlayerClass {
 	public BruteClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
 		super(plugin, arg1, arg2, arg3);
 
-		addTool(new SwordTool(p));
+		addTool(new WroughtIronSwordTool(p));
 		addTool(new EarthquakeTool(p, 30 - arg1 * 2, 30 + arg2 * 2, 50 + arg2 * 4));
 		addTool(new NauseaTool(p, 60 - arg1 * 4, 10 + arg2, 0.25 - arg2 * 0.05));
 		if(arg3 >= 1) addTool(new InkTool(p, 90 - arg1 * 4, 5 + arg2, 0.35 - arg2 * 0.05));

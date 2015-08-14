@@ -2,11 +2,9 @@ package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
-import net.lnfinity.HeroBattle.classes.displayers.PommeClass;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.PommeClass;
 import net.lnfinity.HeroBattle.game.DeathType;
-import net.lnfinity.HeroBattle.game.Game;
 import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
@@ -192,7 +190,7 @@ public class SystemListener implements Listener {
 		// Pomme Easter-Egg
 		if(HeroBattle.getInstance().getGame().getStatus() == Status.Available || HeroBattle.getInstance().getGame().getStatus() == Status.PreStarting || HeroBattle.getInstance().getGame().getStatus() == Status.Starting)
 		{
-			if(ClassSelectorListener.getPommeUnlocked().contains(e.getPlayer().getUniqueId()))
+			if(HeroBattle.getInstance().getClassManager().getPommeUnlocks().contains(e.getPlayer().getUniqueId()))
 			{
 				if(e.getMessage().equalsIgnoreCase("MEH"))
 				{

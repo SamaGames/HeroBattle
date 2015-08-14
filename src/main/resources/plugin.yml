@@ -25,6 +25,10 @@ commands:
     description: Permet de choisir une classe.
     aliases: [class]
     usage: /classe <classe>
+
+  preview:
+    description: Permet de prévisualiser une classe.
+    usage: /<command> <classe>
   
   elo:
     description: Modifie l'elo d'un joueur.

@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.classes.displayers;
+package net.lnfinity.HeroBattle.classes.displayers.free;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +10,7 @@ import net.lnfinity.HeroBattle.tools.displayers.ArrowsTool;
 import net.lnfinity.HeroBattle.tools.displayers.NotYetAvaibleTool;
 import net.lnfinity.HeroBattle.tools.displayers.SmokeTool;
 import net.lnfinity.HeroBattle.tools.displayers.SpeedTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant3Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.SaberSwordTool;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ public class ArcherClass extends PlayerClass {
 	public ArcherClass(HeroBattle plugin, int arg1, int arg2, int arg3) {
 		super(plugin, arg1, arg2, arg3);
 
-		addTool(new SwordVariant3Tool(p));
+		addTool(new SaberSwordTool(p));
 		addTool(new ArrowsTool(p, 15 - arg1, 3 + arg2));
 		addTool(new SpeedTool(p, 20 - arg1 * 2, (int) Math.floor(1 + arg2 * 0.5), 5 + arg2));
 		if(arg3 >= 1) addTool(new SmokeTool(p, 45 - arg1, 4 + arg2));

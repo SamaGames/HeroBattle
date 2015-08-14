@@ -1,8 +1,8 @@
 package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
-import java.util.Arrays;
-import java.util.List;
-
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.Weapon;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,29 +10,28 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tools.Weapon;
-import net.md_5.bungee.api.ChatColor;
+import java.util.Arrays;
+import java.util.List;
 
-public class SwordVariant11Tool extends SwordTool implements Weapon {
+public class AppleWhipSwordTool extends WroughtIronSwordTool implements Weapon {
 
-	public SwordVariant11Tool(HeroBattle plugin) {
+	public AppleWhipSwordTool(HeroBattle plugin) {
 		super(plugin);
 	}
 
 	@Override
 	public String getToolID() {
-		return "tool.sword.variant11";
+		return "tool.sword.appleWhip";
 	}
 
 	@Override
 	public String getName() {
-		return ChatColor.GRAY + "" + ChatColor.BOLD + "Foreuse";
+		return ChatColor.RED + "" + ChatColor.BOLD + "POMME QUI FOUETTE";
 	}
 
 	@Override
 	public ItemStack getItem() {
-		ItemStack item = new ItemStack(Material.DIAMOND_PICKAXE, 1);
+		ItemStack item = new ItemStack(Material.CARROT_STICK, 1);
 
 		ItemMeta meta = item.getItemMeta();
 		meta.spigot().setUnbreakable(true);
@@ -48,17 +47,16 @@ public class SwordVariant11Tool extends SwordTool implements Weapon {
 				ChatColor.GRAY + "Cliquez droit pour faire un double saut.",
 				"",
 				ChatColor.AQUA + "Effet spécial",
-				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + 1 + ChatColor.GRAY + "% de chance d'obtenir de la vision nocturne ", ChatColor.GRAY + "pendant " + ChatColor.GOLD + "10 " + ChatColor.GRAY + "secondes à chaque coup porté"
+				ChatColor.GRAY + "Vous avez " + ChatColor.GOLD + 2 + ChatColor.GRAY + "% de chance d'asperger votre cible ", ChatColor.GRAY + "pendant " + ChatColor.GOLD + "3 " + ChatColor.GRAY + "secondes à chaque coup porté"
 		);
 	}
 
 	@Override
 	public void onPlayerHit(final Player sender, final Player victim) {
-		double n = 0.01;
+		double n = 0.02;
 
 		if(random.nextDouble() <= n) {
-			victim.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 10 * 20, 0, true, false));
+			victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3*20, 0, true, false));
 		}
 	}
-
 }

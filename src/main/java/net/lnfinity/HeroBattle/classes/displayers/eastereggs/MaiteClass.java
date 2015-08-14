@@ -1,23 +1,23 @@
-package net.lnfinity.HeroBattle.classes.displayers;
+package net.lnfinity.HeroBattle.classes.displayers.eastereggs;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.PlayerClass;
-import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.classes.*;
 import net.lnfinity.HeroBattle.tools.displayers.AnguilleTool;
 import net.lnfinity.HeroBattle.tools.displayers.PotatoTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant8Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.MaryseSwordTool;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MaiteClass extends PlayerClass {
+public class MaiteClass extends PlayerClass implements EasterEggClass
+{
 
 	public MaiteClass(HeroBattle plugin) {
 		super(plugin, 0, 0, 0);
 		
-		addTool(new SwordVariant8Tool(plugin));
+		addTool(new MaryseSwordTool(plugin));
 		addTool(new AnguilleTool(plugin));
 		addTool(new PotatoTool(plugin));
 	}

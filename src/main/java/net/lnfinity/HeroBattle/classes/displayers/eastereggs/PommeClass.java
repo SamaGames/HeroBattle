@@ -16,15 +16,14 @@
  * along with this program.  If not, see [http://www.gnu.org/licenses/].
  */
 
-package net.lnfinity.HeroBattle.classes.displayers;
+package net.lnfinity.HeroBattle.classes.displayers.eastereggs;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.PlayerClass;
-import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.classes.*;
 import net.lnfinity.HeroBattle.tools.displayers.PommEhxploseTool;
 import net.lnfinity.HeroBattle.tools.displayers.PommeBoostTool;
 import net.lnfinity.HeroBattle.tools.displayers.SaintePommeTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant10Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.AppleWhipSwordTool;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,7 +31,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class PommeClass extends PlayerClass
+public class PommeClass extends PlayerClass implements EasterEggClass
 {
 
 	public PommeClass()
@@ -44,7 +43,7 @@ public class PommeClass extends PlayerClass
 	{
 		super(plugin, cooldown, power, tool);
 
-		addTool(new SwordVariant10Tool(plugin));
+		addTool(new AppleWhipSwordTool(plugin));
 		addTool(new PommEhxploseTool(plugin));
 		addTool(new PommeBoostTool(plugin));
 		addTool(new SaintePommeTool(plugin));

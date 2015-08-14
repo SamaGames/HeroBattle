@@ -1,11 +1,10 @@
-package net.lnfinity.HeroBattle.classes.displayers;
+package net.lnfinity.HeroBattle.classes.displayers.eastereggs;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.PlayerClass;
-import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.classes.*;
 import net.lnfinity.HeroBattle.tools.displayers.TripleJumpTool;
 import net.lnfinity.HeroBattle.tools.displayers.Cannon20mmTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.SwordVariant9Tool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.Mac34SwordTool;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,7 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class DewoitineClass extends PlayerClass {
+public class DewoitineClass extends PlayerClass implements EasterEggClass
+{
 
 	public DewoitineClass(HeroBattle plugin) {
 		super(plugin, 0, 0, 0);
@@ -22,7 +22,7 @@ public class DewoitineClass extends PlayerClass {
 	public DewoitineClass(HeroBattle plugin, int cooldown, int power, int tool) {
 		super(plugin, cooldown, power, tool);
 
-		addTool(new SwordVariant9Tool(plugin));
+		addTool(new Mac34SwordTool(plugin));
 		addTool(new Cannon20mmTool(plugin, 12, 1));
 		addTool(new TripleJumpTool(plugin, 20, 4));
 	}

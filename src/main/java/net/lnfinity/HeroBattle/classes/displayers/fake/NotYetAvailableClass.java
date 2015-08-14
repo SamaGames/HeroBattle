@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.classes.displayers;
+package net.lnfinity.HeroBattle.classes.displayers.fake;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
@@ -6,8 +6,8 @@ import net.lnfinity.HeroBattle.classes.PlayerClassType;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
 
 /**
  * A fake player class to display a “not yet available” class in the selector.
@@ -20,7 +20,7 @@ public class NotYetAvailableClass extends PlayerClass {
 
 	@Override
 	public String getName() {
-		return "¿¿¿";
+		return "? ¿ ?";
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class NotYetAvailableClass extends PlayerClass {
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList("Bientôt disponible !");
+		return Collections.singletonList("Bientôt disponible !");
 	}
 
 	@Override

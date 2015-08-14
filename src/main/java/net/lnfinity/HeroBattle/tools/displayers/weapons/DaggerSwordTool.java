@@ -6,16 +6,17 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class SwordVariant1Tool extends SwordTool {
+public class DaggerSwordTool extends SwordTool
+{
 
-	public SwordVariant1Tool(HeroBattle plugin, int arg1) {
+	public DaggerSwordTool(HeroBattle plugin, int arg1) {
 		super(plugin);
 		upgrade = arg1;
 	}
 	
 	@Override
 	public String getToolID() {
-		return "tool.sword.variant1";
+		return "tool.sword.dagger";
 	}
 
 	@Override

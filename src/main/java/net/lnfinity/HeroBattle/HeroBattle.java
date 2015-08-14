@@ -14,14 +14,8 @@ import net.lnfinity.HeroBattle.classes.ClassManager;
 import net.lnfinity.HeroBattle.game.Game;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.game.ScoreboardManager;
-import net.lnfinity.HeroBattle.listeners.ClassSelectionCommand;
-import net.lnfinity.HeroBattle.listeners.ClassSelectorListener;
-import net.lnfinity.HeroBattle.listeners.CommandListener;
-import net.lnfinity.HeroBattle.listeners.GameListener;
-import net.lnfinity.HeroBattle.listeners.MasterListener;
-import net.lnfinity.HeroBattle.listeners.PlayersConnectionsListener;
-import net.lnfinity.HeroBattle.listeners.PowerupsListener;
-import net.lnfinity.HeroBattle.listeners.SystemListener;
+import net.lnfinity.HeroBattle.gui.core.*;
+import net.lnfinity.HeroBattle.listeners.*;
 import net.lnfinity.HeroBattle.powerups.PowerupManager;
 import net.lnfinity.HeroBattle.tutorial.TutorialDisplayer;
 import net.lnfinity.HeroBattle.utils.CountdownTimer;
@@ -133,15 +127,16 @@ public class HeroBattle extends JavaPlugin {
 		events.registerEvents(new PlayersConnectionsListener(this), this);
 		events.registerEvents(new GameListener(this), this);
 		events.registerEvents(new SystemListener(this), this);
-		events.registerEvents(new ClassSelectorListener(this), this);
+		events.registerEvents(new ClassSelectorListener(), this);
 		events.registerEvents(new PowerupsListener(this), this);
 
-		CommandListener command = new CommandListener(this);
+		final CommandListener command = new CommandListener(this);
 		this.getCommand("start").setExecutor(command);
 		this.getCommand("forcestop").setExecutor(command);
 		this.getCommand("powerup").setExecutor(command);
 
-		this.getCommand("classe").setExecutor(new ClassSelectionCommand(this));
+		this.getCommand("classe").setExecutor(new ClassSelectionCommand());
+		this.getCommand("preview").setExecutor(new ClassPreviewCommand());
 		
 		this.getCommand("elo").setExecutor(command);
 
@@ -159,6 +154,10 @@ public class HeroBattle extends JavaPlugin {
 		powerupManager = new PowerupManager(this);
 		tutorialDisplayer = new TutorialDisplayer(this);
 
+		Gui.init(this);
+		GuiUtils.init();
+
+
 		try {
 			GameAPI.registerGame(getConfig().getString("gameName"), g);
 		} catch(NullPointerException ignored) {} // In offline mode
@@ -170,6 +169,8 @@ public class HeroBattle extends JavaPlugin {
 	}
 
 	public void onDisable() {
+		Gui.exit();
+
 		g.setStatus(Status.Stopping);
 		GameAPI.getManager().sendSync();
 

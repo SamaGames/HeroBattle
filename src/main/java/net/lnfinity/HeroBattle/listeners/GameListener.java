@@ -1,8 +1,8 @@
 package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.displayers.BruteClass;
-import net.lnfinity.HeroBattle.classes.displayers.MinerClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.BruteClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.MinerClass;
 import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
@@ -238,8 +238,6 @@ public class GameListener implements Listener {
 					if(player.getLocation().distanceSquared(e.getEntity().getLocation()) <= 16) {
 						player.damage(0);
 						gamePlayer.setPercentage(gamePlayer.getPercentage() + Utils.randomNumber(10, 18), damager);
-						player.setLevel(gamePlayer.getPercentage());
-						plugin.getScoreboardManager().update(player);
 					}
 				}
 			}
@@ -249,12 +247,14 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		e.setCancelled(true);
 
 		final Player p = e.getPlayer();
 		final GamePlayer gamePlayer = plugin.getGamePlayer(p);
 
 		if(gamePlayer == null || gamePlayer.getPlayerClass() == null) return;
+
+
+		if(p.getGameMode() != GameMode.CREATIVE) e.setCancelled(true);
 
 
 		if (e.hasItem() && e.getItem().getType() != Material.AIR && e.getItem().hasItemMeta()
