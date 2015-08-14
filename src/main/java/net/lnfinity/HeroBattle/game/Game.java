@@ -4,6 +4,7 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.classes.displayers.BruteClass;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.tools.Weapon;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.lnfinity.HeroBattle.utils.WinnerFirework;
@@ -15,6 +16,7 @@ import net.samagames.utils.GlowEffect;
 import net.samagames.utils.Titles;
 import net.zyuiop.MasterBundle.MasterBundle;
 import net.zyuiop.statsapi.StatsApi;
+
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
@@ -47,7 +49,6 @@ public class Game implements GameArena {
 
 	private ArrayList<Location> teleportationPortalsDestinations = new ArrayList<Location>();
 
-
 	private final Integer COINS_PER_KILL = 5;
 	private final Integer COINS_PER_ASSIST = 3;
 
@@ -57,8 +58,7 @@ public class Game implements GameArena {
 	private final Integer COINS_IF_FIRST_RANKED = 10;
 	private final Integer COINS_IF_SECOND_RANKED = 6;
 	private final Integer COINS_IF_THIRD_RANKED = 4;
-
-
+	
 	/**
 	 * We store here the last players who launched a lightning bolt and where,
 	 * to associate the damages to the good damager.
@@ -82,6 +82,8 @@ public class Game implements GameArena {
 
 
 	private Random random = new Random();
+	
+	private int damagesMultiplicator = 1;
 
 	public Game(HeroBattle plugin) {
 		p = plugin;
@@ -298,7 +300,7 @@ public class Game implements GameArena {
 	public void spawnPlayer(Player player) {
 		GamePlayer hbPlayer = p.getGamePlayer(player);
 
-		hbPlayer.setPercentage(0, null);
+		hbPlayer.resetPercentage();
 		player.setExp(0);
 		player.setLevel(0);
 		player.setTotalExperience(0);
@@ -1250,5 +1252,26 @@ public class Game implements GameArena {
 		player.updateInventory();
 		player.getInventory().setHeldItemSlot(0);
 
+	}
+
+	public int getDamagesMultiplicator() {
+		return damagesMultiplicator;
+	}
+
+	public void setDamagesMultiplicator(int damagesMultiplicator) {
+		this.damagesMultiplicator = damagesMultiplicator;
+	}
+	
+	public void createKnockback(Player player, Location origin) {
+		GamePlayer gamePlayer = p.getGamePlayer(player);
+		if(gamePlayer == null) return;
+		
+		player.damage(0);
+		
+		final float reducer = 15.0F;
+
+		Vector v = player.getVelocity().add(player.getLocation().toVector().subtract(origin.toVector()).normalize().multiply(gamePlayer.getPercentage() / reducer));
+		v.setY(0.5);
+		player.setVelocity(v);
 	}
 }

@@ -35,6 +35,6 @@ public class ToastPowerup implements NegativePowerup {
 
 	@Override
 	public double getWeight() {
-		return 1;
+		return 0.01;
 	}
 }

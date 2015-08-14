@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.displayers.BruteClass;
+import net.lnfinity.HeroBattle.classes.displayers.MinerClass;
 import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
@@ -187,7 +188,7 @@ public class GameListener implements Listener {
 		Entity entity = e.getEntity();
 		
 		// ### FireballTool ###
-		if (!(entity instanceof Fireball)) return;
+		if (entity instanceof Fireball) {
 		e.setRadius(0);
 
 		GamePlayer damager = plugin.getGamePlayer(plugin.getGame().getFireballsLaunched().get(entity.getUniqueId()));
@@ -206,6 +207,26 @@ public class GameListener implements Listener {
 
 		for(int i = 0; i <= Utils.randomNumber(10, 15); i++) {
 			e.getEntity().getWorld().playEffect(e.getEntity().getLocation().clone().add(1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2), 1 - Utils.randomNumber(0, 2)), Effect.FLAME, 0);
+		}
+		
+		
+		// ### TNTTool ###
+		} else if(entity instanceof TNTPrimed) {
+			e.setRadius(0);
+			
+			GamePlayer damager = plugin.getGamePlayer(plugin.getGame().getFireballsLaunched().get(entity.getUniqueId()));
+
+			for(GamePlayer gamePlayer : plugin.getGamePlayers().values()) {
+				Player player = plugin.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
+				if(player != null && !(gamePlayer.getPlayerClass() instanceof MinerClass)) {
+					if(player.getLocation().distanceSquared(e.getEntity().getLocation()) <= 16) {
+						player.damage(0);
+						gamePlayer.setPercentage(gamePlayer.getPercentage() + Utils.randomNumber(10, 18), damager);
+						player.setLevel(gamePlayer.getPercentage());
+						plugin.getScoreboardManager().update(player);
+					}
+				}
+			}
 		}
 	}
 
