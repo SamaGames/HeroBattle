@@ -33,7 +33,7 @@ Les tâches servent à exécuter une certaine action lorsque un événement est 
 
 
 
-### Licence, droit d'exploitation
+## Licence, droit d'exploitation
 
 Le jeu HeroBattle (le Jeu) est publié sous les termes de la Licence CeCILL-C, version 1 (se référer au fichier `LICENSE`).
 
