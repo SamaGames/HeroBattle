@@ -41,7 +41,7 @@ public class ClassSelectorGui extends ActionGui
 	/**
 	 * The fake classes displayed in the selector, to tease the players.
 	 */
-	private final int COMING_SOON_CLASSES_COUNT = 3;
+	private final int COMING_SOON_CLASSES_COUNT = 2;
 
 
 	private GamePlayer gPlayer = null;
