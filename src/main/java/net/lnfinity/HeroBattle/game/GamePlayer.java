@@ -5,6 +5,8 @@ import net.lnfinity.HeroBattle.classes.PlayerClass;
 import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.lnfinity.HeroBattle.utils.DamageTag;
+import net.lnfinity.HeroBattle.utils.ParticleEffect;
+import net.lnfinity.HeroBattle.utils.ParticleEffect.ParticleData;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
 import net.zyuiop.MasterBundle.*;
@@ -13,6 +15,7 @@ import net.zyuiop.coinsManager.CoinsManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -460,6 +463,8 @@ public class GamePlayer {
 			Vector direction = player.getLocation().getDirection().multiply(0.5);
 			Vector vector = new Vector(direction.getX(), 0.9, direction.getZ());
 			player.setVelocity(vector);
+
+			ParticleEffect.CLOUD.display((float) (1 - Math.random() * 2), (float)  Math.random(), (float) (1 - Math.random() * 2), 0.1F, 5, player.getLocation(), 1);
 		}
 	}
 
