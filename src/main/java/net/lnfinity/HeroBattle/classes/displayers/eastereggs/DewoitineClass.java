@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.classes.displayers;
+package net.lnfinity.HeroBattle.classes.displayers.eastereggs;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.*;

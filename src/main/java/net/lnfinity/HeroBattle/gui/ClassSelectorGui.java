@@ -19,7 +19,8 @@ package net.lnfinity.HeroBattle.gui;
 
 import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.classes.*;
-import net.lnfinity.HeroBattle.classes.displayers.*;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
+import net.lnfinity.HeroBattle.classes.displayers.fake.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.gui.core.*;
 import net.samagames.utils.*;

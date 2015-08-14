@@ -1,7 +1,9 @@
 package net.lnfinity.HeroBattle.classes;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.displayers.*;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
+import net.lnfinity.HeroBattle.classes.displayers.free.*;
+import net.lnfinity.HeroBattle.classes.displayers.paid.*;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.md_5.bungee.api.*;
 import net.zyuiop.MasterBundle.FastJedis;

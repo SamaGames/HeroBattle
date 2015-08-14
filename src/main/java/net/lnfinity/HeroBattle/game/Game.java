@@ -2,9 +2,8 @@ package net.lnfinity.HeroBattle.game;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.PlayerClass;
-import net.lnfinity.HeroBattle.classes.displayers.BruteClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.BruteClass;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
-import net.lnfinity.HeroBattle.tools.Weapon;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.lnfinity.HeroBattle.utils.WinnerFirework;
@@ -986,9 +985,11 @@ public class Game implements GameArena {
 				}
 			}, 14 * 20L);
 
-			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable() {
+			Bukkit.getServer().getScheduler().runTaskLater(p, new Runnable()
+			{
 				@Override
-				public void run() {
+				public void run()
+				{
 					Bukkit.shutdown();
 				}
 			}, 18 * 20L);

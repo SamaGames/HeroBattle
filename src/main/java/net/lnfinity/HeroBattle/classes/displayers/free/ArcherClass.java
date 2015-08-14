@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.classes.displayers;
+package net.lnfinity.HeroBattle.classes.displayers.free;
 
 import java.util.Arrays;
 import java.util.List;

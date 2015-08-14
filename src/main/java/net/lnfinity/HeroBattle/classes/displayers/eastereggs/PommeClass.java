@@ -16,7 +16,7 @@
  * along with this program.  If not, see [http://www.gnu.org/licenses/].
  */
 
-package net.lnfinity.HeroBattle.classes.displayers;
+package net.lnfinity.HeroBattle.classes.displayers.eastereggs;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.classes.*;

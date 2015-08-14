@@ -1,8 +1,8 @@
 package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.displayers.BruteClass;
-import net.lnfinity.HeroBattle.classes.displayers.MinerClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.BruteClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.MinerClass;
 import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tools.PlayerTool;

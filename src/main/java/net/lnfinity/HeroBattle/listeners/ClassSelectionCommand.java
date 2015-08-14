@@ -2,7 +2,7 @@ package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.classes.*;
-import net.lnfinity.HeroBattle.classes.displayers.*;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.*;
