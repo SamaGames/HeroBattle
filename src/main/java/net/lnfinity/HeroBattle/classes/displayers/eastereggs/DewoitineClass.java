@@ -8,8 +8,7 @@ import net.lnfinity.HeroBattle.tools.displayers.weapons.Mac34SwordTool;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 public class DewoitineClass extends PlayerClass implements EasterEggClass
@@ -44,7 +43,7 @@ public class DewoitineClass extends PlayerClass implements EasterEggClass
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList("Dewoitine");
+		return Collections.singletonList("Dewoitine");
 	}
 
 	@Override

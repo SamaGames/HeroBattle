@@ -8,8 +8,8 @@ import net.lnfinity.HeroBattle.tools.displayers.weapons.MaryseSwordTool;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
 
 public class MaiteClass extends PlayerClass implements EasterEggClass
 {
@@ -39,7 +39,7 @@ public class MaiteClass extends PlayerClass implements EasterEggClass
 
 	@Override
 	public List<String> getDescription() {
-		return Arrays.asList("Hmmmm... Fameux hein ?");
+		return Collections.singletonList("Hmmmm... Fameux hein ?");
 	}
 
 	@Override
