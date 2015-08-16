@@ -1,8 +1,7 @@
 package net.lnfinity.HeroBattle.listeners;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.PlayerClass;
-import net.lnfinity.HeroBattle.classes.displayers.eastereggs.PommeClass;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
 import net.lnfinity.HeroBattle.game.DeathType;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
@@ -188,17 +187,14 @@ public class SystemListener implements Listener {
 		if(gamePlayer == null) return; // /btp or /stp
 
 		// Pomme Easter-Egg
-		if(HeroBattle.getInstance().getGame().getStatus() == Status.Available || HeroBattle.getInstance().getGame().getStatus() == Status.PreStarting || HeroBattle.getInstance().getGame().getStatus() == Status.Starting)
+		if (HeroBattle.getInstance().getGame().getStatus() == Status.Available || HeroBattle.getInstance().getGame().getStatus() == Status.PreStarting || HeroBattle.getInstance().getGame().getStatus() == Status.Starting)
 		{
-			if(HeroBattle.getInstance().getClassManager().getPommeUnlocks().contains(e.getPlayer().getUniqueId()))
+			if (e.getMessage().equalsIgnoreCase("MEH"))
 			{
-				if(e.getMessage().equalsIgnoreCase("MEH"))
+				if (HeroBattle.getInstance().getClassManager().getPommeUnlocks().contains(e.getPlayer().getUniqueId()))
 				{
-					PlayerClass pomme = new PommeClass();
-
-					gamePlayer.setPlayerClass(pomme);
-					e.getPlayer().sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
-							+ ChatColor.DARK_GREEN + pomme.getName() + ChatColor.GREEN + " !");
+					HeroBattle.getInstance().getClassManager().setPlayerClass(e.getPlayer(), new PommeClass(), true);
+					HeroBattle.getInstance().getClassManager().getPommeUnlocks().remove(e.getPlayer().getUniqueId());
 
 					e.setCancelled(true);
 					return;
