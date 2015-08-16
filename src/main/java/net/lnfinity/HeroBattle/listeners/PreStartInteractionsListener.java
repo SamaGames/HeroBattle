@@ -9,7 +9,7 @@ import org.bukkit.event.*;
 import org.bukkit.event.player.*;
 
 
-public class ClassSelectorListener implements Listener
+public class PreStartInteractionsListener implements Listener
 {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e)

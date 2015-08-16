@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.lnfinity.HeroBattle.listeners;
+package net.lnfinity.HeroBattle.listeners.commands;
 
 import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.classes.*;

@@ -1,4 +1,4 @@
-package net.lnfinity.HeroBattle.listeners;
+package net.lnfinity.HeroBattle.listeners.commands;
 
 import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.classes.*;
