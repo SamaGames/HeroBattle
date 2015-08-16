@@ -84,7 +84,7 @@ public class CrackTool extends PlayerTool
 					@Override
 					public void run()
 					{
-						task = Bukkit.getScheduler().runTaskTimer(HeroBattle.getInstance(), new Runnable()
+						task = Bukkit.getScheduler().runTaskTimer(HeroBattle.get(), new Runnable()
 						{
 							int k = 0;
 

@@ -775,7 +775,7 @@ public class Game implements GameArena {
 			gWinner.setPlaying(false);
 
 
-			Bukkit.getScheduler().runTaskLater(HeroBattle.getInstance(), new Runnable() {
+			Bukkit.getScheduler().runTaskLater(HeroBattle.get(), new Runnable() {
 				@Override
 				public void run() {
 

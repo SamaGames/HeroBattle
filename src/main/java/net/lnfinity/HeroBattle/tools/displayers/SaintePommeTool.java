@@ -88,7 +88,7 @@ public class SaintePommeTool extends PlayerTool
 			return;
 		}
 
-		GamePlayer gPlayer = HeroBattle.getInstance().getGamePlayer(player);
+		GamePlayer gPlayer = HeroBattle.get().getGamePlayer(player);
 		if(gPlayer == null || !gPlayer.isPlaying()) return;
 
 
@@ -102,7 +102,7 @@ public class SaintePommeTool extends PlayerTool
 			player.sendMessage(ChatColor.RED + "POMMEH PUISSANT");
 		}
 
-		new ItemCooldown(HeroBattle.getInstance(), player, this, COOLDOWN);
+		new ItemCooldown(HeroBattle.get(), player, this, COOLDOWN);
 	}
 
 	@Override

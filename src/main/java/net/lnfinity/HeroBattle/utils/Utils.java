@@ -3,10 +3,6 @@ package net.lnfinity.HeroBattle.utils;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.game.GamePlayer;
 
-import net.samagames.permissionsapi.PermissionsAPI;
-import net.samagames.permissionsbukkit.PermissionsBukkit;
-import net.zyuiop.MasterBundle.MasterBundle;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -209,7 +205,7 @@ public final class Utils {
 	public static String getRandomAvailableTeamName() {
 		do {
 			String teamName = rnd.nextInt(99999999) + "";
-			if(HeroBattle.getInstance().getScoreboardManager().getScoreboard().getTeam(teamName) == null) {
+			if(HeroBattle.get().getScoreboardManager().getScoreboard().getTeam(teamName) == null) {
 				return teamName;
 			}
 		} while(true);

@@ -36,7 +36,7 @@ public class PommeClass extends PlayerClass implements EasterEggClass
 
 	public PommeClass()
 	{
-		this(HeroBattle.getInstance(), 0, 0, 0);
+		this(HeroBattle.get(), 0, 0, 0);
 	}
 
 	public PommeClass(HeroBattle plugin, int cooldown, int power, int tool)

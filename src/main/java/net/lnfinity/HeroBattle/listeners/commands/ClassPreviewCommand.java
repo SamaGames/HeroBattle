@@ -45,14 +45,14 @@ public class ClassPreviewCommand implements CommandExecutor
 			return true;
 		}
 
-		GamePlayer target = HeroBattle.getInstance().getGamePlayer(((Player) sender).getUniqueId());
+		GamePlayer target = HeroBattle.get().getGamePlayer(((Player) sender).getUniqueId());
 		if(target == null)
 		{
 			sender.sendMessage(ChatColor.RED + "Vous n'êtes pas un joueur !");
 			return true;
 		}
 
-		PlayerClass playerClass = HeroBattle.getInstance().getClassManager().getAnyClassByFriendlyName(args[0], target);
+		PlayerClass playerClass = HeroBattle.get().getClassManager().getAnyClassByFriendlyName(args[0], target);
 		if(playerClass != null)
 		{
 			Gui.open(((Player) sender), new ClassDetailsGui(playerClass));

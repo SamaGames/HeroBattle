@@ -37,7 +37,7 @@ public class PikachuTailSwordTool extends SwordTool implements Weapon
 
 	public PikachuTailSwordTool()
 	{
-		super(HeroBattle.getInstance());
+		super(HeroBattle.get());
 	}
 
 	@Override

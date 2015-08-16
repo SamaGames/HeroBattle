@@ -16,7 +16,7 @@ public class PreStartInteractionsListener implements Listener
 	{
 		if (e.hasItem())
 		{
-			Status gameStatus = HeroBattle.getInstance().getGame().getStatus();
+			Status gameStatus = HeroBattle.get().getGame().getStatus();
 
 			if(gameStatus == Status.Available || gameStatus == Status.Starting)
 			{
@@ -26,7 +26,7 @@ public class PreStartInteractionsListener implements Listener
 				}
 				else if (e.getItem().getType() == Material.BOOK)
 				{
-					HeroBattle.getInstance().getTutorialDisplayer().start(e.getPlayer().getUniqueId());
+					HeroBattle.get().getTutorialDisplayer().start(e.getPlayer().getUniqueId());
 				}
 			}
 		}

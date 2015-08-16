@@ -84,7 +84,7 @@ public class PommeBoostTool extends PlayerTool
 			return;
 		}
 
-		GamePlayer gPlayer = HeroBattle.getInstance().getGamePlayer(player);
+		GamePlayer gPlayer = HeroBattle.get().getGamePlayer(player);
 		if(gPlayer == null || !gPlayer.isPlaying()) return;
 
 
@@ -92,7 +92,7 @@ public class PommeBoostTool extends PlayerTool
 		gPlayer.addRemainingReducedIncomingDamages(10);
 
 
-		new ItemCooldown(HeroBattle.getInstance(), player, this, COOLDOWN);
+		new ItemCooldown(HeroBattle.get(), player, this, COOLDOWN);
 	}
 
 	@Override

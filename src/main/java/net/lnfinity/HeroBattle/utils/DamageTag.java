@@ -30,7 +30,7 @@ public class DamageTag {
 		
 		am.setCustomNameVisible(true);
 
-		task = Bukkit.getScheduler().runTaskTimer(HeroBattle.getInstance(), new Runnable() {
+		task = Bukkit.getScheduler().runTaskTimer(HeroBattle.get(), new Runnable() {
 			private int i = 0;
 			@Override
 			public void run() {
@@ -38,7 +38,7 @@ public class DamageTag {
 				i++;
 				if(i > 15) {
 					task.cancel();
-					Bukkit.getScheduler().runTaskLater(HeroBattle.getInstance(), new Runnable() {
+					Bukkit.getScheduler().runTaskLater(HeroBattle.get(), new Runnable() {
 						@Override
 						public void run() {
 							am.remove();

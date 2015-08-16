@@ -92,7 +92,7 @@ public class PommEhxploseTool extends PlayerTool
 
 
 		final World world = player.getWorld();
-		final GamePlayer gPlayer = HeroBattle.getInstance().getGamePlayer(player);
+		final GamePlayer gPlayer = HeroBattle.get().getGamePlayer(player);
 
 		if(gPlayer == null || !gPlayer.isPlaying()) return;
 
@@ -148,7 +148,7 @@ public class PommEhxploseTool extends PlayerTool
 						if (e instanceof Player) {
 							Player victim = (Player) e;
 
-							GamePlayer gVictim = HeroBattle.getInstance().getGamePlayer(victim);
+							GamePlayer gVictim = HeroBattle.get().getGamePlayer(victim);
 							if(gVictim == null || !gVictim.isPlaying()) continue;
 
 							Double distanceSquared = victim.getLocation().distanceSquared(player.getLocation());
@@ -179,10 +179,10 @@ public class PommEhxploseTool extends PlayerTool
 
 				delay -= 2;
 			}
-		}.runTaskTimer(HeroBattle.getInstance(), 10, 2);
+		}.runTaskTimer(HeroBattle.get(), 10, 2);
 
 
-		new ItemCooldown(HeroBattle.getInstance(), player, this, COOLDOWN);
+		new ItemCooldown(HeroBattle.get(), player, this, COOLDOWN);
 	}
 
 	@Override

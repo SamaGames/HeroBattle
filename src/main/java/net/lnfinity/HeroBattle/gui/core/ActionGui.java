@@ -160,11 +160,11 @@ abstract public class ActionGui extends Gui
 		}
 		catch (IllegalAccessException | IllegalArgumentException ex)
 		{
-			HeroBattle.getInstance().getLogger().log(Level.SEVERE, "Could not invoke GUI action handler", ex);
+			HeroBattle.get().getLogger().log(Level.SEVERE, "Could not invoke GUI action handler", ex);
 		}
 		catch (InvocationTargetException ex)
 		{
-			HeroBattle.getInstance().getLogger().log(Level.SEVERE, "Error while invoking action handler " + action.name + " of GUI " + guiClass.getName(), ex.getCause());
+			HeroBattle.get().getLogger().log(Level.SEVERE, "Error while invoking action handler " + action.name + " of GUI " + guiClass.getName(), ex.getCause());
 		}
 	}
 

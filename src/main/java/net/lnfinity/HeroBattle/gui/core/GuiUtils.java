@@ -60,7 +60,7 @@ abstract public class GuiUtils
 		} catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
 			// Not supported :c
 		} catch (InvocationTargetException e) {
-			HeroBattle.getInstance().getLogger().log(Level.SEVERE, "Exception occurred while looking for the ItemFlag API.", e.getCause());
+			HeroBattle.get().getLogger().log(Level.SEVERE, "Exception occurred while looking for the ItemFlag API.", e.getCause());
 		}
 	}
 
@@ -73,7 +73,7 @@ abstract public class GuiUtils
 		}
 		catch (IllegalAccessException | InvocationTargetException ex)
 		{
-			HeroBattle.getInstance().getLogger().log(Level.SEVERE, "Exception occurred while invoking the ItemMeta.addItemFlags method.", ex);
+			HeroBattle.get().getLogger().log(Level.SEVERE, "Exception occurred while invoking the ItemMeta.addItemFlags method.", ex);
 		}
 	}
 
@@ -118,7 +118,7 @@ abstract public class GuiUtils
 	 */
 	static public void setItemLater(Gui gui, int slot, ItemStack item)
 	{
-		Bukkit.getScheduler().scheduleSyncDelayedTask(HeroBattle.getInstance(),
+		Bukkit.getScheduler().scheduleSyncDelayedTask(HeroBattle.get(),
 				new CreateDisplayItemTask(gui.getInventory(), item, slot));
 	}
 

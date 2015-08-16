@@ -64,7 +64,7 @@ public class ClassDetailsGui extends ActionGui
 		this.displayedClass = displayedClass;
 		this.fromSelectionGUI = fromSelectionGUI;
 
-		Status status = HeroBattle.getInstance().getGame().getStatus();
+		Status status = HeroBattle.get().getGame().getStatus();
 		acceptClassChange = (status == Status.Available || status == Status.Starting);
 	}
 
@@ -79,7 +79,7 @@ public class ClassDetailsGui extends ActionGui
 	@Override
 	protected void onUpdate()
 	{
-		gPlayer = HeroBattle.getInstance().getGamePlayer(getPlayer().getUniqueId());
+		gPlayer = HeroBattle.get().getGamePlayer(getPlayer().getUniqueId());
 		if(gPlayer == null)
 			throw new IllegalStateException("Cannot open the selector GUI of a non-player! - UUID: " + getPlayer().getUniqueId());
 
@@ -87,7 +87,7 @@ public class ClassDetailsGui extends ActionGui
 		if(displayedClass instanceof EasterEggClass)
 			canBeUsed = false;
 		else
-			canBeUsed = HeroBattle.getInstance().getClassManager().playerHasClass(gPlayer, displayedClass.getType());
+			canBeUsed = HeroBattle.get().getClassManager().playerHasClass(gPlayer, displayedClass.getType());
 
 
 		// Displayed in a line with n items (n != 4);
@@ -153,7 +153,7 @@ public class ClassDetailsGui extends ActionGui
 		{
 			button = Material.RECORD_11;
 		}
-		else if(HeroBattle.getInstance().getClassManager().playerHasClass(gPlayer, displayedClass.getType()))
+		else if(HeroBattle.get().getClassManager().playerHasClass(gPlayer, displayedClass.getType()))
 		{
 			button = Material.RECORD_5;
 		}
@@ -227,7 +227,7 @@ public class ClassDetailsGui extends ActionGui
 	{
 		if(canBeUsed)
 		{
-			HeroBattle.getInstance().getClassManager().setPlayerClass(((Player) getPlayer()), displayedClass, true);
+			HeroBattle.get().getClassManager().setPlayerClass(((Player) getPlayer()), displayedClass, true);
 			close();
 		}
 	}

@@ -4,8 +4,6 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.tools.PlayerTool;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Team;
@@ -215,7 +213,7 @@ public abstract class PlayerClass {
 	 */
 	private static void setNamedClassTeam(Player player, String className) {
 
-		Team oldTeam = HeroBattle.getInstance().getScoreboardManager().getScoreboard().getPlayerTeam(player);
+		Team oldTeam = HeroBattle.get().getScoreboardManager().getScoreboard().getPlayerTeam(player);
 		if(oldTeam != null) {
 			oldTeam.unregister();
 		}
@@ -225,7 +223,7 @@ public abstract class PlayerClass {
 
 
 
-		Team classTeam = HeroBattle.getInstance().getScoreboardManager().getScoreboard().registerNewTeam(Utils.getRandomAvailableTeamName());
+		Team classTeam = HeroBattle.get().getScoreboardManager().getScoreboard().registerNewTeam(Utils.getRandomAvailableTeamName());
 		String displayName = playerColor + player.getName() + ChatColor.GRAY + " \u2042 " + ChatColor.RESET + className;
 		displayName = displayName.substring(0, Math.min(displayName.length(), 32));
 		classTeam.setDisplayName(displayName);

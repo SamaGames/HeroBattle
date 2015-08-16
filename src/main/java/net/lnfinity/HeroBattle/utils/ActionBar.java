@@ -168,7 +168,7 @@ public class ActionBar {
 	 */
 	private static void initActionMessageUpdater() {
 		// Async not possible because of Bukkit.getPlayer() :c
-		Bukkit.getScheduler().runTaskTimer(HeroBattle.getInstance(), new Runnable() {
+		Bukkit.getScheduler().runTaskTimer(HeroBattle.get(), new Runnable() {
 			@Override
 			public void run() {
 				for(Map.Entry<UUID, String> entry : actionMessages.entrySet()) {

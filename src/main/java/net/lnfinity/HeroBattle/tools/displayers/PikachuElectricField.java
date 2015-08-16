@@ -40,7 +40,7 @@ public class PikachuElectricField extends PlayerTool
 
 	public PikachuElectricField()
 	{
-		super(HeroBattle.getInstance());
+		super(HeroBattle.get());
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class PikachuElectricField extends PlayerTool
 			return;
 		}
 
-		GamePlayer gPlayer = HeroBattle.getInstance().getGamePlayer(player);
+		GamePlayer gPlayer = HeroBattle.get().getGamePlayer(player);
 		if(gPlayer == null || !gPlayer.isPlaying())
 		{
 			player.sendMessage(ChatColor.RED + "Euh... nop ? [Pas un joueur actif ou gPlayer == null] [wtf this was displayed, plz report to a dev]");
@@ -91,7 +91,7 @@ public class PikachuElectricField extends PlayerTool
 
 		player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, ELECTRIC_FIELD_DURATION * 20, 0, false, true));
 
-		new ItemCooldown(HeroBattle.getInstance(), player, this, COOLDOWN);
+		new ItemCooldown(HeroBattle.get(), player, this, COOLDOWN);
 	}
 
 	@Override

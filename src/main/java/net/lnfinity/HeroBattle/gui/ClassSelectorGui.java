@@ -53,14 +53,14 @@ public class ClassSelectorGui extends ActionGui
 	@Override
 	protected void onUpdate()
 	{
-		gPlayer = HeroBattle.getInstance().getGamePlayer(getPlayer().getUniqueId());
+		gPlayer = HeroBattle.get().getGamePlayer(getPlayer().getUniqueId());
 		if(gPlayer == null)
 			throw new IllegalStateException("Cannot open the selector GUI of a non-player! - UUID: " + getPlayer().getUniqueId());
 
 
-		List<PlayerClass> classList = new ArrayList<>(HeroBattle.getInstance().getClassManager().getAvailableClasses());
+		List<PlayerClass> classList = new ArrayList<>(HeroBattle.get().getClassManager().getAvailableClasses());
 		for (int i = 0; i < COMING_SOON_CLASSES_COUNT; i++)
-			classList.add(new NotYetAvailableClass(HeroBattle.getInstance()));
+			classList.add(new NotYetAvailableClass(HeroBattle.get()));
 
 		Integer classCount = classList.size();
 
@@ -162,7 +162,7 @@ public class ClassSelectorGui extends ActionGui
 		ItemMeta meta = item.getItemMeta();
 
 		Boolean isEnabled = gPlayer.getPlayerClass() != null && gPlayer.getPlayerClass().equals(classToDisplay);
-		Boolean available = HeroBattle.getInstance().getClassManager().playerHasClass(gPlayer, classToDisplay.getType());
+		Boolean available = HeroBattle.get().getClassManager().playerHasClass(gPlayer, classToDisplay.getType());
 
 
 		if (isEnabled)
@@ -241,7 +241,7 @@ public class ClassSelectorGui extends ActionGui
 
 	protected void action_random()
 	{
-		HeroBattle.getInstance().getClassManager().setPlayerClass(((Player) getPlayer()), null, true);
+		HeroBattle.get().getClassManager().setPlayerClass(((Player) getPlayer()), null, true);
 		close();
 	}
 
@@ -265,14 +265,14 @@ public class ClassSelectorGui extends ActionGui
 			}
 			catch(NumberFormatException e)
 			{
-				HeroBattle.getInstance().getLogger().log(Level.WARNING, "Invalid keyboard number. Don't write code while drunk.", e);
+				HeroBattle.get().getLogger().log(Level.WARNING, "Invalid keyboard number. Don't write code while drunk.", e);
 			}
 		}
 	}
 
 	protected void action_class(String className, boolean isRightClick)
 	{
-		PlayerClass clickedClass = HeroBattle.getInstance().getClassManager().getClassFromName(((Player) getPlayer()), className);
+		PlayerClass clickedClass = HeroBattle.get().getClassManager().getClassFromName(((Player) getPlayer()), className);
 
 		if(clickedClass == null)
 		{
@@ -287,9 +287,9 @@ public class ClassSelectorGui extends ActionGui
 		}
 		else
 		{
-			if (HeroBattle.getInstance().getClassManager().playerHasClass(gPlayer, clickedClass.getType()))
+			if (HeroBattle.get().getClassManager().playerHasClass(gPlayer, clickedClass.getType()))
 			{
-				HeroBattle.getInstance().getClassManager().setPlayerClass(((Player) getPlayer()), clickedClass, true);
+				HeroBattle.get().getClassManager().setPlayerClass(((Player) getPlayer()), clickedClass, true);
 			}
 			else
 			{
@@ -309,16 +309,16 @@ public class ClassSelectorGui extends ActionGui
 
 		if (sixLastDigits.equals(gPlayer.getElo() + "42"))
 		{
-			HeroBattle.getInstance().getClassManager().setPlayerClass(((Player) getPlayer()), new MaiteClass(HeroBattle.getInstance()), true);
+			HeroBattle.get().getClassManager().setPlayerClass(((Player) getPlayer()), new MaiteClass(HeroBattle.get()), true);
 			close();
 		}
 		else if (sixLastDigits.equals("401710"))
 		{
-			HeroBattle.getInstance().getClassManager().getDewoitineUnlocks().add(getPlayer().getUniqueId());
+			HeroBattle.get().getClassManager().getDewoitineUnlocks().add(getPlayer().getUniqueId());
 		}
 		else if (sixLastDigits.equals("025034"))
 		{
-			HeroBattle.getInstance().getClassManager().getPikachuUnlocks().add(getPlayer().getUniqueId());
+			HeroBattle.get().getClassManager().getPikachuUnlocks().add(getPlayer().getUniqueId());
 		}
 	}
 

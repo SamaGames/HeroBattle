@@ -265,7 +265,7 @@ public class HeroBattle extends JavaPlugin {
 		return coherenceMachine;
 	}
 
-	public static HeroBattle getInstance() {
+	public static HeroBattle get() {
 		return instance;
 	}
 }

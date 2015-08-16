@@ -187,14 +187,14 @@ public class SystemListener implements Listener {
 		if(gamePlayer == null) return; // /btp or /stp
 
 		// Pomme Easter-Egg
-		if (HeroBattle.getInstance().getGame().getStatus() == Status.Available || HeroBattle.getInstance().getGame().getStatus() == Status.PreStarting || HeroBattle.getInstance().getGame().getStatus() == Status.Starting)
+		if (HeroBattle.get().getGame().getStatus() == Status.Available || HeroBattle.get().getGame().getStatus() == Status.PreStarting || HeroBattle.get().getGame().getStatus() == Status.Starting)
 		{
 			if (e.getMessage().equalsIgnoreCase("MEH"))
 			{
-				if (HeroBattle.getInstance().getClassManager().getPommeUnlocks().contains(e.getPlayer().getUniqueId()))
+				if (HeroBattle.get().getClassManager().getPommeUnlocks().contains(e.getPlayer().getUniqueId()))
 				{
-					HeroBattle.getInstance().getClassManager().setPlayerClass(e.getPlayer(), new PommeClass(), true);
-					HeroBattle.getInstance().getClassManager().getPommeUnlocks().remove(e.getPlayer().getUniqueId());
+					HeroBattle.get().getClassManager().setPlayerClass(e.getPlayer(), new PommeClass(), true);
+					HeroBattle.get().getClassManager().getPommeUnlocks().remove(e.getPlayer().getUniqueId());
 
 					e.setCancelled(true);
 					return;

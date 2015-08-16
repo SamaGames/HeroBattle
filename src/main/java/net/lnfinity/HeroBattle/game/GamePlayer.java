@@ -6,7 +6,6 @@ import net.lnfinity.HeroBattle.tasks.Task;
 import net.lnfinity.HeroBattle.utils.ActionBar;
 import net.lnfinity.HeroBattle.utils.DamageTag;
 import net.lnfinity.HeroBattle.utils.ParticleEffect;
-import net.lnfinity.HeroBattle.utils.ParticleEffect.ParticleData;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.gameapi.json.Status;
@@ -16,7 +15,6 @@ import net.zyuiop.coinsManager.CoinsManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -113,10 +111,10 @@ public class GamePlayer {
     private void startEffectsUpdaterTask() {
         // TODO Better way than these ugly variables
 
-        updateEffectsTask = Bukkit.getScheduler().runTaskTimer(HeroBattle.getInstance(), new Runnable() {
+        updateEffectsTask = Bukkit.getScheduler().runTaskTimer(HeroBattle.get(), new Runnable() {
             @Override
             public void run() {
-                if(!(HeroBattle.getInstance().getGame().getStatus() == Status.InGame))
+                if(!(HeroBattle.get().getGame().getStatus() == Status.InGame))
                     return;
 
 
@@ -138,7 +136,7 @@ public class GamePlayer {
                     if(remainingInvisibility == 0) {
                         Player player = Bukkit.getPlayer(playerID);
                         if(player != null && player.isOnline())
-                            HeroBattle.getInstance().getGame().updatePlayerArmor(player);
+                            HeroBattle.get().getGame().updatePlayerArmor(player);
                     }
                 }
 
@@ -176,7 +174,7 @@ public class GamePlayer {
 
 		// Lock manager
 		jumpsCountLocked = true;
-		Bukkit.getScheduler().runTaskLater(HeroBattle.getInstance(), new Runnable() {
+		Bukkit.getScheduler().runTaskLater(HeroBattle.get(), new Runnable() {
 			@Override
 			public void run() {
 				jumpsCountLocked = false;
@@ -246,7 +244,7 @@ public class GamePlayer {
 
 		if(percentage < 0) percentage = 0;
 
-		final int percentageInflicted = (percentage - oldPercentage) * HeroBattle.getInstance().getGame().getDamagesMultiplicator();
+		final int percentageInflicted = (percentage - oldPercentage) * HeroBattle.get().getGame().getDamagesMultiplicator();
 
 		new DamageTag(percentageInflicted, Bukkit.getPlayer(this.playerID).getLocation()).play();
 
@@ -283,7 +281,7 @@ public class GamePlayer {
 		if(getPercentage() >= getPlayerClass().getMaxResistance()) {
 			if(aggressor != null) setLastDamager(aggressor.getPlayerUniqueID());
 
-			HeroBattle.getInstance().getGame().onPlayerDeath(playerID, DeathType.KO);
+			HeroBattle.get().getGame().onPlayerDeath(playerID, DeathType.KO);
 
 			if(player != null) {
 				player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
@@ -301,11 +299,11 @@ public class GamePlayer {
 				player.setLevel(getPercentage());
 				player.setExp(((float) getPercentage()) / ((float) getPlayerClass().getMaxResistance()));
 
-				HeroBattle.getInstance().getGame().updatePlayerArmor(player);
+				HeroBattle.get().getGame().updatePlayerArmor(player);
 			}
 		}
 
-		HeroBattle.getInstance().getScoreboardManager().update(this);
+		HeroBattle.get().getScoreboardManager().update(this);
 	}
 
 	public int getTotalLives() {
@@ -358,7 +356,7 @@ public class GamePlayer {
 		if(additionalLives != 0) {
 			additionalLives--;
 			player.setMaxHealth(player.getMaxHealth() - 2);
-			Bukkit.getScheduler().runTaskLater(HeroBattle.getInstance(), new Runnable() {
+			Bukkit.getScheduler().runTaskLater(HeroBattle.get(), new Runnable() {
 				@Override
 				public void run() {
 					player.setHealth(player.getMaxHealth());
@@ -405,7 +403,7 @@ public class GamePlayer {
 	public void addRemainingInvisibility(int remainingInvisibility) {
 		this.remainingInvisibility += remainingInvisibility;
 
-		HeroBattle.getInstance().getGame().updatePlayerArmor(Bukkit.getPlayer(playerID));
+		HeroBattle.get().getGame().updatePlayerArmor(Bukkit.getPlayer(playerID));
 		updateActionBar();
 	}
 
@@ -465,7 +463,7 @@ public class GamePlayer {
 
 			// Reset of the multiplier, only if the game is not started
 			// (else, the class was effectively chosen randomly).
-			if(HeroBattle.getInstance().getGame().getStatus() != Status.InGame) {
+			if(HeroBattle.get().getGame().getStatus() != Status.InGame) {
 				gainMultiplier = 1.0;
 			}
 
@@ -528,7 +526,7 @@ public class GamePlayer {
 			// overwritten by the PlayerMoveEvent checking if the player is on the ground.
 			final int futureJumps = getJumps() - 1;
 			jumpLocked = true;
-			Bukkit.getScheduler().runTaskLater(HeroBattle.getInstance(), new Runnable() {
+			Bukkit.getScheduler().runTaskLater(HeroBattle.get(), new Runnable() {
 				@Override
 				public void run() {
 					if(getJumps() == futureJumps + 1) {
@@ -639,7 +637,7 @@ public class GamePlayer {
 
 
 	public void creditCoins(final int amount, final String why) {
-		Bukkit.getScheduler().runTaskAsynchronously(HeroBattle.getInstance(), new Runnable() {
+		Bukkit.getScheduler().runTaskAsynchronously(HeroBattle.get(), new Runnable() {
 			@Override
 			public void run() {
 				int realAmount = (int) Math.ceil(((double) amount) * gainMultiplier);
@@ -700,7 +698,7 @@ public class GamePlayer {
 
 	private void updateActionBar() {
 
-		if(!(HeroBattle.getInstance().getGame().getStatus() == Status.InGame))
+		if(!(HeroBattle.get().getGame().getStatus() == Status.InGame))
 			return;
 
 

@@ -32,7 +32,7 @@ public class PikachuClass extends PlayerClass implements EasterEggClass
 
 	public PikachuClass()
 	{
-		super(HeroBattle.getInstance(), 0, 0, 0);
+		super(HeroBattle.get(), 0, 0, 0);
 
 		addTool(new PikachuTailSwordTool());
 		addTool(new PikachuShockBlastTool());

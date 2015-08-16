@@ -31,40 +31,40 @@ public class ClassSelectionCommand implements CommandExecutor
 		{
 			Player player = (Player) sender;
 
-			if (HeroBattle.getInstance().getGame().getStatus() == Status.Available || HeroBattle.getInstance().getGame().getStatus() == Status.PreStarting || HeroBattle.getInstance().getGame().getStatus() == Status.Starting)
+			if (HeroBattle.get().getGame().getStatus() == Status.Available || HeroBattle.get().getGame().getStatus() == Status.PreStarting || HeroBattle.get().getGame().getStatus() == Status.Starting)
 			{
-				GamePlayer gamePlayer = HeroBattle.getInstance().getGamePlayer(player);
+				GamePlayer gamePlayer = HeroBattle.get().getGamePlayer(player);
 
 				if (args[0].equalsIgnoreCase("ArsenalVG50"))
 				{
-					if (HeroBattle.getInstance().getClassManager().getDewoitineUnlocks().contains(player.getUniqueId()))
+					if (HeroBattle.get().getClassManager().getDewoitineUnlocks().contains(player.getUniqueId()))
 					{
-						HeroBattle.getInstance().getClassManager().setPlayerClass(player, new DewoitineClass(HeroBattle.getInstance(), 0, 0, 0), true);
+						HeroBattle.get().getClassManager().setPlayerClass(player, new DewoitineClass(HeroBattle.get(), 0, 0, 0), true);
 						return true;
 					}
 				}
 
 				else if (args[0].equalsIgnoreCase("ArsenalVG39"))
 				{
-					if (HeroBattle.getInstance().getClassManager().getDewoitineUnlocks().contains(player.getUniqueId()))
+					if (HeroBattle.get().getClassManager().getDewoitineUnlocks().contains(player.getUniqueId()))
 					{
-						HeroBattle.getInstance().getClassManager().setPlayerClass(player, new DewoitineD550Class(HeroBattle.getInstance(), 0, 0, 0), true);
+						HeroBattle.get().getClassManager().setPlayerClass(player, new DewoitineD550Class(HeroBattle.get(), 0, 0, 0), true);
 						return true;
 					}
 				}
 
 				else if (args[0].equalsIgnoreCase("PokemonJaune"))
 				{
-					if (HeroBattle.getInstance().getClassManager().getPikachuUnlocks().contains(player.getUniqueId()))
+					if (HeroBattle.get().getClassManager().getPikachuUnlocks().contains(player.getUniqueId()))
 					{
-						HeroBattle.getInstance().getClassManager().setPlayerClass(player, new PikachuClass(), true);
+						HeroBattle.get().getClassManager().setPlayerClass(player, new PikachuClass(), true);
 						return true;
 					}
 				}
 
 				else if (args[0].equalsIgnoreCase("Pommeeeh"))
 				{
-					HeroBattle.getInstance().getClassManager().getPommeUnlocks().add(player.getUniqueId());
+					HeroBattle.get().getClassManager().getPommeUnlocks().add(player.getUniqueId());
 					player.sendMessage(ChatColor.RED + "Vous ne possédez pas cette classe, ou elle n'existe pas !");
 
 					return true;
@@ -98,17 +98,17 @@ public class ClassSelectionCommand implements CommandExecutor
 				return true;
 			}
 
-			GamePlayer target = HeroBattle.getInstance().getGamePlayer(HeroBattle.getInstance().getServer().getPlayer(args[1]));
+			GamePlayer target = HeroBattle.get().getGamePlayer(HeroBattle.get().getServer().getPlayer(args[1]));
 			if (target == null)
 			{
 				sender.sendMessage(ChatColor.RED + "Target lost.");
 				return true;
 			}
 
-			PlayerClass pClass = HeroBattle.getInstance().getClassManager().getAnyClassByFriendlyName(args[0], target);
+			PlayerClass pClass = HeroBattle.get().getClassManager().getAnyClassByFriendlyName(args[0], target);
 			if (pClass != null)
 			{
-				HeroBattle.getInstance().getClassManager().setPlayerClass(Bukkit.getPlayer(target.getPlayerUniqueID()), pClass, true);
+				HeroBattle.get().getClassManager().setPlayerClass(Bukkit.getPlayer(target.getPlayerUniqueID()), pClass, true);
 				sender.sendMessage(ChatColor.GREEN + "Classe modifiée (normalement, cf. tab).");
 			}
 		}

@@ -42,7 +42,7 @@ public class PikachuShockBlastTool extends PlayerTool
 
 	public PikachuShockBlastTool()
 	{
-		super(HeroBattle.getInstance());
+		super(HeroBattle.get());
 	}
 
 
@@ -91,7 +91,7 @@ public class PikachuShockBlastTool extends PlayerTool
 			return;
 		}
 
-		GamePlayer gPlayer = HeroBattle.getInstance().getGamePlayer(player.getUniqueId());
+		GamePlayer gPlayer = HeroBattle.get().getGamePlayer(player.getUniqueId());
 
 
 		// Effects
@@ -137,7 +137,7 @@ public class PikachuShockBlastTool extends PlayerTool
 		}
 
 		Integer radiusSquared = (int) Math.pow(RADIUS, 2);
-		for(GamePlayer gVictim : HeroBattle.getInstance().getGamePlayers().values())
+		for(GamePlayer gVictim : HeroBattle.get().getGamePlayers().values())
 		{
 			if(!gVictim.isPlaying()) continue;
 			if(gVictim.getPlayerUniqueID().equals(player.getUniqueId())) continue;
@@ -151,7 +151,7 @@ public class PikachuShockBlastTool extends PlayerTool
 			}
 		}
 
-		new ItemCooldown(HeroBattle.getInstance(), player, this, COOLDOWN);
+		new ItemCooldown(HeroBattle.get(), player, this, COOLDOWN);
 	}
 
 	private void generateParticleCircle(Location center)
