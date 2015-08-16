@@ -23,6 +23,7 @@ public class ClassManager {
 
 	private Set<UUID> dewoitineUnlocks = new HashSet<>();
 	private Set<UUID> pommeUnlocks = new HashSet<>();
+	private Set<UUID> pikachuUnlocks = new HashSet<>();
 
 	public ClassManager(HeroBattle plugin) {
 
@@ -234,6 +235,9 @@ public class ClassManager {
 			case "pooomme":
 				return new PommeClass();
 
+			case "pikachu":
+				return new PikachuClass();
+
 			default:
 				PlayerClass playerClass = p.getClassManager().getClassFromName(target, friendlyName);
 
@@ -255,5 +259,10 @@ public class ClassManager {
 	public Set<UUID> getPommeUnlocks()
 	{
 		return pommeUnlocks;
+	}
+
+	public Set<UUID> getPikachuUnlocks()
+	{
+		return pikachuUnlocks;
 	}
 }

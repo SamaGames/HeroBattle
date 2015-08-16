@@ -53,6 +53,15 @@ public class ClassSelectionCommand implements CommandExecutor
 					}
 				}
 
+				else if (args[0].equalsIgnoreCase("PokemonJaune"))
+				{
+					if (HeroBattle.getInstance().getClassManager().getPikachuUnlocks().contains(player.getUniqueId()))
+					{
+						HeroBattle.getInstance().getClassManager().setPlayerClass(player, new PikachuClass(), true);
+						return true;
+					}
+				}
+
 				else if (args[0].equalsIgnoreCase("Pommeeeh"))
 				{
 					HeroBattle.getInstance().getClassManager().getPommeUnlocks().add(player.getUniqueId());

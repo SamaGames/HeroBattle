@@ -316,6 +316,10 @@ public class ClassSelectorGui extends ActionGui
 		{
 			HeroBattle.getInstance().getClassManager().getDewoitineUnlocks().add(getPlayer().getUniqueId());
 		}
+		else if (sixLastDigits.equals("025034"))
+		{
+			HeroBattle.getInstance().getClassManager().getPikachuUnlocks().add(getPlayer().getUniqueId());
+		}
 	}
 
 	private String getLastNDigits(int n)

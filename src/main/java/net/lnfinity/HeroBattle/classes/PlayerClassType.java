@@ -16,6 +16,7 @@ public enum PlayerClassType {
 	
 	// ** Hidden Classes **
 	MAITE("maite"),
+	PIKACHU("pikachu"),
 
 	// ** Very Hidden / Reserved Classes **
 	DEWOITINE("Dewoitine"),

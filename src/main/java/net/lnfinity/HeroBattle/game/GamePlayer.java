@@ -61,6 +61,9 @@ public class GamePlayer {
 	private int remainingReducedIncomingDamages = 0;
 	private int remainingRespawnInvincibility = 0;
 
+	private int remainingThorns = 0;
+	private float thornsEfficienty = 0.0f; // percentage of damages inflicted back
+
 	private int remainingTimeWithMoreJumps = 0;
 
 	private UUID lastDamager = null;
@@ -147,6 +150,10 @@ public class GamePlayer {
                     remainingReducedIncomingDamages--;
                 }
 
+	            if(remainingThorns != 0) {
+		            remainingThorns--;
+	            }
+
 
                 updateActionBar();
             }
@@ -216,11 +223,23 @@ public class GamePlayer {
 
 	/**
 	 * Change the current percentage of the player if the last damage comes from a player
-	 * 
-	 * @param percentage
-	 * @param aggressor
+	 *
+	 * @param percentage The new percentage
+	 * @param aggressor The player who caused the percentage change ({@code null} if not applicable).
 	 */
 	public void setPercentage(int percentage, GamePlayer aggressor) {
+		setPercentage(percentage, aggressor, false);
+	}
+
+	/**
+	 * Change the current percentage of the player if the last damage comes from a player
+	 *
+	 * @param percentage The new percentage
+	 * @param aggressor The player who caused the percentage change ({@code null} if not applicable).
+	 * @param thornsDamages {@code true} If true this damage comes from thorns damages and should not
+	 *                                     apply other thorns damages.
+	 */
+	public void setPercentage(int percentage, GamePlayer aggressor, Boolean thornsDamages) {
 		if(!isPlaying() || getPlayerClass() == null) return;
 		
 		int oldPercentage = this.percentage;
@@ -230,6 +249,11 @@ public class GamePlayer {
 		final int percentageInflicted = (percentage - oldPercentage) * HeroBattle.getInstance().getGame().getDamagesMultiplicator();
 
 		new DamageTag(percentageInflicted, Bukkit.getPlayer(this.playerID).getLocation()).play();
+
+		if (!thornsDamages && remainingThorns > 0)
+		{
+			aggressor.setPercentage((int) (aggressor.getPercentage() + percentageInflicted * thornsEfficienty), this, true);
+		}
 		
 		if(getRemainingReducingIncomingDamages() != 0 && percentage >= oldPercentage) {
 			percentage -= (percentageInflicted) / 2;
@@ -391,6 +415,21 @@ public class GamePlayer {
 
 	public void addRemainingReducedIncomingDamages(int remainingReducedIncomingDamages) {
 		this.remainingReducedIncomingDamages += remainingReducedIncomingDamages;
+		updateActionBar();
+	}
+
+	public int getRemainingThorns() {
+		return remainingThorns;
+	}
+
+	public float getThornsEfficienty() {
+		return thornsEfficienty;
+	}
+
+	public void addRemainingThorns(int remainingThorns, float thornsEfficienty) {
+		this.remainingThorns += remainingThorns;
+		this.thornsEfficienty = Math.max(thornsEfficienty, 0);
+
 		updateActionBar();
 	}
 
@@ -695,6 +734,10 @@ public class GamePlayer {
 			currentStatus.add(ChatColor.LIGHT_PURPLE + "Dommages reçus réduits (" + remainingReducedIncomingDamages + ")");
 		}
 
+		if(remainingThorns != 0) {
+			currentStatus.add(ChatColor.DARK_PURPLE + "Renvoi de dégâts (" + ((int) (thornsEfficienty * 100)) + "%) (" + remainingThorns + ")");
+		}
+
         for(PotionEffect effect : player.getActivePotionEffects()) {
             int duration = (int) Math.rint(((double) effect.getDuration()) / 20d);
             PotionEffectType type = effect.getType();
@@ -748,12 +791,14 @@ public class GamePlayer {
 	public Player getPlayer() {
 		return Bukkit.getPlayer(playerID);
 	}
-	
+
 	/**
 	 * Global method for player damaging.
 	 * Adds percentage and creates a knockback effect.
-	 * @param player
-	 * @param origin
+	 *
+	 * @param percentageAdded The percentage added.
+	 * @param aggressor The aggressor. {@code null} if non applicable.
+	 * @param origin The origin of the knockback.
 	 */
 	public void damage(int percentageAdded, GamePlayer aggressor, Location origin) {
 		Player player = getPlayer();
@@ -772,12 +817,15 @@ public class GamePlayer {
 			setPercentage(percentageAdded + percentage, aggressor);
 		}
 	}
-	
+
 	/**
 	 * Global method for player damaging.
-	 * Adds random percentage between two values and creates a knockback effect.
-	 * @param player
-	 * @param origin
+	 * Adds a random percentage between two values and creates a knockback effect.
+	 *
+	 * @param percentageMin The minimal percentage added.
+	 * @param percentageMax The maximal percentage added.
+	 * @param aggressor The aggressor. {@code null} if non applicable.
+	 * @param origin The origin of the knockback.
 	 */
 	public void damage(int percentageMin, int percentageMax, GamePlayer aggressor, Location origin) {
 		damage(Utils.randomNumber(percentageMin, percentageMax), aggressor, origin);
@@ -785,8 +833,10 @@ public class GamePlayer {
 	
 	/**
 	 * Basic damaging method.
-	 * Adds percentage to player.
-	 * @param percentageAdded
+	 * Adds percentage to player. Does not knockbacks.
+	 *
+	 * @param percentageAdded The percentage added to this player.
+	 * @param aggressor The aggressor. {@code null} if non applicable.
 	 */
 	public void basicDamage(int percentageAdded, GamePlayer aggressor) {
 		getPlayer().damage(0);
