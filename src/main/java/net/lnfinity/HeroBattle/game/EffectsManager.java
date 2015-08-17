@@ -1,10 +1,8 @@
 package net.lnfinity.HeroBattle.game;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import net.lnfinity.HeroBattle.*;
+import org.bukkit.entity.*;
+import org.bukkit.potion.*;
 
 @Deprecated
 public class EffectsManager {
@@ -17,30 +15,32 @@ public class EffectsManager {
 	
 	public void addPlayerEffect(final Player player, EffectType type, int duration, int amplifier) {
 		if(player == null) return;
-		final GamePlayer gamePlayer = p.getGamePlayer(player);
-		if(gamePlayer == null) return;
+
+		final HeroBattlePlayer heroBattlePlayer = p.getGame().getPlayer(player.getUniqueId());
+		if (heroBattlePlayer == null) return;
+
 		switch(type) {
             case STRENGH :
-                gamePlayer.addRemainingDoubleDamages(duration);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, duration * 20, 0));
+	            heroBattlePlayer.addRemainingDoubleDamages(duration);
+	            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, duration * 20, 0));
                 break;
 
             case INVULNERABLE :
-                gamePlayer.addRemainingReducedIncomingDamages(duration);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, duration * 20, 0));
+	            heroBattlePlayer.addRemainingReducedIncomingDamages(duration);
+	            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, duration * 20, 0));
                 break;
 
             case RESPAWN :
-                gamePlayer.setRespawning();
-                break;
+	            heroBattlePlayer.setRespawning();
+	            break;
 
             case JUMP :
-                gamePlayer.setMaxJumps(3, duration);
-                break;
+	            heroBattlePlayer.setMaxJumps(3, duration);
+	            break;
 
             case INVISIBLE :
-                gamePlayer.addRemainingInvisibility(duration);
-                break;
+	            heroBattlePlayer.addRemainingInvisibility(duration);
+	            break;
 		}
 	}
 	
@@ -49,8 +49,10 @@ public class EffectsManager {
 	}
 	
 	public void addPlayersEffects(EffectType type, int distance, int duration, Player ignored) {
-		for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
-			Player player = p.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
+		for (HeroBattlePlayer heroBattlePlayer : p.getGame().getInGamePlayers().values())
+		{
+			Player player = p.getServer().getPlayer(heroBattlePlayer.getUUID());
+
 			if(player != null) {
 				if(!player.getUniqueId().equals(ignored.getUniqueId())) {
 					addPlayerEffect(player, type, duration);

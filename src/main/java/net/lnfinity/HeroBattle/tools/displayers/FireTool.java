@@ -1,20 +1,17 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.tools.PlayerTool;
-import net.lnfinity.HeroBattle.utils.ItemCooldown;
-import net.lnfinity.HeroBattle.utils.ToolsUtils;
-import net.lnfinity.HeroBattle.utils.Utils;
-import net.samagames.utils.GlowEffect;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.tools.*;
+import net.lnfinity.HeroBattle.utils.*;
+import net.samagames.utils.*;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
+import org.bukkit.potion.*;
 
-import java.util.List;
+import java.util.*;
 
 public class FireTool extends PlayerTool {
 	
@@ -71,9 +68,9 @@ public class FireTool extends PlayerTool {
 			}, 0L, 1L).getTaskId();
 			
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, DURATION * 20, 0));
-			final GamePlayer gamePlayer = p.getGamePlayer(player);
-			gamePlayer.addRemainingDoubleDamages(DURATION);
-			gamePlayer.addRemainingReducedIncomingDamages(DURATION - (DURATION / 4));
+			final HeroBattlePlayer heroBattlePlayer = p.getGamePlayer(player);
+			heroBattlePlayer.addRemainingDoubleDamages(DURATION);
+			heroBattlePlayer.addRemainingReducedIncomingDamages(DURATION - (DURATION / 4));
 		} else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}

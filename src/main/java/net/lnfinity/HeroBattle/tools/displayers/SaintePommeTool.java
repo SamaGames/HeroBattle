@@ -18,20 +18,16 @@
 
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.tools.PlayerTool;
-import net.lnfinity.HeroBattle.utils.ItemCooldown;
-import net.lnfinity.HeroBattle.utils.ToolsUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.tools.*;
+import net.lnfinity.HeroBattle.utils.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 public class SaintePommeTool extends PlayerTool
@@ -88,8 +84,8 @@ public class SaintePommeTool extends PlayerTool
 			return;
 		}
 
-		GamePlayer gPlayer = HeroBattle.get().getGamePlayer(player);
-		if(gPlayer == null || !gPlayer.isPlaying()) return;
+		HeroBattlePlayer gPlayer = HeroBattle.get().getGamePlayer(player);
+		if (gPlayer == null || gPlayer.isSpectator()) return;
 
 
 		if(random.nextDouble() < FAILURE_PROBABILITY)

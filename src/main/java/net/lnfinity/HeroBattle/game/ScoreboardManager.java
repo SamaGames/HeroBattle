@@ -1,13 +1,10 @@
 package net.lnfinity.HeroBattle.game;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.utils.Utils;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.utils.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.scoreboard.*;
 
 public class ScoreboardManager {
 
@@ -38,7 +35,8 @@ public class ScoreboardManager {
 	 * To be called when the game starts.
 	 */
 	public void init() {
-		for (GamePlayer player : p.getGamePlayers().values()) {
+		for (HeroBattlePlayer player : p.getGamePlayers().values())
+		{
 			update(player);
 		}
 
@@ -51,7 +49,8 @@ public class ScoreboardManager {
 	 * Refreshes the tab list with players' ELOs.
 	 */
 	public void refreshTab() {
-		for (GamePlayer player : p.getGamePlayers().values()) {
+		for (HeroBattlePlayer player : p.getGamePlayers().values())
+		{
 			Player realPlayer = p.getServer().getPlayer(player.getPlayerUniqueID());
 			if(player != null && realPlayer != null && realPlayer.isOnline()) {
 				eloPlayerList.getScore(realPlayer.getName()).setScore(player.getElo());
@@ -73,11 +72,13 @@ public class ScoreboardManager {
 	 * 
 	 * @param player The player.
 	 */
-	public void update(GamePlayer player) {
+	public void update(HeroBattlePlayer player)
+	{
 
-		int percentage = player.isPlaying() ? player.getPercentage() : 0;
+		int percentage = !player.isSpectator() ? player.getPercentage() : 0;
 
-		if (player.isPlaying()) {
+		if (!player.isSpectator())
+		{
 			percentageSidebar.getScore(Utils.heartsToString(player) + ChatColor.WHITE + " " + player.getPlayerName())
 					.setScore(percentage);
 		}
@@ -101,7 +102,8 @@ public class ScoreboardManager {
 
 		updateTimer(); // Sets the title of the sidebar
 
-		for (GamePlayer player : p.getGamePlayers().values()) {
+		for (HeroBattlePlayer player : p.getGamePlayers().values())
+		{
 			update(player);
 		}
 	}

@@ -45,7 +45,7 @@ public class ClassPreviewCommand implements CommandExecutor
 			return true;
 		}
 
-		GamePlayer target = HeroBattle.get().getGamePlayer(((Player) sender).getUniqueId());
+		HeroBattlePlayer target = HeroBattle.get().getGamePlayer(((Player) sender).getUniqueId());
 		if(target == null)
 		{
 			sender.sendMessage(ChatColor.RED + "Vous n'êtes pas un joueur !");

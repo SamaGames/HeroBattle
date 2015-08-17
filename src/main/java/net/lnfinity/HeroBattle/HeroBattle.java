@@ -1,40 +1,25 @@
 package net.lnfinity.HeroBattle;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
-import net.lnfinity.HeroBattle.classes.ClassManager;
-import net.lnfinity.HeroBattle.game.Game;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.game.ScoreboardManager;
+import net.lnfinity.HeroBattle.classes.*;
+import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.gui.core.*;
 import net.lnfinity.HeroBattle.listeners.*;
 import net.lnfinity.HeroBattle.listeners.commands.*;
-import net.lnfinity.HeroBattle.powerups.PowerupManager;
-import net.lnfinity.HeroBattle.tutorial.TutorialDisplayer;
-import net.lnfinity.HeroBattle.utils.CountdownTimer;
-import net.lnfinity.HeroBattle.utils.GameTimer;
+import net.lnfinity.HeroBattle.powerups.*;
+import net.lnfinity.HeroBattle.tutorial.*;
+import net.lnfinity.HeroBattle.utils.*;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.gameapi.GameAPI;
-import net.samagames.gameapi.events.FinishJoinPlayerEvent;
-import net.samagames.gameapi.json.Status;
-import net.samagames.gameapi.themachine.CoherenceMachine;
-import net.zyuiop.MasterBundle.MasterBundle;
+import net.samagames.api.*;
+import org.bukkit.*;
+import org.bukkit.configuration.*;
+import org.bukkit.configuration.file.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.*;
+import org.bukkit.plugin.java.*;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.java.JavaPlugin;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 public class HeroBattle extends JavaPlugin {
 
@@ -45,14 +30,13 @@ public class HeroBattle extends JavaPlugin {
 	public final static String GAME_NAME_BICOLOR_BOLD = ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero"
 			+ ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Battle";
 
-	private static CoherenceMachine coherenceMachine = GameAPI.getCoherenceMachine(GAME_NAME_WHITE);
-	public final static String GAME_TAG = coherenceMachine.getGameTag();
+	public final static String GAME_TAG = ChatColor.DARK_AQUA + "[" + ChatColor.AQUA + GAME_NAME_WHITE + ChatColor.DARK_AQUA + "]" + ChatColor.RESET; // TODO Temp (use coherence machine here)
 	
 	public static int errorCalls = 0;
 
 	private static HeroBattle instance;
 
-	private Game g;
+	private HeroBattleGame game;
 
 	private CountdownTimer timer;
 	private GameTimer gameTimer;
@@ -66,8 +50,6 @@ public class HeroBattle extends JavaPlugin {
 
 	private Configuration arenaConfig;
 
-	private Map<UUID, GamePlayer> players = new ConcurrentHashMap<>();
-
 	@Override
 	public void onEnable() {
 
@@ -75,6 +57,7 @@ public class HeroBattle extends JavaPlugin {
 
 		saveDefaultConfig();
 
+		// TODO migrate to the new configuration format.
 		File arenaFile = new File(getServer().getWorlds().get(0).getWorldFolder(), "arena.yml");
 		if (!arenaFile.exists()) {
 			getLogger().severe("#==================[Fatal exception report]==================#");
@@ -104,16 +87,16 @@ public class HeroBattle extends JavaPlugin {
 
 				if(HeroBattle.errorCalls < 10) {
 					HeroBattle.errorCalls++;
-					Bukkit.getScheduler().runTaskAsynchronously(HeroBattle.instance, new Runnable() {
-						@Override
-						public void run() {
-							try {
-								URL url = new URL("http://lnfinity.net/tasks/stack.php?s=" + URLEncoder.encode(MasterBundle.getServerName(), "UTF-8") + "&e=" + URLEncoder.encode(e.getCause().toString(), "UTF-8") + "&stack=" + URLEncoder.encode(sw.getBuffer().toString().replace(System.lineSeparator(), "__"), "UTF-8").replace("%09", ""));
-								url.openStream();
-							} catch (IOException ex) {
-								System.err.println("Erreur lors de l'envoi de la pile:");
-								ex.printStackTrace();
-							}
+					Bukkit.getScheduler().runTaskAsynchronously(HeroBattle.instance, () -> {
+						try
+						{
+							URL url = new URL("http://lnfinity.net/tasks/stack.php?s=" + URLEncoder.encode(SamaGamesAPI.get().getServerName(), "UTF-8") + "&e=" + URLEncoder.encode(e.getCause().toString(), "UTF-8") + "&stack=" + URLEncoder.encode(sw.getBuffer().toString().replace(System.lineSeparator(), "__"), "UTF-8").replace("%09", ""));
+							url.openStream();
+						}
+						catch (IOException ex)
+						{
+							System.err.println("Erreur lors de l'envoi de la pile:");
+							ex.printStackTrace();
 						}
 					});
 					
@@ -148,7 +131,7 @@ public class HeroBattle extends JavaPlugin {
 
 
 		timer = new CountdownTimer(this);
-		g = new Game(this);
+		game = new HeroBattleGame();
 		gameTimer = new GameTimer(this, this.getArenaConfig().getInt("map.gameTime"));
 		classManager = new ClassManager(this);
 		scoreboardManager = new ScoreboardManager(this);
@@ -158,79 +141,23 @@ public class HeroBattle extends JavaPlugin {
 		Gui.init(this);
 		GuiUtils.init();
 
-
-		try {
-			GameAPI.registerGame(getConfig().getString("gameName"), g);
-		} catch(NullPointerException ignored) {} // In offline mode
-
-		g.setStatus(Status.Available);
-
 		// /reload support
 		addOnlinePlayers();
 	}
 
 	public void onDisable() {
 		Gui.exit();
-
-		g.setStatus(Status.Stopping);
-		GameAPI.getManager().sendSync();
-
-		GameAPI.getManager().disable();
 	}
 
 	// For local debugging purposes only (/rl)
 	public void addOnlinePlayers() {
-		for (Player player : this.getServer().getOnlinePlayers()) {
-
-			FinishJoinPlayerEvent ev = new FinishJoinPlayerEvent(player.getUniqueId());
-			new ConnectionsListener(this).onFinishJoinPlayer(ev);
-
-		}
+		getServer().getOnlinePlayers().forEach(game::handleLogin);
 	}
 
-	public void addGamePlayer(Player p) {
-		GamePlayer player = new GamePlayer(p.getUniqueId());
-		players.put(p.getUniqueId(), player);
-	}
 
-	public void removeGamePlayer(Player p) {
-		players.remove(p.getUniqueId());
-	}
-
-	public GamePlayer getGamePlayer(Player p) {
-		if(p == null) return null;
-		return players.get(p.getUniqueId());
-	}
-
-	public GamePlayer getGamePlayer(UUID id) {
-		if(id == null) return null;
-		return players.get(id);
-	}
-
-	public Map<UUID, GamePlayer> getGamePlayers() {
-		return players;
-	}
-
-	public int getPlayerCount() {
-		int count = 0;
-		for (Player ignored : getServer().getOnlinePlayers()) {
-			count++;
-		}
-		return count;
-	}
-
-	public int getPlayingPlayerCount() {
-		int count = 0;
-		for (GamePlayer player : players.values()) {
-			if (player.isPlaying()) {
-				count++;
-			}
-		}
-		return count;
-	}
-
-	public Game getGame() {
-		return g;
+	public HeroBattleGame getGame()
+	{
+		return game;
 	}
 
 	public CountdownTimer getTimer() {
@@ -261,11 +188,19 @@ public class HeroBattle extends JavaPlugin {
 		return tutorialDisplayer;
 	}
 
-	public CoherenceMachine getCoherenceMachine() {
-		return coherenceMachine;
-	}
 
 	public static HeroBattle get() {
 		return instance;
+	}
+
+
+	public HeroBattlePlayer getGamePlayer(UUID uuid)
+	{
+		return getGame().getPlayer(uuid);
+	}
+
+	public HeroBattlePlayer getGamePlayer(Player player)
+	{
+		return getGame().getPlayer(player.getUniqueId());
 	}
 }

@@ -1,18 +1,14 @@
 package net.lnfinity.HeroBattle.powerups.powerups;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.powerups.NegativePowerup;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.powerups.*;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 public class PlayersSwapPowerup implements NegativePowerup {
@@ -26,9 +22,11 @@ public class PlayersSwapPowerup implements NegativePowerup {
 
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
-		List<GamePlayer> otherPlayers = new ArrayList<>();
-		for(GamePlayer gPlayer : p.getGamePlayers().values()) {
-			if(gPlayer.isPlaying() && !gPlayer.getPlayerUniqueID().equals(player.getUniqueId())) {
+		List<HeroBattlePlayer> otherPlayers = new ArrayList<>();
+		for (HeroBattlePlayer gPlayer : p.getGamePlayers().values())
+		{
+			if (!gPlayer.isSpectator() && !gPlayer.getPlayerUniqueID().equals(player.getUniqueId()))
+			{
 				otherPlayers.add(gPlayer);
 			}
 		}

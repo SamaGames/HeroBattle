@@ -1,19 +1,13 @@
 package net.lnfinity.HeroBattle.utils;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import java.net.HttpURLConnection;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import java.net.*;
+import java.text.*;
+import java.util.*;
 
 public final class Utils {
 
@@ -80,7 +74,8 @@ public final class Utils {
 				* (loc1.getY() - loc2.getY()) + (loc1.getZ() - loc2.getZ()) * (loc1.getZ() - loc2.getZ()));
 	}
 
-	public static String heartsToString(GamePlayer player) {
+	public static String heartsToString(HeroBattlePlayer player)
+	{
 		return heartsToString(player, false, false);
 	}
 
@@ -92,7 +87,8 @@ public final class Utils {
 	 * @param transitionEnd  True if this is the end of a transition on the death screen
 	 * @return
 	 */
-	public static String heartsToString(GamePlayer player, boolean transitionBegin, boolean transitionEnd) {
+	public static String heartsToString(HeroBattlePlayer player, boolean transitionBegin, boolean transitionEnd)
+	{
 		if (player.getPlayerClass() == null) {
 			return "";
 		}

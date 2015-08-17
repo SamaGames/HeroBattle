@@ -25,7 +25,6 @@ import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.gui.core.*;
 import net.samagames.utils.*;
 import org.bukkit.*;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.*;
@@ -44,7 +43,7 @@ public class ClassSelectorGui extends ActionGui
 	private final int COMING_SOON_CLASSES_COUNT = 2;
 
 
-	private GamePlayer gPlayer = null;
+	private HeroBattlePlayer gPlayer = null;
 	private String typedOnKeyboard = "";
 
 

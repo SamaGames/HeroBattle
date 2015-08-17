@@ -33,7 +33,7 @@ public class ClassSelectionCommand implements CommandExecutor
 
 			if (HeroBattle.get().getGame().getStatus() == Status.Available || HeroBattle.get().getGame().getStatus() == Status.PreStarting || HeroBattle.get().getGame().getStatus() == Status.Starting)
 			{
-				GamePlayer gamePlayer = HeroBattle.get().getGamePlayer(player);
+				HeroBattlePlayer heroBattlePlayer = HeroBattle.get().getGamePlayer(player);
 
 				if (args[0].equalsIgnoreCase("ArsenalVG50"))
 				{
@@ -70,11 +70,11 @@ public class ClassSelectionCommand implements CommandExecutor
 					return true;
 				}
 
-				for (PlayerClass theClass : gamePlayer.getAvaibleClasses())
+				for (PlayerClass theClass : heroBattlePlayer.getAvaibleClasses())
 				{
 					if (args[0].equalsIgnoreCase(theClass.getType().getId()))
 					{
-						gamePlayer.setPlayerClass(theClass);
+						heroBattlePlayer.setPlayerClass(theClass);
 						player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Vous avez choisi la classe "
 								+ ChatColor.DARK_GREEN + theClass.getName() + ChatColor.GREEN + " !");
 						return true;
@@ -98,7 +98,7 @@ public class ClassSelectionCommand implements CommandExecutor
 				return true;
 			}
 
-			GamePlayer target = HeroBattle.get().getGamePlayer(HeroBattle.get().getServer().getPlayer(args[1]));
+			HeroBattlePlayer target = HeroBattle.get().getGamePlayer(HeroBattle.get().getServer().getPlayer(args[1]));
 			if (target == null)
 			{
 				sender.sendMessage(ChatColor.RED + "Target lost.");

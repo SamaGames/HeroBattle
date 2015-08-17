@@ -91,7 +91,7 @@ public class PikachuShockBlastTool extends PlayerTool
 			return;
 		}
 
-		GamePlayer gPlayer = HeroBattle.get().getGamePlayer(player.getUniqueId());
+		HeroBattlePlayer gPlayer = HeroBattle.get().getGamePlayer(player.getUniqueId());
 
 
 		// Effects
@@ -137,9 +137,9 @@ public class PikachuShockBlastTool extends PlayerTool
 		}
 
 		Integer radiusSquared = (int) Math.pow(RADIUS, 2);
-		for(GamePlayer gVictim : HeroBattle.get().getGamePlayers().values())
+		for (HeroBattlePlayer gVictim : HeroBattle.get().getGamePlayers().values())
 		{
-			if(!gVictim.isPlaying()) continue;
+			if (gVictim.isSpectator()) continue;
 			if(gVictim.getPlayerUniqueID().equals(player.getUniqueId())) continue;
 
 			Player victim = Bukkit.getPlayer(gVictim.getPlayerUniqueID());

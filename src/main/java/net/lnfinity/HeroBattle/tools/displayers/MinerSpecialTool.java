@@ -62,8 +62,8 @@ public class MinerSpecialTool extends PlayerTool
 			new ItemCooldown(p, player, this, COOLDOWN);
 			player.playSound(player.getLocation(), Sound.LEVEL_UP, 1F, 1.5F);
 
-			GamePlayer gamePlayer = p.getGamePlayer(player);
-			gamePlayer.addRemainingDoubleDamages(DURATION);
+			HeroBattlePlayer heroBattlePlayer = p.getGamePlayer(player);
+			heroBattlePlayer.addRemainingDoubleDamages(DURATION);
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, DURATION * 20, 0));
 
 

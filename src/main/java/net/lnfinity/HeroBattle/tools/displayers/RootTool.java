@@ -1,26 +1,19 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import java.util.List;
-
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.tools.PlayerTool;
-import net.lnfinity.HeroBattle.utils.ItemCooldown;
-import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.tools.*;
+import net.lnfinity.HeroBattle.utils.*;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.utils.GlowEffect;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
+import net.samagames.utils.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
+import org.bukkit.scheduler.*;
 import org.bukkit.util.Vector;
+
+import java.util.*;
 
 public class RootTool extends PlayerTool {
 
@@ -59,18 +52,19 @@ public class RootTool extends PlayerTool {
 		if (ToolsUtils.isToolAvailable(tool)) {
 			new ItemCooldown(p, player, this, COOLDOWN);
 
-			GamePlayer best = null;
-			
-			for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
-				if(!gamePlayer.isPlaying()) continue;
-				
-				Player victim = Bukkit.getPlayer(gamePlayer.getPlayerUniqueID());
+			HeroBattlePlayer best = null;
+
+			for (HeroBattlePlayer heroBattlePlayer : p.getGamePlayers().values())
+			{
+				if (heroBattlePlayer.isSpectator()) continue;
+
+				Player victim = Bukkit.getPlayer(heroBattlePlayer.getPlayerUniqueID());
 				
 				if(!victim.equals(player) && (best == null || victim.getLocation().distanceSquared(player.getLocation()) < Bukkit.getPlayer(best.getPlayerUniqueID()).getLocation().distanceSquared(player.getLocation())))
-					best = gamePlayer;
+					best = heroBattlePlayer;
 			}
-			
-			final GamePlayer closest = best;
+
+			final HeroBattlePlayer closest = best;
 			
 			System.out.println(Bukkit.getPlayer(best.getPlayerUniqueID()).getLocation().distance(player.getLocation()));
 			

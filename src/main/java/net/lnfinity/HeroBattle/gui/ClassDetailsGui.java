@@ -25,7 +25,6 @@ import net.lnfinity.HeroBattle.tools.*;
 import net.samagames.gameapi.json.*;
 import org.apache.commons.lang.*;
 import org.bukkit.*;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
@@ -54,7 +53,7 @@ public class ClassDetailsGui extends ActionGui
 	 */
 	private Boolean acceptClassChange;
 
-	private GamePlayer gPlayer = null;
+	private HeroBattlePlayer gPlayer = null;
 
 
 	public ClassDetailsGui(PlayerClass displayedClass, Boolean fromSelectionGUI)

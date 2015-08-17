@@ -89,7 +89,7 @@ public class CommandListener implements CommandExecutor
 			else if (args.length >= 2)
 			{
 				final OfflinePlayer player = p.getServer().getOfflinePlayer(args[0]);
-				final GamePlayer gamePlayer = player instanceof Player ? p.getGamePlayer((Player) player) : null;
+				final HeroBattlePlayer heroBattlePlayer = player instanceof Player ? p.getGamePlayer((Player) player) : null;
 
 				if (player != null)
 				{
@@ -104,9 +104,9 @@ public class CommandListener implements CommandExecutor
 								public void run()
 								{
 									StatsApi.increaseStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "elo", val - StatsApi.getPlayerStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "elo"));
-									if (gamePlayer != null)
+									if (heroBattlePlayer != null)
 									{
-										gamePlayer.setElo(val - gamePlayer.getElo());
+										heroBattlePlayer.setElo(val - heroBattlePlayer.getElo());
 										((CommandSender) player).sendMessage(ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + val);
 										((CommandSender) player).sendMessage(ChatColor.GOLD + "Merci de rejoindre à nouveau la partie pour que les changements visuels soient appliqués.");
 									}

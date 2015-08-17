@@ -18,19 +18,19 @@
 
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.tools.*;
 import net.lnfinity.HeroBattle.utils.*;
 import net.samagames.utils.*;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.*;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.*;
 
 import java.util.*;
 
@@ -92,9 +92,9 @@ public class PommEhxploseTool extends PlayerTool
 
 
 		final World world = player.getWorld();
-		final GamePlayer gPlayer = HeroBattle.get().getGamePlayer(player);
+		final HeroBattlePlayer gPlayer = HeroBattle.get().getGamePlayer(player);
 
-		if(gPlayer == null || !gPlayer.isPlaying()) return;
+		if (gPlayer == null || gPlayer.isSpectator()) return;
 
 		final Item apple = world.dropItem(player.getLocation().add(0, 1, 0), new ItemStack(Material.APPLE));
 		apple.setVelocity(player.getLocation().getDirection().normalize().multiply(2));
@@ -148,8 +148,8 @@ public class PommEhxploseTool extends PlayerTool
 						if (e instanceof Player) {
 							Player victim = (Player) e;
 
-							GamePlayer gVictim = HeroBattle.get().getGamePlayer(victim);
-							if(gVictim == null || !gVictim.isPlaying()) continue;
+							HeroBattlePlayer gVictim = HeroBattle.get().getGamePlayer(victim);
+							if (gVictim == null || gVictim.isSpectator()) continue;
 
 							Double distanceSquared = victim.getLocation().distanceSquared(player.getLocation());
 

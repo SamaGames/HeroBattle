@@ -80,8 +80,8 @@ public class PikachuThunderWaveTool extends PlayerTool
 			return;
 		}
 
-		GamePlayer gPlayer = HeroBattle.get().getGamePlayer(player);
-		if(gPlayer == null || !gPlayer.isPlaying())
+		HeroBattlePlayer gPlayer = HeroBattle.get().getGamePlayer(player);
+		if (gPlayer == null || gPlayer.isSpectator())
 		{
 			player.sendMessage(ChatColor.RED + "Euh... nop ? [Pas un joueur actif ou gPlayer == null] [wtf this was displayed, plz report to a dev]");
 			return;

@@ -1,27 +1,18 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import java.util.List;
-
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.tools.PlayerTool;
-import net.lnfinity.HeroBattle.utils.ItemCooldown;
-import net.lnfinity.HeroBattle.utils.ParticleEffect;
-import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.tools.*;
+import net.lnfinity.HeroBattle.utils.*;
 import net.md_5.bungee.api.ChatColor;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
+import org.bukkit.scheduler.*;
 import org.bukkit.util.Vector;
+
+import java.util.*;
 
 public class BouncingFireballTool extends PlayerTool {
 
@@ -102,16 +93,17 @@ public class BouncingFireballTool extends PlayerTool {
 					am.setVelocity(new Vector(v.getX(), am.getLocation().add(0, -0.1, 0).getBlock().getType() == Material.AIR ? am.getVelocity().getY() : 0.5, v.getZ()));
 					
 					// Check for target
-					for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
-						Player target = Bukkit.getPlayer(gamePlayer.getPlayerUniqueID());
+					for (HeroBattlePlayer heroBattlePlayer : p.getGamePlayers().values())
+					{
+						Player target = Bukkit.getPlayer(heroBattlePlayer.getPlayerUniqueID());
 						if(target == null || target.equals(player)) continue;
 						
 						Location loc = am.getLocation().clone();
 						loc.setY(target.getLocation().getY());
 						
 						if(target.getLocation().distanceSquared(loc) < 1 && Math.abs(target.getLocation().getY() - am.getLocation().getY()) < 2) {
-							
-							gamePlayer.damage(10, 20, p.getGamePlayer(player), am.getLocation());
+
+							heroBattlePlayer.damage(10, 20, p.getGamePlayer(player), am.getLocation());
 							am.remove();
 							
 							task.cancel();

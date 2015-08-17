@@ -1,10 +1,9 @@
 package net.lnfinity.HeroBattle.listeners;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import org.bukkit.event.*;
+import org.bukkit.event.player.*;
 
 
 public class PowerupsListener implements Listener {
@@ -20,8 +19,9 @@ public class PowerupsListener implements Listener {
 
 		ev.setCancelled(true);
 
-		GamePlayer gPlayer = p.getGamePlayer(ev.getPlayer());
-		if(gPlayer != null && gPlayer.isPlaying()) {
+		HeroBattlePlayer gPlayer = p.getGamePlayer(ev.getPlayer());
+		if (gPlayer != null && !gPlayer.isSpectator())
+		{
 			p.getPowerupManager().onPowerupPickup(ev.getItem(), ev.getPlayer());
 		}
 

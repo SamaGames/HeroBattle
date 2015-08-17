@@ -1,19 +1,16 @@
 package net.lnfinity.HeroBattle.powerups.powerups;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.powerups.NegativePowerup;
-import net.lnfinity.HeroBattle.utils.Utils;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.powerups.*;
+import net.lnfinity.HeroBattle.utils.*;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
+import org.bukkit.scheduler.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 public class PercentageIncreasedPowerup implements NegativePowerup {
@@ -28,7 +25,7 @@ public class PercentageIncreasedPowerup implements NegativePowerup {
 	@Override
 	public void onPickup(final Player player, ItemStack pickupItem) {
 
-		GamePlayer gPlayer = p.getGamePlayer(player);
+		HeroBattlePlayer gPlayer = p.getGamePlayer(player);
 
 		if(gPlayer.getRemainingReducingIncomingDamages() != 0) {
 			player.sendMessage(ChatColor.GREEN + "Votre invulnérabilité vous sauve..." + ChatColor.RED + " pour cette fois. :>");

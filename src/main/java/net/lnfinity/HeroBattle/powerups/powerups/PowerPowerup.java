@@ -1,12 +1,11 @@
 package net.lnfinity.HeroBattle.powerups.powerups;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.powerups.PositivePowerup;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.powerups.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
 
 public class PowerPowerup implements PositivePowerup {
 
@@ -18,9 +17,9 @@ public class PowerPowerup implements PositivePowerup {
 	
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
-		final GamePlayer gamePlayer = p.getGamePlayer(player);
+		final HeroBattlePlayer heroBattlePlayer = p.getGamePlayer(player);
 		player.sendMessage(ChatColor.GREEN + "Vous " + ChatColor.DARK_GREEN + "doublez votre puissance" + ChatColor.GREEN + " pour 24 secondes !");
-		gamePlayer.addRemainingDoubleDamages(24);
+		heroBattlePlayer.addRemainingDoubleDamages(24);
 	}
 
 	@Override

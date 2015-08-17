@@ -1,23 +1,18 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.tools.PlayerTool;
-import net.lnfinity.HeroBattle.utils.ItemCooldown;
-import net.lnfinity.HeroBattle.utils.ToolsUtils;
-import net.lnfinity.HeroBattle.utils.Utils;
-import net.samagames.utils.GlowEffect;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.tools.*;
+import net.lnfinity.HeroBattle.utils.*;
+import net.samagames.utils.*;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.block.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
+import org.bukkit.potion.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 public class IceTool extends PlayerTool {
 	
 	private final int COOLDOWN; // seconds
@@ -67,8 +62,9 @@ public class IceTool extends PlayerTool {
 
 				new ItemCooldown(p, player, this, COOLDOWN);
 
-				for(GamePlayer gamePlayer : p.getGamePlayers().values()) {
-					Player target = p.getServer().getPlayer(gamePlayer.getPlayerUniqueID());
+				for (HeroBattlePlayer heroBattlePlayer : p.getGamePlayers().values())
+				{
+					Player target = p.getServer().getPlayer(heroBattlePlayer.getPlayerUniqueID());
 					if(target != null) {
 						if(target.getLocation().distanceSquared(b.getLocation()) <= 9) {
 							target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, DURATION * 20, 3));

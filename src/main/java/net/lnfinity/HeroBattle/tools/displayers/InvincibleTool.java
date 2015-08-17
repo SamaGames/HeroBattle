@@ -1,18 +1,16 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.tools.PlayerTool;
-import net.lnfinity.HeroBattle.utils.ItemCooldown;
-import net.lnfinity.HeroBattle.utils.ToolsUtils;
-import net.lnfinity.HeroBattle.utils.Utils;
-import net.samagames.utils.GlowEffect;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.tools.*;
+import net.lnfinity.HeroBattle.utils.*;
+import net.samagames.utils.*;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
 
-import java.util.List;
+import java.util.*;
 
 public class InvincibleTool extends PlayerTool {
 
@@ -57,9 +55,9 @@ public class InvincibleTool extends PlayerTool {
 					player.getWorld().playEffect(new Location(player.getWorld(), player.getLocation().getX() + Math.sin(i * Math.PI), player.getLocation().getY() + 1, player.getLocation().getZ() + Math.cos(i * Math.PI)), Effect.WATERDRIP, 0);
 					player.getWorld().playEffect(new Location(player.getWorld(), player.getLocation().getX() + Math.sin(i * Math.PI), player.getLocation().getY() + 0.5, player.getLocation().getZ() + Math.cos(i * Math.PI)), Effect.WATERDRIP, 0);
 			}
-			
-			final GamePlayer gamePlayer = p.getGamePlayer(player);
-			gamePlayer.addRemainingReducedIncomingDamages(DURATION);
+
+			final HeroBattlePlayer heroBattlePlayer = p.getGamePlayer(player);
+			heroBattlePlayer.addRemainingReducedIncomingDamages(DURATION);
 		}
         else {
             player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");

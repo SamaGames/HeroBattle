@@ -4,7 +4,6 @@ import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.tools.*;
 import net.lnfinity.HeroBattle.utils.*;
-import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.utils.*;
 import org.bukkit.*;
@@ -99,9 +98,9 @@ public class CrackTool extends PlayerTool
 										am.getWorld().playEffect(loc, Effect.STEP_SOUND, loc.clone().add(0, -1, 0).getBlock().getType().getId(), 5);
 								}
 
-								for (GamePlayer potential : p.getGamePlayers().values())
+								for (HeroBattlePlayer potential : p.getGamePlayers().values())
 								{
-									if (!potential.isPlaying() || potential.getPlayerUniqueID().equals(player.getUniqueId()))
+									if (potential.isSpectator() || potential.getPlayerUniqueID().equals(player.getUniqueId()))
 										continue;
 
 									Player victim = Bukkit.getPlayer(potential.getPlayerUniqueID());

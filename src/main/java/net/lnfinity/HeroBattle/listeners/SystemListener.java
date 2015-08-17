@@ -1,34 +1,22 @@
 package net.lnfinity.HeroBattle.listeners;
 
-import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
-import net.lnfinity.HeroBattle.game.DeathType;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.tasks.displayers.EarthquakeTask;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.tasks.displayers.*;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.gameapi.json.Status;
-
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockSpreadEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import net.samagames.gameapi.json.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.*;
+import org.bukkit.event.block.*;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
-import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.event.weather.*;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class SystemListener implements Listener {
 
@@ -58,7 +46,8 @@ public class SystemListener implements Listener {
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
 		if (e.getTo().getBlockY() <= plugin.getGame().getBottomHeight()
-				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE && plugin.getGamePlayer(e.getPlayer()).isPlaying()) {
+				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE && !plugin.getGamePlayer(e.getPlayer()).isSpectator())
+		{
 
 			if (plugin.getGame().getStatus() == Status.InGame) {
 				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.FALL);
@@ -72,21 +61,22 @@ public class SystemListener implements Listener {
 		}
 
 		if(((Entity) e.getPlayer()).isOnGround()) {
-			GamePlayer gamePlayer = plugin.getGamePlayer(e.getPlayer());
-			if(gamePlayer != null && plugin.getGame().getStatus() == Status.InGame) {
-				gamePlayer.setJumps(gamePlayer.getMaxJumps());
-				gamePlayer.setJumpLocked(false);
+			HeroBattlePlayer heroBattlePlayer = plugin.getGamePlayer(e.getPlayer());
+			if (heroBattlePlayer != null && plugin.getGame().getStatus() == Status.InGame)
+			{
+				heroBattlePlayer.setJumps(heroBattlePlayer.getMaxJumps());
+				heroBattlePlayer.setJumpLocked(false);
 
 				e.getPlayer().setAllowFlight(true);
 
-				gamePlayer.playTask(new EarthquakeTask(plugin, e.getPlayer(), 0, 0));
+				heroBattlePlayer.playTask(new EarthquakeTask(plugin, e.getPlayer(), 0, 0));
 
 				// Reset of the last damager
 				Integer checksForThisUser = checksIfTheUserIsReallyOnTheGroundAndSoWeCanResetTheLastDamager.get(e.getPlayer().getUniqueId());
 				if(checksForThisUser == null) checksForThisUser = 0;
 
 				if(checksForThisUser >= CHECKS_NEEDED_TO_RESET_THE_LAST_DAMAGER) {
-					gamePlayer.setLastDamager(null);
+					heroBattlePlayer.setLastDamager(null);
 					checksIfTheUserIsReallyOnTheGroundAndSoWeCanResetTheLastDamager.put(e.getPlayer().getUniqueId(), 0);
 				}
 				else {
@@ -183,8 +173,8 @@ public class SystemListener implements Listener {
 
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
-		GamePlayer gamePlayer = plugin.getGamePlayer(e.getPlayer().getUniqueId());
-		if(gamePlayer == null) return; // /btp or /stp
+		HeroBattlePlayer heroBattlePlayer = plugin.getGamePlayer(e.getPlayer().getUniqueId());
+		if (heroBattlePlayer == null) return; // /btp or /stp
 
 		// Pomme Easter-Egg
 		if (HeroBattle.get().getGame().getStatus() == Status.Available || HeroBattle.get().getGame().getStatus() == Status.PreStarting || HeroBattle.get().getGame().getStatus() == Status.Starting)
@@ -202,7 +192,7 @@ public class SystemListener implements Listener {
 			}
 		}
 
-		e.setFormat(ChatColor.DARK_GREEN + "" + gamePlayer.getElo() + ChatColor.GREEN + " ▏ " + ChatColor.RESET + e.getFormat());
+		e.setFormat(ChatColor.DARK_GREEN + "" + heroBattlePlayer.getElo() + ChatColor.GREEN + " ▏ " + ChatColor.RESET + e.getFormat());
 	}
 	
 	@EventHandler

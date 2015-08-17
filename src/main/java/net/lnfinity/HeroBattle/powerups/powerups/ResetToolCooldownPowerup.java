@@ -1,17 +1,15 @@
 package net.lnfinity.HeroBattle.powerups.powerups;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.powerups.PositivePowerup;
-import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.powerups.*;
+import net.lnfinity.HeroBattle.utils.*;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 /**
@@ -28,7 +26,7 @@ public class ResetToolCooldownPowerup implements PositivePowerup {
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
 
-		GamePlayer gPlayer = p.getGamePlayer(player);
+		HeroBattlePlayer gPlayer = p.getGamePlayer(player);
 
 		// 1: we try to find a tool with a delay higher than 5 seconds.
 		List<Integer> slotsToTest = new ArrayList<>();

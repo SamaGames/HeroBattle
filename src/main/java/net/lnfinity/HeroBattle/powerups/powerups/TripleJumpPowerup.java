@@ -1,12 +1,12 @@
 package net.lnfinity.HeroBattle.powerups.powerups;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.powerups.PositivePowerup;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.powerups.*;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
 
 public class TripleJumpPowerup implements PositivePowerup {
 
@@ -18,12 +18,13 @@ public class TripleJumpPowerup implements PositivePowerup {
 	
 	@Override
 	public void onPickup(Player player, ItemStack pickupItem) {
-		final GamePlayer gamePlayer = p.getGamePlayer(player);
+		final HeroBattlePlayer heroBattlePlayer = p.getGamePlayer(player);
 
-        if(gamePlayer != null) {
-            player.sendMessage(ChatColor.GREEN + "Vous pouvez désormais faire des triple sauts !");
-            gamePlayer.setMaxJumps(3, 15);
-        }
+		if (heroBattlePlayer != null)
+		{
+			player.sendMessage(ChatColor.GREEN + "Vous pouvez désormais faire des triple sauts !");
+			heroBattlePlayer.setMaxJumps(3, 15);
+		}
     }
 
 	@Override

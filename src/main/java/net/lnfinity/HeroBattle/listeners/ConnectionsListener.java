@@ -1,33 +1,22 @@
 package net.lnfinity.HeroBattle.listeners;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.game.GamePlayer;
-import net.lnfinity.HeroBattle.utils.ActionBar;
-import net.lnfinity.HeroBattle.utils.Utils;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.utils.*;
+import net.samagames.gameapi.*;
+import net.samagames.gameapi.events.*;
+import net.samagames.gameapi.json.*;
+import net.samagames.utils.*;
+import net.zyuiop.MasterBundle.*;
+import net.zyuiop.statsapi.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.*;
+import org.bukkit.event.player.*;
+import org.bukkit.potion.*;
+import org.bukkit.scoreboard.*;
 
-import org.bukkit.ChatColor;
-
-import net.samagames.gameapi.GameAPI;
-import net.samagames.gameapi.events.FinishJoinPlayerEvent;
-import net.samagames.gameapi.events.JoinModEvent;
-import net.samagames.gameapi.events.PreJoinPlayerEvent;
-import net.samagames.gameapi.json.Status;
-import net.samagames.utils.Titles;
-import net.zyuiop.MasterBundle.MasterBundle;
-import net.zyuiop.statsapi.StatsApi;
-
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.Team;
-
-import java.util.Random;
+import java.util.*;
 
 public class ConnectionsListener implements Listener {
 
@@ -162,14 +151,14 @@ public class ConnectionsListener implements Listener {
 				p.hidePlayer(player);
 			}
 		}
-		
-		final GamePlayer gamePlayer = plugin.getGamePlayer(p);
+
+		final HeroBattlePlayer heroBattlePlayer = plugin.getGamePlayer(p);
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 			@Override
 			public void run() {
 				int elo;
 				if (MasterBundle.isDbEnabled) {
-					elo = StatsApi.getPlayerStat(gamePlayer.getPlayerUniqueID(), HeroBattle.GAME_NAME_WHITE, "elo");
+					elo = StatsApi.getPlayerStat(heroBattlePlayer.getPlayerUniqueID(), HeroBattle.GAME_NAME_WHITE, "elo");
 				} else {
 					// Default
 					elo = 2000;
@@ -182,13 +171,13 @@ public class ConnectionsListener implements Listener {
 				if(elo > 10000) {
 					elo = 10000;
 				}
-				gamePlayer.setElo(elo);
-				gamePlayer.setOriginalElo(elo);
+				heroBattlePlayer.setElo(elo);
+				heroBattlePlayer.setOriginalElo(elo);
 				plugin.getScoreboardManager().refreshTab();
 				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 					@Override
 					public void run() {
-						p.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " est actuellement de " + ChatColor.DARK_GREEN + gamePlayer.getElo());
+						p.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " est actuellement de " + ChatColor.DARK_GREEN + heroBattlePlayer.getElo());
 					}
 				}, 30L);
 			}

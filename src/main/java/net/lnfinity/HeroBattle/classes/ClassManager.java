@@ -1,15 +1,13 @@
 package net.lnfinity.HeroBattle.classes;
 
-import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
 import net.lnfinity.HeroBattle.classes.displayers.free.*;
 import net.lnfinity.HeroBattle.classes.displayers.paid.*;
-import net.lnfinity.HeroBattle.game.GamePlayer;
+import net.lnfinity.HeroBattle.game.*;
 import net.md_5.bungee.api.*;
-import net.zyuiop.MasterBundle.FastJedis;
-import net.zyuiop.MasterBundle.MasterBundle;
-
-import org.bukkit.entity.Player;
+import net.zyuiop.MasterBundle.*;
+import org.bukkit.entity.*;
 
 import java.util.*;
 
@@ -82,12 +80,14 @@ public class ClassManager {
 	 *         this name.
 	 */
 	public PlayerClass getClassFromName(Player player, String name) {
-		GamePlayer gamePlayer = p.getGamePlayer(player);
-		return getClassFromName(gamePlayer, name);
+		HeroBattlePlayer heroBattlePlayer = p.getGamePlayer(player);
+		return getClassFromName(heroBattlePlayer, name);
 	}
-	
-	public PlayerClass getClassFromName(GamePlayer gamePlayer, String name) {
-		for (PlayerClass theClass : gamePlayer.getAvaibleClasses()) {
+
+	public PlayerClass getClassFromName(HeroBattlePlayer heroBattlePlayer, String name)
+	{
+		for (PlayerClass theClass : heroBattlePlayer.getAvaibleClasses())
+		{
 			if (theClass != null && theClass.getName().equalsIgnoreCase(name)) {
 				return theClass;
 			}
@@ -102,7 +102,7 @@ public class ClassManager {
 
 	public void addPlayerClasses(final Player player) {
 		// TODO Warning, this may cause problems if the request is lost (somehow)
-		final GamePlayer gamePlayer = p.getGamePlayer(player);
+		final HeroBattlePlayer heroBattlePlayer = p.getGamePlayer(player);
 		final String prefix = "shops:" + HeroBattle.GAME_NAME_WHITE + ":";
 		final String sufix = ":" + player.getUniqueId();
 		final String currentStr = ":current";
@@ -133,7 +133,7 @@ public class ClassManager {
 							if(C == null || C.equals("")) {
 								C = "0";
 							}
-							gamePlayer.addAvaibleClass(constructPlayerClass(current.getType(), Integer.parseInt(A), Integer.parseInt(B), Integer.parseInt(C)));
+								heroBattlePlayer.addAvaibleClass(constructPlayerClass(current.getType(), Integer.parseInt(A), Integer.parseInt(B), Integer.parseInt(C)));
 							} catch(Exception ex) {
 								ex.printStackTrace();
 							}
@@ -142,11 +142,11 @@ public class ClassManager {
 						}
 					} else {
 					// Default
-					gamePlayer.addAvaibleClass(new BruteClass(p, 0, 0, 0));
-					gamePlayer.addAvaibleClass(new GuerrierClass(p, 0, 0, 0));
-					gamePlayer.addAvaibleClass(new ArcherClass(p, 0, 0, 0));
-					gamePlayer.addAvaibleClass(new MageClass(p, 0, 0, 0));
-					gamePlayer.addAvaibleClass(new MinerClass(p, 0, 0, 0));
+						heroBattlePlayer.addAvaibleClass(new BruteClass(p, 0, 0, 0));
+						heroBattlePlayer.addAvaibleClass(new GuerrierClass(p, 0, 0, 0));
+						heroBattlePlayer.addAvaibleClass(new ArcherClass(p, 0, 0, 0));
+						heroBattlePlayer.addAvaibleClass(new MageClass(p, 0, 0, 0));
+						heroBattlePlayer.addAvaibleClass(new MinerClass(p, 0, 0, 0));
 					}
 				}
 			});
@@ -184,10 +184,14 @@ public class ClassManager {
 		return totalClasses;
 	}
 
-	public boolean playerHasClass(GamePlayer gamePlayer, PlayerClassType type) {
-		if (gamePlayer != null) {
-			for (int i = 0; i < gamePlayer.getAvaibleClasses().size(); ++i) {
-				if(gamePlayer.getAvaibleClasses() != null && gamePlayer.getAvaibleClasses().get(i) != null && gamePlayer.getAvaibleClasses().get(i).getType() == type) {
+	public boolean playerHasClass(HeroBattlePlayer heroBattlePlayer, PlayerClassType type)
+	{
+		if (heroBattlePlayer != null)
+		{
+			for (int i = 0; i < heroBattlePlayer.getAvaibleClasses().size(); ++i)
+			{
+				if (heroBattlePlayer.getAvaibleClasses() != null && heroBattlePlayer.getAvaibleClasses().get(i) != null && heroBattlePlayer.getAvaibleClasses().get(i).getType() == type)
+				{
 					return true;
 				}
 			}
@@ -217,7 +221,7 @@ public class ClassManager {
 		}
 	}
 
-	public PlayerClass getAnyClassByFriendlyName(String friendlyName, GamePlayer target)
+	public PlayerClass getAnyClassByFriendlyName(String friendlyName, HeroBattlePlayer target)
 	{
 		switch(friendlyName.toLowerCase()) {
 			case "maite":
