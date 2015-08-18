@@ -88,22 +88,17 @@ public class PikachuThunderWaveTool extends PlayerTool
 		}
 
 
-		for (Entity e : player.getNearbyEntities(BOX_SIZE, BOX_SIZE, BOX_SIZE)) {
-			if (e instanceof Player && !e.equals(player)) {
-				Player pl = (Player) e;
+		player.getNearbyEntities(BOX_SIZE, BOX_SIZE, BOX_SIZE).stream()
+				.filter(e -> e instanceof Player && !e.equals(player))
+				.forEach(e -> {
+							Player pl = (Player) e;
 
-				pl.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, THUNDER_WAVE_DURATION * 20, 17));
-				pl.getWorld().strikeLightningEffect(pl.getLocation());
-			}
-		}
+							pl.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, THUNDER_WAVE_DURATION * 20, 17));
+							pl.getWorld().strikeLightningEffect(pl.getLocation());
+						}
+				);
 
 
 		new ItemCooldown(HeroBattle.get(), player, this, COOLDOWN);
-	}
-
-	@Override
-	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event)
-	{
-		onRightClick(player, tool, event);
 	}
 }

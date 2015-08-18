@@ -1,20 +1,18 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tools.PlayerTool;
-import net.lnfinity.HeroBattle.utils.ItemCooldown;
-import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.tools.*;
+import net.lnfinity.HeroBattle.utils.*;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.utils.GlowEffect;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import net.samagames.tools.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
+import org.bukkit.potion.*;
 
-import java.util.List;
+import java.util.*;
 
 
 public class SpeedTool extends PlayerTool {
@@ -62,10 +60,5 @@ public class SpeedTool extends PlayerTool {
 		else {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
-	}
-
-	@Override
-	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-
 	}
 }

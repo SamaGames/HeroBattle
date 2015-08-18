@@ -5,7 +5,6 @@ import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.tools.*;
 import net.lnfinity.HeroBattle.utils.*;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.utils.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.*;
@@ -53,7 +52,7 @@ public class CrackTool extends PlayerTool
 	public ItemStack getItem()
 	{
 		ItemStack item = new ItemStack(Material.STONE);
-		GlowEffect.addGlow(item);
+		ToolsUtils.resetTool(item);
 		return item;
 	}
 
@@ -98,12 +97,12 @@ public class CrackTool extends PlayerTool
 										am.getWorld().playEffect(loc, Effect.STEP_SOUND, loc.clone().add(0, -1, 0).getBlock().getType().getId(), 5);
 								}
 
-								for (HeroBattlePlayer potential : p.getGamePlayers().values())
+								for (HeroBattlePlayer potential : p.getGame().getGamePlayers().values())
 								{
-									if (potential.isSpectator() || potential.getPlayerUniqueID().equals(player.getUniqueId()))
+									if (potential.isSpectator() || potential.getUUID().equals(player.getUniqueId()))
 										continue;
 
-									Player victim = Bukkit.getPlayer(potential.getPlayerUniqueID());
+									Player victim = Bukkit.getPlayer(potential.getUUID());
 									if (victim == null) continue;
 
 									if (touched.contains(victim)) continue;
@@ -130,14 +129,7 @@ public class CrackTool extends PlayerTool
 					}
 				}.run();
 
-				Bukkit.getScheduler().runTaskLater(p, new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						am.remove();
-					}
-				}, 4 * 20);
+				Bukkit.getScheduler().runTaskLater(p, am::remove, 4 * 20);
 			}
 			else
 			{
@@ -156,5 +148,4 @@ public class CrackTool extends PlayerTool
 	{
 		onRightClick(player, tool, event);
 	}
-
 }

@@ -1,15 +1,14 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.utils.Utils;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.utils.*;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.utils.GlowEffect;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
 
-import java.util.List;
+import java.util.*;
 
 
 public class Cannon20mmTool extends ArrowsTool {
@@ -35,7 +34,7 @@ public class Cannon20mmTool extends ArrowsTool {
 	@Override
 	public ItemStack getItem() {
 		ItemStack item = new ItemStack(Material.STICK);
-		GlowEffect.addGlow(item);
+		ToolsUtils.resetTool(item);
 		return item;
 	}
 

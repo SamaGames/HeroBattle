@@ -5,59 +5,73 @@ import net.lnfinity.HeroBattle.game.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 
-import java.net.*;
 import java.text.*;
 import java.util.*;
 
-public final class Utils {
+
+public final class Utils
+{
 
 	private static Random rnd = new Random();
 	private static DecimalFormat bigNumbersFormat;
-	private static HttpURLConnection httpConn;
+
+	static
+	{
+		bigNumbersFormat = new DecimalFormat("###,###,###");
+		bigNumbersFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.FRANCE));
+	}
 
 	/**
 	 * Converts a string (in the config file) to a Location object.
-	 * 
-	 * @param locationInConfig
-	 *            A string; format "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch".
+	 *
+	 * @param locationInConfig A string; format "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch".
+	 *
 	 * @return The Location object, for the main world (first one).
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if the format is not good.
+	 * @throws IllegalArgumentException if the format is not good.
 	 */
-	public static Location stringToLocation(HeroBattle p, String locationInConfig) {
+	public static Location stringToLocation(HeroBattle p, String locationInConfig)
+	{
 		String[] coords = locationInConfig.split(";");
-		if (coords.length < 3) {
+		if (coords.length < 3)
+		{
 			throw new IllegalArgumentException("Invalid location: " + locationInConfig);
 		}
 
-		try {
+		try
+		{
 			Location location = new Location(p.getServer().getWorlds().get(0), Double.valueOf(coords[0]) + 0.5,
 					Double.valueOf(coords[1]), Double.valueOf(coords[2]) + 0.5);
 
-			if (coords.length >= 4) {
+			if (coords.length >= 4)
+			{
 				location.setYaw(Float.valueOf(coords[3]));
 
-				if (coords.length >= 5) {
+				if (coords.length >= 5)
+				{
 					location.setPitch(Float.valueOf(coords[4]));
 				}
 			}
 
 			return location;
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e)
+		{
 			throw new IllegalArgumentException("Invalid location (NaN!): " + locationInConfig);
 		}
 	}
 
-	public static int randomNumber(int min, int max) {
+	public static int randomNumber(int min, int max)
+	{
 		return rnd.nextInt(max - min + 1) + min;
 	}
 
-	public static String formatNumber(double number) {
+	public static String formatNumber(double number)
+	{
 		return bigNumbersFormat.format(number).replace(" ", " ");
 	}
 
-	public static Location blockLocation(Location loc) {
+	public static Location blockLocation(Location loc)
+	{
 		Location blockLocation = loc.clone();
 		blockLocation.setX(blockLocation.getBlockX() + 0.5);
 		blockLocation.setY(blockLocation.getBlockY() + 0.5);
@@ -65,11 +79,13 @@ public final class Utils {
 		return blockLocation;
 	}
 
-	public static Location roundLocation(Location loc) {
+	public static Location roundLocation(Location loc)
+	{
 		return new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
-	public static double distance(Location loc1, Location loc2) {
+	public static double distance(Location loc1, Location loc2)
+	{
 		return Math.sqrt((loc1.getX() - loc2.getX()) * (loc1.getX() - loc2.getX()) + (loc1.getY() - loc2.getY())
 				* (loc1.getY() - loc2.getY()) + (loc1.getZ() - loc2.getZ()) * (loc1.getZ() - loc2.getZ()));
 	}
@@ -82,14 +98,16 @@ public final class Utils {
 	/**
 	 * Returns a representation of the hearts of a player.
 	 *
-	 * @param player The player
+	 * @param player          The player
 	 * @param transitionBegin True if this is the beginning of a transition on the death screen
-	 * @param transitionEnd  True if this is the end of a transition on the death screen
+	 * @param transitionEnd   True if this is the end of a transition on the death screen
+	 *
 	 * @return
 	 */
 	public static String heartsToString(HeroBattlePlayer player, boolean transitionBegin, boolean transitionEnd)
 	{
-		if (player.getPlayerClass() == null) {
+		if (player.getPlayerClass() == null)
+		{
 			return "";
 		}
 
@@ -98,25 +116,30 @@ public final class Utils {
 		Integer displayedLostLives;
 		Integer displayedLostAdditionalLives = 0;
 
-		if(!transitionBegin) {
+		if (!transitionBegin)
+		{
 			displayedLives = player.getLives();
 			displayedAdditionalLives = player.getAdditionalLives();
 			displayedLostLives = player.getPlayerClass().getLives() - displayedLives;
 
 			// In this case the player just lost an additional live, because he lost a live when
 			// this is displayed with one of the transitions to true.
-			if(transitionEnd && displayedLostLives == 0) {
+			if (transitionEnd && displayedLostLives == 0)
+			{
 				displayedLostAdditionalLives = 1;
 			}
 		}
-		else {
-			if(player.getLives() == player.getPlayerClass().getLives()) {
+		else
+		{
+			if (player.getLives() == player.getPlayerClass().getLives())
+			{
 				// The player just lost an additional live
 				displayedLives = player.getLives();
 				displayedAdditionalLives = player.getAdditionalLives() + 1;
 				displayedLostLives = 0;
 			}
-			else {
+			else
+			{
 				// No additional live here
 				displayedLives = player.getLives() + 1;
 				displayedAdditionalLives = 0;
@@ -124,101 +147,115 @@ public final class Utils {
 			}
 		}
 
-		
-		return    (displayedLives != 0 ? ChatColor.RED + getNHearts(displayedLives) : "")
+
+		return (displayedLives != 0 ? ChatColor.RED + getNHearts(displayedLives) : "")
 				+ (displayedLostLives != 0 ? ChatColor.GRAY + getNHearts(displayedLostLives) : "")
 				+ (displayedAdditionalLives != 0 ? ChatColor.GOLD + getNHearts(displayedAdditionalLives) : "")
 				+ (displayedLostAdditionalLives != 0 ? ChatColor.GRAY + getNHearts(displayedLostAdditionalLives) : "");
 	}
 
-	private static String getNHearts(int n) {
+	private static String getNHearts(int n)
+	{
 		String hearts = "";
 
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++)
+		{
 			hearts += "❤";
 		}
 
 		return hearts;
 	}
 
-	public static double logb(double a, double b) {
+	public static double logb(double a, double b)
+	{
 		return Math.log(a) / Math.log(b);
 	}
 
-	public static List<String> getToolDescription(String desc) {
+	public static List<String> getToolDescription(String desc)
+	{
 		List<String> lines = new ArrayList<>();
 		String[] words = desc.split(" ");
 		int line = 0;
 		lines.add(line, "");
 
-		for (String word : words) {
+		for (String word : words)
+		{
 			int chars = (lines.get(line) + " " + word).length() - countColors(lines.get(line) + " " + word);
 
-			if (chars >= 45) {
+			if (chars >= 45)
+			{
 				line++;
 				lines.add(line, ChatColor.GRAY + word);
 			}
 
-			else {
-				if (lines.get(line).equals("")) {
+			else
+			{
+				if (lines.get(line).equals(""))
+				{
 					lines.set(line, ChatColor.GRAY + word);
-				} else {
+				}
+				else
+				{
 					lines.set(line, lines.get(line) + " " + word);
 				}
 			}
 		}
 
-		for(int k = 0; k < lines.size(); k++) {
+		for (int k = 0; k < lines.size(); k++)
+		{
 			lines.set(k, lines.get(k).trim());
 		}
 
 		return lines;
 	}
-	
-	private static int countColors(String str) {
+
+	private static int countColors(String str)
+	{
 		int count = 0;
-		for(int i = 0; i < str.length(); i++) {
-			if(str.charAt(i) == '§') {
+		for (int i = 0; i < str.length(); i++)
+		{
+			if (str.charAt(i) == '§')
+			{
 				count++;
 			}
 		}
 		return count;
 	}
 
-	public static String tableToString(StackTraceElement[] table, String delimiter) {
+	public static String tableToString(StackTraceElement[] table, String delimiter)
+	{
 		StringBuilder result = new StringBuilder();
 
-		for (int i = 0; i < table.length; i++) {
-		   result.append(table[i]);
-		   if(i + 1 != table.length) {
-			   result.append(delimiter);
-		   }
+		for (int i = 0; i < table.length; i++)
+		{
+			result.append(table[i]);
+			if (i + 1 != table.length)
+			{
+				result.append(delimiter);
+			}
 		}
 
 		return result.toString();
 	}
 
-	public static String getRandomAvailableTeamName() {
-		do {
+	public static String getRandomAvailableTeamName()
+	{
+		do
+		{
 			String teamName = rnd.nextInt(99999999) + "";
-			if(HeroBattle.get().getScoreboardManager().getScoreboard().getTeam(teamName) == null) {
+			if (HeroBattle.get().getScoreboardManager().getScoreboard().getTeam(teamName) == null)
+			{
 				return teamName;
 			}
-		} while(true);
+		} while (true);
 	}
 
-	public static String getPlayerColor(Player player) {
+	public static String getPlayerColor(Player player)
+	{
 		/*if(MasterBundle.isDbEnabled) {
 			return PermissionsBukkit.getPrefix(PermissionsAPI.permissionsAPI.getUser(player.getUniqueId()));
 		} else {*/
-			return ChatColor.getLastColors(player.getDisplayName().replaceAll(ChatColor.RESET.toString(), ""));
+		return ChatColor.getLastColors(player.getDisplayName().replaceAll(ChatColor.RESET.toString(), ""));
 		/*}*/
-	}
-
-
-
-	static {
-		bigNumbersFormat = new DecimalFormat("###,###,###");
-		bigNumbersFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.FRANCE));
 	}
 }

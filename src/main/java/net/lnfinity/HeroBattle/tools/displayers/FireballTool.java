@@ -1,22 +1,14 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tools.PlayerTool;
-import net.lnfinity.HeroBattle.utils.ItemCooldown;
-import net.lnfinity.HeroBattle.utils.ToolsUtils;
-import net.lnfinity.HeroBattle.utils.TripleParameters;
-import net.lnfinity.HeroBattle.utils.Utils;
-import net.samagames.utils.GlowEffect;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.tools.*;
+import net.lnfinity.HeroBattle.utils.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
+import java.util.*;
 
 public class FireballTool extends PlayerTool {
 	
@@ -50,7 +42,7 @@ public class FireballTool extends PlayerTool {
 	@Override
 	public ItemStack getItem() {
 		ItemStack item = new ItemStack(Material.CLAY_BALL);
-		GlowEffect.addGlow(item);
+		ToolsUtils.resetTool(item);
 		return item;
 	}
 

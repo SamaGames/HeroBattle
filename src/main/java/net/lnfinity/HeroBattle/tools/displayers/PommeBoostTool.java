@@ -57,8 +57,8 @@ public class PommeBoostTool extends PlayerTool
 	@Override
 	public List<String> getDescription()
 	{
-		return Arrays.asList(
-				"PLUS de vitesse, MOINS de dégâts, PLUS de POMMES !"
+		return Collections.singletonList(
+				ChatColor.GRAY + "PLUS de vitesse, MOINS de dégâts, PLUS de POMMES !"
 		);
 	}
 
@@ -76,7 +76,7 @@ public class PommeBoostTool extends PlayerTool
 	{
 		if(!ToolsUtils.isToolAvailable(tool))
 		{
-			player.sendMessage(ChatColor.RED + "Vous etes trop fatigué pour réutiliser ceci maintenant.");
+			player.sendMessage(ChatColor.RED + "Plus de POMMES :c");
 			return;
 		}
 
@@ -89,11 +89,5 @@ public class PommeBoostTool extends PlayerTool
 
 
 		new ItemCooldown(HeroBattle.get(), player, this, COOLDOWN);
-	}
-
-	@Override
-	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event)
-	{
-		onRightClick(player, tool, event);
 	}
 }

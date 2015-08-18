@@ -73,11 +73,4 @@ public class MinerSpecialTool extends PlayerTool
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
 	}
-
-	@Override
-	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event)
-	{
-		onRightClick(player, tool, event);
-	}
-
 }

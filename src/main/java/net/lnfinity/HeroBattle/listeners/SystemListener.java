@@ -171,7 +171,7 @@ public class SystemListener implements Listener {
 	}
 
 
-	@EventHandler (priority = EventPriority.HIGHEST)
+	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
 		HeroBattlePlayer heroBattlePlayer = plugin.getGamePlayer(e.getPlayer().getUniqueId());
 		if (heroBattlePlayer == null) return; // /btp or /stp

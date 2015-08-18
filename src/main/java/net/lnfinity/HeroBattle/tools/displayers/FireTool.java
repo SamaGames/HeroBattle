@@ -4,7 +4,6 @@ import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.tools.*;
 import net.lnfinity.HeroBattle.utils.*;
-import net.samagames.utils.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.*;
@@ -44,7 +43,7 @@ public class FireTool extends PlayerTool {
 	@Override
 	public ItemStack getItem() {
 		ItemStack item = new ItemStack(Material.FLINT_AND_STEEL);
-		GlowEffect.addGlow(item);
+		ToolsUtils.resetTool(item);
 		return item;
 	}
 

@@ -1,13 +1,13 @@
 package net.lnfinity.HeroBattle.tools;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.samagames.utils.GlowEffect;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import net.lnfinity.HeroBattle.*;
+import net.samagames.tools.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Represents a player tool given by the classes or a powerup and
@@ -77,7 +77,10 @@ public abstract class PlayerTool {
 	 * @param tool The item representing this tool in the player's inventory.
 	 * @param event The PlayerInteractEvent fired.
 	 */
-	public abstract void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event);
+	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event)
+	{
+		onRightClick(player, tool, event);
+	}
 
 
 	/**

@@ -112,37 +112,23 @@ public class PikachuShockBlastTool extends PlayerTool
 		fwm.setPower(0);
 		fw.setFireworkMeta(fwm);
 
-		Bukkit.getScheduler().runTaskLater(p, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				fw.detonate();
-			}
-		}, 1l);
+		Bukkit.getScheduler().runTaskLater(p, fw::detonate, 1l);
 
 		// Particle circles
 		center.add(0, -0.6, 0);
 
 		for (int i = 1; i < 5; i++)
 		{
-			Bukkit.getScheduler().runTaskLater(p, new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					generateParticleCircle(center);
-				}
-			}, i * 2l);
+			Bukkit.getScheduler().runTaskLater(p, () -> generateParticleCircle(center), i * 2l);
 		}
 
 		Integer radiusSquared = (int) Math.pow(RADIUS, 2);
-		for (HeroBattlePlayer gVictim : HeroBattle.get().getGamePlayers().values())
+		for (HeroBattlePlayer gVictim : HeroBattle.get().getGame().getGamePlayers().values())
 		{
 			if (gVictim.isSpectator()) continue;
-			if(gVictim.getPlayerUniqueID().equals(player.getUniqueId())) continue;
+			if (gVictim.getUUID().equals(player.getUniqueId())) continue;
 
-			Player victim = Bukkit.getPlayer(gVictim.getPlayerUniqueID());
+			Player victim = Bukkit.getPlayer(gVictim.getUUID());
 			Double distance = victim.getLocation().distanceSquared(center);
 			if(distance <= radiusSquared)
 			{
@@ -164,11 +150,5 @@ public class PikachuShockBlastTool extends PlayerTool
 			center.setYaw(yaw);
 			ParticleEffect.FIREWORKS_SPARK.display(center.getDirection(), 0.6f, center, 256);
 		}
-	}
-
-	@Override
-	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event)
-	{
-		onRightClick(player, tool, event);
 	}
 }

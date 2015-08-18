@@ -1,34 +1,39 @@
 package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tools.Weapon;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.tools.*;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-public class GoldenBladeSwordTool extends SwordTool implements Weapon {
 
-	public GoldenBladeSwordTool(HeroBattle plugin) {
+public class GoldenBladeSwordTool extends SwordTool implements Weapon
+{
+
+	public GoldenBladeSwordTool(HeroBattle plugin)
+	{
 		super(plugin);
 	}
-	
+
 	@Override
-	public String getToolID() {
+	public String getToolID()
+	{
 		return "tool.sword.goldenBlade";
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.GOLD + "" + ChatColor.BOLD + "Lame dorée";
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		ItemStack item = new ItemStack(Material.GOLD_SWORD, 1);
 
 		ItemMeta meta = item.getItemMeta();
@@ -39,7 +44,8 @@ public class GoldenBladeSwordTool extends SwordTool implements Weapon {
 	}
 
 	@Override
-	public List<String> getDescription() {
+	public List<String> getDescription()
+	{
 		return Arrays.asList(
 				ChatColor.GRAY + "Frappez les joueurs pour les repousser.",
 				ChatColor.GRAY + "Cliquez droit pour faire un double saut.",
@@ -50,18 +56,22 @@ public class GoldenBladeSwordTool extends SwordTool implements Weapon {
 	}
 
 	@Override
-	public void onPlayerHit(final Player sender, final Player victim) {
+	public void onPlayerHit(final Player sender, final Player victim)
+	{
 		double n = 0.04 + upgrade * 0.01;
-		if(random.nextDouble() <= n) {
+		if (random.nextDouble() <= n)
+		{
 
 			int duration = sender.getFireTicks() + 4 * 20;
 
 			victim.setFireTicks(duration);
 
 			p.getGame().getFiresInProgress().put(victim.getUniqueId(), sender.getUniqueId());
-			p.getServer().getScheduler().runTaskLaterAsynchronously(p, new Runnable() {
+			p.getServer().getScheduler().runTaskLaterAsynchronously(p, new Runnable()
+			{
 				@Override
-				public void run() {
+				public void run()
+				{
 					p.getGame().getFiresInProgress().remove(victim.getUniqueId());
 				}
 			}, duration);

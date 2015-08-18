@@ -1,18 +1,20 @@
 package net.lnfinity.HeroBattle.utils;
 
-import net.samagames.utils.GlowEffect;
-import org.bukkit.inventory.ItemStack;
+import net.samagames.tools.*;
+import org.bukkit.inventory.*;
 
 
-public class ToolsUtils {
+public class ToolsUtils
+{
 
 	/**
 	 * Makes the item stack representing a tool available for use.
 	 *
 	 * @param stack The item stack representing the tool.
 	 */
-	public static void resetTool(ItemStack stack) {
-		if(stack == null) return;
+	public static void resetTool(ItemStack stack)
+	{
+		if (stack == null) return;
 
 		stack.setAmount(1);
 		GlowEffect.addGlow(stack);
@@ -26,7 +28,8 @@ public class ToolsUtils {
 	 *
 	 * @return True if available.
 	 */
-	public static boolean isToolAvailable(ItemStack stack) {
+	public static boolean isToolAvailable(ItemStack stack)
+	{
 		return stack != null && stack.getAmount() == 1 && stack.containsEnchantment(GlowEffect.getGlow());
 	}
 }

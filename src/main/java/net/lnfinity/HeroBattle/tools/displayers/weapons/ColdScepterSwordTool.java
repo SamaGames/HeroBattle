@@ -1,36 +1,40 @@
 package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tools.Weapon;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.tools.*;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
+import org.bukkit.potion.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-public class ColdScepterSwordTool extends SwordTool implements Weapon {
 
-	public ColdScepterSwordTool(HeroBattle plugin) {
+public class ColdScepterSwordTool extends SwordTool implements Weapon
+{
+
+	public ColdScepterSwordTool(HeroBattle plugin)
+	{
 		super(plugin);
 	}
-	
+
 	@Override
-	public String getToolID() {
+	public String getToolID()
+	{
 		return "tool.sword.coldScepter";
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.WHITE + "" + ChatColor.BOLD + "Sceptre du froid";
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		ItemStack item = new ItemStack(Material.IRON_HOE, 1);
 
 		ItemMeta meta = item.getItemMeta();
@@ -39,9 +43,10 @@ public class ColdScepterSwordTool extends SwordTool implements Weapon {
 
 		return item;
 	}
-	
+
 	@Override
-	public List<String> getDescription() {
+	public List<String> getDescription()
+	{
 		return Arrays.asList(
 				ChatColor.GRAY + "Frappez les joueurs pour les repousser.",
 				ChatColor.GRAY + "Cliquez droit pour faire un double saut.",
@@ -52,9 +57,11 @@ public class ColdScepterSwordTool extends SwordTool implements Weapon {
 	}
 
 	@Override
-	public void onPlayerHit(Player sender, Player victim) {
+	public void onPlayerHit(Player sender, Player victim)
+	{
 		double n = 0.1 + upgrade * 0.02;
-		if(random.nextDouble() <= n) {
+		if (random.nextDouble() <= n)
+		{
 			victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2 * 20, 1));
 		}
 	}

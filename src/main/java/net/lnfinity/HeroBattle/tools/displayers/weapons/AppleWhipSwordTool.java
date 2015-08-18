@@ -1,36 +1,40 @@
 package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tools.Weapon;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.tools.*;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
+import org.bukkit.potion.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-public class AppleWhipSwordTool extends WroughtIronSwordTool implements Weapon {
 
-	public AppleWhipSwordTool(HeroBattle plugin) {
+public class AppleWhipSwordTool extends WroughtIronSwordTool implements Weapon
+{
+
+	public AppleWhipSwordTool(HeroBattle plugin)
+	{
 		super(plugin);
 	}
 
 	@Override
-	public String getToolID() {
+	public String getToolID()
+	{
 		return "tool.sword.appleWhip";
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.RED + "" + ChatColor.BOLD + "POMME QUI FOUETTE";
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		ItemStack item = new ItemStack(Material.CARROT_STICK, 1);
 
 		ItemMeta meta = item.getItemMeta();
@@ -41,7 +45,8 @@ public class AppleWhipSwordTool extends WroughtIronSwordTool implements Weapon {
 	}
 
 	@Override
-	public List<String> getDescription() {
+	public List<String> getDescription()
+	{
 		return Arrays.asList(
 				ChatColor.GRAY + "Frappez les joueurs pour les repousser.",
 				ChatColor.GRAY + "Cliquez droit pour faire un double saut.",
@@ -52,11 +57,13 @@ public class AppleWhipSwordTool extends WroughtIronSwordTool implements Weapon {
 	}
 
 	@Override
-	public void onPlayerHit(final Player sender, final Player victim) {
+	public void onPlayerHit(final Player sender, final Player victim)
+	{
 		double n = 0.02;
 
-		if(random.nextDouble() <= n) {
-			victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3*20, 0, true, false));
+		if (random.nextDouble() <= n)
+		{
+			victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3 * 20, 0, true, false));
 		}
 	}
 }

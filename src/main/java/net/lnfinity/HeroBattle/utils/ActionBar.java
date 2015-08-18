@@ -1,14 +1,12 @@
 package net.lnfinity.HeroBattle.utils;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import net.lnfinity.HeroBattle.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.lang.reflect.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 
 /**
@@ -168,14 +166,13 @@ public class ActionBar {
 	 */
 	private static void initActionMessageUpdater() {
 		// Async not possible because of Bukkit.getPlayer() :c
-		Bukkit.getScheduler().runTaskTimer(HeroBattle.get(), new Runnable() {
-			@Override
-			public void run() {
-				for(Map.Entry<UUID, String> entry : actionMessages.entrySet()) {
-					Player player = Bukkit.getPlayer(entry.getKey());
-					if(player != null && player.isOnline()) {
-						sendMessage(player, entry.getValue());
-					}
+		Bukkit.getScheduler().runTaskTimer(HeroBattle.get(), () -> {
+			for (Map.Entry<UUID, String> entry : actionMessages.entrySet())
+			{
+				Player player = Bukkit.getPlayer(entry.getKey());
+				if (player != null && player.isOnline())
+				{
+					sendMessage(player, entry.getValue());
 				}
 			}
 		}, 2l, 30l);

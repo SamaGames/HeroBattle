@@ -4,7 +4,6 @@ import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.tools.*;
 import net.lnfinity.HeroBattle.utils.*;
-import net.samagames.utils.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.*;
@@ -41,7 +40,7 @@ public class InvincibleTool extends PlayerTool {
 	@Override
 	public ItemStack getItem() {
 		ItemStack item = new ItemStack(Material.SNOW_BALL);
-		GlowEffect.addGlow(item);
+		ToolsUtils.resetTool(item);
 		return item;
 	}
 
@@ -63,10 +62,4 @@ public class InvincibleTool extends PlayerTool {
             player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
         }
 	}
-
-	@Override
-	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-
-	}
-
 }

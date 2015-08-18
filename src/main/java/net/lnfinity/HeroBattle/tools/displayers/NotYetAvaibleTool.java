@@ -1,17 +1,15 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import java.util.Arrays;
-import java.util.List;
-
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.tools.*;
 import net.md_5.bungee.api.ChatColor;
+import net.samagames.tools.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.*;
 
-import net.samagames.utils.Titles;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
+import java.util.*;
 
 public class NotYetAvaibleTool extends PlayerTool {
 
@@ -43,10 +41,4 @@ public class NotYetAvaibleTool extends PlayerTool {
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
         Titles.sendTitle(player, 10, 40, 10, ChatColor.RED + "Nope", ChatColor.RED + "Pas encore disponible");
 	}
-
-	@Override
-	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-        onRightClick(player, tool, event);
-	}
-
 }

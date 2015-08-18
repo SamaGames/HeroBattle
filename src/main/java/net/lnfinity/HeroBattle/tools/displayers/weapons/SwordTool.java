@@ -40,7 +40,8 @@ public abstract class SwordTool extends PlayerTool
 
 
 	@Override
-	public List<String> getDescription() {
+	public List<String> getDescription()
+	{
 		return Arrays.asList(
 				ChatColor.GRAY + "Frappez les joueurs pour les repousser.",
 				ChatColor.GRAY + "Cliquez droit pour faire un double saut."
@@ -49,13 +50,15 @@ public abstract class SwordTool extends PlayerTool
 
 
 	@Override
-	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event) {
+	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event)
+	{
 		p.getGamePlayer(player).doubleJump();
 
 	}
 
 	@Override
-	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event) {
+	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event)
+	{
 
 	}
 }

@@ -14,7 +14,6 @@ import java.util.*;
 
 public class TNTTool extends PlayerTool
 {
-
 	// TODO not finished yet
 	
 	private final int COOLDOWN; // seconds
@@ -69,17 +68,12 @@ public class TNTTool extends PlayerTool
 			TNTPrimed tnt = (TNTPrimed) event.getPlayer().getWorld().spawnEntity(event.getPlayer().getLocation().clone().add(0, 1, 0), EntityType.PRIMED_TNT);
 			tnt.setVelocity(event.getPlayer().getLocation().getDirection().normalize().multiply(0.5));
 			tnt.setFuseTicks(IGNITION_TIME * 20);
+
 			p.getGame().addEntityParameters(tnt.getUniqueId(), new TripleParameters(DAMAGES_MIN, DAMAGES_MAX));
 		}
 		else
 		{
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
-	}
-
-	@Override
-	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event)
-	{
-		onRightClick(player, tool, event);
 	}
 }

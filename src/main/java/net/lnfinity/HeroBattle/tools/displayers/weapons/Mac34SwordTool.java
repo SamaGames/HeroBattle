@@ -1,30 +1,34 @@
 package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
-import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.*;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
 
 
 public class Mac34SwordTool extends SwordTool
 {
-	public Mac34SwordTool(HeroBattle plugin) {
+	public Mac34SwordTool(HeroBattle plugin)
+	{
 		super(plugin);
 	}
 
 	@Override
-	public String getToolID() {
+	public String getToolID()
+	{
 		return "tool.sword.mac34";
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "MAC-34";
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		ItemStack item = new ItemStack(Material.DIAMOND_HOE, 1);
 
 		ItemMeta meta = item.getItemMeta();

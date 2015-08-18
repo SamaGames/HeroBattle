@@ -4,7 +4,6 @@ import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.tools.*;
 import net.lnfinity.HeroBattle.utils.*;
-import net.samagames.utils.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.*;
@@ -48,7 +47,8 @@ public class HealingTool extends PlayerTool {
 	@Override
 	public ItemStack getItem() {
 		ItemStack item = new ItemStack(Material.MUSHROOM_SOUP);
-		GlowEffect.addGlow(item);
+		ToolsUtils.resetTool(item);
+
 		return item;
 	}
 
@@ -76,10 +76,4 @@ public class HealingTool extends PlayerTool {
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
 	}
-
-	@Override
-	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-
-	}
-
 }

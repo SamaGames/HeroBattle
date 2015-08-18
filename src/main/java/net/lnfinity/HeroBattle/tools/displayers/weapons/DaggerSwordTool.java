@@ -1,31 +1,36 @@
 package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
-import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.*;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
+
 
 public class DaggerSwordTool extends SwordTool
 {
 
-	public DaggerSwordTool(HeroBattle plugin, int arg1) {
+	public DaggerSwordTool(HeroBattle plugin, int arg1)
+	{
 		super(plugin);
 		upgrade = arg1;
 	}
-	
+
 	@Override
-	public String getToolID() {
+	public String getToolID()
+	{
 		return "tool.sword.dagger";
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.RED + "" + ChatColor.BOLD + "Poignard";
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		ItemStack item = new ItemStack(Material.DIAMOND_SWORD, 1);
 
 		ItemMeta meta = item.getItemMeta();

@@ -20,7 +20,6 @@ package net.lnfinity.HeroBattle.tools.displayers.weapons;
 import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.tools.*;
 import org.bukkit.*;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.potion.*;
@@ -59,7 +58,8 @@ public class PikachuTailSwordTool extends SwordTool implements Weapon
 	}
 
 	@Override
-	public List<String> getDescription() {
+	public List<String> getDescription()
+	{
 		return Arrays.asList(
 				net.md_5.bungee.api.ChatColor.GRAY + "Frappez les joueurs pour les repousser.",
 				net.md_5.bungee.api.ChatColor.GRAY + "Cliquez droit pour faire un double saut.",
@@ -70,8 +70,10 @@ public class PikachuTailSwordTool extends SwordTool implements Weapon
 	}
 
 	@Override
-	public void onPlayerHit(Player sender, Player victim) {
-		if(random.nextDouble() <= SPEED_PROBABILITY) {
+	public void onPlayerHit(Player sender, Player victim)
+	{
+		if (random.nextDouble() <= SPEED_PROBABILITY)
+		{
 			sender.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, SPEED_DURATION * 20, 0));
 		}
 	}

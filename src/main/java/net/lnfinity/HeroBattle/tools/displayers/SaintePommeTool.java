@@ -33,8 +33,10 @@ import java.util.*;
 public class SaintePommeTool extends PlayerTool
 {
 
-	private final Integer COOLDOWN = 45;
-	private final Double FAILURE_PROBABILITY = 0.15;
+	private final Integer COOLDOWN = 55;
+
+	private final Double FAILURE_PROBABILITY = 0.25;
+	private final Integer PERCENTAGE_REMOVED = 60;
 
 	private final Random random = new Random();
 
@@ -80,7 +82,7 @@ public class SaintePommeTool extends PlayerTool
 	{
 		if(!ToolsUtils.isToolAvailable(tool))
 		{
-			player.sendMessage(ChatColor.RED + "Vous etes trop fatigué pour réutiliser ceci maintenant.");
+			player.sendMessage(ChatColor.RED + "Plus de POMMES :c");
 			return;
 		}
 
@@ -94,7 +96,7 @@ public class SaintePommeTool extends PlayerTool
 		}
 		else
 		{
-			gPlayer.setPercentage(gPlayer.getPercentage() - 65);
+			gPlayer.setPercentage(gPlayer.getPercentage() - PERCENTAGE_REMOVED);
 			player.sendMessage(ChatColor.RED + "POMMEH PUISSANT");
 		}
 

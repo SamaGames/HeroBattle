@@ -22,7 +22,8 @@ import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.tools.*;
 import net.lnfinity.HeroBattle.utils.*;
-import net.samagames.utils.*;
+import net.lnfinity.HeroBattle.utils.Utils;
+import net.samagames.tools.*;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
@@ -67,8 +68,8 @@ public class PommEhxploseTool extends PlayerTool
 	@Override
 	public List<String> getDescription()
 	{
-		return Arrays.asList(
-				"Lance une pomme explosive sur l'ennemi"
+		return Utils.getToolDescription(
+				ChatColor.GRAY + "Cherchant l'identité du mystérieux Meh, le Maître des Pommes s'acharne sur ses pommes et découvre la capacité incroyable de faire exploser ses pommes."
 		);
 	}
 
@@ -86,7 +87,7 @@ public class PommEhxploseTool extends PlayerTool
 	{
 		if(!ToolsUtils.isToolAvailable(tool))
 		{
-			player.sendMessage(ChatColor.RED + "Vous etes trop fatigué pour réutiliser ceci maintenant.");
+			player.sendMessage(ChatColor.RED + "Plus de POMMES :c");
 			return;
 		}
 
@@ -126,14 +127,7 @@ public class PommEhxploseTool extends PlayerTool
 					fwm.setPower(0);
 					fw.setFireworkMeta(fwm);
 
-					Bukkit.getScheduler().runTaskLater(p, new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							fw.detonate();
-						}
-					}, 1l);
+					Bukkit.getScheduler().runTaskLater(p, fw::detonate, 1l);
 
 
 					// Sounds
@@ -158,7 +152,7 @@ public class PommEhxploseTool extends PlayerTool
 							gVictim.setPercentage(gVictim.getPercentage() + damages, gPlayer);
 
 							// Motion
-							if(distanceSquared < 68 && !gVictim.getPlayerUniqueID().equals(player.getUniqueId()))
+							if (distanceSquared < 68 && !gVictim.getUUID().equals(player.getUniqueId()))
 							{
 								player.setVelocity(player.getLocation().toVector().subtract(boomLocation.toVector()).normalize().multiply(distanceSquared / 38));
 							}
