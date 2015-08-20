@@ -10,6 +10,7 @@ import net.minecraft.server.v1_8_R3.*;
 import net.samagames.api.*;
 import net.samagames.api.games.*;
 import net.samagames.tools.*;
+import org.apache.commons.lang3.tuple.*;
 import org.bukkit.*;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -51,12 +52,12 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	private Map<UUID, Location> lastLightningBolts = new ConcurrentHashMap<>();
 
 	/**
-	 * Map player -> who poisonned him
+	 * Map player -> who poisoned him
 	 */
 	private Map<UUID, UUID> poisonsInProgress = new ConcurrentHashMap<>();
 
 	/**
-	 * Map player -> who inflammed him
+	 * Map player -> who inflamed him
 	 */
 	private Map<UUID, UUID> firesInProgress = new ConcurrentHashMap<>();
 
@@ -168,9 +169,20 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 		}
 	}
 
+
+	@Override
+	public Pair<Boolean, String> canJoinGame(UUID player, boolean reconnect)
+	{
+		if (HeroBattle.get().getTimer().isEnabled() && HeroBattle.get().getTimer().getSecondsLeft() < 6)
+		{
+			return Pair.of(false, ChatColor.RED + "La partie est sur le point de démarrer !");
+		}
+
+		return Pair.of(true, "");
+	}
+
 	/**
-	 * Starts the game, handles everything including teleportations, messages, task timers... Should
-	 * be called once.
+	 * Starts the game, handles everything including teleportations, messages, task timers...
 	 */
 	@Override
 	public void startGame()
@@ -1238,7 +1250,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	/**
 	 * Sets the global damages multiplier of the game.
 	 *
-	 * @param damagesMultiplicator
+	 * @param damagesMultiplicator The damages multiplicator.
 	 */
 	public void setDamagesMultiplicator(int damagesMultiplicator)
 	{
@@ -1248,8 +1260,8 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	/**
 	 * Attaches parameters to an entity.
 	 *
-	 * @param id
-	 * @param params
+	 * @param id The entity's UUID.
+	 * @param params The parameters to attach.
 	 */
 	public void addEntityParameters(UUID id, TripleParameters params)
 	{
@@ -1259,14 +1271,12 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	/**
 	 * Get parameters for an entity. Also removes the parameters from the map.
 	 *
-	 * @param id
+	 * @param id The entity's UUID.
 	 *
-	 * @return
+	 * @return The parameters.
 	 */
 	public TripleParameters getParameters(UUID id)
 	{
-		TripleParameters params = entitiesData.get(id);
-		entitiesData.remove(id);
-		return params;
+		return entitiesData.remove(id);
 	}
 }

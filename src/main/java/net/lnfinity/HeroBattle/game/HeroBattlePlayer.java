@@ -4,14 +4,18 @@ import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.classes.*;
 import net.lnfinity.HeroBattle.tasks.*;
 import net.lnfinity.HeroBattle.utils.*;
-import net.md_5.bungee.api.ChatColor;
+import net.lnfinity.HeroBattle.utils.ParticleEffect;
+import net.lnfinity.HeroBattle.utils.Utils;
+import net.samagames.api.*;
 import net.samagames.api.games.*;
+import net.samagames.tools.*;
 import org.apache.commons.lang.*;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.*;
 import org.bukkit.potion.*;
 import org.bukkit.scheduler.*;
+import org.bukkit.scoreboard.*;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -49,8 +53,8 @@ public class HeroBattlePlayer extends GamePlayer
 	private UUID lastDamager = null;
 	private Map<UUID, Assist> assists = new HashMap<>();
 
-	private List<PlayerClass> classesAvailable = new ArrayList<PlayerClass>();
-	private List<Task> tasks = new ArrayList<Task>();
+	private List<PlayerClass> classesAvailable = new ArrayList<>();
+	private List<Task> tasks = new ArrayList<>();
 
 	private BukkitTask updateEffectsTask;
 
@@ -76,16 +80,143 @@ public class HeroBattlePlayer extends GamePlayer
 	private int killsRank = 0;
 	private int percentageRank = 0;
 
-	/**
-	 * Creates a new playing player. Should be invoked just after joining.
-	 *
-	 * @param id
-	 */
-	public HeroBattlePlayer(UUID id)
+
+	public HeroBattlePlayer(Player player)
 	{
-		super(Bukkit.getServer().getPlayer(id));
+		super(player);
 
 		startEffectsUpdaterTask();
+	}
+
+
+	@Override
+	public void handleLogin(boolean reconnect)
+	{
+		super.handleLogin(reconnect);
+
+		Player p = getPlayerIfOnline();
+		HeroBattle plugin = HeroBattle.get();
+
+		p.getInventory().clear();
+		p.getInventory().setArmorContents(null);
+		p.setExp(0);
+		p.setLevel(0);
+		p.setTotalExperience(0);
+		p.setGameMode(GameMode.ADVENTURE);
+
+		p.setScoreboard(plugin.getScoreboardManager().getScoreboard());
+
+		// Debug
+		if (SamaGamesAPI.get().getServerName().startsWith("TestServer_"))
+			p.setDisplayName(org.bukkit.ChatColor.values()[new Random().nextInt(org.bukkit.ChatColor.values().length)] + p.getName() + org.bukkit.ChatColor.RESET);
+
+		// Good color in the tab list
+		plugin.getServer().getScheduler().runTaskLater(plugin, () ->
+		{
+			String groupColor = Utils.getPlayerColor(p);
+
+			String teamName = "_" + new Random().nextInt(1000) + p.getName();
+			teamName = teamName.substring(0, Math.min(teamName.length(), 16));
+
+			Team playerTeam = plugin.getScoreboardManager().getScoreboard().registerNewTeam(teamName);
+			playerTeam.setDisplayName(p.getName());
+			playerTeam.setPrefix(groupColor);
+			playerTeam.addPlayer(p);
+		}, 10l);
+
+		// If the player left during a tutorial, this value may be set to 0f.
+		p.setFlySpeed(0.1f);
+
+		// Needed so the toggleFlight event is fired when the player
+		// double-jump.
+		// The event is always cancelled.
+		p.setAllowFlight(false); // Temp disabled  // « temp », that's what he said.
+
+		plugin.getGame().teleportHub(p.getUniqueId());
+
+		plugin.getClassManager().addPlayerClasses(p);
+
+		if (!plugin.getTimer().isEnabled() && plugin.getGame().getConnectedPlayers() >= plugin.getGame().getMinPlayers())
+		{
+			plugin.getTimer().restartTimer();
+		}
+
+		p.setMaxHealth(20);
+		p.setHealth(20);
+
+		if (plugin.getArenaConfig().getBoolean("map.permanentNightVision"))
+		{
+			p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
+		}
+		else
+		{
+			p.removePotionEffect(PotionEffectType.NIGHT_VISION);
+		}
+
+		plugin.getGame().equipPlayer(p);
+
+		if (!plugin.getTimer().isEnabled() || plugin.getTimer().getSecondsLeft() > 15)
+		{
+			Bukkit.getScheduler().runTaskLater(plugin, () -> {
+				if (!plugin.getTutorialDisplayer().isWatchingTutorial(p.getUniqueId()))
+				{
+					Titles.sendTitle(p, 10, 60, 10, HeroBattle.GAME_NAME_BICOLOR, org.bukkit.ChatColor.WHITE + "Bienvenue en "
+							+ HeroBattle.GAME_NAME);
+				}
+			}, 40l);
+
+			Bukkit.getScheduler().runTaskLater(plugin, () -> {
+				if (!plugin.getTutorialDisplayer().isWatchingTutorial(p.getUniqueId()))
+				{
+					Titles.sendTitle(p, 0, 80, 0, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "N'oubliez pas de "
+							+ ChatColor.LIGHT_PURPLE + "choisir une classe" + ChatColor.WHITE + " !");
+				}
+			}, 120l);
+
+			Bukkit.getScheduler().runTaskLater(plugin, () -> {
+				if (!plugin.getTutorialDisplayer().isWatchingTutorial(p.getUniqueId()))
+				{
+					Titles.sendTitle(p, 0, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "Un "
+							+ ChatColor.GOLD + "tutoriel" + ChatColor.WHITE + " est mis à disposition !");
+				}
+			}, 200l);
+		}
+
+		p.getServer().getOnlinePlayers().stream()
+				.filter(player -> plugin.getTutorialDisplayer().isWatchingTutorial(player.getUniqueId()) && !player.equals(p))
+				.forEach(player -> {
+							player.hidePlayer(p);
+							p.hidePlayer(player);
+						}
+				);
+
+		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () ->
+		{
+			Integer elo = (int) SamaGamesAPI.get().getStatsManager(HeroBattle.get().getGame().getGameCodeName())
+					.getStatValue(getUUID(), "elo");
+
+			if (elo == null || elo == 0)
+			{
+				elo = 2000; // Default value
+			}
+			else if (elo > 10000)
+			{
+				elo = 10000;
+			}
+			else if (elo < 1000)
+			{
+				elo = 1000;
+			}
+
+			setElo(elo);
+			setOriginalElo(elo);
+
+			plugin.getScoreboardManager().refreshTab();
+			plugin.getServer().getScheduler().runTaskLater(plugin, () -> p.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " est actuellement de " + ChatColor.DARK_GREEN + getElo()), 30L);
+		});
+
+
+		ActionBar.sendPermanentMessage(p, ChatColor.GREEN + "Classe sélectionnée : " + ChatColor.DARK_RED + "aucune" + ChatColor.GRAY + " (aléatoire sans bonus)");
 	}
 
 	private void startEffectsUpdaterTask()
