@@ -388,12 +388,14 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 
 	/**
 	 * Chooses a random class according to the classes owned. Should be called just before the
-	 * begining of the game, if the player hasn't choosen one yet.
+	 * beginning of the game, if the player hasn't chosen one yet.
 	 *
 	 * @param player
 	 */
 	public void chooseRandomClass(Player player)
 	{
+		if(player == null) return;
+
 		HeroBattlePlayer heroBattlePlayer = getPlayer(player.getUniqueId());
 
 		if (heroBattlePlayer == null || heroBattlePlayer.getAvaibleClasses().size() == 0) return;
@@ -414,12 +416,29 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 		{
 			if (i == r)
 			{
-				heroBattlePlayer.setPlayerClass(classe);
-				player.sendMessage(ChatColor.GREEN + "La classe " + ChatColor.DARK_GREEN + classe.getName()
-						+ ChatColor.GREEN + " vous a été attribuée suite à un complexe jeu de dés !");
-				return;
+				if(classe != null)
+				{
+					heroBattlePlayer.setPlayerClass(classe);
+					player.sendMessage(ChatColor.GREEN + "La classe " + ChatColor.DARK_GREEN + classe.getName()
+							+ ChatColor.GREEN + " vous a été attribuée suite à un complexe jeu de dés !");
+					return;
+				}
+				else
+				{
+					r++; // Next class maybe?
+				}
 			}
 			i++;
+		}
+
+		// Still without any class? This happens sometimes.
+		// TODO inspect why (deeper bug). HeroBattlePlayer.getAvaibleClasses() seems to sometimes include `null` in the list.
+		// Workaround.
+		if(heroBattlePlayer.getPlayerClass() == null)
+		{
+			heroBattlePlayer.setPlayerClass(new BruteClass(p, 0, 0, 0));
+			player.sendMessage(ChatColor.GREEN + "La classe " + ChatColor.DARK_GREEN + "Brute"
+					+ ChatColor.GREEN + " vous a été attribuée suite à un complexe jeu de dés !");
 		}
 	}
 
