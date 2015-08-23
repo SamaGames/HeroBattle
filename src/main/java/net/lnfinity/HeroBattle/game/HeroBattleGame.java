@@ -73,7 +73,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 
 	private Random random = new Random();
 
-	private int damagesMultiplicator = 1;
+	private int damagesMultiplier = 1;
 
 
 	public HeroBattleGame()
@@ -1261,19 +1261,19 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	/**
 	 * @return The current global damages multiplier of the game.
 	 */
-	public int getDamagesMultiplicator()
+	public int getDamagesMultiplier()
 	{
-		return damagesMultiplicator;
+		return damagesMultiplier;
 	}
 
 	/**
 	 * Sets the global damages multiplier of the game.
 	 *
-	 * @param damagesMultiplicator The damages multiplicator.
+	 * @param damagesMultiplier The damages multiplicator.
 	 */
-	public void setDamagesMultiplicator(int damagesMultiplicator)
+	public void setDamagesMultiplier(int damagesMultiplier)
 	{
-		this.damagesMultiplicator = damagesMultiplicator;
+		this.damagesMultiplier = damagesMultiplier;
 	}
 
 	/**

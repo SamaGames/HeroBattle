@@ -49,7 +49,7 @@ public class GameTimer
 
 			if (minutes == 10 && seconds == 0)
 			{
-				p.getGame().setDamagesMultiplicator(2);
+				p.getGame().setDamagesMultiplier(2);
 				p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.YELLOW + "10 minutes de jeu se sont écoulées");
 				p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.RED + "" + ChatColor.BOLD + "Tous les dégâts infligés sont multipliés par 2 !");
 				for (Player player : p.getServer().getOnlinePlayers())
@@ -61,7 +61,7 @@ public class GameTimer
 
 			if (minutes == 12 && seconds == 30)
 			{
-				p.getGame().setDamagesMultiplicator(3);
+				p.getGame().setDamagesMultiplier(3);
 				p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.YELLOW + "12 minutes et 30 secondes de jeu se sont écoulées");
 				p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.RED + "" + ChatColor.BOLD + "Tous les dégâts infligés sont multipliés par 3 !");
 				for (Player player : p.getServer().getOnlinePlayers())
