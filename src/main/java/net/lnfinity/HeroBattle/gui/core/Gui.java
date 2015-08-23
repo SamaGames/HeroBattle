@@ -17,7 +17,6 @@
 
 package net.lnfinity.HeroBattle.gui.core;
 
-import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
@@ -26,6 +25,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
+
+import java.util.HashMap;
 
 
 /**
@@ -153,7 +154,7 @@ abstract public class Gui
 	 * Raised when the GUI is being closed.
 	 * Use this method to cleanup data.
 	 */
-	protected void onClose(){};
+	protected void onClose(){}
 
     /* ===== Getters & Setters ===== */
 

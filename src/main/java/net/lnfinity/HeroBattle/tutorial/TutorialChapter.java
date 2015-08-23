@@ -10,7 +10,7 @@ import java.util.UUID;
 
 
 /**
- * Represents a chapter of an ingame-tutorial.
+ * Represents a chapter of an in-game-tutorial.
  */
 public class TutorialChapter {
 
@@ -83,7 +83,7 @@ public class TutorialChapter {
 
 	/**
 	 * Returns true if this has to be displayed in the chat.
-	 * @return
+	 * @return {@code true} if displayed in the chat.
 	 */
 	public boolean isDisplayedInChat() {
 		return displayInChat;

@@ -4,7 +4,6 @@ package net.lnfinity.HeroBattle.powerups;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.utils.ParticleEffect;
 import net.lnfinity.HeroBattle.utils.Utils;
-import net.samagames.utils.Titles;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Firework;
@@ -106,20 +105,10 @@ public class ActivePowerup {
 		fwm.setPower(0);
 		fw.setFireworkMeta(fwm);
 
-		Bukkit.getScheduler().runTaskLater(p, new Runnable() {
-			@Override
-			public void run() {
-				fw.detonate();
-			}
-		}, 1l);
+		Bukkit.getScheduler().runTaskLater(p, fw::detonate, 1l);
 
 
-		particlesTask = Bukkit.getScheduler().runTaskTimerAsynchronously(p, new Runnable() {
-			@Override
-			public void run() {
-				ParticleEffect.SPELL_INSTANT.display(0.5F, 0.5F, 0.5F, 0.1F, 2, itemLocation, 100.0);
-			}
-		}, 1l, 5l);
+		particlesTask = Bukkit.getScheduler().runTaskTimerAsynchronously(p, () -> ParticleEffect.SPELL_INSTANT.display(0.5F, 0.5F, 0.5F, 0.1F, 2, itemLocation, 100.0), 1l, 5l);
 
 
 		alive = true;
@@ -151,12 +140,7 @@ public class ActivePowerup {
 		fwm.setPower(0);
 		fw.setFireworkMeta(fwm);
 
-		Bukkit.getScheduler().runTaskLater(p, new Runnable() {
-			@Override
-			public void run() {
-				fw.detonate();
-			}
-		}, 1l);
+		Bukkit.getScheduler().runTaskLater(p, fw::detonate, 1l);
 
 		particlesTask.cancel();
 

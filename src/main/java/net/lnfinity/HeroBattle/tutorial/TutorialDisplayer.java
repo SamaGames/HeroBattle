@@ -41,7 +41,7 @@ public class TutorialDisplayer {
 		addChapter(new TutorialChapter(
 				p.getGame().getTutorialLocations().get(0),
 				HeroBattle.GAME_NAME_BICOLOR,
-				Arrays.asList(
+				Collections.singletonList(
 						ChatColor.GREEN + "Comment jouer ?"
 				),
 				false
@@ -103,7 +103,7 @@ public class TutorialDisplayer {
 		addChapter(new TutorialChapter(
 				p.getGame().getTutorialLocations().get(3),
 				HeroBattle.GAME_NAME_BICOLOR,
-				Arrays.asList(
+				Collections.singletonList(
 						ChatColor.GREEN + "Bon jeu et bonne chance !"
 				),
 				false

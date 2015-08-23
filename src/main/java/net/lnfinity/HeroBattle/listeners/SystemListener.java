@@ -5,7 +5,6 @@ import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.tasks.displayers.*;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.gameapi.json.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
@@ -32,9 +31,8 @@ public class SystemListener implements Listener {
 	}
 
 	@EventHandler
-	public boolean onFoodLevelChange(FoodLevelChangeEvent event) {
+	public void onFoodLevelChange(FoodLevelChangeEvent event) {
 		event.setFoodLevel(100);
-		return true;
 	}
 
 	@EventHandler
@@ -49,7 +47,7 @@ public class SystemListener implements Listener {
 				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE && !plugin.getGamePlayer(e.getPlayer()).isSpectator())
 		{
 
-			if (plugin.getGame().getStatus() == Status.InGame) {
+			if (plugin.getGame().isGameStarted()) {
 				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.FALL);
 			} else {
 				plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
@@ -62,7 +60,7 @@ public class SystemListener implements Listener {
 
 		if(((Entity) e.getPlayer()).isOnGround()) {
 			HeroBattlePlayer heroBattlePlayer = plugin.getGamePlayer(e.getPlayer());
-			if (heroBattlePlayer != null && plugin.getGame().getStatus() == Status.InGame)
+			if (heroBattlePlayer != null && plugin.getGame().isGameStarted())
 			{
 				heroBattlePlayer.setJumps(heroBattlePlayer.getMaxJumps());
 				heroBattlePlayer.setJumpLocked(false);
@@ -95,7 +93,7 @@ public class SystemListener implements Listener {
 		}
 
 
-		if (plugin.getGame().getStatus() == Status.InGame) {
+		if (plugin.getGame().isGameStarted()) {
 			Material blockType = e.getPlayer().getLocation().getBlock().getType();
 
 			// In-water check
@@ -174,10 +172,10 @@ public class SystemListener implements Listener {
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
 		HeroBattlePlayer heroBattlePlayer = plugin.getGamePlayer(e.getPlayer().getUniqueId());
-		if (heroBattlePlayer == null) return; // /btp or /stp
+		if (heroBattlePlayer == null || heroBattlePlayer.isSpectator()) return; // /btp or /stp
 
 		// Pomme Easter-Egg
-		if (HeroBattle.get().getGame().getStatus() == Status.Available || HeroBattle.get().getGame().getStatus() == Status.PreStarting || HeroBattle.get().getGame().getStatus() == Status.Starting)
+		if (!HeroBattle.get().getGame().isGameStarted())
 		{
 			if (e.getMessage().equalsIgnoreCase("MEH"))
 			{

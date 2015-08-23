@@ -1,29 +1,32 @@
 package net.lnfinity.HeroBattle.game;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.classes.*;
-import net.lnfinity.HeroBattle.tasks.*;
-import net.lnfinity.HeroBattle.utils.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.tasks.Task;
+import net.lnfinity.HeroBattle.utils.ActionBar;
+import net.lnfinity.HeroBattle.utils.DamageTag;
 import net.lnfinity.HeroBattle.utils.ParticleEffect;
 import net.lnfinity.HeroBattle.utils.Utils;
-import net.samagames.api.*;
-import net.samagames.api.games.*;
-import net.samagames.tools.*;
-import org.apache.commons.lang.*;
+import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.games.GamePlayer;
+import net.samagames.api.games.Status;
+import net.samagames.tools.Titles;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.bukkit.*;
-import org.bukkit.block.*;
-import org.bukkit.entity.*;
-import org.bukkit.potion.*;
-import org.bukkit.scheduler.*;
-import org.bukkit.scoreboard.*;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 
 import java.util.*;
 
 
 /**
- * Represents a player in the game. Every player has a wrapper except moderators. Instances can be
- * retrieved using `HeroBattle.getGamePlayer(UUID)`
+ * Represents a player in the game. Every player has a wrapper.
  */
 public class HeroBattlePlayer extends GamePlayer
 {
@@ -32,7 +35,7 @@ public class HeroBattlePlayer extends GamePlayer
 	private int originalElo = 0;
 	private int elo = 0;
 
-	private PlayerClass classe = null;
+	private PlayerClass playerClass = null;
 
 	private int jumps = 2;
 	private int maxJumps = 2;
@@ -46,7 +49,7 @@ public class HeroBattlePlayer extends GamePlayer
 	private int remainingRespawnInvincibility = 0;
 
 	private int remainingThorns = 0;
-	private float thornsEfficienty = 0.0f; // percentage of damages inflicted back
+	private float thornsEfficiency = 0.0f; // percentage of damages inflicted back
 
 	private int remainingTimeWithMoreJumps = 0;
 
@@ -97,6 +100,8 @@ public class HeroBattlePlayer extends GamePlayer
 		Player p = getPlayerIfOnline();
 		HeroBattle plugin = HeroBattle.get();
 
+		plugin.getPlayersConnectionsHandler().registerPlayerJoin(p);
+
 		p.getInventory().clear();
 		p.getInventory().setArmorContents(null);
 		p.setExp(0);
@@ -134,7 +139,7 @@ public class HeroBattlePlayer extends GamePlayer
 
 		plugin.getGame().teleportHub(p.getUniqueId());
 
-		plugin.getClassManager().addPlayerClasses(p);
+		plugin.getClassManager().loadPlayerClasses(p);
 
 		if (!plugin.getTimer().isEnabled() && plugin.getGame().getConnectedPlayers() >= plugin.getGame().getMinPlayers())
 		{
@@ -217,6 +222,24 @@ public class HeroBattlePlayer extends GamePlayer
 
 
 		ActionBar.sendPermanentMessage(p, ChatColor.GREEN + "Classe sélectionnée : " + ChatColor.DARK_RED + "aucune" + ChatColor.GRAY + " (aléatoire sans bonus)");
+	}
+
+	@Override
+	public void handleLogout()
+	{
+		super.handleLogout();
+		HeroBattle.get().getPlayersConnectionsHandler().registerPlayerQuit(getPlayerIfOnline());
+	}
+
+	@Override
+	public void addCoins(final int amount, final String why)
+	{
+		super.addCoins((int) Math.ceil(((double) amount) * gainMultiplier), why);
+	}
+
+	public void addStars(int amount, String why)
+	{
+		super.addStars((int) Math.ceil(((double) amount) * gainMultiplier), why);
 	}
 
 	private void startEffectsUpdaterTask()
@@ -376,7 +399,7 @@ public class HeroBattlePlayer extends GamePlayer
 
 		if (!thornsDamages && getRemainingThorns() > 0)
 		{
-			aggressor.setPercentage((int) (aggressor.getPercentage() + percentageInflicted * getThornsEfficienty()), this, true);
+			aggressor.setPercentage((int) (aggressor.getPercentage() + percentageInflicted * getThornsEfficiency()), this, true);
 		}
 
 		if (getRemainingReducingIncomingDamages() != 0 && percentage >= oldPercentage)
@@ -554,15 +577,15 @@ public class HeroBattlePlayer extends GamePlayer
 		return remainingThorns;
 	}
 
-	public float getThornsEfficienty()
+	public float getThornsEfficiency()
 	{
-		return thornsEfficienty;
+		return thornsEfficiency;
 	}
 
 	public void addRemainingThorns(int remainingThorns, float thornsEfficienty)
 	{
 		this.remainingThorns = this.getRemainingThorns() + remainingThorns;
-		this.thornsEfficienty = Math.max(thornsEfficienty, 0);
+		this.thornsEfficiency = Math.max(thornsEfficienty, 0);
 
 		updateActionBar();
 	}
@@ -589,7 +612,7 @@ public class HeroBattlePlayer extends GamePlayer
 
 	public PlayerClass getPlayerClass()
 	{
-		return classe;
+		return playerClass;
 	}
 
 	/**
@@ -599,7 +622,7 @@ public class HeroBattlePlayer extends GamePlayer
 	 */
 	public void setPlayerClass(PlayerClass classe)
 	{
-		this.classe = classe;
+		this.playerClass = classe;
 		if (classe != null)
 		{
 			lives = classe.getLives();
@@ -651,7 +674,6 @@ public class HeroBattlePlayer extends GamePlayer
 	 */
 	public void doubleJump()
 	{
-
 		if (jumpLocked) return; // nop
 
 
@@ -722,7 +744,7 @@ public class HeroBattlePlayer extends GamePlayer
 		return false;
 	}
 
-	public List<PlayerClass> getAvaibleClasses()
+	public List<PlayerClass> getAvailableClasses()
 	{
 		return classesAvailable;
 	}
@@ -732,7 +754,7 @@ public class HeroBattlePlayer extends GamePlayer
 		this.classesAvailable = available;
 	}
 
-	public void addAvaibleClass(PlayerClass theClass)
+	public void addAvailableClass(PlayerClass theClass)
 	{
 		this.classesAvailable.add(theClass);
 	}
@@ -803,18 +825,6 @@ public class HeroBattlePlayer extends GamePlayer
 		this.jumpLocked = jumpLocked;
 	}
 
-
-	@Override
-	public void addCoins(final int amount, final String why)
-	{
-		super.addCoins((int) Math.ceil(((double) amount) * gainMultiplier), why);
-	}
-
-	public void addStars(int amount, String why)
-	{
-		super.addStars((int) Math.ceil(((double) amount) * gainMultiplier), why);
-	}
-
 	public int getKillsRank()
 	{
 		return killsRank;
@@ -838,7 +848,6 @@ public class HeroBattlePlayer extends GamePlayer
 
 	private void updateActionBar()
 	{
-
 		if (!(HeroBattle.get().getGame().getStatus() == Status.IN_GAME))
 			return;
 
@@ -880,7 +889,7 @@ public class HeroBattlePlayer extends GamePlayer
 
 		if (getRemainingThorns() != 0)
 		{
-			currentStatus.add(ChatColor.DARK_PURPLE + "Renvoi de dégâts (" + ((int) (getThornsEfficienty() * 100)) + "%) (" + getRemainingThorns() + ")");
+			currentStatus.add(ChatColor.DARK_PURPLE + "Renvoi de dégâts (" + ((int) (getThornsEfficiency() * 100)) + "%) (" + getRemainingThorns() + ")");
 		}
 
 		for (PotionEffect effect : player.getActivePotionEffects())
@@ -991,22 +1000,14 @@ public class HeroBattlePlayer extends GamePlayer
 	public void basicDamage(int percentageAdded, HeroBattlePlayer aggressor)
 	{
 		getPlayerIfOnline().damage(0);
-
-		if (aggressor == null)
-		{
-			setPercentage(percentageAdded + percentage);
-		}
-		else
-		{
-			setPercentage(percentageAdded + percentage, aggressor);
-		}
+		setPercentage(percentageAdded + percentage, aggressor);
 	}
 
 
 	/**
 	 * TODO Implementation in the SG API.
 	 *
-	 * @return
+	 * @return The offline player represented by this {@link GamePlayer}.
 	 */
 	public OfflinePlayer getOfflinePlayer()
 	{

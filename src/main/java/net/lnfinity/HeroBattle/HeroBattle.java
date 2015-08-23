@@ -10,6 +10,7 @@ import net.lnfinity.HeroBattle.tutorial.*;
 import net.lnfinity.HeroBattle.utils.*;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.api.*;
+import net.samagames.api.shops.AbstractShopsManager;
 import org.bukkit.*;
 import org.bukkit.configuration.*;
 import org.bukkit.configuration.file.*;
@@ -37,6 +38,8 @@ public class HeroBattle extends JavaPlugin {
 	private static HeroBattle instance;
 
 	private HeroBattleGame game;
+
+	private PlayersConnectionsHandler playersConnectionsHandler;
 
 	private CountdownTimer timer;
 	private GameTimer gameTimer;
@@ -108,7 +111,6 @@ public class HeroBattle extends JavaPlugin {
 		};
 
 		events.registerEvents(new ConnectionsListener(this), this);
-		events.registerEvents(new PlayersConnectionsListener(this), this);
 		events.registerEvents(new GameListener(this), this);
 		events.registerEvents(new SystemListener(this), this);
 		events.registerEvents(new PreStartInteractionsListener(), this);
@@ -137,6 +139,7 @@ public class HeroBattle extends JavaPlugin {
 		scoreboardManager = new ScoreboardManager(this);
 		powerupManager = new PowerupManager(this);
 		tutorialDisplayer = new TutorialDisplayer(this);
+		playersConnectionsHandler = new PlayersConnectionsHandler(this);
 
 		Gui.init(this);
 		GuiUtils.init();
@@ -152,6 +155,12 @@ public class HeroBattle extends JavaPlugin {
 	// For local debugging purposes only (/rl)
 	public void addOnlinePlayers() {
 		getServer().getOnlinePlayers().forEach(game::handleLogin);
+	}
+
+
+	public boolean isTestServer()
+	{
+		return SamaGamesAPI.get().getServerName().startsWith("TestServer_");
 	}
 
 
@@ -186,6 +195,16 @@ public class HeroBattle extends JavaPlugin {
 
 	public TutorialDisplayer getTutorialDisplayer() {
 		return tutorialDisplayer;
+	}
+
+	public PlayersConnectionsHandler getPlayersConnectionsHandler() {
+		return playersConnectionsHandler;
+	}
+
+
+	public AbstractShopsManager getShopManager()
+	{
+		return SamaGamesAPI.get().getShopsManager(getGame().getGameCodeName());
 	}
 
 

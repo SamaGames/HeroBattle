@@ -22,7 +22,6 @@ import net.lnfinity.HeroBattle.classes.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.gui.core.*;
 import net.lnfinity.HeroBattle.tools.*;
-import net.samagames.gameapi.json.*;
 import org.apache.commons.lang.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;

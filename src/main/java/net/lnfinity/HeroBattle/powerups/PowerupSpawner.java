@@ -31,12 +31,9 @@ public class PowerupSpawner {
 			return;
 		}
 		
-		task = p.getServer().getScheduler().runTaskTimer(p, new Runnable() {
-			@Override
-			public void run() {
-				if(random.nextInt(PowerupManager.INVERSE_PROBABILITY_OF_SPAWN_PER_TICK) == 0) {
-					p.getPowerupManager().spawnRandomPowerup();
-				}
+		task = p.getServer().getScheduler().runTaskTimer(p, () -> {
+			if(random.nextInt(PowerupManager.INVERSE_PROBABILITY_OF_SPAWN_PER_TICK) == 0) {
+				p.getPowerupManager().spawnRandomPowerup();
 			}
 		}, 1L, 1L).getTaskId();
 	}

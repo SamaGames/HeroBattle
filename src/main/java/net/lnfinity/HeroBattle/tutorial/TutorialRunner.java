@@ -3,7 +3,7 @@ package net.lnfinity.HeroBattle.tutorial;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.utils.Titles;
+import net.samagames.tools.Titles;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 

@@ -3,9 +3,6 @@ package net.lnfinity.HeroBattle.listeners.commands;
 import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.gameapi.json.*;
-import net.zyuiop.MasterBundle.*;
-import net.zyuiop.statsapi.*;
 import org.bukkit.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
@@ -98,20 +95,15 @@ public class CommandListener implements CommandExecutor
 						final int val = Integer.parseInt(args[1]);
 						if (val >= 1000 && val <= 10000)
 						{
-							p.getServer().getScheduler().runTaskAsynchronously(p, new Runnable()
-							{
-								@Override
-								public void run()
+							p.getServer().getScheduler().runTaskAsynchronously(p, () -> {
+								StatsApi.increaseStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "elo", val - StatsApi.getPlayerStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "elo"));
+								if (heroBattlePlayer != null)
 								{
-									StatsApi.increaseStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "elo", val - StatsApi.getPlayerStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "elo"));
-									if (heroBattlePlayer != null)
-									{
-										heroBattlePlayer.setElo(val - heroBattlePlayer.getElo());
-										((CommandSender) player).sendMessage(ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + val);
-										((CommandSender) player).sendMessage(ChatColor.GOLD + "Merci de rejoindre à nouveau la partie pour que les changements visuels soient appliqués.");
-									}
-									sender.sendMessage(ChatColor.GREEN + "L'" + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " du joueur " + ChatColor.DARK_GREEN + player.getName() + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + val);
+									heroBattlePlayer.setElo(val - heroBattlePlayer.getElo());
+									((CommandSender) player).sendMessage(ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + val);
+									((CommandSender) player).sendMessage(ChatColor.GOLD + "Merci de rejoindre à nouveau la partie pour que les changements visuels soient appliqués.");
 								}
+								sender.sendMessage(ChatColor.GREEN + "L'" + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " du joueur " + ChatColor.DARK_GREEN + player.getName() + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + val);
 							});
 						}
 						else

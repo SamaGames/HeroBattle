@@ -3,7 +3,6 @@ package net.lnfinity.HeroBattle.powerups;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.powerups.powerups.*;
 import net.lnfinity.HeroBattle.utils.Utils;
-import net.zyuiop.statsapi.StatsApi;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -109,12 +108,9 @@ public class PowerupManager {
 		long despawnDelay = powerup instanceof PositivePowerup ?
 				DELAY_UNSPAWN_POSITIVE_POWERUP : DELAY_UNSPAWN_NEGATIVE_POWERUP;
 
-		Bukkit.getScheduler().runTaskLater(p, new Runnable() {
-			@Override
-			public void run() {
-				if (activePowerup.isAlive()) {
-					unspawnPowerup(activePowerup, false);
-				}
+		Bukkit.getScheduler().runTaskLater(p, () -> {
+			if (activePowerup.isAlive()) {
+				unspawnPowerup(activePowerup, false);
 			}
 		}, despawnDelay);
 	}
@@ -157,7 +153,7 @@ public class PowerupManager {
 		unspawnPowerup(activePowerup, true);
 
 
-		StatsApi.increaseStat(player, p.getName(), "powerup_taken", 1);
+		HeroBattle.get().getGame().increaseStat(player.getUniqueId(), "powerup_taken", 1);
 	}
 
 
@@ -166,18 +162,19 @@ public class PowerupManager {
 	}
 
 	private void registerLocations() {
-		List powerSpawns = p.getArenaConfig().getList("map.powerups");
+		List<String> powerSpawns = p.getArenaConfig().getStringList("map.powerups");
 
 		if(powerSpawns != null) {
-			for (Object powerSpawn : powerSpawns) {
-				if (powerSpawn instanceof String) {
-					try {
-						locations.add(Utils.stringToLocation(p, (String) powerSpawn));
-					} catch (IllegalArgumentException e) {
-						p.getLogger().log(Level.SEVERE, "Invalid powerup location in arena.yml! " + e.getMessage());
-					}
+			powerSpawns.stream().forEach(powerSpawn -> {
+				try
+				{
+					locations.add(Utils.stringToLocation(p, powerSpawn));
 				}
-			}
+				catch (IllegalArgumentException e)
+				{
+					p.getLogger().log(Level.SEVERE, "Invalid powerup location in arena.yml! " + e.getMessage());
+				}
+			});
 		}
 	}
 

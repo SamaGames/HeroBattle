@@ -1,12 +1,17 @@
 package net.lnfinity.HeroBattle.game;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.utils.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.scoreboard.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.utils.Utils;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
-public class ScoreboardManager {
+
+public class ScoreboardManager
+{
 
 	private HeroBattle p = null;
 	private Scoreboard board = null;
@@ -15,8 +20,9 @@ public class ScoreboardManager {
 	private Objective percentageSidebar = null;
 	private Objective eloPlayerList = null;
 
-	
-	public ScoreboardManager(HeroBattle plugin) {
+
+	public ScoreboardManager(HeroBattle plugin)
+	{
 		p = plugin;
 
 		board = p.getServer().getScoreboardManager().getNewScoreboard();
@@ -34,11 +40,9 @@ public class ScoreboardManager {
 	/**
 	 * To be called when the game starts.
 	 */
-	public void init() {
-		for (HeroBattlePlayer player : p.getGamePlayers().values())
-		{
-			update(player);
-		}
+	public void init()
+	{
+		p.getGame().getInGamePlayers().values().forEach(this::update);
 
 		percentageBelowName.setDisplaySlot(DisplaySlot.BELOW_NAME);
 		percentageSidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -48,11 +52,14 @@ public class ScoreboardManager {
 	/**
 	 * Refreshes the tab list with players' ELOs.
 	 */
-	public void refreshTab() {
-		for (HeroBattlePlayer player : p.getGamePlayers().values())
+	public void refreshTab()
+	{
+		for (HeroBattlePlayer player : p.getGame().getInGamePlayers().values())
 		{
-			Player realPlayer = p.getServer().getPlayer(player.getPlayerUniqueID());
-			if(player != null && realPlayer != null && realPlayer.isOnline()) {
+			Player realPlayer = player.getPlayerIfOnline();
+
+			if (realPlayer != null && realPlayer.isOnline())
+			{
 				eloPlayerList.getScore(realPlayer.getName()).setScore(player.getElo());
 			}
 		}
@@ -63,13 +70,14 @@ public class ScoreboardManager {
 	 *
 	 * @param player The player.
 	 */
-	public void update(Player player) {
+	public void update(Player player)
+	{
 		update(p.getGamePlayer(player));
 	}
 
 	/**
 	 * Updates the scoreboards for the given player.
-	 * 
+	 *
 	 * @param player The player.
 	 */
 	public void update(HeroBattlePlayer player)
@@ -79,39 +87,40 @@ public class ScoreboardManager {
 
 		if (!player.isSpectator())
 		{
-			percentageSidebar.getScore(Utils.heartsToString(player) + ChatColor.WHITE + " " + player.getPlayerName())
+			percentageSidebar.getScore(Utils.heartsToString(player) + ChatColor.WHITE + " " + player.getOfflinePlayer().getName())
 					.setScore(percentage);
 		}
-		else {
-			percentageSidebar.getScore(Utils.heartsToString(player) + ChatColor.GRAY + " " + player.getPlayerName())
-			.setScore(-1);
+		else
+		{
+			percentageSidebar.getScore(Utils.heartsToString(player) + ChatColor.GRAY + " " + player.getOfflinePlayer().getName())
+					.setScore(-1);
 		}
 
-		percentageBelowName.getScore(player.getPlayerName()).setScore(percentage);
-		
-		eloPlayerList.getScore(player.getPlayerName()).setScore(player.getElo());
+		percentageBelowName.getScore(player.getOfflinePlayer().getName()).setScore(percentage);
+
+		eloPlayerList.getScore(player.getOfflinePlayer().getName()).setScore(player.getElo());
 	}
 
 	/**
 	 * Refreshes the whole scoreboard.
 	 */
-	public void refresh() {
+	public void refresh()
+	{
 		percentageSidebar.unregister();
 		percentageSidebar = board.registerNewObjective("perct_sidebar", "dummy");
 		percentageSidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
 
 		updateTimer(); // Sets the title of the sidebar
 
-		for (HeroBattlePlayer player : p.getGamePlayers().values())
-		{
-			update(player);
-		}
+		// TODO /!\ Check if moderators are not visible here!
+		p.getGame().getRegisteredGamePlayers().values().forEach(this::update);
 	}
 
 	/**
 	 * Refreshes the timer in the scoreboard title
 	 */
-	public void updateTimer() {
+	public void updateTimer()
+	{
 		percentageSidebar.setDisplayName(HeroBattle.GAME_NAME_BICOLOR_BOLD + ChatColor.DARK_GRAY + " │  " + ChatColor.GRAY + p.getGameTimer().getFormattedTime());
 	}
 
@@ -120,11 +129,13 @@ public class ScoreboardManager {
 	 *
 	 * @param player The player to remove.
 	 */
-	public void removePlayer(Player player) {
+	public void removePlayer(Player player)
+	{
 		board.resetScores(player.getName());
 
 		Team playerTeam = board.getPlayerTeam(player);
-		if(playerTeam != null) {
+		if (playerTeam != null)
+		{
 			playerTeam.removePlayer(player);
 			playerTeam.unregister();
 		}
@@ -132,10 +143,11 @@ public class ScoreboardManager {
 
 	/**
 	 * Returns the scoreboard the players will have to use.
-	 * 
+	 *
 	 * @return The scoreboard.
 	 */
-	public Scoreboard getScoreboard() {
+	public Scoreboard getScoreboard()
+	{
 		return board;
 	}
 }

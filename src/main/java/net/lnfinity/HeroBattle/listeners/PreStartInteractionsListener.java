@@ -3,7 +3,6 @@ package net.lnfinity.HeroBattle.listeners;
 import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.gui.*;
 import net.lnfinity.HeroBattle.gui.core.*;
-import net.samagames.gameapi.json.*;
 import org.bukkit.*;
 import org.bukkit.event.*;
 import org.bukkit.event.player.*;

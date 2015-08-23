@@ -5,7 +5,6 @@ import net.lnfinity.HeroBattle.classes.*;
 import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.gameapi.json.*;
 import org.bukkit.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
@@ -70,7 +69,7 @@ public class ClassSelectionCommand implements CommandExecutor
 					return true;
 				}
 
-				for (PlayerClass theClass : heroBattlePlayer.getAvaibleClasses())
+				for (PlayerClass theClass : heroBattlePlayer.getAvailableClasses())
 				{
 					if (args[0].equalsIgnoreCase(theClass.getType().getId()))
 					{

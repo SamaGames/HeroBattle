@@ -42,8 +42,8 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	private List<Location> spawnPoints = new LinkedList<>();
 	private Location hub;
 	private Double bottomHeight = 0.0;
-	private ArrayList<Location> tutorialLocations = new ArrayList<Location>();
-	private ArrayList<Location> teleportationPortalsDestinations = new ArrayList<Location>();
+	private ArrayList<Location> tutorialLocations = new ArrayList<>();
+	private ArrayList<Location> teleportationPortalsDestinations = new ArrayList<>();
 
 	/**
 	 * We store here the last players who launched a lightning bolt and where, to associate the
@@ -398,21 +398,21 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 
 		HeroBattlePlayer heroBattlePlayer = getPlayer(player.getUniqueId());
 
-		if (heroBattlePlayer == null || heroBattlePlayer.getAvaibleClasses().size() == 0) return;
+		if (heroBattlePlayer == null || heroBattlePlayer.getAvailableClasses().size() == 0) return;
 
 		Random rnd = new Random();
 
-		int r = rnd.nextInt(heroBattlePlayer.getAvaibleClasses().size());
+		int r = rnd.nextInt(heroBattlePlayer.getAvailableClasses().size());
 		int i = 0;
 
 		// Avoid game crashing
-		if (heroBattlePlayer.getAvaibleClasses() == null || heroBattlePlayer.getAvaibleClasses().isEmpty())
+		if (heroBattlePlayer.getAvailableClasses() == null || heroBattlePlayer.getAvailableClasses().isEmpty())
 		{
 			heroBattlePlayer.setPlayerClass(new BruteClass(p, 0, 0, 0));
 			return;
 		}
 
-		for (PlayerClass classe : heroBattlePlayer.getAvaibleClasses())
+		for (PlayerClass classe : heroBattlePlayer.getAvailableClasses())
 		{
 			if (i == r)
 			{
@@ -432,7 +432,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 		}
 
 		// Still without any class? This happens sometimes.
-		// TODO inspect why (deeper bug). HeroBattlePlayer.getAvaibleClasses() seems to sometimes include `null` in the list.
+		// TODO inspect why (deeper bug). HeroBattlePlayer.getAvailableClasses() seems to sometimes include `null` in the list.
 		// Workaround.
 		if(heroBattlePlayer.getPlayerClass() == null)
 		{
@@ -1297,5 +1297,18 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	public TripleParameters getParameters(UUID id)
 	{
 		return entitiesData.remove(id);
+	}
+
+
+	/**
+	 * Returns the registered game players, spectators or not.
+	 *
+	 * TODO Inclusion into the SG API.
+	 *
+	 * @return The players.
+	 */
+	public Map<UUID, HeroBattlePlayer> getRegisteredGamePlayers()
+	{
+		return gamePlayers;
 	}
 }

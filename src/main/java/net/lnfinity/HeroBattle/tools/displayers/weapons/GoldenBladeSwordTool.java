@@ -67,14 +67,7 @@ public class GoldenBladeSwordTool extends SwordTool implements Weapon
 			victim.setFireTicks(duration);
 
 			p.getGame().getFiresInProgress().put(victim.getUniqueId(), sender.getUniqueId());
-			p.getServer().getScheduler().runTaskLaterAsynchronously(p, new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					p.getGame().getFiresInProgress().remove(victim.getUniqueId());
-				}
-			}, duration);
+			p.getServer().getScheduler().runTaskLaterAsynchronously(p, () -> p.getGame().getFiresInProgress().remove(victim.getUniqueId()), duration);
 		}
 	}
 

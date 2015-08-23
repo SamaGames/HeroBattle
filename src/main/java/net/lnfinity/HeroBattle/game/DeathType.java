@@ -9,40 +9,40 @@ public enum DeathType {
 	 * The player logged out during the game.
 	 */
 	QUIT
-			(
-					"{player} a quitté la partie",
-					"{player} a fuit la partie devant la supprématie de {aggressor}",
-					null,
-					null,
-					"Un fuyard !"
-			),
+	(
+			"{player} a quitté la partie",
+			"{player} a fuit la partie devant la supprématie de {aggressor}",
+			null,
+			null,
+			"Un fuyard !"
+	),
 
 	/**
 	 * The player fell under the bottom limit.
 	 */
 	FALL
-			(
-					"{player} est tombé dans le vide",
-					"{player} a été poussé dans le vide par {aggressor}",
-					"Vous êtes tombé dans le vide !",
-					"Vous avez été poussé par {aggressor} !",
-					"Un joueur poussé !"
-			),
+	(
+			"{player} est tombé dans le vide",
+			"{player} a été poussé dans le vide par {aggressor}",
+			"Vous êtes tombé dans le vide !",
+			"Vous avez été poussé par {aggressor} !",
+			"Un joueur poussé !"
+	),
 
 	/**
 	 * The player's percentage was higher or equal to his
 	 * class' maximum percentage.
 	 */
 	KO
-			(
-					"{player} est K.O. !",
-					"{player} a été mis K.O. par {aggressor} !",
-					"{player} s'est suicidé !",
-					"Vous êtes K.O. !",
-					"{aggressor} vous a mis K.O. !",
-					"Vous vous êtes suicidé !",
-					"Un joueur K.O. !"
-			),
+	(
+			"{player} est K.O. !",
+			"{player} a été mis K.O. par {aggressor} !",
+			"{player} s'est suicidé !",
+			"Vous êtes K.O. !",
+			"{aggressor} vous a mis K.O. !",
+			"Vous vous êtes suicidé !",
+			"Un joueur K.O. !"
+	),
 
 	/**
 	 * The player entered into a block of water.
@@ -50,13 +50,13 @@ public enum DeathType {
 	 * Only if enabled in the map's configuration file.
 	 */
 	WATER
-			(
-					"{player} est tombé à l'eau !",
-					"{player} a été poussé dans l'eau par {aggressor} !",
-					"Vous êtes tombé à l'eau !",
-					"{aggressor} vous a poussé dans l'eau !",
-					"Un joueur mouillé !"
-			),
+	(
+			"{player} est tombé à l'eau !",
+			"{player} a été poussé dans l'eau par {aggressor} !",
+			"Vous êtes tombé à l'eau !",
+			"{aggressor} vous a poussé dans l'eau !",
+			"Un joueur mouillé !"
+	),
 
 	/**
 	 * The player entered into a block of lava.
@@ -64,13 +64,13 @@ public enum DeathType {
 	 * Only if enabled in the map's configuration file.
 	 */
 	LAVA
-			(
-					"{player} s'est consummé dans la lave !",
-					"{player} a été poussé dans la lave par {aggressor} !",
-					"Vous vous êtes consummé !",
-					"{aggressor} vous a poussé dans la lave !",
-					"Un joueur brûlé !"
-			);
+	(
+			"{player} s'est consummé dans la lave !",
+			"{player} a été poussé dans la lave par {aggressor} !",
+			"Vous vous êtes consummé !",
+			"{aggressor} vous a poussé dans la lave !",
+			"Un joueur brûlé !"
+	);
 
 
 	private final ChatColor baseChatColor = ChatColor.YELLOW;

@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.utils;
 
 import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.game.*;
+import org.apache.commons.lang.Validate;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 
@@ -31,6 +32,8 @@ public final class Utils
 	 */
 	public static Location stringToLocation(HeroBattle p, String locationInConfig)
 	{
+		Validate.notNull(locationInConfig, "The location cannot be null!");
+
 		String[] coords = locationInConfig.split(";");
 		if (coords.length < 3)
 		{
