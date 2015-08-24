@@ -8,10 +8,6 @@ depend:
 
 
 commands:
-  start:
-    description: Force le démarrage du jeu.
-    usage: Vous n'avez pas les permissions requises !
-
   forcestop:
     description: Force l'arrêt du jeu. Sachez ce que vous faites !
     aliases: [fstop]
@@ -29,7 +25,7 @@ commands:
   preview:
     description: Permet de prévisualiser une classe.
     usage: /<command> <classe>
-  
+
   elo:
     description: Modifie l'elo d'un joueur.
     aliases: [elo]

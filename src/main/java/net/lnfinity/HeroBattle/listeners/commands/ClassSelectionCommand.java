@@ -30,7 +30,7 @@ public class ClassSelectionCommand implements CommandExecutor
 		{
 			Player player = (Player) sender;
 
-			if (HeroBattle.get().getGame().getStatus() == Status.Available || HeroBattle.get().getGame().getStatus() == Status.PreStarting || HeroBattle.get().getGame().getStatus() == Status.Starting)
+			if (!HeroBattle.get().getGame().isGameStarted())
 			{
 				HeroBattlePlayer heroBattlePlayer = HeroBattle.get().getGamePlayer(player);
 
@@ -107,7 +107,7 @@ public class ClassSelectionCommand implements CommandExecutor
 			PlayerClass pClass = HeroBattle.get().getClassManager().getAnyClassByFriendlyName(args[0], target);
 			if (pClass != null)
 			{
-				HeroBattle.get().getClassManager().setPlayerClass(Bukkit.getPlayer(target.getPlayerUniqueID()), pClass, true);
+				HeroBattle.get().getClassManager().setPlayerClass(Bukkit.getPlayer(target.getUUID()), pClass, true);
 				sender.sendMessage(ChatColor.GREEN + "Classe modifiée (normalement, cf. tab).");
 			}
 		}

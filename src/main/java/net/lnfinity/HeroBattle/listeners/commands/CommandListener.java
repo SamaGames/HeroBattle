@@ -1,13 +1,15 @@
 package net.lnfinity.HeroBattle.listeners.commands;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.*;
-import org.bukkit.command.*;
-import org.bukkit.entity.*;
+import net.samagames.api.SamaGamesAPI;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.UUID;
 
 
 public class CommandListener implements CommandExecutor
@@ -37,25 +39,7 @@ public class CommandListener implements CommandExecutor
 		}
 
 
-		if (cmd.getName().equalsIgnoreCase("start"))
-		{
-
-			if (p.getPlayerCount() >= 2 || !MasterBundle.isDbEnabled)
-			{
-
-				p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Le jeu a été démarré manuellement.");
-				p.getTimer().cancelTimer();
-				p.getGame().start();
-
-			}
-			else
-			{
-
-				sender.sendMessage(ChatColor.RED + "Vous devez être au moins deux joueurs !");
-			}
-
-		}
-		else if (cmd.getName().equalsIgnoreCase("forcestop"))
+		if (cmd.getName().equalsIgnoreCase("forcestop"))
 		{
 
 			p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.RED + "Le jeu a été interrompu de force.");
@@ -66,13 +50,13 @@ public class CommandListener implements CommandExecutor
 		else if (cmd.getName().equalsIgnoreCase("powerup"))
 		{
 
-			if (p.getGame().getStatus() == Status.InGame)
+			if (p.getGame().isGameStarted())
 			{
 				p.getPowerupManager().spawnRandomPowerup();
 			}
 			else
 			{
-				sender.sendMessage(ChatColor.RED + "Impossible de faire apparaître un powerup si le jeu n'est pas démarré.");
+				sender.sendMessage(ChatColor.RED + "Impossible de faire apparaître un powerup lorsque le jeu n'est pas démarré.");
 			}
 
 		}
@@ -85,44 +69,53 @@ public class CommandListener implements CommandExecutor
 			}
 			else if (args.length >= 2)
 			{
-				final OfflinePlayer player = p.getServer().getOfflinePlayer(args[0]);
-				final HeroBattlePlayer heroBattlePlayer = player instanceof Player ? p.getGamePlayer((Player) player) : null;
 
-				if (player != null)
+				p.getServer().getScheduler().runTaskAsynchronously(p, () ->
 				{
+					final int newELO;
+
 					try
 					{
-						final int val = Integer.parseInt(args[1]);
-						if (val >= 1000 && val <= 10000)
-						{
-							p.getServer().getScheduler().runTaskAsynchronously(p, () -> {
-								StatsApi.increaseStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "elo", val - StatsApi.getPlayerStat(player.getUniqueId(), HeroBattle.GAME_NAME_WHITE, "elo"));
-								if (heroBattlePlayer != null)
-								{
-									heroBattlePlayer.setElo(val - heroBattlePlayer.getElo());
-									((CommandSender) player).sendMessage(ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + val);
-									((CommandSender) player).sendMessage(ChatColor.GOLD + "Merci de rejoindre à nouveau la partie pour que les changements visuels soient appliqués.");
-								}
-								sender.sendMessage(ChatColor.GREEN + "L'" + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " du joueur " + ChatColor.DARK_GREEN + player.getName() + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + val);
-							});
-						}
-						else
-						{
-							sender.sendMessage(ChatColor.RED + "L'Elo doit être compris entre 1000 et 10000.");
-						}
+						newELO = Integer.parseInt(args[1]);
 
+						if(newELO < 1000 || newELO > 10000)
+						{
+							throw new NumberFormatException();
+						}
 					}
-					catch (Exception ex)
+					catch(NumberFormatException e)
 					{
 						sender.sendMessage(ChatColor.RED + "La valeur de l'Elo indiquée n'est pas correcte.");
+						return;
 					}
-				}
-				else
-				{
-					sender.sendMessage(ChatColor.RED + "Le joueur n'est pas connecté/introuvable.");
-				}
+
+
+					final String playerName = args[0];
+					final UUID playerID     = SamaGamesAPI.get().getUUIDTranslator().getUUID(playerName);
+
+					final HeroBattlePlayer hbPlayer = p.getGame().getPlayer(playerID);
+
+
+					SamaGamesAPI.get().getStatsManager(HeroBattle.get().getGame().getGameCodeName())
+							.setValue(playerID, "elo", newELO);
+
+					sender.sendMessage(ChatColor.GREEN + "L'" + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " du joueur " + ChatColor.DARK_GREEN + playerName + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + newELO);
+
+
+					if (hbPlayer != null)
+					{
+						hbPlayer.setElo(newELO);
+
+						Player player = hbPlayer.getPlayerIfOnline();
+						if(player != null)
+						{
+							player.sendMessage(ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + newELO);
+						}
+					}
+				});
 			}
 		}
+
 		else return false;
 
 

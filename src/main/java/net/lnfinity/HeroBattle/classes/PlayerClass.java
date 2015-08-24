@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class PlayerClass {
 
 	protected HeroBattle p;
-	protected List<PlayerTool> tools = new ArrayList<PlayerTool>();
+	protected List<PlayerTool> tools = new ArrayList<>();
 
 	protected List<String> detailsLore = null;
 
