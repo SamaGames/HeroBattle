@@ -1,40 +1,42 @@
 package net.lnfinity.HeroBattle.powerups.powerups;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.powerups.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.powerups.NegativePowerup;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.inventory.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 
-public class PlayersSwapPowerup implements NegativePowerup {
+public class PlayersSwapPowerup implements NegativePowerup
+{
 
-	private HeroBattle p;
-	private Random random = new Random();
+	private final HeroBattle p;
+	private final Random random = new Random();
 
-	public PlayersSwapPowerup(HeroBattle plugin) {
+	public PlayersSwapPowerup(final HeroBattle plugin)
+	{
 		p = plugin;
 	}
 
 	@Override
-	public void onPickup(Player player, ItemStack pickupItem) {
-		List<HeroBattlePlayer> otherPlayers = new ArrayList<>();
-		for (HeroBattlePlayer gPlayer : p.getGamePlayers().values())
-		{
-			if (!gPlayer.isSpectator() && !gPlayer.getPlayerUniqueID().equals(player.getUniqueId()))
-			{
-				otherPlayers.add(gPlayer);
-			}
-		}
+	public void onPickup(final Player player, final ItemStack pickupItem)
+	{
+		final List<HeroBattlePlayer> otherPlayers = p.getGame().getInGamePlayers().values().stream()
+				.filter(gPlayer -> !gPlayer.getUUID().equals(player.getUniqueId()))
+				.collect(Collectors.toList());
 
-		if(otherPlayers.size() == 0) return;
+		if (otherPlayers.size() == 0) return;
 
-		Player otherPlayer = p.getServer().getPlayer(otherPlayers.get(random.nextInt(otherPlayers.size())).getPlayerUniqueID());
-		Location otherPlayerLocation = otherPlayer.getLocation();
+		final Player otherPlayer = otherPlayers.get(random.nextInt(otherPlayers.size())).getPlayerIfOnline();
+		final Location otherPlayerLocation = otherPlayer.getLocation();
 
 		otherPlayer.teleport(player);
 		player.teleport(otherPlayerLocation);
@@ -47,18 +49,21 @@ public class PlayersSwapPowerup implements NegativePowerup {
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		return new ItemStack(Material.COMMAND);
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "◄►"
 				+ ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + " INVERSION";
 	}
 
 	@Override
-	public double getWeight() {
+	public double getWeight()
+	{
 		return 15;
 	}
 }

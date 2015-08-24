@@ -9,26 +9,31 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 
-public class SpeedPowerup implements PositivePowerup {
+public class SpeedPowerup implements PositivePowerup
+{
 
 	@Override
-	public void onPickup(Player player, ItemStack pickupItem) {
+	public void onPickup(final Player player, final ItemStack pickupItem)
+	{
 		player.sendMessage(ChatColor.GREEN + "De la vitesse pour 10 secondes !");
 		player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 10, 1));
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		return new ItemStack(Material.SUGAR);
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "PLUS VITE" + ChatColor.LIGHT_PURPLE + " DIX SECONDES";
 	}
 
 	@Override
-	public double getWeight() {
+	public double getWeight()
+	{
 		return 25;
 	}
 }

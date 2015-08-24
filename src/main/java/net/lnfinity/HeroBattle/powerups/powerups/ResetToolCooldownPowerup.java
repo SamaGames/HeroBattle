@@ -1,57 +1,65 @@
 package net.lnfinity.HeroBattle.powerups.powerups;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.powerups.*;
-import net.lnfinity.HeroBattle.utils.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.powerups.PositivePowerup;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.inventory.*;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 
 /**
  * This powerup resets the cooldown of a random tool with at least 5 seconds left of the player.
  */
-public class ResetToolCooldownPowerup implements PositivePowerup {
+public class ResetToolCooldownPowerup implements PositivePowerup
+{
 
-	private HeroBattle p;
+	private final HeroBattle p;
 
-	public ResetToolCooldownPowerup(HeroBattle plugin) {
+	public ResetToolCooldownPowerup(final HeroBattle plugin)
+	{
 		p = plugin;
 	}
 
 	@Override
-	public void onPickup(Player player, ItemStack pickupItem) {
-
-		HeroBattlePlayer gPlayer = p.getGamePlayer(player);
+	public void onPickup(final Player player, final ItemStack pickupItem)
+	{
+		final HeroBattlePlayer gPlayer = p.getGamePlayer(player);
 
 		// 1: we try to find a tool with a delay higher than 5 seconds.
-		List<Integer> slotsToTest = new ArrayList<>();
-		for(int i = 0; i < gPlayer.getPlayerClass().getTools().size(); i++) {
+		final List<Integer> slotsToTest = new ArrayList<>();
+		for (int i = 0; i < gPlayer.getPlayerClass().getTools().size(); i++)
+		{
 			slotsToTest.add(i);
 		}
 
 		ItemStack toolToReset = null;
-		Random rand = new Random();
+		final Random random = new Random();
 
-		do {
-			if(slotsToTest.size() == 0) break;
+		do
+		{
+			if (slotsToTest.size() == 0) break;
 
-			int stackSlot = slotsToTest.get(rand.nextInt(slotsToTest.size()));
-			ItemStack stack = player.getInventory().getItem(stackSlot);
+			final int stackSlot = slotsToTest.get(random.nextInt(slotsToTest.size()));
+			final ItemStack stack = player.getInventory().getItem(stackSlot);
+
 			slotsToTest.remove((Integer) stackSlot);
 
-			if(!ToolsUtils.isToolAvailable(stack) && stack.getAmount() >= 6) {
+			if (!ToolsUtils.isToolAvailable(stack) && stack.getAmount() >= 6)
+			{
 				toolToReset = stack;
 			}
+		} while (toolToReset == null);
 
-		} while(toolToReset == null);
 
-
-		if(toolToReset == null) {
+		if (toolToReset == null)
+		{
 			player.sendMessage(ChatColor.RED + "" + ChatColor.ITALIC + "Vous n'avez aucune capacité qui vaille le coup d'être réinitialisé...");
 			return;
 		}
@@ -64,17 +72,20 @@ public class ResetToolCooldownPowerup implements PositivePowerup {
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		return new ItemStack(Material.WATCH);
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.GOLD + "" + ChatColor.BOLD + "RESTAURATION D'UN OUTIL BLOQUÉ";
 	}
 
 	@Override
-	public double getWeight() {
+	public double getWeight()
+	{
 		return 20;
 	}
 }

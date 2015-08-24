@@ -9,10 +9,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 
-public class BlindnessPowerup implements NegativePowerup {
+public class BlindnessPowerup implements NegativePowerup
+{
 
 	@Override
-	public void onPickup(Player player, ItemStack pickupItem) {
+	public void onPickup(final Player player, final ItemStack pickupItem)
+	{
 
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 8, 1, true));
 		player.sendMessage(ChatColor.RED + "Ça va être tout noir !");
@@ -20,17 +22,20 @@ public class BlindnessPowerup implements NegativePowerup {
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		return new ItemStack(Material.INK_SACK);
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "CÉCITÉ";
 	}
 
 	@Override
-	public double getWeight() {
+	public double getWeight()
+	{
 		return 15;
 	}
 }

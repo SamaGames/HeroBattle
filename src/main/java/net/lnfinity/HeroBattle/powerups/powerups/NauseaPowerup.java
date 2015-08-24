@@ -9,28 +9,31 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 
-public class NauseaPowerup implements NegativePowerup {
+public class NauseaPowerup implements NegativePowerup
+{
 
 	@Override
-	public void onPickup(Player player, ItemStack pickupItem) {
-
+	public void onPickup(final Player player, final ItemStack pickupItem)
+	{
 		player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 14, 1, true));
 		player.sendMessage(ChatColor.RED + "Blurp... :c");
-
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		return new ItemStack(Material.POISONOUS_POTATO);
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.YELLOW + "" + ChatColor.BOLD + "NAUSÉE";
 	}
 
 	@Override
-	public double getWeight() {
+	public double getWeight()
+	{
 		return 15;
 	}
 }

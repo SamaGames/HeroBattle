@@ -1,43 +1,48 @@
 package net.lnfinity.HeroBattle.powerups.powerups;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.powerups.*;
-import net.md_5.bungee.api.*;
-import org.bukkit.entity.*;
-import org.bukkit.inventory.*;
-import org.bukkit.potion.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.powerups.PositivePowerup;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
 
 
-public class PercentageDividedPowerup implements PositivePowerup {
+public class PercentageDividedPowerup implements PositivePowerup
+{
+	private final HeroBattle p;
 
-	private HeroBattle p;
-
-	public PercentageDividedPowerup(HeroBattle plugin) {
+	public PercentageDividedPowerup(final HeroBattle plugin)
+	{
 		p = plugin;
 	}
 
 	@Override
-	public void onPickup(Player player, ItemStack pickupItem) {
-		HeroBattlePlayer gPlayer = p.getGamePlayer(player);
+	public void onPickup(final Player player, final ItemStack pickupItem)
+	{
+		final HeroBattlePlayer gPlayer = p.getGamePlayer(player);
 		gPlayer.setPercentage(gPlayer.getPercentage() / 2, null);
 
 		player.sendMessage(ChatColor.GREEN + "Votre pourcentage a été divisé par deux !");
 	}
 
 	@Override
-	public ItemStack getItem() {
-		Potion potion = new Potion(PotionType.INSTANT_HEAL);
-		return potion.toItemStack(1);
+	public ItemStack getItem()
+	{
+		return new Potion(PotionType.INSTANT_HEAL).toItemStack(1);
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.AQUA + "" + ChatColor.BOLD + "POURCENTAGE COUPÉ EN DEUX";
 	}
 
 	@Override
-	public double getWeight() {
+	public double getWeight()
+	{
 		return 10;
 	}
 }

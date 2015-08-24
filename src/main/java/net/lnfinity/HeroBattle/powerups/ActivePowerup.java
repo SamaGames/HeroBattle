@@ -4,6 +4,7 @@ package net.lnfinity.HeroBattle.powerups;
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.utils.ParticleEffect;
 import net.lnfinity.HeroBattle.utils.Utils;
+import net.samagames.tools.Titles;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Firework;
@@ -16,18 +17,19 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.UUID;
 
-public class ActivePowerup {
 
+public class ActivePowerup
+{
 	HeroBattle p;
 
 	// UUID of this specific active powerup
-	private UUID activePowerupID = UUID.randomUUID();
+	private final UUID activePowerupID = UUID.randomUUID();
 
 	// Location
-	private Location location;
+	private final Location location;
 
 	// Powerup
-	private Powerup powerup;
+	private final Powerup powerup;
 
 	// Entities of the powerup
 	private Item entityItem;
@@ -41,27 +43,31 @@ public class ActivePowerup {
 	private boolean alive = false;
 
 
-	public ActivePowerup(HeroBattle plugin, Location location, Powerup powerup) {
+	public ActivePowerup(final HeroBattle plugin, final Location location, final Powerup powerup)
+	{
 		this.p = plugin;
 		this.location = location;
 		this.powerup = powerup;
 	}
 
-	public void spawn() {
+	public void spawn()
+	{
 
 		/*** ***  ITEM AND HOLOGRAM  *** ***/
 
-		World world = location.getWorld();
+		final World world = location.getWorld();
 
-		ItemStack powerupItem = powerup.getItem().clone();
-		ItemMeta powerupItemMeta = powerupItem.getItemMeta();
-			powerupItemMeta.setDisplayName(activePowerupID.toString());
+		final ItemStack powerupItem = powerup.getItem().clone();
+		final ItemMeta powerupItemMeta = powerupItem.getItemMeta();
+
+		powerupItemMeta.setDisplayName(activePowerupID.toString());
 		powerupItem.setItemMeta(powerupItemMeta);
 
 
 		entityBase = world.spawn(location.clone().add(0, -0.5, 0), ArmorStand.class);
 		entityBase.setVisible(false);
 		entityBase.setSmall(true);
+		entityBase.setMarker(true);
 		entityBase.setGravity(false);
 
 		entityItem = world.dropItem(location, powerupItem);
@@ -71,6 +77,7 @@ public class ActivePowerup {
 		entityTitle.setGravity(false);
 		entityTitle.setVisible(false);
 		entityTitle.setSmall(true);
+		entityTitle.setMarker(true);
 		entityTitle.setCustomName(powerup.getName());
 		entityTitle.setCustomNameVisible(true);
 		entityTitle.setCanPickupItems(false);
@@ -80,25 +87,25 @@ public class ActivePowerup {
 		entityItem.setPassenger(entityTitle);
 
 
-
 		/*** ***  EFFECTS AND BROADCAST  *** ***/
 
 		p.getServer().broadcastMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Un bonus vient de faire son apparition !");
 
-		for (Player player : p.getServer().getOnlinePlayers()) {
+		for (final Player player : p.getServer().getOnlinePlayers())
+		{
 			player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 1);
 			Titles.sendTitle(player, 5, 30, 5, ChatColor.DARK_GREEN + "\u272F", "");
 		}
 
 		final Location itemLocation = Utils.blockLocation(location).add(0, 1, 0);
 
-		Color fwColor;
-		if(powerup instanceof PositivePowerup) fwColor = Color.GREEN.mixColors(Color.YELLOW);
-		else                                   fwColor = Color.RED.mixColors(Color.YELLOW);
+		final Color fwColor;
+		if (powerup instanceof PositivePowerup) fwColor = Color.GREEN.mixColors(Color.YELLOW);
+		else fwColor = Color.RED.mixColors(Color.YELLOW);
 
 		final Firework fw = location.getWorld().spawn(itemLocation, Firework.class);
-		FireworkMeta fwm = fw.getFireworkMeta();
-		FireworkEffect effect = FireworkEffect.builder()
+		final FireworkMeta fwm = fw.getFireworkMeta();
+		final FireworkEffect effect = FireworkEffect.builder()
 				.withColor(fwColor).with(FireworkEffect.Type.BALL)
 				.withFade(Color.YELLOW).build();
 		fwm.addEffects(effect);
@@ -119,7 +126,8 @@ public class ActivePowerup {
 	 *
 	 * @param got If true the powerup is removed because someone picked-up it.
 	 */
-	public void remove(boolean got) {
+	public void remove(final boolean got)
+	{
 
 		/*** ***  ITEM AND HOLOGRAM  *** ***/
 
@@ -130,11 +138,11 @@ public class ActivePowerup {
 
 		/*** ***  EFFECTS AND BROADCAST  *** ***/
 
-		Color fwColor = got ? Color.BLUE : Color.RED;
+		final Color fwColor = got ? Color.BLUE : Color.RED;
 
 		final Firework fw = location.getWorld().spawn(Utils.blockLocation(location).add(0, 1, 0), Firework.class);
-		FireworkMeta fwm = fw.getFireworkMeta();
-		FireworkEffect effect = FireworkEffect.builder()
+		final FireworkMeta fwm = fw.getFireworkMeta();
+		final FireworkEffect effect = FireworkEffect.builder()
 				.withColor(fwColor).with(FireworkEffect.Type.BALL).build();
 		fwm.addEffects(effect);
 		fwm.setPower(0);
@@ -149,19 +157,23 @@ public class ActivePowerup {
 	}
 
 
-	public boolean isAlive() {
+	public boolean isAlive()
+	{
 		return alive;
 	}
 
-	public Powerup getPowerup() {
+	public Powerup getPowerup()
+	{
 		return powerup;
 	}
 
-	public Location getLocation() {
+	public Location getLocation()
+	{
 		return location;
 	}
 
-	public UUID getActivePowerupUniqueID() {
+	public UUID getActivePowerupUniqueID()
+	{
 		return activePowerupID;
 	}
 }

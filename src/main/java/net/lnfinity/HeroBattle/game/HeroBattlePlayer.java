@@ -229,6 +229,8 @@ public class HeroBattlePlayer extends GamePlayer
 	{
 		super.handleLogout();
 		HeroBattle.get().getPlayersConnectionsHandler().registerPlayerQuit(getPlayerIfOnline());
+
+		setSpectator();
 	}
 
 	@Override
