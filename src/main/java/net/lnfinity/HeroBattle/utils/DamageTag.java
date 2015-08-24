@@ -1,40 +1,50 @@
 package net.lnfinity.HeroBattle.utils;
 
-import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.scheduler.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
+import org.bukkit.scheduler.BukkitTask;
 
-public class DamageTag {
 
+public class DamageTag
+{
 	private final int damage;
 	private final Location location;
-	
+
 	private BukkitTask task;
-	
-	public DamageTag(int damage, Location location) {
+
+	public DamageTag(final int damage, final Location location)
+	{
 		this.damage = damage;
 		this.location = location;
 	}
-	
-	public void play() {
+
+	public void play()
+	{
 		final ArmorStand am = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
 		am.setVisible(false);
 		am.setGravity(false);
-		
+		am.setMarker(true);
+
 		am.setCustomName((damage >= 0 ? ChatColor.RED + "" + ChatColor.BOLD + "+" : ChatColor.GREEN + "" + ChatColor.BOLD) + damage + " %");
-		
+
 		am.setCustomNameVisible(true);
 
-		task = Bukkit.getScheduler().runTaskTimer(HeroBattle.get(), new Runnable() {
+		task = Bukkit.getScheduler().runTaskTimer(HeroBattle.get(), new Runnable()
+		{
 			private int i = 0;
 
 			@Override
-			public void run() {
-				am.teleport(am.getLocation().clone().add(0, 0.05, 0));
+			public void run()
+			{
+				am.teleport(am.getLocation().add(0, 0.05, 0));
 				i++;
-				if(i > 15) {
+
+				if (i > 15)
+				{
 					task.cancel();
 					Bukkit.getScheduler().runTaskLater(HeroBattle.get(), am::remove, 10L);
 				}
