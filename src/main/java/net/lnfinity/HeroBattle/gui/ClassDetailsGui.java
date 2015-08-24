@@ -62,8 +62,7 @@ public class ClassDetailsGui extends ActionGui
 		this.displayedClass = displayedClass;
 		this.fromSelectionGUI = fromSelectionGUI;
 
-		Status status = HeroBattle.get().getGame().getStatus();
-		acceptClassChange = (status == Status.Available || status == Status.Starting);
+		acceptClassChange = !HeroBattle.get().getGame().isGameStarted();
 	}
 
 	public ClassDetailsGui(PlayerClass displayedClass)

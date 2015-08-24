@@ -17,21 +17,27 @@
 
 package net.lnfinity.HeroBattle.gui;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.classes.*;
-import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
-import net.lnfinity.HeroBattle.classes.displayers.fake.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.gui.core.*;
-import net.samagames.utils.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.inventory.*;
-import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.MaiteClass;
+import net.lnfinity.HeroBattle.classes.displayers.fake.NotYetAvailableClass;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.gui.core.ActionGui;
+import net.lnfinity.HeroBattle.gui.core.Gui;
+import net.lnfinity.HeroBattle.gui.core.GuiUtils;
+import net.samagames.tools.GlowEffect;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.*;
-import java.util.logging.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
 
 
 public class ClassSelectorGui extends ActionGui
