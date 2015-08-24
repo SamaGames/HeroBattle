@@ -22,6 +22,22 @@ public final class Utils
 		bigNumbersFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.FRANCE));
 	}
 
+
+	/**
+	 * Returns the given {@code charSequence} if it isn't {@code null} nor empty;
+	 * returns {@code defaultValue} else.
+	 *
+	 * @param charSequence The char sequence.
+	 * @param defaultValue The default value returned if {@code charSequence} is {@code null} or empty.
+	 *
+	 * @return The sequence if not {@code null} nor empty; the default value else.
+	 */
+	public static String toStringIfNotEmpty(CharSequence charSequence, CharSequence defaultValue)
+	{
+		return charSequence != null && charSequence.length() != 0 ? charSequence.toString() : defaultValue.toString();
+	}
+
+
 	/**
 	 * Converts a string (in the config file) to a Location object.
 	 *
