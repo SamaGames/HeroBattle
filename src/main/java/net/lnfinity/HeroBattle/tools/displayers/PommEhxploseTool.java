@@ -38,17 +38,17 @@ import java.util.*;
 
 public class PommEhxploseTool extends PlayerTool
 {
-	private Random random = new Random();
+	private final Random random = new Random();
 
-	private Integer DAMAGES_MIN = 25;
-	private Integer DAMAGES_MAX = 35;
+	private final Integer DAMAGES_MIN = 25;
+	private final Integer DAMAGES_MAX = 35;
 
-	private Double BLINDNESS_PROBABILITY = 0.06;
+	private final Double BLINDNESS_PROBABILITY = 0.06;
 
-	private Integer COOLDOWN = 15;
+	private final Integer COOLDOWN = 15;
 
 
-	public PommEhxploseTool(HeroBattle plugin)
+	public PommEhxploseTool(final HeroBattle plugin)
 	{
 		super(plugin);
 	}
@@ -76,14 +76,14 @@ public class PommEhxploseTool extends PlayerTool
 	@Override
 	public ItemStack getItem()
 	{
-		ItemStack apple = new ItemStack(Material.APPLE);
+		final ItemStack apple = new ItemStack(Material.APPLE);
 		ToolsUtils.resetTool(apple);
 
 		return apple;
 	}
 
 	@Override
-	public void onRightClick(final Player player, ItemStack tool, PlayerInteractEvent event)
+	public void onRightClick(final Player player, final ItemStack tool, final PlayerInteractEvent event)
 	{
 		if(!ToolsUtils.isToolAvailable(tool))
 		{
@@ -111,7 +111,7 @@ public class PommEhxploseTool extends PlayerTool
 			{
 				if(apple.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR || delay <= 0)
 				{
-					Location boomLocation = apple.getLocation();
+					final Location boomLocation = apple.getLocation();
 					apple.remove();
 
 
@@ -119,8 +119,8 @@ public class PommEhxploseTool extends PlayerTool
 					final Location fwLocation = net.lnfinity.HeroBattle.utils.Utils.blockLocation(boomLocation).add(0, 1, 0);
 
 					final Firework fw = boomLocation.getWorld().spawn(fwLocation, Firework.class);
-					FireworkMeta fwm = fw.getFireworkMeta();
-					FireworkEffect effect = FireworkEffect.builder()
+					final FireworkMeta fwm = fw.getFireworkMeta();
+					final FireworkEffect effect = FireworkEffect.builder()
 							.withColor(Color.RED).with(FireworkEffect.Type.BALL_LARGE)
 							.withFade(Color.RED.mixColors(Color.YELLOW)).build();
 					fwm.addEffects(effect);
@@ -131,30 +131,30 @@ public class PommEhxploseTool extends PlayerTool
 
 
 					// Sounds
-					for(Player player : world.getPlayers())
+					for(final Player player : world.getPlayers())
 					{
 						player.playSound(boomLocation, Sound.EXPLODE, 1, 5.0f);
 					}
 
 
 					// Damages, motion, title
-					for (Entity e : player.getNearbyEntities(10, 10, 10)) {
+					for (final Entity e : player.getNearbyEntities(10, 10, 10)) {
 						if (e instanceof Player) {
-							Player victim = (Player) e;
+							final Player victim = (Player) e;
 
-							HeroBattlePlayer gVictim = HeroBattle.get().getGamePlayer(victim);
+							final HeroBattlePlayer gVictim = HeroBattle.get().getGamePlayer(victim);
 							if (gVictim == null || gVictim.isSpectator()) continue;
 
-							Double distanceSquared = victim.getLocation().distanceSquared(player.getLocation());
+							final Double distanceSquared = victim.getLocation().distanceSquared(player.getLocation());
 
 							// Damages
-							Integer damages = ((int) ((random.nextInt(DAMAGES_MAX - DAMAGES_MIN) + DAMAGES_MIN) * Math.max(0.7, 1 - (distanceSquared / 50))));
+							final Integer damages = ((int) ((random.nextInt(DAMAGES_MAX - DAMAGES_MIN) + DAMAGES_MIN) * Math.max(0.7, 1 - (distanceSquared / 50))));
 							gVictim.setPercentage(gVictim.getPercentage() + damages, gPlayer);
 
 							// Motion
 							if (distanceSquared < 68 && !gVictim.getUUID().equals(player.getUniqueId()))
 							{
-								player.setVelocity(player.getLocation().toVector().subtract(boomLocation.toVector()).normalize().multiply(distanceSquared / 38));
+								victim.setVelocity(victim.getVelocity().add(victim.getLocation().toVector().subtract(boomLocation.toVector()).normalize().multiply(distanceSquared / 38)));
 							}
 
 							// Blindness (apple juice c:)
@@ -177,11 +177,5 @@ public class PommEhxploseTool extends PlayerTool
 
 
 		new ItemCooldown(HeroBattle.get(), player, this, COOLDOWN);
-	}
-
-	@Override
-	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event)
-	{
-		onRightClick(player, tool, event);
 	}
 }
