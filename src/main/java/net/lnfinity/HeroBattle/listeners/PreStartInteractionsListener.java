@@ -11,22 +11,17 @@ import org.bukkit.event.player.*;
 public class PreStartInteractionsListener implements Listener
 {
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent e)
+	public void onPlayerInteract(final PlayerInteractEvent ev)
 	{
-		if (e.hasItem())
+		if (ev.hasItem() && !HeroBattle.get().getGame().isGameStarted())
 		{
-			Status gameStatus = HeroBattle.get().getGame().getStatus();
-
-			if(gameStatus == Status.Available || gameStatus == Status.Starting)
+			if (ev.getItem().getType() == Material.NETHER_STAR)
 			{
-				if (e.getItem().getType() == Material.NETHER_STAR)
-				{
-					Gui.open(e.getPlayer(), new ClassSelectorGui());
-				}
-				else if (e.getItem().getType() == Material.BOOK)
-				{
-					HeroBattle.get().getTutorialDisplayer().start(e.getPlayer().getUniqueId());
-				}
+				Gui.open(ev.getPlayer(), new ClassSelectorGui());
+			}
+			else if (ev.getItem().getType() == Material.BOOK)
+			{
+				HeroBattle.get().getTutorialDisplayer().start(ev.getPlayer().getUniqueId());
 			}
 		}
 	}
