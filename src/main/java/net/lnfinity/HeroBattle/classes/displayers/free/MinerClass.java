@@ -1,19 +1,14 @@
 package net.lnfinity.HeroBattle.classes.displayers.free;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.PlayerClass;
-import net.lnfinity.HeroBattle.classes.PlayerClassType;
-import net.lnfinity.HeroBattle.tools.displayers.CrackTool;
-import net.lnfinity.HeroBattle.tools.displayers.MinerSpecialTool;
-import net.lnfinity.HeroBattle.tools.displayers.TNTTool;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.DrillSwordTool;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.classes.*;
+import net.lnfinity.HeroBattle.tools.displayers.*;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.*;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.*;
+import org.bukkit.inventory.*;
+
+import java.util.*;
 
 public class MinerClass extends PlayerClass {
 
@@ -25,7 +20,7 @@ public class MinerClass extends PlayerClass {
 		super(plugin, cooldown, power, tool);
 		
 		addTool(new DrillSwordTool(p));
-		addTool(new TNTTool(p, 25 - cooldown, (int) (6 - power * 0.5)));
+		addTool(new TNTTool(p, 25 - cooldown, (int) (4 - power * 0.5)));
 		addTool(new CrackTool(p, 55 - cooldown * 2, 25 + power * 2));
 		if(tool >= 1) addTool(new MinerSpecialTool(p, 30 - cooldown, (int) (5 + 0.5 * power)));
 	}

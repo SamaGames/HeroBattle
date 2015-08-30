@@ -78,7 +78,8 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 
 	public HeroBattleGame()
 	{
-		super("herobattle", "HeroBattle", HeroBattlePlayer.class);
+		// TODO Description à rédiger
+		super("herobattle", "HeroBattle", "Description à rédiger", HeroBattlePlayer.class);
 
 		p = HeroBattle.get();
 
@@ -251,6 +252,9 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 			}
 
 		}, 70l);
+
+		// Anti-Camping 3000
+		p.getServer().getScheduler().runTaskTimer(p, new AntiCamping(p), 5 * 20L, 5 * 20L);
 	}
 
 	/**
@@ -721,8 +725,8 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 			gWinner.setSpectator();
 
 
-			Bukkit.getScheduler().runTaskLater(HeroBattle.get(), () -> {
-
+			Bukkit.getScheduler().runTaskLater(HeroBattle.get(), () ->
+			{
 				// TODO Coherence Machine
 				Bukkit.broadcastMessage("");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
@@ -748,7 +752,11 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 				}
 				else if (winner.getUniqueId().equals(UUID.fromString("95dec9f8-ed6d-4aa1-b787-e776adabcec6"))) // Hi_im_Pichu
 				{
-					winnerDisplayName += ChatColor.GOLD + "\u26A1 " + ChatColor.YELLOW + winner.getName() + ChatColor.GOLD + " \u26A1";
+					winnerDisplayName += ChatColor.GOLD + "\u26A1  " + ChatColor.YELLOW + winner.getName() + ChatColor.GOLD + "  \u26A1";
+				}
+				else if(winner.getUniqueId().equals(UUID.fromString("9cc7b403-3ce8-47d7-9d95-eb2a03dd78b4"))) // 6infinity8
+				{
+					winnerDisplayName += ChatColor.DARK_RED + "\u221E  " + ChatColor.RED + winner.getName() + ChatColor.DARK_RED + "  \u221E";
 				}
 				else
 				{
@@ -759,7 +767,6 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 				{
 					Titles.sendTitle(player, 10, 100, 30, winnerDisplayName, ChatColor.YELLOW + "remporte la partie !");
 				}
-
 			}, 30l);
 
 

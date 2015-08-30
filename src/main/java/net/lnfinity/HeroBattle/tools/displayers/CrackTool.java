@@ -45,7 +45,7 @@ public class CrackTool extends PlayerTool
 	@Override
 	public List<String> getDescription()
 	{
-		return Utils.getToolDescription(ChatColor.GRAY + "Le mineur lance violemment sa pioche dans le sol créant ainsi une onde de choc qui dommage de " + ChatColor.RED + POWER + ChatColor.GRAY + "à " + ChatColor.RED + (POWER + 20) + ChatColor.GRAY + "dégâts les joueurs sur sa portée. L'onde se répand sur " + ChatColor.GOLD + "5 " + ChatColor.GRAY + "blocs. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
+		return Utils.getToolDescription(ChatColor.GRAY + "Le mineur lance violemment sa pioche dans le sol créant ainsi une onde de choc qui dommage de " + ChatColor.RED + POWER + ChatColor.GRAY + " à " + ChatColor.RED + (POWER + 20) + ChatColor.GRAY + " dégâts les joueurs sur sa portée. L'onde se répand sur " + ChatColor.GOLD + "5 " + ChatColor.GRAY + "blocs. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override

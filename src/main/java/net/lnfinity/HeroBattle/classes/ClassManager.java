@@ -11,6 +11,7 @@ import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 
+import javax.annotation.*;
 import java.util.*;
 
 
@@ -39,6 +40,7 @@ public class ClassManager
 		registerClass(new ArcherClass(p));
 		registerClass(new MageClass(p));
 		registerClass(new MinerClass(p));
+		registerClass(new GuardianClass(p));
 		registerClass(new DruideClass(p));
 		registerClass(new CryogenieClass(p));
 		registerClass(new PyrobarbareClass(p));
@@ -155,6 +157,8 @@ public class ClassManager
 				return new MageClass(p, cooldown, power, tools);
 			case MINEUR:
 				return new MinerClass(p, cooldown, power, tools);
+			case GARDIEN:
+				return new GuardianClass(p, cooldown, power, tools);
 			case DRUIDE:
 				return new DruideClass(p, cooldown, power, tools);
 			case PYROBARBARE:

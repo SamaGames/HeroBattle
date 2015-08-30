@@ -9,6 +9,7 @@ public enum PlayerClassType
 	ARCHER("archer", PlayerClassPrice.FREE),
 	MAGE("mage", PlayerClassPrice.FREE),
 	MINEUR("mineur", PlayerClassPrice.FREE),
+	GARDIEN("gardien", PlayerClassPrice.FREE),
 
 	// ** Payable Classes **
 	DRUIDE("druide", PlayerClassPrice.PAID),

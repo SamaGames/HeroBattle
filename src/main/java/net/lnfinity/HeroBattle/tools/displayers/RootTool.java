@@ -1,10 +1,10 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
+
 import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.game.*;
 import net.lnfinity.HeroBattle.tools.*;
 import net.lnfinity.HeroBattle.utils.*;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.*;
@@ -18,15 +18,17 @@ import java.util.*;
 public class RootTool extends PlayerTool
 {
 
-	// TODO not finished yet
-
 	private final int COOLDOWN;
+	private final int MIN_DAMAGES;
+	private final int MAX_DAMAGES;
+	
+	public RootTool(HeroBattle plugin, int cooldown, int min, int max) {
 
-	public RootTool(HeroBattle plugin, int cooldown)
-	{
 		super(plugin);
 
 		COOLDOWN = cooldown;
+		MIN_DAMAGES = min;
+		MAX_DAMAGES = max;
 	}
 
 	@Override
@@ -42,18 +44,17 @@ public class RootTool extends PlayerTool
 	}
 
 	@Override
-	public List<String> getDescription()
-	{
-		return null;
-	}
-
-	@Override
 	public ItemStack getItem()
 	{
-		final ItemStack item = new ItemStack(Material.DEAD_BUSH);
+		final ItemStack item = new ItemStack(Material.VINE);
 		ToolsUtils.resetTool(item);
 
 		return item;
+	}
+
+	@Override
+	public List<String> getDescription() {
+		return Utils.getToolDescription(ChatColor.GRAY + "Une racine est violement projetée vers le joueur le plus proche, elle s'agrippe à se dernier et le tire avec force vers vous en occasionant " + ChatColor.RED + MIN_DAMAGES + " " + ChatColor.GRAY + "à " + ChatColor.RED + MAX_DAMAGES + " " + ChatColor.GRAY + "dégâts. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
@@ -76,8 +77,6 @@ public class RootTool extends PlayerTool
 			}
 
 			final HeroBattlePlayer closest = best;
-
-			System.out.println(Bukkit.getPlayer(best.getUUID()).getLocation().distance(player.getLocation()));
 
 			if (best == null || Bukkit.getPlayer(best.getUUID()).getLocation().distance(player.getLocation()) > 10)
 			{
@@ -122,10 +121,13 @@ public class RootTool extends PlayerTool
 									task.cancel();
 
 									victim.setVelocity(new Vector(player.getLocation().getX() - victim.getLocation().getX(), player.getLocation().getY() - victim.getLocation().getY(), player.getLocation().getZ() - victim.getLocation().getZ()).normalize().multiply(2));
-									victim.damage(0);
 
-									for (int k = 0; k < 5; k++)
+									closest.basicDamage(Utils.randomNumber(MIN_DAMAGES, MAX_DAMAGES), p.getGamePlayer(player));
+									
+									for(int k = 0; k < 5; k++)
+									{
 										victim.getWorld().playEffect(currentLoc, Effect.STEP_SOUND, Material.LEAVES.getId(), 10);
+									}
 								}
 
 							}
