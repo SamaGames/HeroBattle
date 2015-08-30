@@ -1,17 +1,14 @@
 package net.lnfinity.HeroBattle.classes;
 
-import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.*;
 import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
 import net.lnfinity.HeroBattle.classes.displayers.free.*;
-import net.lnfinity.HeroBattle.classes.displayers.paid.CryogenieClass;
-import net.lnfinity.HeroBattle.classes.displayers.paid.DruideClass;
-import net.lnfinity.HeroBattle.classes.displayers.paid.PyrobarbareClass;
-import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
-import net.lnfinity.HeroBattle.utils.Utils;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.entity.Player;
+import net.lnfinity.HeroBattle.classes.displayers.paid.*;
+import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.utils.*;
+import net.md_5.bungee.api.*;
+import org.bukkit.entity.*;
 
-import javax.annotation.*;
 import java.util.*;
 
 
@@ -31,8 +28,6 @@ public class ClassManager
 	{
 
 		p = plugin;
-
-		// TODO Merge these registers
 
 		// Registers classes
 		registerClass(new BruteClass(p));

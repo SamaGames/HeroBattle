@@ -10,7 +10,7 @@ import net.lnfinity.HeroBattle.tutorial.*;
 import net.lnfinity.HeroBattle.utils.*;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.api.*;
-import net.samagames.api.shops.AbstractShopsManager;
+import net.samagames.api.shops.*;
 import org.bukkit.*;
 import org.bukkit.configuration.*;
 import org.bukkit.configuration.file.*;
@@ -84,7 +84,7 @@ public class HeroBattle extends JavaPlugin {
 				e.printStackTrace(pw);
 
 				System.err.println("=============== Erreur ===============");
-				System.err.println("Une erreur est survenue, voici la pile d'appels:");
+				System.err.println("Une erreur est survenue, voici la pile d'appels :");
 				System.err.println(e.getCause().toString());
 				e.printStackTrace();
 
