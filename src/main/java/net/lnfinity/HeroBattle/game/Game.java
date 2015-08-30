@@ -804,6 +804,9 @@ public class Game implements GameArena {
                     else if(winner.getUniqueId().equals(UUID.fromString("95dec9f8-ed6d-4aa1-b787-e776adabcec6"))) { // RyuPichu
                         winnerDisplayName += ChatColor.GOLD + "\u26A1 " + ChatColor.YELLOW + winner.getName() + ChatColor.GOLD + " \u26A1";
                     }
+					else if(winner.getUniqueId().equals(UUID.fromString("9cc7b403-3ce8-47d7-9d95-eb2a03dd78b4"))) { // 6infinity8
+                        winnerDisplayName += ChatColor.DARK_RED + "∞ " + ChatColor.RED + winner.getName() + ChatColor.DARK_RED + " ∞";
+                    }
 					else {
 						winnerDisplayName += winner.getName();
 					}
