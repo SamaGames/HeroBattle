@@ -241,6 +241,9 @@ public class Game implements GameArena {
 
 			}
 		}, 70l);
+		
+		// Anti-Camping 3000
+		p.getServer().getScheduler().runTaskTimer(p, new AntiCamping(p), 5 * 20L, 5 * 20L);
 	}
 
 	/**
