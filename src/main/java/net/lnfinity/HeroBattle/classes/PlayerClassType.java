@@ -8,6 +8,7 @@ public enum PlayerClassType {
 	ARCHER("archer"),
 	MAGE("mage"),
 	MINEUR("mineur"),
+	GARDIEN("gardien"),
 	
 	// ** Payable Classes **
 	DRUIDE("druide"),

@@ -831,7 +831,7 @@ public class GamePlayer {
 	
 	/**
 	 * Basic damaging method.
-	 * Adds percentage to player. Does not knockbacks.
+	 * Adds percentage to player. Does not knockback.
 	 *
 	 * @param percentageAdded The percentage added to this player.
 	 * @param aggressor The aggressor. {@code null} if non applicable.

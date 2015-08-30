@@ -25,7 +25,7 @@ public class MinerClass extends PlayerClass {
 		super(plugin, cooldown, power, tool);
 		
 		addTool(new DrillSwordTool(p));
-		addTool(new TNTTool(p, 25 - cooldown, (int) (6 - power * 0.5)));
+		addTool(new TNTTool(p, 25 - cooldown, (int) (4 - power * 0.5)));
 		addTool(new CrackTool(p, 55 - cooldown * 2, 25 + power * 2));
 		if(tool >= 1) addTool(new MinerSpecialTool(p, 30 - cooldown, (int) (5 + 0.5 * power)));
 	}
