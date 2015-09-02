@@ -26,7 +26,6 @@ public class ClassManager
 
 	public ClassManager(HeroBattle plugin)
 	{
-
 		p = plugin;
 
 		// Registers classes
@@ -100,10 +99,9 @@ public class ClassManager
 		return null;
 	}
 
-	public void loadPlayerClasses(final Player player)
+	public void loadPlayerClasses(final HeroBattlePlayer heroBattlePlayer)
 	{
 		// TODO Warning, this may cause problems if the request is lost (somehow)
-		final HeroBattlePlayer heroBattlePlayer = p.getGamePlayer(player);
 
 		final String unlockedKey = ".unlocked";
 		final String cooldownKey = ".cooldown";
@@ -117,21 +115,28 @@ public class ClassManager
 				final String className = clazz.getType().toString().toLowerCase();
 
 
-				String data = p.getShopManager().getItemLevelForPlayer(player.getUniqueId(), className + unlockedKey);
-
-				if ((data != null && data.equals("1")) || clazz.getType().getPrice() == PlayerClassPrice.FREE)
+				if (HeroBattle.get().isTestServer())
 				{
-					try
-					{
-						String cooldownUnlock = Utils.toStringIfNotEmpty(p.getShopManager().getItemLevelForPlayer(player.getUniqueId(), className + cooldownKey), "0");
-						String powerUnlock = Utils.toStringIfNotEmpty(p.getShopManager().getItemLevelForPlayer(player.getUniqueId(), className + powerKey), "0");
-						String toolsUnlock = Utils.toStringIfNotEmpty(p.getShopManager().getItemLevelForPlayer(player.getUniqueId(), className + toolsKey), "0");
+					heroBattlePlayer.addAvailableClass(constructPlayerClass(clazz.getType(), 3, 3, 3));
+				}
+				else // TODO Test data loading from database
+				{
+					String data = p.getShopManager().getItemLevelForPlayer(heroBattlePlayer.getUUID(), className + unlockedKey);
 
-						heroBattlePlayer.addAvailableClass(constructPlayerClass(clazz.getType(), Integer.parseInt(cooldownUnlock), Integer.parseInt(powerUnlock), Integer.parseInt(toolsUnlock)));
-					}
-					catch (Exception ex)
+					if ((data != null && data.equals("1")) || clazz.getType().getPrice() == PlayerClassPrice.FREE)
 					{
-						ex.printStackTrace();
+						try
+						{
+							String cooldownUnlock = Utils.toStringIfNotEmpty(p.getShopManager().getItemLevelForPlayer(heroBattlePlayer.getUUID(), className + cooldownKey), "0");
+							String powerUnlock = Utils.toStringIfNotEmpty(p.getShopManager().getItemLevelForPlayer(heroBattlePlayer.getUUID(), className + powerKey), "0");
+							String toolsUnlock = Utils.toStringIfNotEmpty(p.getShopManager().getItemLevelForPlayer(heroBattlePlayer.getUUID(), className + toolsKey), "0");
+
+							heroBattlePlayer.addAvailableClass(constructPlayerClass(clazz.getType(), Integer.parseInt(cooldownUnlock), Integer.parseInt(powerUnlock), Integer.parseInt(toolsUnlock)));
+						}
+						catch (Exception ex)
+						{
+							ex.printStackTrace();
+						}
 					}
 				}
 			}
