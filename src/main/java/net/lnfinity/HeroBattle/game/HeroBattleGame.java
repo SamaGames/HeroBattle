@@ -661,6 +661,8 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	@Override
 	public void handleLogout(Player player)
 	{
+		if (!isGameStarted()) return;
+
 		UUID id = player.getUniqueId();
 
 		HeroBattlePlayer gPlayer = getPlayer(id);
