@@ -1,25 +1,21 @@
 package net.lnfinity.HeroBattle.game;
 
-import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.PlayerClass;
-import net.lnfinity.HeroBattle.tasks.Task;
-import net.lnfinity.HeroBattle.utils.ActionBar;
-import net.lnfinity.HeroBattle.utils.DamageTag;
+import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.classes.*;
+import net.lnfinity.HeroBattle.tasks.*;
+import net.lnfinity.HeroBattle.utils.*;
 import net.lnfinity.HeroBattle.utils.ParticleEffect;
 import net.lnfinity.HeroBattle.utils.Utils;
-import net.samagames.api.SamaGamesAPI;
-import net.samagames.api.games.GamePlayer;
-import net.samagames.api.games.Status;
-import net.samagames.tools.Titles;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
+import net.samagames.api.*;
+import net.samagames.api.games.*;
+import net.samagames.tools.*;
+import org.apache.commons.lang.*;
 import org.bukkit.*;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.scoreboard.Team;
+import org.bukkit.block.*;
+import org.bukkit.entity.*;
+import org.bukkit.potion.*;
+import org.bukkit.scheduler.*;
+import org.bukkit.scoreboard.*;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -100,8 +96,6 @@ public class HeroBattlePlayer extends GamePlayer
 		Player p = getPlayerIfOnline();
 		HeroBattle plugin = HeroBattle.get();
 
-		plugin.getPlayersConnectionsHandler().registerPlayerJoin(p);
-
 		p.getInventory().clear();
 		p.getInventory().setArmorContents(null);
 		p.setExp(0);
@@ -139,7 +133,7 @@ public class HeroBattlePlayer extends GamePlayer
 
 		plugin.getGame().teleportHub(p.getUniqueId());
 
-		plugin.getClassManager().loadPlayerClasses(p);
+		plugin.getClassManager().loadPlayerClasses(this);
 
 		if (!plugin.getTimer().isEnabled() && plugin.getGame().getConnectedPlayers() >= plugin.getGame().getMinPlayers())
 		{
@@ -228,7 +222,6 @@ public class HeroBattlePlayer extends GamePlayer
 	public void handleLogout()
 	{
 		super.handleLogout();
-		HeroBattle.get().getPlayersConnectionsHandler().registerPlayerQuit(getPlayerIfOnline());
 
 		setSpectator();
 	}

@@ -31,15 +31,13 @@ public class HeroBattle extends JavaPlugin {
 	public final static String GAME_NAME_BICOLOR_BOLD = ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Hero"
 			+ ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Battle";
 
-	public final static String GAME_TAG = ChatColor.DARK_AQUA + "[" + ChatColor.AQUA + GAME_NAME_WHITE + ChatColor.DARK_AQUA + "]" + ChatColor.RESET; // TODO Temp (use coherence machine here)
+	public final static String GAME_TAG = ChatColor.DARK_AQUA + "[" + ChatColor.AQUA + "HB" + ChatColor.DARK_AQUA + "] " + ChatColor.RESET; // TODO Temp (use coherence machine here)
 	
 	public static int errorCalls = 0;
 
 	private static HeroBattle instance;
 
 	private HeroBattleGame game;
-
-	private PlayersConnectionsHandler playersConnectionsHandler;
 
 	private CountdownTimer timer;
 	private GameTimer gameTimer;
@@ -98,7 +96,7 @@ public class HeroBattle extends JavaPlugin {
 						}
 						catch (IOException ex)
 						{
-							System.err.println("Erreur lors de l'envoi de la pile:");
+							System.err.println("Erreur lors de l'envoi de la pile :");
 							ex.printStackTrace();
 						}
 					});
@@ -117,7 +115,6 @@ public class HeroBattle extends JavaPlugin {
 		events.registerEvents(new PowerupsListener(this), this);
 
 		final CommandListener command = new CommandListener(this);
-		this.getCommand("start").setExecutor(command);
 		this.getCommand("forcestop").setExecutor(command);
 		this.getCommand("powerup").setExecutor(command);
 
@@ -139,10 +136,11 @@ public class HeroBattle extends JavaPlugin {
 		scoreboardManager = new ScoreboardManager(this);
 		powerupManager = new PowerupManager(this);
 		tutorialDisplayer = new TutorialDisplayer(this);
-		playersConnectionsHandler = new PlayersConnectionsHandler(this);
 
 		Gui.init(this);
 		GuiUtils.init();
+
+		SamaGamesAPI.get().getGameManager().registerGame(game);
 
 		// /reload support
 		addOnlinePlayers();
@@ -195,10 +193,6 @@ public class HeroBattle extends JavaPlugin {
 
 	public TutorialDisplayer getTutorialDisplayer() {
 		return tutorialDisplayer;
-	}
-
-	public PlayersConnectionsHandler getPlayersConnectionsHandler() {
-		return playersConnectionsHandler;
 	}
 
 
