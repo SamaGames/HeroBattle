@@ -32,8 +32,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -939,48 +937,6 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 			Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------------------------------------");
 
 		}, 20 * 5l);
-
-
-		// Analytics to help us improve the game
-		if (!p.getArenaConfig().getBoolean("block-analytics"))
-		{
-			final String serverName = SamaGamesAPI.get().getServerName();
-			final String mapName = p.getGame().getMapName();
-			final Integer playersCount = getSpectatorPlayers().size(); // All players are now spectating.
-			final String duration = p.getGameTimer().getFormattedTime();
-
-			final String winnerName;
-			final Integer winnerELO;
-			final String winnerClass;
-
-			if (id != null)
-			{
-				Player player = p.getServer().getPlayer(id);
-				HeroBattlePlayer gPlayer = getPlayer(id);
-
-				winnerName = player.getName();
-				winnerELO = gPlayer.getElo();
-				winnerClass = gPlayer.getPlayerClass().getType().toString().toLowerCase();
-			}
-			else
-			{
-				winnerName = "(No winner)";
-				winnerELO = 0;
-				winnerClass = "";
-			}
-
-			p.getServer().getScheduler().runTaskAsynchronously(p, () -> {
-				try
-				{
-					URL u = new URL("http://lnfinity.net/tasks/herobattle-stats.php?v=1&s=" + URLEncoder.encode(serverName, "UTF-8") + "&m=" + URLEncoder.encode(mapName, "UTF-8") + "&p=" + playersCount + "&d=" + URLEncoder.encode(duration, "UTF-8") + "&w=" + URLEncoder.encode(winnerName, "UTF-8") + "&we=" + winnerELO + "&wc=" + URLEncoder.encode(winnerClass, "UTF-8"));
-					u.openStream();
-				}
-				catch (Exception ex)
-				{
-					ex.printStackTrace();
-				}
-			});
-		}
 	}
 
 	/**
