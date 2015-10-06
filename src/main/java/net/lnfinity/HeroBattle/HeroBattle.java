@@ -21,20 +21,14 @@ import net.lnfinity.HeroBattle.utils.GameTimer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.shops.AbstractShopsManager;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.UUID;
 
 
@@ -98,50 +92,13 @@ public class HeroBattle extends JavaPlugin
 		arenaConfig = YamlConfiguration.loadConfiguration(arenaFile);
 		arenaConfig.setDefaults(YamlConfiguration.loadConfiguration(new File(getDataFolder(), "arena.yml")));
 
-		LoggedPluginManager events = new LoggedPluginManager(this)
-		{
-			@Override
-			protected void customHandler(Event event, final Throwable e)
-			{
-				final StringWriter sw = new StringWriter();
-				PrintWriter pw = new PrintWriter(sw);
-				e.printStackTrace(pw);
+		PluginManager pluginManager = getServer().getPluginManager();
 
-				System.err.println("=============== Erreur ===============");
-				System.err.println("Une erreur est survenue, voici la pile d'appels :");
-				System.err.println(e.getCause().toString());
-				e.printStackTrace();
-
-				if (HeroBattle.errorCalls < 10)
-				{
-					HeroBattle.errorCalls++;
-					Bukkit.getScheduler().runTaskAsynchronously(HeroBattle.instance, () -> {
-						try
-						{
-							URL url = new URL("http://lnfinity.net/tasks/stack.php?s=" + URLEncoder.encode(SamaGamesAPI.get().getServerName(), "UTF-8") + "&e=" + URLEncoder.encode(e.getCause().toString(), "UTF-8") + "&stack=" + URLEncoder.encode(sw.getBuffer().toString().replace(System.lineSeparator(), "__"), "UTF-8").replace("%09", ""));
-							url.openStream();
-						}
-						catch (IOException ex)
-						{
-							System.err.println("Erreur lors de l'envoi de la pile :");
-							ex.printStackTrace();
-						}
-					});
-
-				}
-				else
-				{
-					System.err.println("Le plafond est atteint, les erreurs ne seront plus envoyées.");
-				}
-				System.err.println("=============== Erreur ===============");
-			}
-		};
-
-		events.registerEvents(new ConnectionsListener(this), this);
-		events.registerEvents(new GameListener(this), this);
-		events.registerEvents(new SystemListener(this), this);
-		events.registerEvents(new PreStartInteractionsListener(), this);
-		events.registerEvents(new PowerupsListener(this), this);
+		pluginManager.registerEvents(new ConnectionsListener(this), this);
+		pluginManager.registerEvents(new GameListener(this), this);
+		pluginManager.registerEvents(new SystemListener(this), this);
+		pluginManager.registerEvents(new PreStartInteractionsListener(), this);
+		pluginManager.registerEvents(new PowerupsListener(this), this);
 
 		final CommandListener command = new CommandListener(this);
 		this.getCommand("forcestop").setExecutor(command);
