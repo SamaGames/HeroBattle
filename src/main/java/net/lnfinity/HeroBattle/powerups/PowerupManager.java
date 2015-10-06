@@ -73,7 +73,7 @@ public class PowerupManager
 		registerPowerup(new PercentageIncreasedPowerup(p));
 		registerPowerup(new PlayersSwapPowerup(p));
 
-		final long worldTime = p.getArenaConfig().getLong("map.dayTime") % 24000;
+		final long worldTime = p.getProperties().getGameDayTime() % 24000;
 		if (worldTime >= 13500 && worldTime < 22500 && !plugin.getArenaConfig().getBoolean("map.permanentNightVision"))
 		{
 			registerPowerup(new NightVisionPowerup());

@@ -65,6 +65,10 @@ public class HeroBattleProperties
 	private final Double bottomHub;
 	private final Double bottomGame;
 
+	// Times of the day
+	private final Long hubDayTime;
+	private final Long gameDayTime;
+
 
 	public HeroBattleProperties() throws InvalidConfigurationException
 	{
@@ -99,6 +103,12 @@ public class HeroBattleProperties
 
 		bottomHub = getArenaDouble("locations.bottom-altitude.waiting-lobby", 0);
 		bottomGame = getArenaDouble("locations.bottom-altitude.in-game", 0);
+
+
+		/* **  Times of the day  ** */
+
+		hubDayTime  = getArenaLong("times-of-day.waiting-lobby", 6000l);
+		gameDayTime = getArenaLong("times-of-day.in-game", 6000l);
 	}
 
 
@@ -126,6 +136,19 @@ public class HeroBattleProperties
 	public Double getArenaDouble(String key, Number defaultValue)
 	{
 		return properties.getConfig(key, new JsonPrimitive(defaultValue)).getAsDouble();
+	}
+
+	/**
+	 * Returns a configuration double from the `arena.json` file.
+	 *
+	 * @param key The key.
+	 * @param defaultValue The default value.
+	 *
+	 * @return The Double value found, the default value if not set or invalid.
+	 */
+	public Long getArenaLong(String key, Number defaultValue)
+	{
+		return properties.getConfig(key, new JsonPrimitive(defaultValue)).getAsLong();
 	}
 
 	/**
@@ -273,6 +296,16 @@ public class HeroBattleProperties
 	public Double getBottomGame()
 	{
 		return bottomGame;
+	}
+
+	public Long getHubDayTime()
+	{
+		return hubDayTime;
+	}
+
+	public Long getGameDayTime()
+	{
+		return gameDayTime;
 	}
 
 

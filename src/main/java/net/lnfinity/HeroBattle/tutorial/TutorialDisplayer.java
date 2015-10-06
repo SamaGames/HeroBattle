@@ -175,7 +175,7 @@ public class TutorialDisplayer
 			other.hidePlayer(player);
 		}
 
-		player.setPlayerTime(p.getArenaConfig().getLong("map.dayTime"), false);
+		player.setPlayerTime(p.getProperties().getGameDayTime(), false);
 
 		// The book is removed
 		player.getInventory().remove(Material.BOOK);

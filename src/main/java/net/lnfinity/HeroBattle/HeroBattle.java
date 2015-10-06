@@ -106,7 +106,7 @@ public class HeroBattle extends JavaPlugin
 
 		World world = getServer().getWorlds().get(0);
 		world.setGameRuleValue("doDaylightCycle", "false");
-		world.setFullTime(arenaConfig.getLong("map.hubDayTime", 6000));
+		world.setFullTime(getProperties().getHubDayTime());
 
 
 		timer = new CountdownTimer(this);
