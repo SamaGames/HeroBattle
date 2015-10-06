@@ -15,13 +15,19 @@
 	  "0;64;0",
 	  "0;64;0"
 	],
+	"teleportation-portals-destinations": [
+	  "0;70;0"
+	],
 	"bottom-altitude": {
 	  "waiting-lobby": 0,
 	  "in-game": 0
 	}
   },
+
   "times-of-day": {
 	"waiting-lobby": 6000,
 	"in-game": 6000
-  }
+  },
+
+  "mario-portal-teleportation-sound": true
 }

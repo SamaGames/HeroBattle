@@ -32,7 +32,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,15 +43,12 @@ import java.util.Random;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 
 
 public class HeroBattleGame extends Game<HeroBattlePlayer>
 {
 	private HeroBattle p;
 	private HeroBattleProperties config;
-
-	private ArrayList<Location> teleportationPortalsDestinations = new ArrayList<>();
 
 	/**
 	 * We store here the last players who launched a lightning bolt and where, to associate the
@@ -92,26 +88,6 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 
 		p = HeroBattle.get();
 		config = p.getProperties();
-
-		try
-		{
-			p.getArenaConfig().getList("map.teleportationPortalsDestinations").stream()
-					.filter(location -> location instanceof String)
-					.forEach(location -> {
-						try
-						{
-							teleportationPortalsDestinations.add(Utils.stringToLocation((String) location));
-						}
-						catch (IllegalArgumentException e)
-						{
-							p.getLogger().log(Level.SEVERE, "Invalid teleportation portal location in arena.yml! " + e.getMessage());
-						}
-					});
-		}
-		catch (Exception ex)
-		{
-			p.getLogger().info("No teleportation portal locations set in arena.yml. Feature disabled.");
-		}
 	}
 
 
@@ -1010,11 +986,6 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	public Map<UUID, UUID> getFireballsLaunched()
 	{
 		return fireballsLaunched;
-	}
-
-	public ArrayList<Location> getTeleportationPortalsDestinations()
-	{
-		return teleportationPortalsDestinations;
 	}
 
 

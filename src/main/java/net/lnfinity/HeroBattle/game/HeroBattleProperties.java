@@ -35,6 +35,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
+import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.IGameProperties;
@@ -61,6 +62,7 @@ public class HeroBattleProperties
 	private final List<Location> playerSpawns;
 	private final List<Location> powerupSpawns;
 	private final List<Location> tutorialPOV;
+	private final List<Location> teleportationPortalsDestinations;
 
 	private final Double bottomHub;
 	private final Double bottomGame;
@@ -68,6 +70,9 @@ public class HeroBattleProperties
 	// Times of the day
 	private final Long hubDayTime;
 	private final Long gameDayTime;
+
+	// Cosmetics
+	private final Boolean marioPortalsTeleportationsSound;
 
 
 	public HeroBattleProperties() throws InvalidConfigurationException
@@ -93,8 +98,14 @@ public class HeroBattleProperties
 
 		playerSpawns = getArenaLocations("locations.player-spawns", true);
 		powerupSpawns = getArenaLocations("locations.powerup-spawns", false);
-		tutorialPOV = getArenaLocations("locations.tutorial-points-of-views", false);
 
+		teleportationPortalsDestinations = getArenaLocations("locations.teleportation-portals-destinations", false);
+		if(teleportationPortalsDestinations.size() == 0)
+		{
+			HeroBattle.get().getLogger().info("No teleportation portal locations set in arena.yml. Feature disabled.");
+		}
+
+		tutorialPOV = getArenaLocations("locations.tutorial-points-of-views", false);
 		if(tutorialPOV.size() != 0 && tutorialPOV.size() < 4)
 		{
 			tutorialPOV.clear();
@@ -109,6 +120,10 @@ public class HeroBattleProperties
 
 		hubDayTime  = getArenaLong("times-of-day.waiting-lobby", 6000l);
 		gameDayTime = getArenaLong("times-of-day.in-game", 6000l);
+
+
+		/* **  Cosmetics  ** */
+		marioPortalsTeleportationsSound = properties.getConfig("mario-portal-teleportation-sound", new JsonPrimitive(true)).getAsBoolean();
 	}
 
 
@@ -306,6 +321,16 @@ public class HeroBattleProperties
 	public Long getGameDayTime()
 	{
 		return gameDayTime;
+	}
+
+	public List<Location> getTeleportationPortalsDestinations()
+	{
+		return teleportationPortalsDestinations;
+	}
+
+	public Boolean getMarioPortalsTeleportationsSound()
+	{
+		return marioPortalsTeleportationsSound;
 	}
 
 

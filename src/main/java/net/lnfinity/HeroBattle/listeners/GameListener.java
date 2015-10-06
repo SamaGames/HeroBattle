@@ -344,15 +344,13 @@ public class GameListener implements Listener
 	@EventHandler
 	public void onPlayerEntersATeleportationPortal(EntityPortalEnterEvent ev)
 	{
-		if (plugin.getGame().getTeleportationPortalsDestinations().size() != 0
+		if (plugin.getProperties().getTeleportationPortalsDestinations().size() != 0
 				&& ev.getEntityType() == EntityType.PLAYER
 				&& ev.getLocation().getBlock().getType() == Material.ENDER_PORTAL)
 		{
+			ev.getEntity().teleport(plugin.getProperties().getTeleportationPortalsDestinations().get(random.nextInt(plugin.getProperties().getTeleportationPortalsDestinations().size())));
 
-			ev.getEntity().teleport(plugin.getGame().getTeleportationPortalsDestinations().get(random.nextInt(plugin.getGame().getTeleportationPortalsDestinations().size())));
-
-
-			if (plugin.getArenaConfig().getBoolean("map.marioTeleportationSound"))
+			if (plugin.getProperties().getMarioPortalsTeleportationsSound())
 			{
 				if (!tpSoundsTasks.containsKey(ev.getEntity().getUniqueId()))
 				{
