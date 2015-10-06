@@ -3,6 +3,7 @@ package net.lnfinity.HeroBattle;
 import net.lnfinity.HeroBattle.classes.ClassManager;
 import net.lnfinity.HeroBattle.game.HeroBattleGame;
 import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.game.HeroBattleProperties;
 import net.lnfinity.HeroBattle.game.ScoreboardManager;
 import net.lnfinity.HeroBattle.gui.core.Gui;
 import net.lnfinity.HeroBattle.gui.core.GuiUtils;
@@ -23,18 +24,15 @@ import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.shops.AbstractShopsManager;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.util.UUID;
 
 
 public class HeroBattle extends JavaPlugin
 {
-
 	// Displayed name with misc. formats
 	public final static String GAME_NAME_WHITE = "HeroBattle";
 	public final static String GAME_NAME = ChatColor.LIGHT_PURPLE + GAME_NAME_WHITE;
@@ -44,10 +42,9 @@ public class HeroBattle extends JavaPlugin
 
 	public final static String GAME_TAG = ChatColor.DARK_AQUA + "[" + ChatColor.AQUA + "HB" + ChatColor.DARK_AQUA + "] " + ChatColor.RESET; // TODO Temp (use coherence machine here)
 
-	public static int errorCalls = 0;
-
 	private static HeroBattle instance;
 
+	private HeroBattleProperties properties;
 	private HeroBattleGame game;
 
 	private CountdownTimer timer;
@@ -70,27 +67,9 @@ public class HeroBattle extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-
 		instance = this;
 
-		saveDefaultConfig();
-
-		// TODO migrate to the new configuration format.
-		File arenaFile = new File(getServer().getWorlds().get(0).getWorldFolder(), "arena.yml");
-		if (!arenaFile.exists())
-		{
-			getLogger().severe("#==================[Fatal exception report]==================#");
-			getLogger().severe("# The arena.yml description file was NOT FOUND.              #");
-			getLogger().severe("# The plugin cannot load without it, please create it.       #");
-			getLogger().severe("# The file path is the following :                           #");
-			getLogger().severe(arenaFile.getAbsolutePath());
-			getLogger().severe("#============================================================#");
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
-
-		arenaConfig = YamlConfiguration.loadConfiguration(arenaFile);
-		arenaConfig.setDefaults(YamlConfiguration.loadConfiguration(new File(getDataFolder(), "arena.yml")));
+		properties = new HeroBattleProperties();
 
 		PluginManager pluginManager = getServer().getPluginManager();
 
@@ -186,6 +165,11 @@ public class HeroBattle extends JavaPlugin
 	public TutorialDisplayer getTutorialDisplayer()
 	{
 		return tutorialDisplayer;
+	}
+
+	public HeroBattleProperties getProperties()
+	{
+		return properties;
 	}
 
 	public AbstractShopsManager getShopManager()

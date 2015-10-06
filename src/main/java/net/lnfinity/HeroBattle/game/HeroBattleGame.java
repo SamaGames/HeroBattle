@@ -51,15 +51,8 @@ import java.util.logging.Level;
 
 public class HeroBattleGame extends Game<HeroBattlePlayer>
 {
-	private final Integer COINS_PER_KILL = 5;
-	private final Integer COINS_PER_ASSIST = 3;
-	private final Integer COINS_PER_VICTORY = 16;
-	private final Integer STARS_PER_VICTORY = 1;
-	private final Integer COINS_IF_FIRST_RANKED = 10;
-	private final Integer COINS_IF_SECOND_RANKED = 6;
-	private final Integer COINS_IF_THIRD_RANKED = 4;
-
 	private HeroBattle p;
+	private HeroBattleProperties config;
 
 	private List<Location> spawnPoints = new LinkedList<>();
 	private Location hub;
@@ -101,9 +94,10 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	public HeroBattleGame()
 	{
 		// TODO Description à rédiger
-		super("herobattle", "HeroBattle", "Description à rédiger", HeroBattlePlayer.class);
+		super("herobattle", "HeroBattle", HeroBattlePlayer.class);
 
 		p = HeroBattle.get();
+		config = p.getProperties();
 
 		// Loads the spawn points and the hub from the world config.
 
@@ -535,7 +529,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 				killedByMessage = groupColor + lastDamagerPlayer.getName() + ChatColor.RED + " vous a éjecté !";
 
 				increaseStat(lastDamagerGPlayer.getUUID(), "kills", 1);
-				lastDamagerGPlayer.addCoins(COINS_PER_KILL, death.getCoinsMessage());
+				lastDamagerGPlayer.addCoins(config.getCoinsPerKill(), death.getCoinsMessage());
 			}
 
 			lastDamagerGPlayer.addPlayersKilled();
@@ -570,7 +564,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 						HeroBattlePlayer assistGPlayer = getPlayer(uuid);
 						if (assistGPlayer != null)
 						{
-							assistGPlayer.addCoins(COINS_PER_ASSIST, "Assistance contre " + hbPlayer.getOfflinePlayer().getName() + " !");
+							assistGPlayer.addCoins(config.getCoinsPerAssist(), "Assistance contre " + hbPlayer.getOfflinePlayer().getName() + " !");
 						}
 					}
 				}
@@ -794,8 +788,8 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 			}, 30l);
 
 
-			gWinner.addStars(STARS_PER_VICTORY, "Victoire !");
-			gWinner.addCoins(COINS_PER_VICTORY, "Victoire !");
+			gWinner.addStars(config.getStarsPerVictory(), "Victoire !");
+			gWinner.addCoins(config.getCoinsPerVictory(), "Victoire !");
 			increaseStat(id, "wins", 1);
 		}
 
@@ -910,7 +904,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 				HeroBattlePlayer gPlayer = getPlayer(entry.getKey());
 				if (gPlayer != null)
 				{
-					gPlayer.addCoins(i1 == 0 ? COINS_IF_FIRST_RANKED : i1 == 1 ? COINS_IF_SECOND_RANKED : COINS_IF_THIRD_RANKED, "Rang " + (i1 + 1) + " au classement des kills !");
+					gPlayer.addCoins(i1 == 0 ? config.getCoinsIfFirstRanked() : i1 == 1 ? config.getCoinsIfSecondRanked() : config.getCoinsIfThirdRanked(), "Rang " + (i1 + 1) + " au classement des kills !");
 				}
 
 				i1++;
@@ -927,7 +921,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 				HeroBattlePlayer gPlayer = getPlayer(entry.getKey());
 				if (gPlayer != null)
 				{
-					gPlayer.addCoins(i1 == 0 ? COINS_IF_FIRST_RANKED : i1 == 1 ? COINS_IF_SECOND_RANKED : COINS_IF_THIRD_RANKED, "Rang " + (i1 + 1) + " au classement des dégâts infligés !");
+					gPlayer.addCoins(i1 == 0 ? config.getCoinsIfFirstRanked() : i1 == 1 ? config.getCoinsIfSecondRanked() : config.getCoinsIfThirdRanked(), "Rang " + (i1 + 1) + " au classement des dégâts infligés !");
 				}
 
 				i1++;

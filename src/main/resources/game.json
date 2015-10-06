@@ -1,0 +1,21 @@
+{
+  "map-name": "Unknown",
+  "min-slots": 2,
+  "max-slots": 10,
+
+  "options": {
+	"rewards": {
+	  "coins": {
+		"per-kill": 5,
+		"per-assist": 3,
+		"per-victory": 20,
+		"if-first-ranked": 10,
+		"if-second-ranked": 6,
+		"if-third-ranked": 4
+	  },
+	  "stars": {
+		"per-victory": 1
+	  }
+	}
+  }
+}
