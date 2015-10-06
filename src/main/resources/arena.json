@@ -1,0 +1,23 @@
+{
+  "locations": {
+	"hub": "0;64;0;0;0",
+	"player-spawns": [
+	  "0;64;0;0;0",
+	  "0;64;0;0;0"
+	],
+	"powerup-spawns": [
+	  "2;64;0",
+	  "0;64;2"
+	],
+	"tutorial-points-of-views": [
+	  "0;64;0",
+	  "0;64;0",
+	  "0;64;0",
+	  "0;64;0"
+	],
+	"bottom-altitude": {
+	  "waiting-lobby": 0,
+	  "in-game": 0
+	}
+  }
+}

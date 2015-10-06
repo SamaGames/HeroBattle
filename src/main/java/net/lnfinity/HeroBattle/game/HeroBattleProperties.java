@@ -31,9 +31,16 @@
  */
 package net.lnfinity.HeroBattle.game;
 
+import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
+import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.IGameProperties;
+import org.bukkit.Location;
+
+import java.util.List;
 
 
 public class HeroBattleProperties
@@ -49,27 +56,157 @@ public class HeroBattleProperties
 	private final Integer coinsIfSecondRanked;
 	private final Integer coinsIfThirdRanked;
 
-	public HeroBattleProperties()
+	// Locations
+	private final Location hub;
+	private final List<Location> playerSpawns;
+	private final List<Location> powerupSpawns;
+	private final List<Location> tutorialPOV;
+
+	private final Double bottomHub;
+	private final Double bottomGame;
+
+
+	public HeroBattleProperties() throws InvalidConfigurationException
 	{
 		this.properties = SamaGamesAPI.get().getGameManager().getGameProperties();
 
 
 		/* **  Rewards  ** */
 
-		coinsPerKill        = getInt("rewards.coins.per-kill", 5);
-		coinsPerAssist      = getInt("rewards.coins.per-assist", 3);
-		coinsPerVictory     = getInt("rewards.coins.per-victory", 20);
-		starsPerVictory     = getInt("rewards.stars.per-victory", 1);
+		coinsPerKill        = getConfigInt("rewards.coins.per-kill", 5);
+		coinsPerAssist      = getConfigInt("rewards.coins.per-assist", 3);
+		coinsPerVictory     = getConfigInt("rewards.coins.per-victory", 20);
+		starsPerVictory     = getConfigInt("rewards.stars.per-victory", 1);
 
-		coinsIfFirstRanked  = getInt("rewards.coins.if-first-ranked", 10);
-		coinsIfSecondRanked = getInt("rewards.coins.if-second-ranked", 6);
-		coinsIfThirdRanked  = getInt("rewards.coins.if-third-ranked", 4);
+		coinsIfFirstRanked  = getConfigInt("rewards.coins.if-first-ranked", 10);
+		coinsIfSecondRanked = getConfigInt("rewards.coins.if-second-ranked", 6);
+		coinsIfThirdRanked  = getConfigInt("rewards.coins.if-third-ranked", 4);
+
+
+		/* **  Locations  ** */
+
+		hub = getArenaLocation("locations.hub", true);
+
+		playerSpawns = getArenaLocations("locations.player-spawns", true);
+		powerupSpawns = getArenaLocations("locations.powerup-spawns", false);
+		tutorialPOV = getArenaLocations("locations.tutorial-points-of-views", false);
+
+		if(tutorialPOV.size() != 0 && tutorialPOV.size() < 4)
+		{
+			tutorialPOV.clear();
+			throw new InvalidConfigurationException("If set, at least 4 tutorial points of view are required (and the points after the 4th will be ignored).", "arena.json", "locations.tutorial-points-of-views", false);
+		}
+
+		bottomHub = getArenaDouble("locations.bottom-altitude.waiting-lobby", 0);
+		bottomGame = getArenaDouble("locations.bottom-altitude.in-game", 0);
 	}
 
 
-	public Integer getInt(String key, Number defaultValue)
+	/**
+	 * Returns a configuration integer from the `game.json` file.
+	 *
+	 * @param key The key.
+	 * @param defaultValue The default value.
+	 *
+	 * @return The Integer value found, the default value if not set or invalid.
+	 */
+	public Integer getConfigInt(String key, Number defaultValue)
 	{
 		return properties.getOption(key, new JsonPrimitive(defaultValue)).getAsInt();
+	}
+
+	/**
+	 * Returns a configuration double from the `arena.json` file.
+	 *
+	 * @param key The key.
+	 * @param defaultValue The default value.
+	 *
+	 * @return The Double value found, the default value if not set or invalid.
+	 */
+	public Double getArenaDouble(String key, Number defaultValue)
+	{
+		return properties.getConfig(key, new JsonPrimitive(defaultValue)).getAsDouble();
+	}
+
+	/**
+	 * Returns a location from the given key in `arena.json`, using the default world.
+	 *
+	 * @param key The key.
+	 * @param disallowInvalid If true, an {@link IllegalArgumentException} will be thrown if the location is invalid.
+	 * @return The location, or {@code null} if invalid with {@code disallowInvalid = false}.
+	 */
+	public Location getArenaLocation(String key, boolean disallowInvalid)
+	{
+		return getArenaLocation(properties.getConfig(key, new JsonPrimitive("")), disallowInvalid);
+	}
+
+	/**
+	 * Returns a location from the given {@link JsonElement}, using the default world.
+	 *
+	 * @param key The {@link JsonElement}.
+	 * @param disallowInvalid If true, an {@link IllegalArgumentException} will be thrown if the location is invalid.
+	 * @return The location, or {@code null} if invalid with {@code disallowInvalid = false}.
+	 */
+	public Location getArenaLocation(JsonElement key, boolean disallowInvalid)
+	{
+		String rawLocation = key.getAsString();
+
+		if(rawLocation.isEmpty() && disallowInvalid)
+			throw new IllegalArgumentException("Invalid location in arena.json: " + key + ": " + rawLocation);
+
+		try
+		{
+			return Utils.stringToLocation(rawLocation);
+		}
+		catch (IllegalArgumentException e)
+		{
+			if(disallowInvalid)
+				throw new IllegalArgumentException("Invalid location in arena.json: " + key + ": " + rawLocation);
+			else
+				return null;
+		}
+	}
+
+	/**
+	 * Returns an immutable list of locations from the given key in `arena.json`. The key MUST
+	 * point to a JSON array containing a list of strings.
+	 *
+	 * @param key The key.
+	 * @param disallowEmpty If true, an {@link InvalidConfigurationException} will be thrown if the
+	 *                      final list (the JSON list without the invalid entries) is empty.
+	 * @return The list.
+	 *
+	 * @throws InvalidConfigurationException if the final list (the JSON list without the invalid entries) is empty.
+	 */
+	public List<Location> getArenaLocations(String key, boolean disallowEmpty) throws InvalidConfigurationException
+	{
+		List<Location> locations;
+
+		JsonArray rawPlayerSpawns = properties.getConfig(key, new JsonArray()).getAsJsonArray();
+		if(rawPlayerSpawns.size() == 0)
+		{
+			locations = ImmutableList.of();
+		}
+		else
+		{
+			ImmutableList.Builder<Location> builder = ImmutableList.builder();
+
+			for(JsonElement rawPlayerSpawn : rawPlayerSpawns)
+			{
+				Location spawn = getArenaLocation(rawPlayerSpawn, false);
+				if(spawn != null)
+					builder.add(spawn);
+			}
+
+			locations = builder.build();
+		}
+
+		if(disallowEmpty && locations.size() == 0)
+		{
+			throw new InvalidConfigurationException("No valid location found: " + key, "arena.json", key);
+		}
+
+		return locations;
 	}
 
 
@@ -106,5 +243,83 @@ public class HeroBattleProperties
 	public Integer getCoinsIfThirdRanked()
 	{
 		return coinsIfThirdRanked;
+	}
+
+	public Location getHub()
+	{
+		return hub;
+	}
+
+	public List<Location> getPlayerSpawns()
+	{
+		return playerSpawns;
+	}
+
+	public List<Location> getPowerupSpawns()
+	{
+		return powerupSpawns;
+	}
+
+	public List<Location> getTutorialPOV()
+	{
+		return tutorialPOV;
+	}
+
+	public Double getBottomHub()
+	{
+		return bottomHub;
+	}
+
+	public Double getBottomGame()
+	{
+		return bottomGame;
+	}
+
+
+	public class InvalidConfigurationException extends Exception
+	{
+		private String file;
+		private String key;
+		private boolean fatal;
+
+		/**
+		 * Constructs a fatal error.
+		 *
+		 * @see InvalidConfigurationException#InvalidConfigurationException(String, String, String, boolean)
+		 */
+		public InvalidConfigurationException(String message, String file, String key)
+		{
+			this(message, file, key, true);
+		}
+
+		/**
+		 * @param message Exception message.
+		 * @param file The file where the problem is located.
+		 * @param key The key where the problem is located.
+		 * @param fatal {@code true} if the game cannot run with this error.
+		 */
+		public InvalidConfigurationException(String message, String file, String key, boolean fatal)
+		{
+			super(message);
+
+			this.file  = file;
+			this.key   = key;
+			this.fatal = fatal;
+		}
+
+		public String getFile()
+		{
+			return file;
+		}
+
+		public String getKey()
+		{
+			return key;
+		}
+
+		public boolean isFatal()
+		{
+			return fatal;
+		}
 	}
 }

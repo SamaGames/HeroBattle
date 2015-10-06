@@ -63,24 +63,26 @@ public class SystemListener implements Listener
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e)
 	{
-		if (e.getTo().getBlockY() <= plugin.getGame().getBottomHeight()
-				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE && !plugin.getGamePlayer(e.getPlayer()).isSpectator())
+		if(!plugin.getGame().isGameStarted())
 		{
-
-			if (plugin.getGame().isGameStarted())
-			{
-				plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.FALL);
-			}
-			else
+			if(e.getTo().getY() <= plugin.getProperties().getBottomHub())
 			{
 				plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
 			}
 		}
-		else if (e.getTo().getBlockY() <= plugin.getGame().getBottomHeight()
-				&& e.getPlayer().getGameMode() == GameMode.ADVENTURE)
+		else
 		{
-
-			plugin.getGame().teleportHub(e.getPlayer().getUniqueId());
+			if(e.getTo().getY() <= plugin.getProperties().getBottomGame())
+			{
+				if(!plugin.getGamePlayer(e.getPlayer()).isSpectator())
+				{
+					plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.FALL);
+				}
+				else
+				{
+					plugin.getGame().teleportRandomSpot(e.getPlayer());
+				}
+			}
 		}
 
 		if (((Entity) e.getPlayer()).isOnGround())

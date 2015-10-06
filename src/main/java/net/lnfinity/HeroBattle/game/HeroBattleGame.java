@@ -52,10 +52,6 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	private HeroBattle p;
 	private HeroBattleProperties config;
 
-	private List<Location> spawnPoints = new LinkedList<>();
-	private Location hub;
-	private Double bottomHeight = 0.0;
-	private ArrayList<Location> tutorialLocations = new ArrayList<>();
 	private ArrayList<Location> teleportationPortalsDestinations = new ArrayList<>();
 
 	/**
@@ -97,72 +93,6 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 		p = HeroBattle.get();
 		config = p.getProperties();
 
-		// Loads the spawn points and the hub from the world config.
-
-		try
-		{
-			hub = Utils.stringToLocation(p, p.getArenaConfig().getString("map.hub"));
-		}
-		catch (IllegalArgumentException e)
-		{
-			p.getLogger().log(Level.SEVERE, "Invalid hub in arena.yml! " + e.getMessage());
-		}
-
-		p.getArenaConfig().getList("map.spawns").stream()
-				.filter(spawn -> spawn instanceof String)
-				.forEach(spawn -> {
-					try
-					{
-						spawnPoints.add(Utils.stringToLocation(p, (String) spawn));
-					}
-					catch (IllegalArgumentException e)
-					{
-						p.getLogger().log(Level.SEVERE, "Invalid spawn in arena.yml! " + e.getMessage());
-					}
-				});
-
-		if (spawnPoints.size() < getTotalMaxPlayers())
-		{
-			p.getLogger().severe("#==================[Fatal exception report]==================#");
-			p.getLogger().severe("# Not enough spawn points set in the configuration.          #");
-			p.getLogger().severe("# The plugin cannot load, please fix that.                   #");
-			p.getLogger().severe("#============================================================#");
-
-			p.getServer().getPluginManager().disablePlugin(p);
-		}
-
-		bottomHeight = p.getArenaConfig().getDouble("map.bottom", 0d);
-
-		try
-		{
-			p.getArenaConfig().getList("map.tutorial").stream()
-					.filter(location -> location instanceof String)
-					.forEach(location -> {
-						try
-						{
-							tutorialLocations.add(Utils.stringToLocation(p, (String) location));
-						}
-						catch (IllegalArgumentException e)
-						{
-							p.getLogger().log(Level.SEVERE, "Invalid tutorial locations in arena.yml! " + e.getMessage());
-						}
-					});
-
-			if (tutorialLocations != null)
-			{
-				if (tutorialLocations.size() != 4)
-				{
-					p.getLogger().warning("Not enough / too many tutorial locations in arena.yml, disabling tutorial.");
-					tutorialLocations = null;
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			p.getLogger().warning("No tutorial locations set in arena.yml");
-		}
-
-
 		try
 		{
 			p.getArenaConfig().getList("map.teleportationPortalsDestinations").stream()
@@ -170,7 +100,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 					.forEach(location -> {
 						try
 						{
-							teleportationPortalsDestinations.add(Utils.stringToLocation(p, (String) location));
+							teleportationPortalsDestinations.add(Utils.stringToLocation((String) location));
 						}
 						catch (IllegalArgumentException e)
 						{
@@ -277,12 +207,17 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	 */
 	public void teleportPlayers()
 	{
-		List<Location> tempLocs = new LinkedList<>(spawnPoints);
+		List<Location> tempLocs = new LinkedList<>(config.getPlayerSpawns());
 		Random rand = new Random();
 
 		for (HeroBattlePlayer hbPlayer : gamePlayers.values())
 		{
 			Player player = hbPlayer.getPlayerIfOnline();
+
+			// If there isn't a sufficient amount of spawn point, we reuse already used ones.
+			// ONLY in this case.
+			if(tempLocs.size() == 0)
+				tempLocs.addAll(config.getPlayerSpawns());
 
 			try
 			{
@@ -345,7 +280,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	 */
 	public void teleportHub(UUID id)
 	{
-		p.getServer().getPlayer(id).teleport(hub);
+		p.getServer().getPlayer(id).teleport(p.getProperties().getHub());
 	}
 
 	/**
@@ -368,7 +303,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	public void teleportRandomSpot(Player player)
 	{
 		p.getGame().updatePlayerArmor(player);
-		player.teleport(spawnPoints.get(random.nextInt(spawnPoints.size())));
+		player.teleport(config.getPlayerSpawns().get(random.nextInt(config.getPlayerSpawns().size())));
 	}
 
 	/**
@@ -1046,12 +981,6 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 		return p.getArenaConfig().getInt("map.maxVIP");
 	}
 
-
-	public String getMapName()
-	{
-		return p.getArenaConfig().getString("map.name");
-	}
-
 	public int getMinPlayers()
 	{
 		return p.getArenaConfig().getInt("map.minPlayers");
@@ -1060,14 +989,6 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	public int getCountdownTime()
 	{
 		return p.getArenaConfig().getInt("map.waiting", 120);
-	}
-
-	/**
-	 * Below this height, the players are dead.
-	 */
-	public Double getBottomHeight()
-	{
-		return bottomHeight;
 	}
 
 
@@ -1089,12 +1010,6 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	public Map<UUID, UUID> getFireballsLaunched()
 	{
 		return fireballsLaunched;
-	}
-
-
-	public ArrayList<Location> getTutorialLocations()
-	{
-		return tutorialLocations;
 	}
 
 	public ArrayList<Location> getTeleportationPortalsDestinations()
@@ -1278,18 +1193,5 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	public TripleParameters getParameters(UUID id)
 	{
 		return entitiesData.remove(id);
-	}
-
-
-	/**
-	 * Returns the registered game players, spectators or not.
-	 *
-	 * TODO Inclusion into the SG API.
-	 *
-	 * @return The players.
-	 */
-	public Map<UUID, HeroBattlePlayer> getRegisteredGamePlayers()
-	{
-		return gamePlayers;
 	}
 }

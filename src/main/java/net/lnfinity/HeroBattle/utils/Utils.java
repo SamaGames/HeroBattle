@@ -52,7 +52,7 @@ public final class Utils
 	 * @return The Location object, for the main world (first one).
 	 * @throws IllegalArgumentException if the format is not good.
 	 */
-	public static Location stringToLocation(HeroBattle p, String locationInConfig)
+	public static Location stringToLocation(String locationInConfig)
 	{
 		Validate.notNull(locationInConfig, "The location cannot be null!");
 
@@ -64,7 +64,7 @@ public final class Utils
 
 		try
 		{
-			Location location = new Location(p.getServer().getWorlds().get(0), Double.valueOf(coords[0]) + 0.5,
+			Location location = new Location(HeroBattle.get().getServer().getWorlds().get(0), Double.valueOf(coords[0]) + 0.5,
 					Double.valueOf(coords[1]), Double.valueOf(coords[2]) + 0.5);
 
 			if (coords.length >= 4)

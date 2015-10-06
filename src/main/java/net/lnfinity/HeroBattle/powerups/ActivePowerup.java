@@ -26,13 +26,17 @@ import java.util.UUID;
 
 public class ActivePowerup
 {
+	HeroBattle p;
+
 	// UUID of this specific active powerup
 	private final UUID activePowerupID = UUID.randomUUID();
-	// Location
-	private final Location location;
+
 	// Powerup
 	private final Powerup powerup;
-	HeroBattle p;
+
+	// Location
+	private final Location location;
+
 	// Entities of the powerup
 	private Item entityItem;
 	private ArmorStand entityBase;
@@ -54,7 +58,6 @@ public class ActivePowerup
 
 	public void spawn()
 	{
-
 		/*** ***  ITEM AND HOLOGRAM  *** ***/
 
 		final World world = location.getWorld();
@@ -69,7 +72,7 @@ public class ActivePowerup
 		entityBase = world.spawn(location.clone().add(0, -0.5, 0), ArmorStand.class);
 		entityBase.setVisible(false);
 		entityBase.setSmall(true);
-		entityBase.setMarker(true);
+		//entityBase.setMarker(true);  // TODO Cannot simply be set as marker, we need to place the pieces manually.
 		entityBase.setGravity(false);
 
 		entityItem = world.dropItem(location, powerupItem);
@@ -79,7 +82,7 @@ public class ActivePowerup
 		entityTitle.setGravity(false);
 		entityTitle.setVisible(false);
 		entityTitle.setSmall(true);
-		entityTitle.setMarker(true);
+		//entityTitle.setMarker(true);  // TODO
 		entityTitle.setCustomName(powerup.getName());
 		entityTitle.setCustomNameVisible(true);
 		entityTitle.setCanPickupItems(false);
@@ -130,7 +133,6 @@ public class ActivePowerup
 	 */
 	public void remove(final boolean got)
 	{
-
 		/*** ***  ITEM AND HOLOGRAM  *** ***/
 
 		entityTitle.remove();

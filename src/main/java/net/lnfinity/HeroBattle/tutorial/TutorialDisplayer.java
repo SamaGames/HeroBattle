@@ -2,6 +2,7 @@ package net.lnfinity.HeroBattle.tutorial;
 
 import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -17,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class TutorialDisplayer
 {
-
 	public static final long READING_TIME = 50l; // ticks
 	private HeroBattle p;
 	/**
@@ -39,11 +39,12 @@ public class TutorialDisplayer
 	{
 		p = plugin;
 
+		List<Location> tutorialPOV = p.getProperties().getTutorialPOV();
 
 		/* ***  Tutorial's content  *** */
 
 		addChapter(new TutorialChapter(
-				p.getGame().getTutorialLocations().get(0),
+				tutorialPOV.get(0),
 				HeroBattle.GAME_NAME_BICOLOR,
 				Collections.singletonList(
 						ChatColor.GREEN + "Comment jouer ?"
@@ -52,7 +53,7 @@ public class TutorialDisplayer
 		));
 
 		addChapter(new TutorialChapter(
-				p.getGame().getTutorialLocations().get(0),
+				tutorialPOV.get(0),
 				ChatColor.AQUA + "I. " + ChatColor.GOLD + "Gameplay",
 				Arrays.asList(
 						ChatColor.GREEN + "Chaque joueur possède une jauge de pourcentage",
@@ -62,7 +63,7 @@ public class TutorialDisplayer
 		));
 
 		addChapter(new TutorialChapter(
-				p.getGame().getTutorialLocations().get(1),
+				tutorialPOV.get(1),
 				ChatColor.AQUA + "II. " + ChatColor.GOLD + "But du Jeu",
 				Arrays.asList(
 						ChatColor.GREEN + "Faites tomber vos adversaires dans le vide",
@@ -72,7 +73,7 @@ public class TutorialDisplayer
 		));
 
 		addChapter(new TutorialChapter(
-				p.getGame().getTutorialLocations().get(2),
+				tutorialPOV.get(2),
 				ChatColor.AQUA + "III. " + ChatColor.GOLD + "Classes",
 				Arrays.asList(
 						ChatColor.GREEN + "Toutes les classes ont deux attaques spéciales",
@@ -83,7 +84,7 @@ public class TutorialDisplayer
 		));
 
 		addChapter(new TutorialChapter(
-				p.getGame().getTutorialLocations().get(2),
+				tutorialPOV.get(2),
 				ChatColor.AQUA + "IV. " + ChatColor.GOLD + "Types de combat",
 				Arrays.asList(
 						ChatColor.GREEN + "Différents types de combat en fonction des classes",
@@ -95,7 +96,7 @@ public class TutorialDisplayer
 		));
 
 		addChapter(new TutorialChapter(
-				p.getGame().getTutorialLocations().get(3),
+				tutorialPOV.get(3),
 				ChatColor.AQUA + "V. " + ChatColor.GOLD + "Powerups",
 				Arrays.asList(
 						ChatColor.GREEN + "Des powerups peuvent apparaître",
@@ -105,7 +106,7 @@ public class TutorialDisplayer
 		));
 
 		addChapter(new TutorialChapter(
-				p.getGame().getTutorialLocations().get(3),
+				tutorialPOV.get(3),
 				HeroBattle.GAME_NAME_BICOLOR,
 				Collections.singletonList(
 						ChatColor.GREEN + "Bon jeu et bonne chance !"

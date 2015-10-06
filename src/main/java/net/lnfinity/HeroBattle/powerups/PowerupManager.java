@@ -16,7 +16,6 @@ import net.lnfinity.HeroBattle.powerups.powerups.ToastPowerup;
 import net.lnfinity.HeroBattle.powerups.powerups.TripleJumpPowerup;
 import net.lnfinity.HeroBattle.powerups.powerups.ZeroCooldownPowerup;
 import net.lnfinity.HeroBattle.powerups.powerups.ZeroPercentagePowerup;
-import net.lnfinity.HeroBattle.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -27,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.logging.Level;
 
 
 public class PowerupManager
@@ -41,10 +39,12 @@ public class PowerupManager
 	private final PowerupSpawner spawner;
 
 	private final List<Powerup> powerups = new ArrayList<>();
-	private final List<Location> locations = new ArrayList<>();
 	private final Set<ActivePowerup> activePowerups = new HashSet<>();
-	private final Random random = new Random();
 	private double totalWeight = 0d;
+
+	private final List<Location> locations;
+
+	private final Random random = new Random();
 
 
 	public PowerupManager(final HeroBattle plugin)
@@ -52,7 +52,7 @@ public class PowerupManager
 		p = plugin;
 		spawner = new PowerupSpawner(p);
 
-		registerLocations();
+		locations = new ArrayList<>(p.getProperties().getPowerupSpawns());
 
 
 		/** **  Powerups registry  ** **/
@@ -182,25 +182,6 @@ public class PowerupManager
 	{
 		powerups.add(powerup);
 		totalWeight += powerup.getWeight();
-	}
-
-	private void registerLocations()
-	{
-		final List<String> powerSpawns = p.getArenaConfig().getStringList("map.powerups");
-
-		if (powerSpawns != null)
-		{
-			powerSpawns.stream().forEach(powerSpawn -> {
-				try
-				{
-					locations.add(Utils.stringToLocation(p, powerSpawn));
-				}
-				catch (IllegalArgumentException e)
-				{
-					p.getLogger().log(Level.SEVERE, "Invalid powerup location in arena.yml! " + e.getMessage());
-				}
-			});
-		}
 	}
 
 

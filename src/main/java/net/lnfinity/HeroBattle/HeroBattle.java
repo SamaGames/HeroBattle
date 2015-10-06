@@ -22,6 +22,7 @@ import net.lnfinity.HeroBattle.utils.GameTimer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.shops.AbstractShopsManager;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
@@ -29,6 +30,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
 
 public class HeroBattle extends JavaPlugin
@@ -69,7 +71,20 @@ public class HeroBattle extends JavaPlugin
 	{
 		instance = this;
 
-		properties = new HeroBattleProperties();
+		try
+		{
+			properties = new HeroBattleProperties();
+		}
+		catch (HeroBattleProperties.InvalidConfigurationException e)
+		{
+			getLogger().log(Level.SEVERE, "Invalid configuration in " + e.getFile() + "#" + e.getKey(), e);
+
+			if(e.isFatal())
+			{
+				getLogger().log(Level.SEVERE, "Cannot run the game with such a malformed configuration. Aborting.");
+				Bukkit.shutdown();
+			}
+		}
 
 		PluginManager pluginManager = getServer().getPluginManager();
 
