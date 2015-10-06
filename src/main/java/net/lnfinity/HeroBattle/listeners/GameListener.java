@@ -1,21 +1,45 @@
 package net.lnfinity.HeroBattle.listeners;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.classes.displayers.free.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.tools.*;
-import net.lnfinity.HeroBattle.utils.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.*;
-import org.bukkit.event.block.*;
-import org.bukkit.event.entity.*;
-import org.bukkit.event.entity.EntityDamageEvent.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
-import org.bukkit.scheduler.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.displayers.free.BruteClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.MinerClass;
+import net.lnfinity.HeroBattle.game.DeathType;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.tools.Weapon;
+import net.lnfinity.HeroBattle.utils.TripleParameters;
+import net.lnfinity.HeroBattle.utils.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Fireball;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityPortalEnterEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 
 public class GameListener implements Listener

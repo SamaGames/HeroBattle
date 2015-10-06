@@ -1,10 +1,10 @@
 package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
-import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.*;
-import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.*;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 
 public class Mac34SwordTool extends SwordTool

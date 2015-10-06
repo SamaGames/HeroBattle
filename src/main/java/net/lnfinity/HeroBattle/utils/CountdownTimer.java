@@ -1,11 +1,12 @@
 package net.lnfinity.HeroBattle.utils;
 
-import net.lnfinity.HeroBattle.*;
+import net.lnfinity.HeroBattle.HeroBattle;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.api.games.*;
-import net.samagames.tools.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
+import net.samagames.api.games.Status;
+import net.samagames.tools.Titles;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 
 public class CountdownTimer

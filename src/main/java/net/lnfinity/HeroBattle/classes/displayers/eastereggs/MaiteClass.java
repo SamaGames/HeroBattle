@@ -1,69 +1,82 @@
 package net.lnfinity.HeroBattle.classes.displayers.eastereggs;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.*;
+import net.lnfinity.HeroBattle.classes.EasterEggClass;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.PlayerClassType;
 import net.lnfinity.HeroBattle.tools.displayers.AnguilleTool;
 import net.lnfinity.HeroBattle.tools.displayers.PotatoTool;
 import net.lnfinity.HeroBattle.tools.displayers.weapons.MaryseSwordTool;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 
 public class MaiteClass extends PlayerClass implements EasterEggClass
 {
 
-	public MaiteClass(HeroBattle plugin) {
+	public MaiteClass(HeroBattle plugin)
+	{
 		super(plugin, 0, 0, 0);
-		
+
 		addTool(new MaryseSwordTool(plugin));
 		addTool(new AnguilleTool(plugin));
 		addTool(new PotatoTool(plugin));
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return "Maïté";
 	}
 
 	@Override
-	public ItemStack getIcon() {
+	public ItemStack getIcon()
+	{
 		return new ItemStack(Material.POISONOUS_POTATO);
 	}
 
 	@Override
-	public ItemStack getHat() {
+	public ItemStack getHat()
+	{
 		return new ItemStack(Material.JACK_O_LANTERN);
 	}
 
 	@Override
-	public List<String> getDescription() {
+	public List<String> getDescription()
+	{
 		return Collections.singletonList("Hmmmm... Fameux hein ?");
 	}
 
 	@Override
-	public int getMinDamages() {
+	public int getMinDamages()
+	{
 		return 2;
 	}
 
 	@Override
-	public int getMaxDamages() {
+	public int getMaxDamages()
+	{
 		return 8;
 	}
 
 	@Override
-	public int getMaxResistance() {
+	public int getMaxResistance()
+	{
 		return 200;
 	}
 
 	@Override
-	public int getLives() {
+	public int getLives()
+	{
 		return 3;
 	}
 
 	@Override
-	public PlayerClassType getType() {
+	public PlayerClassType getType()
+	{
 		return PlayerClassType.MAITE;
 	}
 

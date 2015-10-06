@@ -17,14 +17,16 @@
 
 package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.tools.*;
-import net.md_5.bungee.api.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 
 public abstract class SwordTool extends PlayerTool

@@ -17,18 +17,27 @@
 
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.tools.*;
-import net.lnfinity.HeroBattle.utils.*;
-import org.bukkit.*;
-import org.bukkit.block.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ParticleEffect;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import net.lnfinity.HeroBattle.utils.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Firework;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 
-import java.util.*;
+import java.util.List;
 
 
 public class PikachuShockBlastTool extends PlayerTool
@@ -130,7 +139,7 @@ public class PikachuShockBlastTool extends PlayerTool
 
 			Player victim = Bukkit.getPlayer(gVictim.getUUID());
 			Double distance = victim.getLocation().distanceSquared(center);
-			if(distance <= radiusSquared)
+			if (distance <= radiusSquared)
 			{
 				Float force = ((float) (1 - (distance / radiusSquared)));
 				gVictim.damage((int) (DAMAGES_MIN + force * (DAMAGES_MAX - DAMAGES_MIN)), gPlayer, center);
@@ -145,7 +154,7 @@ public class PikachuShockBlastTool extends PlayerTool
 		final double particleCount = 200d;
 		final float angleBetweenParticles = ((float) (360f / particleCount));
 
-		for(float yaw = 0; yaw <= 360; yaw += angleBetweenParticles)
+		for (float yaw = 0; yaw <= 360; yaw += angleBetweenParticles)
 		{
 			center.setYaw(yaw);
 			ParticleEffect.FIREWORKS_SPARK.display(center.getDirection(), 0.6f, center, 256);

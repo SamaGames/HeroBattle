@@ -78,12 +78,12 @@ public class CommandListener implements CommandExecutor
 					{
 						newELO = Integer.parseInt(args[1]);
 
-						if(newELO < 1000 || newELO > 10000)
+						if (newELO < 1000 || newELO > 10000)
 						{
 							throw new NumberFormatException();
 						}
 					}
-					catch(NumberFormatException e)
+					catch (NumberFormatException e)
 					{
 						sender.sendMessage(ChatColor.RED + "La valeur de l'Elo indiquée n'est pas correcte.");
 						return;
@@ -91,7 +91,7 @@ public class CommandListener implements CommandExecutor
 
 
 					final String playerName = args[0];
-					final UUID playerID     = SamaGamesAPI.get().getUUIDTranslator().getUUID(playerName);
+					final UUID playerID = SamaGamesAPI.get().getUUIDTranslator().getUUID(playerName);
 
 					final HeroBattlePlayer hbPlayer = p.getGame().getPlayer(playerID);
 
@@ -107,7 +107,7 @@ public class CommandListener implements CommandExecutor
 						hbPlayer.setElo(newELO);
 
 						Player player = hbPlayer.getPlayerIfOnline();
-						if(player != null)
+						if (player != null)
 						{
 							player.sendMessage(ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " a été mis à " + ChatColor.DARK_GREEN + newELO);
 						}

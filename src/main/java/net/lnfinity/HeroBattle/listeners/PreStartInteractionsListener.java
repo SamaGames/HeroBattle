@@ -1,11 +1,12 @@
 package net.lnfinity.HeroBattle.listeners;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.gui.*;
-import net.lnfinity.HeroBattle.gui.core.*;
-import org.bukkit.*;
-import org.bukkit.event.*;
-import org.bukkit.event.player.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.gui.ClassSelectorGui;
+import net.lnfinity.HeroBattle.gui.core.Gui;
+import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 
 public class PreStartInteractionsListener implements Listener

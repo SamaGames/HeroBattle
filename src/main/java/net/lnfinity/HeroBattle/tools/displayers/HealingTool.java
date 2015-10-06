@@ -1,18 +1,26 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.tools.*;
-import net.lnfinity.HeroBattle.utils.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
-import org.bukkit.potion.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import net.lnfinity.HeroBattle.utils.Utils;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
-public class HealingTool extends PlayerTool {
+
+public class HealingTool extends PlayerTool
+{
 
 	private final int COOLDOWN;
 	private final int POWER;
@@ -20,7 +28,8 @@ public class HealingTool extends PlayerTool {
 
 	private Random random = null;
 
-	public HealingTool(HeroBattle plugin, int cooldown, int power, double probability) {
+	public HealingTool(HeroBattle plugin, int cooldown, int power, double probability)
+	{
 		super(plugin);
 		COOLDOWN = cooldown;
 		POWER = power;
@@ -30,22 +39,26 @@ public class HealingTool extends PlayerTool {
 	}
 
 	@Override
-	public String getToolID() {
+	public String getToolID()
+	{
 		return "tool.healing";
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Soin";
 	}
 
 	@Override
-	public List<String> getDescription() {
+	public List<String> getDescription()
+	{
 		return Utils.getToolDescription(ChatColor.GRAY + "Vous soigne de " + ChatColor.GOLD + POWER + " " + ChatColor.GRAY + "pourcents. Attention, vous avez " + ChatColor.RED + (int) (PROBABILITY * 100) + ChatColor.GRAY + "% " + " de chance d'échouer ce qui vous ralentira ! Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		ItemStack item = new ItemStack(Material.MUSHROOM_SOUP);
 		ToolsUtils.resetTool(item);
 
@@ -53,11 +66,14 @@ public class HealingTool extends PlayerTool {
 	}
 
 	@Override
-	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-		if (ToolsUtils.isToolAvailable(tool)) {
+	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event)
+	{
+		if (ToolsUtils.isToolAvailable(tool))
+		{
 			new ItemCooldown(p, player, this, COOLDOWN);
 
-			if (random.nextDouble() >= PROBABILITY) {
+			if (random.nextDouble() >= PROBABILITY)
+			{
 				HeroBattlePlayer heroBattlePlayer = p.getGamePlayer(player);
 
 				int newPercentage = Math.max(heroBattlePlayer.getPercentage() - POWER, 0);
@@ -66,13 +82,15 @@ public class HealingTool extends PlayerTool {
 				player.playSound(player.getLocation(), Sound.FIZZ, 1, 1);
 			}
 
-			else {
+			else
+			{
 				player.sendMessage(ChatColor.RED + "Vous échouez votre capacité.");
 				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 15 * 20, 0));
 			}
 		}
 
-		else {
+		else
+		{
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
 	}

@@ -7,8 +7,10 @@ import net.lnfinity.HeroBattle.tools.displayers.TripleJumpTool;
 import net.lnfinity.HeroBattle.tools.displayers.weapons.Mac34SwordTool;
 
 
-public class DewoitineD550Class extends DewoitineClass {
-	public DewoitineD550Class(HeroBattle plugin, int cooldown, int power, int tool) {
+public class DewoitineD550Class extends DewoitineClass
+{
+	public DewoitineD550Class(HeroBattle plugin, int cooldown, int power, int tool)
+	{
 		super(plugin);
 
 		addTool(new Mac34SwordTool(plugin));
@@ -17,32 +19,38 @@ public class DewoitineD550Class extends DewoitineClass {
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return "Dewoitine";
 	}
 
 	@Override
-	public int getMinDamages() {
+	public int getMinDamages()
+	{
 		return 10;
 	}
 
 	@Override
-	public int getMaxDamages() {
+	public int getMaxDamages()
+	{
 		return 12;
 	}
 
 	@Override
-	public int getMaxResistance() {
+	public int getMaxResistance()
+	{
 		return 250;
 	}
 
 	@Override
-	public int getLives() {
+	public int getLives()
+	{
 		return 4;
 	}
 
 	@Override
-	public PlayerClassType getType() {
+	public PlayerClassType getType()
+	{
 		return PlayerClassType.DEWOITINE_D550;
 	}
 }

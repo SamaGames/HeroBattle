@@ -1,28 +1,45 @@
 package net.lnfinity.HeroBattle;
 
-import net.lnfinity.HeroBattle.classes.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.gui.core.*;
-import net.lnfinity.HeroBattle.listeners.*;
-import net.lnfinity.HeroBattle.listeners.commands.*;
-import net.lnfinity.HeroBattle.powerups.*;
-import net.lnfinity.HeroBattle.tutorial.*;
-import net.lnfinity.HeroBattle.utils.*;
+import net.lnfinity.HeroBattle.classes.ClassManager;
+import net.lnfinity.HeroBattle.game.HeroBattleGame;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.game.ScoreboardManager;
+import net.lnfinity.HeroBattle.gui.core.Gui;
+import net.lnfinity.HeroBattle.gui.core.GuiUtils;
+import net.lnfinity.HeroBattle.listeners.ConnectionsListener;
+import net.lnfinity.HeroBattle.listeners.GameListener;
+import net.lnfinity.HeroBattle.listeners.PowerupsListener;
+import net.lnfinity.HeroBattle.listeners.PreStartInteractionsListener;
+import net.lnfinity.HeroBattle.listeners.SystemListener;
+import net.lnfinity.HeroBattle.listeners.commands.ClassPreviewCommand;
+import net.lnfinity.HeroBattle.listeners.commands.ClassSelectionCommand;
+import net.lnfinity.HeroBattle.listeners.commands.CommandListener;
+import net.lnfinity.HeroBattle.powerups.PowerupManager;
+import net.lnfinity.HeroBattle.tutorial.TutorialDisplayer;
+import net.lnfinity.HeroBattle.utils.CountdownTimer;
+import net.lnfinity.HeroBattle.utils.GameTimer;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.api.*;
-import net.samagames.api.shops.*;
-import org.bukkit.*;
-import org.bukkit.configuration.*;
-import org.bukkit.configuration.file.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.*;
-import org.bukkit.plugin.java.*;
+import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.shops.AbstractShopsManager;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.UUID;
 
-public class HeroBattle extends JavaPlugin {
+
+public class HeroBattle extends JavaPlugin
+{
 
 	// Displayed name with misc. formats
 	public final static String GAME_NAME_WHITE = "HeroBattle";
@@ -32,7 +49,7 @@ public class HeroBattle extends JavaPlugin {
 			+ ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Battle";
 
 	public final static String GAME_TAG = ChatColor.DARK_AQUA + "[" + ChatColor.AQUA + "HB" + ChatColor.DARK_AQUA + "] " + ChatColor.RESET; // TODO Temp (use coherence machine here)
-	
+
 	public static int errorCalls = 0;
 
 	private static HeroBattle instance;
@@ -51,8 +68,14 @@ public class HeroBattle extends JavaPlugin {
 
 	private Configuration arenaConfig;
 
+	public static HeroBattle get()
+	{
+		return instance;
+	}
+
 	@Override
-	public void onEnable() {
+	public void onEnable()
+	{
 
 		instance = this;
 
@@ -60,7 +83,8 @@ public class HeroBattle extends JavaPlugin {
 
 		// TODO migrate to the new configuration format.
 		File arenaFile = new File(getServer().getWorlds().get(0).getWorldFolder(), "arena.yml");
-		if (!arenaFile.exists()) {
+		if (!arenaFile.exists())
+		{
 			getLogger().severe("#==================[Fatal exception report]==================#");
 			getLogger().severe("# The arena.yml description file was NOT FOUND.              #");
 			getLogger().severe("# The plugin cannot load without it, please create it.       #");
@@ -74,9 +98,11 @@ public class HeroBattle extends JavaPlugin {
 		arenaConfig = YamlConfiguration.loadConfiguration(arenaFile);
 		arenaConfig.setDefaults(YamlConfiguration.loadConfiguration(new File(getDataFolder(), "arena.yml")));
 
-		LoggedPluginManager events = new LoggedPluginManager(this) {
+		LoggedPluginManager events = new LoggedPluginManager(this)
+		{
 			@Override
-			protected void customHandler(Event event, final Throwable e) {
+			protected void customHandler(Event event, final Throwable e)
+			{
 				final StringWriter sw = new StringWriter();
 				PrintWriter pw = new PrintWriter(sw);
 				e.printStackTrace(pw);
@@ -86,7 +112,8 @@ public class HeroBattle extends JavaPlugin {
 				System.err.println(e.getCause().toString());
 				e.printStackTrace();
 
-				if(HeroBattle.errorCalls < 10) {
+				if (HeroBattle.errorCalls < 10)
+				{
 					HeroBattle.errorCalls++;
 					Bukkit.getScheduler().runTaskAsynchronously(HeroBattle.instance, () -> {
 						try
@@ -100,8 +127,10 @@ public class HeroBattle extends JavaPlugin {
 							ex.printStackTrace();
 						}
 					});
-					
-				} else {
+
+				}
+				else
+				{
 					System.err.println("Le plafond est atteint, les erreurs ne seront plus envoyées.");
 				}
 				System.err.println("=============== Erreur ===============");
@@ -120,7 +149,7 @@ public class HeroBattle extends JavaPlugin {
 
 		this.getCommand("classe").setExecutor(new ClassSelectionCommand());
 		this.getCommand("preview").setExecutor(new ClassPreviewCommand());
-		
+
 		this.getCommand("elo").setExecutor(command);
 
 
@@ -146,66 +175,66 @@ public class HeroBattle extends JavaPlugin {
 		addOnlinePlayers();
 	}
 
-	public void onDisable() {
+	public void onDisable()
+	{
 		Gui.exit();
 	}
 
 	// For local debugging purposes only (/rl)
-	public void addOnlinePlayers() {
+	public void addOnlinePlayers()
+	{
 		getServer().getOnlinePlayers().forEach(game::handleLogin);
 	}
-
 
 	public boolean isTestServer()
 	{
 		return SamaGamesAPI.get().getServerName().startsWith("TestServer_");
 	}
 
-
 	public HeroBattleGame getGame()
 	{
 		return game;
 	}
 
-	public CountdownTimer getTimer() {
+	public CountdownTimer getTimer()
+	{
 		return timer;
 	}
 
-	public GameTimer getGameTimer() {
+	public GameTimer getGameTimer()
+	{
 		return gameTimer;
 	}
 
-	public ClassManager getClassManager() {
+	public ClassManager getClassManager()
+	{
 		return classManager;
 	}
 
-	public ScoreboardManager getScoreboardManager() {
+	public ScoreboardManager getScoreboardManager()
+	{
 		return scoreboardManager;
 	}
 
-	public Configuration getArenaConfig() {
+	public Configuration getArenaConfig()
+	{
 		return arenaConfig;
 	}
 
-	public PowerupManager getPowerupManager() {
+	public PowerupManager getPowerupManager()
+	{
 		return powerupManager;
 	}
 
-	public TutorialDisplayer getTutorialDisplayer() {
+	public TutorialDisplayer getTutorialDisplayer()
+	{
 		return tutorialDisplayer;
 	}
-
 
 	public AbstractShopsManager getShopManager()
 	{
 		return SamaGamesAPI.get().getShopsManager(getGame().getGameCodeName());
 	}
-
-
-	public static HeroBattle get() {
-		return instance;
-	}
-
 
 	public HeroBattlePlayer getGamePlayer(UUID uuid)
 	{

@@ -1,34 +1,31 @@
 /**
- * Plugin BelovedBlocks
- * Copyright (C) 2014-2015 Amaury Carrade & Florian Cassayre
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p/>
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see [http://www.gnu.org/licenses/].
+ * Plugin BelovedBlocks Copyright (C) 2014-2015 Amaury Carrade & Florian Cassayre <p/> This program
+ * is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version. <p/> This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. <p/> You should
+ * have received a copy of the GNU General Public License along with this program.  If not, see
+ * [http://www.gnu.org/licenses/].
  */
 
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.tools.*;
-import net.lnfinity.HeroBattle.utils.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
-import org.bukkit.potion.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 
 public class PommeBoostTool extends PlayerTool
@@ -74,7 +71,7 @@ public class PommeBoostTool extends PlayerTool
 	@Override
 	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event)
 	{
-		if(!ToolsUtils.isToolAvailable(tool))
+		if (!ToolsUtils.isToolAvailable(tool))
 		{
 			player.sendMessage(ChatColor.RED + "Plus de POMMES :c");
 			return;

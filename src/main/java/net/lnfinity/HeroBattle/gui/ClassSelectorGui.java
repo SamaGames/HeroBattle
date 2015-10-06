@@ -59,7 +59,7 @@ public class ClassSelectorGui extends ActionGui
 	protected void onUpdate()
 	{
 		gPlayer = HeroBattle.get().getGamePlayer(getPlayer().getUniqueId());
-		if(gPlayer == null)
+		if (gPlayer == null)
 			throw new IllegalStateException("Cannot open the selector GUI of a non-player! - UUID: " + getPlayer().getUniqueId());
 
 
@@ -82,19 +82,19 @@ public class ClassSelectorGui extends ActionGui
 		Iterator<PlayerClass> iterClass = classList.iterator();
 		for (; ; slot++)
 		{
-			if(!iterClass.hasNext()) break;
+			if (!iterClass.hasNext()) break;
 
 			PlayerClass classToDisplay = iterClass.next();
 			action("class_" + classToDisplay.getName(), slot, getClassButton(classToDisplay));
 
 			displayedClasses++;
 
-			if(slot % 9 == 7)
+			if (slot % 9 == 7)
 			{
 				slot += 2;
 
 				// On the last line?
-				if(slot >= 9 * (Math.ceil(((double) classCount) / 7) - 1))
+				if (slot >= 9 * (Math.ceil(((double) classCount) / 7) - 1))
 				{
 					slot += GuiUtils.calculateShiftNeededToCenter(classCount - displayedClasses) - 1;
 				}
@@ -104,7 +104,7 @@ public class ClassSelectorGui extends ActionGui
 
 		// Keyboard
 		slot += 9 - slot % 9;
-		for (int key = 1 ; key <= 9 ; slot++, key++)
+		for (int key = 1; key <= 9; slot++, key++)
 		{
 			action("keyboard_" + key, slot);
 		}
@@ -148,7 +148,8 @@ public class ClassSelectorGui extends ActionGui
 		randomMeta.setOwner("MHF_Question");
 		randomClass.setItemMeta(randomMeta);
 
-		if (isEnabled) {
+		if (isEnabled)
+		{
 			GlowEffect.addGlow(randomClass);
 		}
 
@@ -159,6 +160,7 @@ public class ClassSelectorGui extends ActionGui
 	 * Returns the item which, when clicked, selects or displays a class.
 	 *
 	 * @param classToDisplay The class to display.
+	 *
 	 * @return The item.
 	 */
 	private ItemStack getClassButton(PlayerClass classToDisplay)
@@ -179,7 +181,8 @@ public class ClassSelectorGui extends ActionGui
 
 		ArrayList<String> lore = new ArrayList<>();
 
-		for (String descriptionLine : classToDisplay.getDescription()) {
+		for (String descriptionLine : classToDisplay.getDescription())
+		{
 			lore.add(ChatColor.DARK_PURPLE + descriptionLine);
 		}
 
@@ -218,7 +221,8 @@ public class ClassSelectorGui extends ActionGui
 
 		item.setItemMeta(meta);
 
-		if (isEnabled) {
+		if (isEnabled)
+		{
 			GlowEffect.addGlow(item);
 		}
 
@@ -230,7 +234,8 @@ public class ClassSelectorGui extends ActionGui
 	 *
 	 * @return The item.
 	 */
-	public ItemStack getExitButton() {
+	public ItemStack getExitButton()
+	{
 		ItemStack door = new ItemStack(Material.WOOD_DOOR);
 
 		ItemMeta meta = door.getItemMeta();
@@ -258,17 +263,17 @@ public class ClassSelectorGui extends ActionGui
 	@Override
 	protected void unknown_action(String action, int slot, ItemStack item, InventoryClickEvent event)
 	{
-		if(action.startsWith("class_")) // Class selection
+		if (action.startsWith("class_")) // Class selection
 		{
 			action_class(action.split("_")[1], event.isRightClick());
 		}
-		else if(action.startsWith("keyboard_")) // Keyboard type
+		else if (action.startsWith("keyboard_")) // Keyboard type
 		{
 			try
 			{
 				action_keyboard(Integer.valueOf(action.split("_")[1]));
 			}
-			catch(NumberFormatException e)
+			catch (NumberFormatException e)
 			{
 				HeroBattle.get().getLogger().log(Level.WARNING, "Invalid keyboard number. Don't write code while drunk.", e);
 			}
@@ -279,14 +284,14 @@ public class ClassSelectorGui extends ActionGui
 	{
 		PlayerClass clickedClass = HeroBattle.get().getClassManager().getClassFromName(((Player) getPlayer()), className);
 
-		if(clickedClass == null)
+		if (clickedClass == null)
 		{
 			close();
 			return;
 		}
 
 
-		if(isRightClick)
+		if (isRightClick)
 		{
 			Gui.open(getPlayer(), new ClassDetailsGui(clickedClass, true));
 		}

@@ -1,13 +1,18 @@
 package net.lnfinity.HeroBattle.utils;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
 import org.apache.commons.lang.Validate;
-import org.bukkit.*;
-import org.bukkit.entity.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
-import java.text.*;
-import java.util.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 
 public final class Utils
@@ -24,11 +29,12 @@ public final class Utils
 
 
 	/**
-	 * Returns the given {@code charSequence} if it isn't {@code null} nor empty;
-	 * returns {@code defaultValue} else.
+	 * Returns the given {@code charSequence} if it isn't {@code null} nor empty; returns {@code
+	 * defaultValue} else.
 	 *
 	 * @param charSequence The char sequence.
-	 * @param defaultValue The default value returned if {@code charSequence} is {@code null} or empty.
+	 * @param defaultValue The default value returned if {@code charSequence} is {@code null} or
+	 *                     empty.
 	 *
 	 * @return The sequence if not {@code null} nor empty; the default value else.
 	 */

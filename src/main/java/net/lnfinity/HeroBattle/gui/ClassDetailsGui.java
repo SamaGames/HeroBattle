@@ -17,18 +17,25 @@
 
 package net.lnfinity.HeroBattle.gui;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.classes.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.gui.core.*;
-import net.lnfinity.HeroBattle.tools.*;
-import org.apache.commons.lang.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.EasterEggClass;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.gui.core.ActionGui;
+import net.lnfinity.HeroBattle.gui.core.Gui;
+import net.lnfinity.HeroBattle.gui.core.GuiUtils;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import org.apache.commons.lang.Validate;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 public class ClassDetailsGui extends ActionGui
@@ -37,8 +44,8 @@ public class ClassDetailsGui extends ActionGui
 	private final PlayerClass displayedClass;
 
 	/**
-	 * True if the class can be selected from this GUI.
-	 * False for easter-egg classes and locked ones.
+	 * True if the class can be selected from this GUI. False for easter-egg classes and locked
+	 * ones.
 	 */
 	private Boolean canBeUsed;
 
@@ -77,11 +84,11 @@ public class ClassDetailsGui extends ActionGui
 	protected void onUpdate()
 	{
 		gPlayer = HeroBattle.get().getGamePlayer(getPlayer().getUniqueId());
-		if(gPlayer == null)
+		if (gPlayer == null)
 			throw new IllegalStateException("Cannot open the selector GUI of a non-player! - UUID: " + getPlayer().getUniqueId());
 
 
-		if(displayedClass instanceof EasterEggClass)
+		if (displayedClass instanceof EasterEggClass)
 			canBeUsed = false;
 		else
 			canBeUsed = HeroBattle.get().getClassManager().playerHasClass(gPlayer, displayedClass.getType());
@@ -97,7 +104,7 @@ public class ClassDetailsGui extends ActionGui
 		setSize(45 + slotShift);
 
 
-		if(tools.size() == 4)
+		if (tools.size() == 4)
 			action("", 13, tools.remove(0).generateCompleteItem());
 
 		int slot = 9 + slotShift + GuiUtils.calculateShiftNeededToCenter(tools.size());
@@ -107,26 +114,26 @@ public class ClassDetailsGui extends ActionGui
 			slot++;
 
 			// Special case to center the tools if they are an even number.
-			if(tools.size() % 2 == 0 && slot % 9 == 4)
+			if (tools.size() % 2 == 0 && slot % 9 == 4)
 				slot++;
 		}
 
 
 		Integer slotReview = !acceptClassChange && !fromSelectionGUI ? 31 : 29;
-		Integer slotUse    = fromSelectionGUI ? 31 : 33;
-		Integer slotBack   = 33;
+		Integer slotUse = fromSelectionGUI ? 31 : 33;
+		Integer slotBack = 33;
 
 		slotReview += slotShift;
-		slotUse    += slotShift;
-		slotBack   += slotShift;
+		slotUse += slotShift;
+		slotBack += slotShift;
 
 
 		action("", slotReview, getClassReviewItem());
 
-		if(acceptClassChange)
+		if (acceptClassChange)
 			action("use", slotUse, getSelectClassButton());
 
-		if(fromSelectionGUI) // implies acceptClassChange
+		if (fromSelectionGUI) // implies acceptClassChange
 			action("back", slotBack, getBackButton());
 	}
 
@@ -146,11 +153,11 @@ public class ClassDetailsGui extends ActionGui
 	{
 		Material button;
 
-		if(displayedClass instanceof EasterEggClass)
+		if (displayedClass instanceof EasterEggClass)
 		{
 			button = Material.RECORD_11;
 		}
-		else if(HeroBattle.get().getClassManager().playerHasClass(gPlayer, displayedClass.getType()))
+		else if (HeroBattle.get().getClassManager().playerHasClass(gPlayer, displayedClass.getType()))
 		{
 			button = Material.RECORD_5;
 		}
@@ -162,7 +169,7 @@ public class ClassDetailsGui extends ActionGui
 		ItemStack item = new ItemStack(button);
 		ItemMeta meta = item.getItemMeta();
 
-		if(canBeUsed)
+		if (canBeUsed)
 		{
 			meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Utiliser cette classe");
 
@@ -182,7 +189,7 @@ public class ClassDetailsGui extends ActionGui
 			lore.add(ChatColor.GRAY + "Vous ne pouvez pas sélectionner");
 			lore.add(ChatColor.GRAY + "la classe " + displayedClass.getName() + ".");
 
-			if(displayedClass instanceof EasterEggClass)
+			if (displayedClass instanceof EasterEggClass)
 			{
 				lore.add("");
 				lore.add(ChatColor.WHITE + "Envie d'easter-eggs ?");
@@ -201,12 +208,12 @@ public class ClassDetailsGui extends ActionGui
 	}
 
 	/**
-	 * Returns the item (door) which, when clicked, displays back the list of
-	 * the classes.
+	 * Returns the item (door) which, when clicked, displays back the list of the classes.
 	 *
 	 * @return The item.
 	 */
-	private ItemStack getBackButton() {
+	private ItemStack getBackButton()
+	{
 		ItemStack item = new ItemStack(Material.WOOD_DOOR);
 
 		ItemMeta meta = item.getItemMeta();
@@ -222,7 +229,7 @@ public class ClassDetailsGui extends ActionGui
 
 	protected void action_use()
 	{
-		if(canBeUsed)
+		if (canBeUsed)
 		{
 			HeroBattle.get().getClassManager().setPlayerClass(((Player) getPlayer()), displayedClass, true);
 			close();

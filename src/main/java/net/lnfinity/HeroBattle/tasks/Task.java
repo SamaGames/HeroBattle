@@ -3,12 +3,15 @@ package net.lnfinity.HeroBattle.tasks;
 import net.lnfinity.HeroBattle.HeroBattle;
 import org.bukkit.entity.Player;
 
-public abstract class Task {
+
+public abstract class Task
+{
 
 	protected Player player;
 	protected HeroBattle p;
 
-	public Task(HeroBattle p, Player player) {
+	public Task(HeroBattle p, Player player)
+	{
 		this.player = player;
 		this.p = p;
 	}

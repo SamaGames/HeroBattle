@@ -12,7 +12,8 @@ import java.util.UUID;
 /**
  * Represents a chapter of an in-game-tutorial.
  */
-public class TutorialChapter {
+public class TutorialChapter
+{
 
 	private Location location;
 
@@ -24,10 +25,11 @@ public class TutorialChapter {
 
 	/**
 	 * @param location The watching point of the chapter.
-	 * @param title The title of this chapter.
-	 * @param content The content of this chapter.
+	 * @param title    The title of this chapter.
+	 * @param content  The content of this chapter.
 	 */
-	public TutorialChapter(Location location, String title, List<String> content) {
+	public TutorialChapter(Location location, String title, List<String> content)
+	{
 		this.location = location;
 		this.title = title;
 		this.content = content;
@@ -35,10 +37,11 @@ public class TutorialChapter {
 
 	/**
 	 * @param location The watching point of the chapter.
-	 * @param title The title of this chapter.
-	 * @param content The content of this chapter.
+	 * @param title    The title of this chapter.
+	 * @param content  The content of this chapter.
 	 */
-	public TutorialChapter(Location location, String title, List<String> content, boolean displayInChat) {
+	public TutorialChapter(Location location, String title, List<String> content, boolean displayInChat)
+	{
 		this(location, title, content);
 
 		this.displayInChat = displayInChat;
@@ -50,7 +53,8 @@ public class TutorialChapter {
 	 *
 	 * @param uuid The UUID of the player.
 	 */
-	public void teleport(UUID uuid) {
+	public void teleport(UUID uuid)
+	{
 		teleport(Bukkit.getPlayer(uuid));
 	}
 
@@ -59,7 +63,8 @@ public class TutorialChapter {
 	 *
 	 * @param player The player.
 	 */
-	public void teleport(Player player) {
+	public void teleport(Player player)
+	{
 		player.teleport(location);
 	}
 
@@ -68,7 +73,8 @@ public class TutorialChapter {
 	 *
 	 * @return The title.
 	 */
-	public String getTitle() {
+	public String getTitle()
+	{
 		return title;
 	}
 
@@ -77,15 +83,18 @@ public class TutorialChapter {
 	 *
 	 * @return The content.
 	 */
-	public List<String> getContent() {
+	public List<String> getContent()
+	{
 		return content;
 	}
 
 	/**
 	 * Returns true if this has to be displayed in the chat.
+	 *
 	 * @return {@code true} if displayed in the chat.
 	 */
-	public boolean isDisplayedInChat() {
+	public boolean isDisplayedInChat()
+	{
 		return displayInChat;
 	}
 }

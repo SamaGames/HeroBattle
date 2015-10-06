@@ -1,31 +1,35 @@
 package net.lnfinity.HeroBattle.tools;
 
-import net.lnfinity.HeroBattle.*;
-import net.samagames.tools.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.samagames.tools.GlowEffect;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.List;
+
 
 /**
- * Represents a player tool given by the classes or a powerup and
- * displayed in the inventory of the player.
+ * Represents a player tool given by the classes or a powerup and displayed in the inventory of the
+ * player.
  */
-public abstract class PlayerTool {
+public abstract class PlayerTool
+{
 
 	/**
 	 * The main class of the plugin.
 	 */
 	protected HeroBattle p;
 
-	public PlayerTool(HeroBattle plugin) {
+	public PlayerTool(HeroBattle plugin)
+	{
 		p = plugin;
 	}
 
 	/**
 	 * Returns an unique identifier for this tool, used internally.
+	 *
 	 * @return
 	 */
 	public abstract String getToolID();
@@ -49,14 +53,11 @@ public abstract class PlayerTool {
 	/**
 	 * Returns the representation of the initial state of this tool in the player inventory.
 	 *
-	 * <p>
-	 * This ItemStack will be cloned when added to the inventory.
-	 * Use {@link #getInventoryItem(org.bukkit.entity.Player)} to get the item for a specific player later.
-	 * </p>
-	 * <p>
-	 * Don't include here the name or the description. They will be automatically included when added to
-	 * the player inventory.
-	 * </p>
+	 * <p> This ItemStack will be cloned when added to the inventory. Use {@link
+	 * #getInventoryItem(org.bukkit.entity.Player)} to get the item for a specific player later.
+	 * </p> <p> Don't include here the name or the description. They will be automatically included
+	 * when added to the player inventory. </p>
+	 *
 	 * @return The item.
 	 */
 	public abstract ItemStack getItem();
@@ -65,8 +66,8 @@ public abstract class PlayerTool {
 	 * Called when the player right-clicks with this tool.
 	 *
 	 * @param player The player who right-clicked.
-	 * @param tool The item representing this tool in the player's inventory.
-	 * @param event The PlayerInteractEvent fired.
+	 * @param tool   The item representing this tool in the player's inventory.
+	 * @param event  The PlayerInteractEvent fired.
 	 */
 	public abstract void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event);
 
@@ -74,8 +75,8 @@ public abstract class PlayerTool {
 	 * Called when the player left-clicks with this tool.
 	 *
 	 * @param player The player who left-clicked.
-	 * @param tool The item representing this tool in the player's inventory.
-	 * @param event The PlayerInteractEvent fired.
+	 * @param tool   The item representing this tool in the player's inventory.
+	 * @param event  The PlayerInteractEvent fired.
 	 */
 	public void onLeftClick(Player player, ItemStack tool, PlayerInteractEvent event)
 	{
@@ -87,11 +88,15 @@ public abstract class PlayerTool {
 	 * Returns the item inside the inventory of the given player representing this tool.
 	 *
 	 * @param player The player.
+	 *
 	 * @return The ItemStack representing the tool. {@code null} if the player don't have this tool.
 	 */
-	public ItemStack getInventoryItem(Player player) {
-		for(ItemStack tool : player.getInventory()) {
-			if(this.isRepresentation(tool)) {
+	public ItemStack getInventoryItem(Player player)
+	{
+		for (ItemStack tool : player.getInventory())
+		{
+			if (this.isRepresentation(tool))
+			{
 				return tool;
 			}
 		}
@@ -103,12 +108,16 @@ public abstract class PlayerTool {
 	 * Returns the item inside the inventory of the given player representing this tool.
 	 *
 	 * @param player The player.
+	 *
 	 * @return The ItemStack representing the tool. {@code -1} if the player don't have this tool.
 	 */
-	public int getInventoryItemSlot(Player player) {
-		for(int slot = 0 ; slot < player.getInventory().getSize(); slot++) {
+	public int getInventoryItemSlot(Player player)
+	{
+		for (int slot = 0; slot < player.getInventory().getSize(); slot++)
+		{
 			ItemStack tool = player.getInventory().getItem(slot);
-			if(this.isRepresentation(tool)) {
+			if (this.isRepresentation(tool))
+			{
 				return slot;
 			}
 		}
@@ -121,7 +130,8 @@ public abstract class PlayerTool {
 	 *
 	 * @return An unique ItemStack object (understand: cloned) representing the tool.
 	 */
-	public ItemStack generateCompleteItem() {
+	public ItemStack generateCompleteItem()
+	{
 		ItemStack item = getItem().clone();
 
 		boolean glow = item.containsEnchantment(GlowEffect.getGlow());
@@ -131,7 +141,8 @@ public abstract class PlayerTool {
 		meta.setLore(getDescription());
 		item.setItemMeta(meta);
 
-		if(glow) {
+		if (glow)
+		{
 			// We need to re-add the glow effect, because a modification of the item removes it.
 			GlowEffect.addGlow(item);
 		}
@@ -143,9 +154,11 @@ public abstract class PlayerTool {
 	 * Checks of the given ItemStack is a representation of this tool.
 	 *
 	 * @param item The ItemStack.
+	 *
 	 * @return {@code true} if this item represents this tool in an inventory.
 	 */
-	public boolean isRepresentation(ItemStack item) {
+	public boolean isRepresentation(ItemStack item)
+	{
 		return item != null
 				&& item.hasItemMeta()
 				&& item.getItemMeta().hasDisplayName()
@@ -153,7 +166,8 @@ public abstract class PlayerTool {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(Object o)
+	{
 		if (this == o) return true;
 		if (!(o instanceof PlayerTool)) return false;
 
@@ -163,7 +177,8 @@ public abstract class PlayerTool {
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		return getName() != null ? getName().hashCode() : 0;
 	}
 }

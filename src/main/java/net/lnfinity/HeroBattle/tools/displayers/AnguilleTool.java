@@ -1,24 +1,31 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.tools.*;
-import net.lnfinity.HeroBattle.utils.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.tools.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
+import net.samagames.tools.GlowEffect;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-public class AnguilleTool extends PlayerTool {
+
+public class AnguilleTool extends PlayerTool
+{
 
 	private final int COOLDOWN;
 	private final int DURATION;
 
-	public AnguilleTool(HeroBattle plugin) {
+	public AnguilleTool(HeroBattle plugin)
+	{
 		super(plugin);
 
 		COOLDOWN = 20;
@@ -26,30 +33,36 @@ public class AnguilleTool extends PlayerTool {
 	}
 
 	@Override
-	public String getToolID() {
+	public String getToolID()
+	{
 		return "tool.anguille";
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return ChatColor.DARK_RED + "" + ChatColor.BOLD + "L'anguille";
 	}
 
 	@Override
-	public List<String> getDescription() {
+	public List<String> getDescription()
+	{
 		return Utils.getToolDescription(ChatColor.GRAY + "Enflamme les joueurs trop proches de vous pendant " + ChatColor.GOLD + DURATION + " " + ChatColor.GRAY + "secondes, en tant que vengeance pour nous avoir martyrisé ! Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
 	@Override
-	public ItemStack getItem() {
+	public ItemStack getItem()
+	{
 		ItemStack item = new ItemStack(Material.RAW_FISH);
 		GlowEffect.addGlow(item);
 		return item;
 	}
 
 	@Override
-	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event) {
-		if (ToolsUtils.isToolAvailable(tool)) {
+	public void onRightClick(Player player, ItemStack tool, PlayerInteractEvent event)
+	{
+		if (ToolsUtils.isToolAvailable(tool))
+		{
 			new ItemCooldown(p, player, this, COOLDOWN);
 			player.getWorld().playSound(player.getLocation(), Sound.CAT_HISS, 1, 1);
 
@@ -63,7 +76,8 @@ public class AnguilleTool extends PlayerTool {
 							}
 					);
 
-			for(UUID victim : victims) {
+			for (UUID victim : victims)
+			{
 				p.getGame().getFiresInProgress().put(victim, player.getUniqueId());
 			}
 
@@ -74,7 +88,9 @@ public class AnguilleTool extends PlayerTool {
 				}
 			}, 20 * DURATION);
 
-		} else {
+		}
+		else
+		{
 			player.sendMessage(ChatColor.RED + "Vous êtes trop fatigué pour réutiliser ça maintenant");
 		}
 	}

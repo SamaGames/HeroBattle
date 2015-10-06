@@ -1,7 +1,7 @@
 package net.lnfinity.HeroBattle.utils;
 
-import net.samagames.tools.*;
-import org.bukkit.inventory.*;
+import net.samagames.tools.GlowEffect;
+import org.bukkit.inventory.ItemStack;
 
 
 public class ToolsUtils

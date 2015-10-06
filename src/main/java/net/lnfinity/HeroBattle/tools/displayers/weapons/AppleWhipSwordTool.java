@@ -1,15 +1,17 @@
 package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.tools.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.Weapon;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.*;
-import org.bukkit.potion.*;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class AppleWhipSwordTool extends WroughtIronSwordTool implements Weapon

@@ -1,12 +1,16 @@
 package net.lnfinity.HeroBattle.game;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.utils.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
-import net.samagames.api.games.*;
-import org.bukkit.*;
+import net.samagames.api.games.Status;
+import org.bukkit.Location;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 
 public class AntiCamping implements Runnable
@@ -47,7 +51,6 @@ public class AntiCamping implements Runnable
 				if (players.get(id).distanceSquared(player.getPlayerIfOnline().getLocation()) <= 0.05 && damagesGiven.get(id) == player.getPercentageInflicted() && life.get(id) == player.getPercentage())
 				{
 					// You're potentially breaking the rule, we'll add a flag to you.
-
 					combo.put(id, combo.get(id) + 1);
 				}
 				else

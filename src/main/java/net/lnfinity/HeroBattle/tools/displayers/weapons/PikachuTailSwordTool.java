@@ -17,14 +17,17 @@
 
 package net.lnfinity.HeroBattle.tools.displayers.weapons;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.tools.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.inventory.*;
-import org.bukkit.potion.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.Weapon;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class PikachuTailSwordTool extends SwordTool implements Weapon

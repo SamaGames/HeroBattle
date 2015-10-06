@@ -15,33 +15,27 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
- * This listener watches players logs in and out, to display grouped join & quit messages,
- * instead of a flood of « player joined the game ».
- * <p/>
- * A join/quit message is displayed every MESSAGES_INTERVAL ticks, if someone joined.
- * <p/>
- * This was before a listener and is similar to them.
- * R.I.P., beloved join listeners replaced by ugly methods.
+ * This listener watches players logs in and out, to display grouped join & quit messages, instead
+ * of a flood of « player joined the game ». <p/> A join/quit message is displayed every
+ * MESSAGES_INTERVAL ticks, if someone joined. <p/> This was before a listener and is similar to
+ * them. R.I.P., beloved join listeners replaced by ugly methods.
  */
 public class PlayersConnectionsHandler
 {
-	private HeroBattle p;
-
 	/**
-	 * A join/quit message will be displayed every MESSAGES_INTERVAL ticks (if someone joined, of course).
+	 * A join/quit message will be displayed every MESSAGES_INTERVAL ticks (if someone joined, of
+	 * course).
 	 */
 	final private long MESSAGES_INTERVAL = 30l;
-
-
 	/**
 	 * Stores the new players who are connected but were not announced in a join message.
 	 */
 	final private List<String> playersConnectedNotAnnounced = new CopyOnWriteArrayList<>();
-
 	/**
 	 * Store the players who disconnected but were not announced in a quit message.
 	 */
 	final private List<String> playersDisconnectedNotAnnounced = new CopyOnWriteArrayList<>();
+	private HeroBattle p;
 
 
 	public PlayersConnectionsHandler(HeroBattle plugin)
@@ -53,7 +47,7 @@ public class PlayersConnectionsHandler
 			@Override
 			public void run()
 			{
-				if(!isEnabled()) cancel();
+				if (!isEnabled()) cancel();
 
 				if (playersConnectedNotAnnounced.size() != 0)
 				{
@@ -112,12 +106,9 @@ public class PlayersConnectionsHandler
 	}
 
 	/**
-	 * Writes a join or quit message for multiple players.
-	 * <p/>
-	 * The message will be displayed as follows:
-	 * - Player [endOfTheMessageSolo]
-	 * - Player1 et Player2 [endOfTheMessageMultiple]
-	 * - Player1, Player2 et x autres [endOfTheMessageMultiple]
+	 * Writes a join or quit message for multiple players. <p/> The message will be displayed as
+	 * follows: - Player [endOfTheMessageSolo] - Player1 et Player2 [endOfTheMessageMultiple] -
+	 * Player1, Player2 et x autres [endOfTheMessageMultiple]
 	 *
 	 * @param players                 The players who joined or quit.
 	 * @param endOfTheMessageSolo     The end of the message, if only one player joined.

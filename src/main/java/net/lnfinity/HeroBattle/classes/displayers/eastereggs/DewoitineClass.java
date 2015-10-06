@@ -1,24 +1,29 @@
 package net.lnfinity.HeroBattle.classes.displayers.eastereggs;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.classes.*;
-import net.lnfinity.HeroBattle.tools.displayers.TripleJumpTool;
+import net.lnfinity.HeroBattle.classes.EasterEggClass;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.PlayerClassType;
 import net.lnfinity.HeroBattle.tools.displayers.Cannon20mmTool;
+import net.lnfinity.HeroBattle.tools.displayers.TripleJumpTool;
 import net.lnfinity.HeroBattle.tools.displayers.weapons.Mac34SwordTool;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 
 public class DewoitineClass extends PlayerClass implements EasterEggClass
 {
 
-	public DewoitineClass(HeroBattle plugin) {
+	public DewoitineClass(HeroBattle plugin)
+	{
 		super(plugin, 0, 0, 0);
 	}
 
-	public DewoitineClass(HeroBattle plugin, int cooldown, int power, int tool) {
+	public DewoitineClass(HeroBattle plugin, int cooldown, int power, int tool)
+	{
 		super(plugin, cooldown, power, tool);
 
 		addTool(new Mac34SwordTool(plugin));
@@ -27,47 +32,56 @@ public class DewoitineClass extends PlayerClass implements EasterEggClass
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return "Dewoitine";
 	}
 
 	@Override
-	public ItemStack getIcon() {
+	public ItemStack getIcon()
+	{
 		return new ItemStack(Material.FEATHER);
 	}
 
 	@Override
-	public ItemStack getHat() {
+	public ItemStack getHat()
+	{
 		return new ItemStack(Material.SLIME_BLOCK);
 	}
 
 	@Override
-	public List<String> getDescription() {
+	public List<String> getDescription()
+	{
 		return Collections.singletonList("Dewoitine");
 	}
 
 	@Override
-	public int getMinDamages() {
+	public int getMinDamages()
+	{
 		return 3;
 	}
 
 	@Override
-	public int getMaxDamages() {
+	public int getMaxDamages()
+	{
 		return 6;
 	}
 
 	@Override
-	public int getMaxResistance() {
+	public int getMaxResistance()
+	{
 		return 200;
 	}
 
 	@Override
-	public int getLives() {
+	public int getLives()
+	{
 		return 3;
 	}
 
 	@Override
-	public PlayerClassType getType() {
+	public PlayerClassType getType()
+	{
 		return PlayerClassType.DEWOITINE;
 	}
 }

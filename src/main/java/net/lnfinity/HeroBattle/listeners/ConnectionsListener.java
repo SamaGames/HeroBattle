@@ -1,12 +1,12 @@
 package net.lnfinity.HeroBattle.listeners;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.utils.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.*;
-import org.bukkit.event.player.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.DeathType;
+import net.lnfinity.HeroBattle.utils.ActionBar;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 
 public class ConnectionsListener implements Listener
@@ -22,17 +22,7 @@ public class ConnectionsListener implements Listener
 	@EventHandler
 	public void onPlayerQuit(final PlayerQuitEvent ev)
 	{
-		if (!plugin.getGame().isGameStarted())
-		{
-			if (plugin.getTimer().isEnabled() && plugin.getGame().getConnectedPlayers() - 1 < plugin.getGame().getMinPlayers())
-			{
-				plugin.getTimer().cancelTimer();
-				plugin.getServer().broadcastMessage(
-						HeroBattle.GAME_TAG + ChatColor.YELLOW
-								+ "Il n'y a plus assez de joueurs pour commencer la partie !");
-			}
-		}
-		else
+		if (plugin.getGame().isGameStarted())
 		{
 			if (plugin.getGame().getInGamePlayers().size() == 0 && !plugin.isTestServer())
 			{

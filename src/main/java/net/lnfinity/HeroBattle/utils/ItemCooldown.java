@@ -1,12 +1,15 @@
 package net.lnfinity.HeroBattle.utils;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.tools.*;
-import net.samagames.tools.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.inventory.*;
-import org.bukkit.scheduler.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.samagames.tools.GlowEffect;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 
 
 public class ItemCooldown

@@ -10,19 +10,19 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.UUID;
 
-public class TutorialRunner implements Runnable {
 
-	private HeroBattle p;
-	private Player player;
-
-	private int currentChapter = 0;
-	private int currentText = 0;
-
-	private List<TutorialChapter> content;
+public class TutorialRunner implements Runnable
+{
 
 	private final String tutorialInChatPrefix = ChatColor.GRAY + "│ " + ChatColor.RESET;
+	private HeroBattle p;
+	private Player player;
+	private int currentChapter = 0;
+	private int currentText = 0;
+	private List<TutorialChapter> content;
 
-	public TutorialRunner(HeroBattle plugin, UUID playerId) {
+	public TutorialRunner(HeroBattle plugin, UUID playerId)
+	{
 		this.p = plugin;
 		this.player = p.getServer().getPlayer(playerId);
 
@@ -30,14 +30,17 @@ public class TutorialRunner implements Runnable {
 	}
 
 	@Override
-	public void run() {
+	public void run()
+	{
 
-		if(!player.isOnline()) {
+		if (!player.isOnline())
+		{
 			p.getTutorialDisplayer().stop(player.getUniqueId());
 			return;
 		}
 
-		if(currentChapter == content.size()) {
+		if (currentChapter == content.size())
+		{
 			// The end.
 			p.getTutorialDisplayer().stop(player.getUniqueId());
 			return;
@@ -47,13 +50,14 @@ public class TutorialRunner implements Runnable {
 		TutorialChapter chapter = content.get(currentChapter);
 
 		// Delays of fade-in, fade-out and display
-		int fadeIn      = (currentText == 0) ? 10 : 0;
-		int fadeOut     = (currentText == chapter.getContent().size() - 1) ? 10 : 0;
+		int fadeIn = (currentText == 0) ? 10 : 0;
+		int fadeOut = (currentText == chapter.getContent().size() - 1) ? 10 : 0;
 		int readingTime = (int) (fadeOut == 10 ? TutorialDisplayer.READING_TIME - 10 : TutorialDisplayer.READING_TIME + 5);
 
 
 		// New chapter, new location
-		if(currentText == 0) {
+		if (currentText == 0)
+		{
 			chapter.teleport(player);
 			player.playSound(player.getLocation(), Sound.LEVEL_UP, 1L, 2L);
 		}
@@ -68,14 +72,16 @@ public class TutorialRunner implements Runnable {
 		);
 
 		// Chat version
-		if(chapter.isDisplayedInChat()) {
+		if (chapter.isDisplayedInChat())
+		{
 			if (currentText == 0) player.sendMessage(tutorialInChatPrefix + chapter.getTitle());
 			player.sendMessage(tutorialInChatPrefix + chapter.getContent().get(currentText));
 		}
 
 		// Next one?
 		currentText++;
-		if(currentText == chapter.getContent().size()) {
+		if (currentText == chapter.getContent().size())
+		{
 			currentChapter++;
 			currentText = 0;
 		}

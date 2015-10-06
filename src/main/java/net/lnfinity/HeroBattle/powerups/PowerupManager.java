@@ -1,14 +1,32 @@
 package net.lnfinity.HeroBattle.powerups;
 
 import net.lnfinity.HeroBattle.HeroBattle;
-import net.lnfinity.HeroBattle.powerups.powerups.*;
+import net.lnfinity.HeroBattle.powerups.powerups.BlindnessPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.HealPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.InvulnerabilityPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.NauseaPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.NightVisionPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.PercentageDividedPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.PercentageIncreasedPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.PlayersSwapPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.PowerPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.ResetToolCooldownPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.SpeedPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.ToastPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.TripleJumpPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.ZeroCooldownPowerup;
+import net.lnfinity.HeroBattle.powerups.powerups.ZeroPercentagePowerup;
 import net.lnfinity.HeroBattle.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 
 
@@ -25,10 +43,8 @@ public class PowerupManager
 	private final List<Powerup> powerups = new ArrayList<>();
 	private final List<Location> locations = new ArrayList<>();
 	private final Set<ActivePowerup> activePowerups = new HashSet<>();
-
-	private double totalWeight = 0d;
-
 	private final Random random = new Random();
+	private double totalWeight = 0d;
 
 
 	public PowerupManager(final HeroBattle plugin)

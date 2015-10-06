@@ -17,14 +17,19 @@
 
 package net.lnfinity.HeroBattle.classes.displayers.eastereggs;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.classes.*;
-import net.lnfinity.HeroBattle.tools.displayers.*;
-import net.lnfinity.HeroBattle.tools.displayers.weapons.*;
-import org.bukkit.*;
-import org.bukkit.inventory.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.EasterEggClass;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.PlayerClassType;
+import net.lnfinity.HeroBattle.tools.displayers.PikachuElectricField;
+import net.lnfinity.HeroBattle.tools.displayers.PikachuShockBlastTool;
+import net.lnfinity.HeroBattle.tools.displayers.PikachuThunderWaveTool;
+import net.lnfinity.HeroBattle.tools.displayers.weapons.PikachuTailSwordTool;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 
 public class PikachuClass extends PlayerClass implements EasterEggClass

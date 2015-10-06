@@ -17,14 +17,16 @@
 
 package net.lnfinity.HeroBattle.listeners.commands;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.classes.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.gui.*;
-import net.lnfinity.HeroBattle.gui.core.*;
-import org.bukkit.*;
-import org.bukkit.command.*;
-import org.bukkit.entity.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.gui.ClassDetailsGui;
+import net.lnfinity.HeroBattle.gui.core.Gui;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 
 public class ClassPreviewCommand implements CommandExecutor
@@ -33,27 +35,27 @@ public class ClassPreviewCommand implements CommandExecutor
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String alias, String[] args)
 	{
-		if(!(sender instanceof Player))
+		if (!(sender instanceof Player))
 		{
 			sender.sendMessage("Only as a player.");
 			return true;
 		}
 
-		if(args == null || args.length == 0)
+		if (args == null || args.length == 0)
 		{
 			sender.sendMessage(ChatColor.RED + "/" + command.getName() + " <classe>");
 			return true;
 		}
 
 		HeroBattlePlayer target = HeroBattle.get().getGamePlayer(((Player) sender).getUniqueId());
-		if(target == null)
+		if (target == null)
 		{
 			sender.sendMessage(ChatColor.RED + "Vous n'êtes pas un joueur !");
 			return true;
 		}
 
 		PlayerClass playerClass = HeroBattle.get().getClassManager().getAnyClassByFriendlyName(args[0], target);
-		if(playerClass != null)
+		if (playerClass != null)
 		{
 			Gui.open(((Player) sender), new ClassDetailsGui(playerClass));
 		}

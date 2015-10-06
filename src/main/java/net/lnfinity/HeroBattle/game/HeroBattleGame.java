@@ -1,30 +1,52 @@
 package net.lnfinity.HeroBattle.game;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.classes.*;
-import net.lnfinity.HeroBattle.classes.displayers.free.*;
-import net.lnfinity.HeroBattle.tools.*;
-import net.lnfinity.HeroBattle.utils.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.BruteClass;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.utils.ActionBar;
+import net.lnfinity.HeroBattle.utils.TripleParameters;
 import net.lnfinity.HeroBattle.utils.Utils;
-import net.minecraft.server.v1_8_R3.*;
-import net.samagames.api.*;
-import net.samagames.api.games.*;
-import net.samagames.tools.*;
-import org.apache.commons.lang3.tuple.*;
-import org.bukkit.*;
+import net.lnfinity.HeroBattle.utils.WinnerFirework;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.games.Game;
+import net.samagames.api.games.Status;
+import net.samagames.tools.GlowEffect;
+import net.samagames.tools.Titles;
+import org.apache.commons.lang3.tuple.Pair;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.entity.*;
-import org.bukkit.entity.*;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.*;
-import org.bukkit.potion.*;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.net.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.logging.*;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.TreeMap;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 
 public class HeroBattleGame extends Game<HeroBattlePlayer>
@@ -398,7 +420,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	 */
 	public void chooseRandomClass(Player player)
 	{
-		if(player == null) return;
+		if (player == null) return;
 
 		HeroBattlePlayer heroBattlePlayer = getPlayer(player.getUniqueId());
 
@@ -420,7 +442,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 		{
 			if (i == r)
 			{
-				if(classe != null)
+				if (classe != null)
 				{
 					heroBattlePlayer.setPlayerClass(classe);
 					player.sendMessage(ChatColor.GREEN + "La classe " + ChatColor.DARK_GREEN + classe.getName()
@@ -438,7 +460,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 		// Still without any class? This happens sometimes.
 		// TODO inspect why (deeper bug). HeroBattlePlayer.getAvailableClasses() seems to sometimes include `null` in the list.
 		// Workaround.
-		if(heroBattlePlayer.getPlayerClass() == null)
+		if (heroBattlePlayer.getPlayerClass() == null)
 		{
 			heroBattlePlayer.setPlayerClass(new BruteClass(p, 0, 0, 0));
 			player.sendMessage(ChatColor.GREEN + "La classe " + ChatColor.DARK_GREEN + "Brute"
@@ -756,7 +778,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 				{
 					winnerDisplayName += ChatColor.GOLD + "\u26A1  " + ChatColor.YELLOW + winner.getName() + ChatColor.GOLD + "  \u26A1";
 				}
-				else if(winner.getUniqueId().equals(UUID.fromString("9cc7b403-3ce8-47d7-9d95-eb2a03dd78b4"))) // 6infinity8
+				else if (winner.getUniqueId().equals(UUID.fromString("9cc7b403-3ce8-47d7-9d95-eb2a03dd78b4"))) // 6infinity8
 				{
 					winnerDisplayName += ChatColor.DARK_RED + "\u221E  " + ChatColor.RED + winner.getName() + ChatColor.DARK_RED + "  \u221E";
 				}
@@ -1288,7 +1310,7 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	/**
 	 * Attaches parameters to an entity.
 	 *
-	 * @param id The entity's UUID.
+	 * @param id     The entity's UUID.
 	 * @param params The parameters to attach.
 	 */
 	public void addEntityParameters(UUID id, TripleParameters params)

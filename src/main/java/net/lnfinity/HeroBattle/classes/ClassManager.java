@@ -1,15 +1,30 @@
 package net.lnfinity.HeroBattle.classes;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
-import net.lnfinity.HeroBattle.classes.displayers.free.*;
-import net.lnfinity.HeroBattle.classes.displayers.paid.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.utils.*;
-import net.md_5.bungee.api.*;
-import org.bukkit.entity.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.DewoitineClass;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.DewoitineD550Class;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.MaiteClass;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.PikachuClass;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.PommeClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.ArcherClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.BruteClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.GuardianClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.GuerrierClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.MageClass;
+import net.lnfinity.HeroBattle.classes.displayers.free.MinerClass;
+import net.lnfinity.HeroBattle.classes.displayers.paid.CryogenieClass;
+import net.lnfinity.HeroBattle.classes.displayers.paid.DruideClass;
+import net.lnfinity.HeroBattle.classes.displayers.paid.PyrobarbareClass;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.utils.Utils;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 
 public class ClassManager
@@ -45,8 +60,7 @@ public class ClassManager
 	 *
 	 * @param playerClass The class.
 	 *
-	 * @return {@code true} if the class was added (i.e. not already
-	 * registered).
+	 * @return {@code true} if the class was added (i.e. not already registered).
 	 */
 	public boolean registerClass(PlayerClass playerClass)
 	{
@@ -69,8 +83,7 @@ public class ClassManager
 	 *
 	 * @param name The name of the class.
 	 *
-	 * @return The class; {@code null} if there isn't any class registered with
-	 * this name.
+	 * @return The class; {@code null} if there isn't any class registered with this name.
 	 */
 	public PlayerClass getClassFromName(Player player, String name)
 	{
@@ -172,7 +185,8 @@ public class ClassManager
 
 	public boolean playerHasClass(HeroBattlePlayer heroBattlePlayer, PlayerClassType type)
 	{
-		if(heroBattlePlayer == null || heroBattlePlayer.getAvailableClasses() == null) return false;
+		if (heroBattlePlayer == null || heroBattlePlayer.getAvailableClasses() == null)
+			return false;
 
 		return heroBattlePlayer.getAvailableClasses().stream()
 				.filter(clazz -> clazz != null && clazz.getType() == type)

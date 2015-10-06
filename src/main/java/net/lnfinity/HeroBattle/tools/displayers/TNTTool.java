@@ -1,21 +1,27 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.tools.*;
-import net.lnfinity.HeroBattle.utils.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import net.lnfinity.HeroBattle.utils.TripleParameters;
+import net.lnfinity.HeroBattle.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.List;
 
 
 public class TNTTool extends PlayerTool
 {
 	// TODO not finished yet
-	
+
 	private final int COOLDOWN; // seconds
 	private final int IGNITION_TIME; // seconds
 

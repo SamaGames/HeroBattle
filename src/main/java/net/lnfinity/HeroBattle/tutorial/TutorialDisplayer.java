@@ -6,17 +6,20 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-public class TutorialDisplayer {
-
-	private HeroBattle p;
+public class TutorialDisplayer
+{
 
 	public static final long READING_TIME = 50l; // ticks
-
-
+	private HeroBattle p;
 	/**
 	 * Map: player's UUID -> task executing the tutorial
 	 */
@@ -32,7 +35,8 @@ public class TutorialDisplayer {
 	private long timeNeededToPlayThisTutorial = 0l; // ticks
 
 
-	public TutorialDisplayer(HeroBattle plugin) {
+	public TutorialDisplayer(HeroBattle plugin)
+	{
 		p = plugin;
 
 
@@ -115,7 +119,8 @@ public class TutorialDisplayer {
 	 *
 	 * @param chapter The chapter to add.
 	 */
-	public void addChapter(TutorialChapter chapter) {
+	public void addChapter(TutorialChapter chapter)
+	{
 		content.add(chapter);
 		timeNeededToPlayThisTutorial += READING_TIME * chapter.getContent().size();
 	}
@@ -123,7 +128,8 @@ public class TutorialDisplayer {
 	/**
 	 * @return A list of {@link TutorialChapter}s.
 	 */
-	public List<TutorialChapter> getContent() {
+	public List<TutorialChapter> getContent()
+	{
 		return content;
 	}
 
@@ -132,9 +138,11 @@ public class TutorialDisplayer {
 	 *
 	 * @param id The UUID of the player.
 	 */
-	public void start(UUID id) {
+	public void start(UUID id)
+	{
 
-		if(isWatchingTutorial(id)) {
+		if (isWatchingTutorial(id))
+		{
 			p.getLogger().info(p.getServer().getPlayer(id).getName() + "(" + id + ") is trying to see the tutorial whilst watching it.");
 			return;
 		}
@@ -143,7 +151,8 @@ public class TutorialDisplayer {
 
 
 		// Sufficient time left?
-		if(p.getTimer().isEnabled() && p.getTimer().getSecondsLeft() * 20 <= timeNeededToPlayThisTutorial) {
+		if (p.getTimer().isEnabled() && p.getTimer().getSecondsLeft() * 20 <= timeNeededToPlayThisTutorial)
+		{
 			player.sendMessage(ChatColor.RED + "Il ne reste pas assez de temps pour consulter le tutoriel...");
 			player.sendMessage(ChatColor.RED + "La partie va bientôt commencer !");
 
@@ -159,11 +168,12 @@ public class TutorialDisplayer {
 		player.setFlying(true);
 
 		// All other players are hidden
-		for(Player other : p.getServer().getOnlinePlayers()) {
+		for (Player other : p.getServer().getOnlinePlayers())
+		{
 			player.hidePlayer(other);
 			other.hidePlayer(player);
 		}
-		
+
 		player.setPlayerTime(p.getArenaConfig().getLong("map.dayTime"), false);
 
 		// The book is removed
@@ -181,14 +191,16 @@ public class TutorialDisplayer {
 	 *
 	 * @param id The UUID of the player.
 	 */
-	public void stop(UUID id) {
+	public void stop(UUID id)
+	{
 
-		if(!isWatchingTutorial(id)) return;
+		if (!isWatchingTutorial(id)) return;
 
 
 		Player player = p.getServer().getPlayer(id);
 
-		if(player != null) {
+		if (player != null)
+		{
 
 			// The player can now move.
 			player.setFlySpeed(0.1f);
@@ -196,7 +208,8 @@ public class TutorialDisplayer {
 			player.setAllowFlight(false);
 
 			// All other players are displayed
-			for(Player other : p.getServer().getOnlinePlayers()) {
+			for (Player other : p.getServer().getOnlinePlayers())
+			{
 				player.showPlayer(other);
 				other.showPlayer(player);
 			}
@@ -206,13 +219,15 @@ public class TutorialDisplayer {
 
 			// The book is restored
 			p.getGame().equipPlayer(player);
-			
+
 			player.resetPlayerTime();
 		}
 
-		try {
+		try
+		{
 			viewers.get(id).cancel();
-		} catch(IllegalStateException ignored) {}
+		}
+		catch (IllegalStateException ignored) {}
 
 		viewers.remove(id);
 	}
@@ -220,11 +235,13 @@ public class TutorialDisplayer {
 	/**
 	 * Stops the tutorial for everyone.
 	 *
-	 * @param reason A reason displayed to the viewers.<br />
-	 *               Added in the text « Le tutoriel a été interrompu ! {@code [reason]} » if not null.
+	 * @param reason A reason displayed to the viewers.<br /> Added in the text « Le tutoriel a été
+	 *               interrompu ! {@code [reason]} » if not null.
 	 */
-	public void stopForAll(String reason) {
-		for(UUID viewerID : viewers.keySet()) {
+	public void stopForAll(String reason)
+	{
+		for (UUID viewerID : viewers.keySet())
+		{
 			stop(viewerID);
 
 			p.getServer().getPlayer(viewerID)
@@ -232,7 +249,8 @@ public class TutorialDisplayer {
 		}
 	}
 
-	public boolean isWatchingTutorial(UUID id) {
+	public boolean isWatchingTutorial(UUID id)
+	{
 		return viewers.containsKey(id);
 	}
 }

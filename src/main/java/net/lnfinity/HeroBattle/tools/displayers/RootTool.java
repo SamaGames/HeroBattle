@@ -1,18 +1,25 @@
 package net.lnfinity.HeroBattle.tools.displayers;
 
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.tools.*;
-import net.lnfinity.HeroBattle.utils.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
-import org.bukkit.scheduler.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
+import net.lnfinity.HeroBattle.utils.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.List;
 
 
 public class RootTool extends PlayerTool
@@ -21,8 +28,9 @@ public class RootTool extends PlayerTool
 	private final int COOLDOWN;
 	private final int MIN_DAMAGES;
 	private final int MAX_DAMAGES;
-	
-	public RootTool(HeroBattle plugin, int cooldown, int min, int max) {
+
+	public RootTool(HeroBattle plugin, int cooldown, int min, int max)
+	{
 
 		super(plugin);
 
@@ -53,7 +61,8 @@ public class RootTool extends PlayerTool
 	}
 
 	@Override
-	public List<String> getDescription() {
+	public List<String> getDescription()
+	{
 		return Utils.getToolDescription(ChatColor.GRAY + "Une racine est violement projetée vers le joueur le plus proche, elle s'agrippe à se dernier et le tire avec force vers vous en occasionant " + ChatColor.RED + MIN_DAMAGES + " " + ChatColor.GRAY + "à " + ChatColor.RED + MAX_DAMAGES + " " + ChatColor.GRAY + "dégâts. Ne peut être utilisé que toutes les " + ChatColor.GOLD + COOLDOWN + " " + ChatColor.GRAY + "secondes.");
 	}
 
@@ -123,8 +132,8 @@ public class RootTool extends PlayerTool
 									victim.setVelocity(new Vector(player.getLocation().getX() - victim.getLocation().getX(), player.getLocation().getY() - victim.getLocation().getY(), player.getLocation().getZ() - victim.getLocation().getZ()).normalize().multiply(2));
 
 									closest.basicDamage(Utils.randomNumber(MIN_DAMAGES, MAX_DAMAGES), p.getGamePlayer(player));
-									
-									for(int k = 0; k < 5; k++)
+
+									for (int k = 0; k < 5; k++)
 									{
 										victim.getWorld().playEffect(currentLoc, Effect.STEP_SOUND, Material.LEAVES.getId(), 10);
 									}

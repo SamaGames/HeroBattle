@@ -11,8 +11,9 @@ import org.bukkit.scoreboard.Team;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PlayerClass {
 
+public abstract class PlayerClass
+{
 	protected HeroBattle p;
 	protected List<PlayerTool> tools = new ArrayList<>();
 
@@ -22,13 +23,60 @@ public abstract class PlayerClass {
 	protected int power;
 	protected int tool;
 
-	public PlayerClass(HeroBattle plugin, int cooldown, int power, int tool) {
+	public PlayerClass(HeroBattle plugin, int cooldown, int power, int tool)
+	{
 		p = plugin;
+
 		this.cooldown = cooldown;
 		this.power = power;
 		this.tool = tool;
 	}
-	
+
+	/**
+	 * Sets the team for a random class to the given player.
+	 *
+	 * To have a goodly formatted name in the tab.
+	 *
+	 * @param player The player.
+	 */
+	public static void setRandomClassTeam(Player player)
+	{
+		setNamedClassTeam(player, "Aléatoire");
+	}
+
+	/**
+	 * Sets the team for a class named “className” to the given player.
+	 *
+	 * To have a goodly formatted name in the tab.
+	 *
+	 * @param player The player.
+	 */
+	private static void setNamedClassTeam(Player player, String className)
+	{
+
+		Team oldTeam = HeroBattle.get().getScoreboardManager().getScoreboard().getPlayerTeam(player);
+		if (oldTeam != null)
+		{
+			oldTeam.unregister();
+		}
+
+
+		String playerColor = Utils.getPlayerColor(player);
+
+
+		Team classTeam = HeroBattle.get().getScoreboardManager().getScoreboard().registerNewTeam(Utils.getRandomAvailableTeamName());
+		String displayName = playerColor + player.getName() + ChatColor.GRAY + " \u2042 " + ChatColor.RESET + className;
+		displayName = displayName.substring(0, Math.min(displayName.length(), 32));
+		classTeam.setDisplayName(displayName);
+		classTeam.setSuffix(ChatColor.GRAY + " \u2042 " + className);
+		classTeam.setPrefix(playerColor);
+
+		classTeam.setCanSeeFriendlyInvisibles(false);
+		classTeam.setAllowFriendlyFire(true);
+
+		classTeam.addPlayer(player);
+	}
+
 	/**
 	 * Returns the name of the class.
 	 *
@@ -39,9 +87,7 @@ public abstract class PlayerClass {
 	/**
 	 * Returns the icon of the class: an ItemStack displayed in the classes selector GUI.
 	 *
-	 * <p>
-	 *     The display name of this item stack is ignored.
-	 * </p>
+	 * <p> The display name of this item stack is ignored. </p>
 	 *
 	 * @return The icon, as an ItemStack.
 	 */
@@ -50,8 +96,7 @@ public abstract class PlayerClass {
 	/**
 	 * Returns the hat the player will have.
 	 *
-	 * <p>
-	 *     The display name and the lore of this item stack are ignored and will be overwritten.
+	 * <p> The display name and the lore of this item stack are ignored and will be overwritten.
 	 * </p>
 	 *
 	 * @return The hat.
@@ -100,18 +145,16 @@ public abstract class PlayerClass {
 	 */
 	public abstract PlayerClassType getType();
 
-
-
-
 	/**
 	 * Returns a list of the tools in this class.
 	 *
 	 * @return The list.
 	 */
-	public List<PlayerTool> getTools() {
+	public List<PlayerTool> getTools()
+	{
 		return tools;
 	}
-	
+
 	/**
 	 * Returns the tool of the slot-th slot of the player.
 	 *
@@ -119,8 +162,9 @@ public abstract class PlayerClass {
 	 *
 	 * @return The tool in this slot.
 	 */
-	public PlayerTool getTool(int slot) {
-		if(slot >= tools.size() || slot < 0) return null;
+	public PlayerTool getTool(int slot)
+	{
+		if (slot >= tools.size() || slot < 0) return null;
 		return tools.get(slot);
 	}
 
@@ -128,9 +172,11 @@ public abstract class PlayerClass {
 	 * Adds a tool for this class.
 	 *
 	 * @param tool The tool.
+	 *
 	 * @return {@code true} if already in the class.
 	 */
-	public boolean addTool(PlayerTool tool) {
+	public boolean addTool(PlayerTool tool)
+	{
 		return tools.add(tool);
 	}
 
@@ -138,26 +184,30 @@ public abstract class PlayerClass {
 	 * Removes a tool from this class.
 	 *
 	 * @param tool The tool.
+	 *
 	 * @return {@code true} if the tool wasn't in the class.
 	 */
-	public boolean removeTool(PlayerTool tool) {
+	public boolean removeTool(PlayerTool tool)
+	{
 		return tools.remove(tool);
 	}
-
 
 	/**
 	 * Returns the class' details as a list ready to be used somewhere in a lore.
 	 *
 	 * @return The details.
 	 */
-	public List<String> getClassDetailsLore() {
+	public List<String> getClassDetailsLore()
+	{
 
-		if(detailsLore == null) {
+		if (detailsLore == null)
+		{
 
 			detailsLore = new ArrayList<>();
 
 			String lives = "";
-			for(int k = 0; k < getLives(); k++) {
+			for (int k = 0; k < getLives(); k++)
+			{
 				lives += "❤";
 			}
 
@@ -189,56 +239,15 @@ public abstract class PlayerClass {
 	 *
 	 * @param player The player.
 	 */
-	public void setClassTeam(Player player) {
+	public void setClassTeam(Player player)
+	{
 		setNamedClassTeam(player, getName());
-	}
-
-	/**
-	 * Sets the team for a random class to the given player.
-	 *
-	 * To have a goodly formatted name in the tab.
-	 *
-	 * @param player The player.
-	 */
-	public static void setRandomClassTeam(Player player) {
-		setNamedClassTeam(player, "Aléatoire");
-	}
-
-	/**
-	 * Sets the team for a class named “className” to the given player.
-	 *
-	 * To have a goodly formatted name in the tab.
-	 *
-	 * @param player The player.
-	 */
-	private static void setNamedClassTeam(Player player, String className) {
-
-		Team oldTeam = HeroBattle.get().getScoreboardManager().getScoreboard().getPlayerTeam(player);
-		if(oldTeam != null) {
-			oldTeam.unregister();
-		}
-
-
-		String playerColor = Utils.getPlayerColor(player);
-
-
-
-		Team classTeam = HeroBattle.get().getScoreboardManager().getScoreboard().registerNewTeam(Utils.getRandomAvailableTeamName());
-		String displayName = playerColor + player.getName() + ChatColor.GRAY + " \u2042 " + ChatColor.RESET + className;
-		displayName = displayName.substring(0, Math.min(displayName.length(), 32));
-		classTeam.setDisplayName(displayName);
-		classTeam.setSuffix(ChatColor.GRAY + " \u2042 " + className);
-		classTeam.setPrefix(playerColor);
-
-		classTeam.setCanSeeFriendlyInvisibles(false);
-		classTeam.setAllowFriendlyFire(true);
-
-		classTeam.addPlayer(player);
 	}
 
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(Object o)
+	{
 		if (this == o) return true;
 		if (!(o instanceof PlayerClass)) return false;
 
@@ -248,7 +257,8 @@ public abstract class PlayerClass {
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		return getName() != null ? getName().hashCode() : 0;
 	}
 }

@@ -1,13 +1,17 @@
 package net.lnfinity.HeroBattle.listeners.commands;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.classes.*;
-import net.lnfinity.HeroBattle.classes.displayers.eastereggs.*;
-import net.lnfinity.HeroBattle.game.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.classes.PlayerClass;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.DewoitineClass;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.DewoitineD550Class;
+import net.lnfinity.HeroBattle.classes.displayers.eastereggs.PikachuClass;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.*;
-import org.bukkit.command.*;
-import org.bukkit.entity.*;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 
 public class ClassSelectionCommand implements CommandExecutor

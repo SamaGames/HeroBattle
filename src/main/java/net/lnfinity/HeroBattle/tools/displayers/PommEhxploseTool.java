@@ -1,39 +1,45 @@
 /**
- * Plugin BelovedBlocks
- * Copyright (C) 2014-2015 Amaury Carrade & Florian Cassayre
- * <p/>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p/>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p/>
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see [http://www.gnu.org/licenses/].
+ * Plugin BelovedBlocks Copyright (C) 2014-2015 Amaury Carrade & Florian Cassayre <p/> This program
+ * is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version. <p/> This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. <p/> You should
+ * have received a copy of the GNU General Public License along with this program.  If not, see
+ * [http://www.gnu.org/licenses/].
  */
 
 package net.lnfinity.HeroBattle.tools.displayers;
 
-import net.lnfinity.HeroBattle.*;
-import net.lnfinity.HeroBattle.game.*;
-import net.lnfinity.HeroBattle.tools.*;
-import net.lnfinity.HeroBattle.utils.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import net.lnfinity.HeroBattle.game.HeroBattlePlayer;
+import net.lnfinity.HeroBattle.tools.PlayerTool;
+import net.lnfinity.HeroBattle.utils.ItemCooldown;
+import net.lnfinity.HeroBattle.utils.ToolsUtils;
 import net.lnfinity.HeroBattle.utils.Utils;
-import net.samagames.tools.*;
-import org.bukkit.*;
-import org.bukkit.block.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.*;
-import org.bukkit.potion.*;
-import org.bukkit.scheduler.*;
+import net.samagames.tools.Titles;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.World;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Firework;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
 
 public class PommEhxploseTool extends PlayerTool
@@ -85,7 +91,7 @@ public class PommEhxploseTool extends PlayerTool
 	@Override
 	public void onRightClick(final Player player, final ItemStack tool, final PlayerInteractEvent event)
 	{
-		if(!ToolsUtils.isToolAvailable(tool))
+		if (!ToolsUtils.isToolAvailable(tool))
 		{
 			player.sendMessage(ChatColor.RED + "Plus de POMMES :c");
 			return;
@@ -109,7 +115,7 @@ public class PommEhxploseTool extends PlayerTool
 			@Override
 			public void run()
 			{
-				if(apple.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR || delay <= 0)
+				if (apple.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR || delay <= 0)
 				{
 					final Location boomLocation = apple.getLocation();
 					apple.remove();
@@ -131,15 +137,17 @@ public class PommEhxploseTool extends PlayerTool
 
 
 					// Sounds
-					for(final Player player : world.getPlayers())
+					for (final Player player : world.getPlayers())
 					{
 						player.playSound(boomLocation, Sound.EXPLODE, 1, 5.0f);
 					}
 
 
 					// Damages, motion, title
-					for (final Entity e : player.getNearbyEntities(10, 10, 10)) {
-						if (e instanceof Player) {
+					for (final Entity e : player.getNearbyEntities(10, 10, 10))
+					{
+						if (e instanceof Player)
+						{
 							final Player victim = (Player) e;
 
 							final HeroBattlePlayer gVictim = HeroBattle.get().getGamePlayer(victim);
@@ -158,8 +166,9 @@ public class PommEhxploseTool extends PlayerTool
 							}
 
 							// Blindness (apple juice c:)
-							if(random.nextDouble() <= BLINDNESS_PROBABILITY) {
-								victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3*20, 0, true, false));
+							if (random.nextDouble() <= BLINDNESS_PROBABILITY)
+							{
+								victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3 * 20, 0, true, false));
 							}
 
 							// Title

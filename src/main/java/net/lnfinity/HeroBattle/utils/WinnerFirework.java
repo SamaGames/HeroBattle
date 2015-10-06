@@ -1,12 +1,16 @@
 package net.lnfinity.HeroBattle.utils;
 
-import net.lnfinity.HeroBattle.*;
-import org.bukkit.*;
-import org.bukkit.FireworkEffect.*;
-import org.bukkit.entity.*;
-import org.bukkit.inventory.meta.*;
+import net.lnfinity.HeroBattle.HeroBattle;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.FireworkEffect.Builder;
+import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.FireworkMeta;
 
-import java.util.*;
+import java.util.Random;
 
 
 public class WinnerFirework

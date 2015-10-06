@@ -5,7 +5,13 @@ import net.lnfinity.HeroBattle.HeroBattle;
 import net.lnfinity.HeroBattle.utils.ParticleEffect;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.tools.Titles;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Item;
@@ -20,17 +26,13 @@ import java.util.UUID;
 
 public class ActivePowerup
 {
-	HeroBattle p;
-
 	// UUID of this specific active powerup
 	private final UUID activePowerupID = UUID.randomUUID();
-
 	// Location
 	private final Location location;
-
 	// Powerup
 	private final Powerup powerup;
-
+	HeroBattle p;
 	// Entities of the powerup
 	private Item entityItem;
 	private ArmorStand entityBase;
