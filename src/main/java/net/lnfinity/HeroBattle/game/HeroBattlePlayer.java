@@ -158,7 +158,7 @@ public class HeroBattlePlayer extends GamePlayer
 		p.setMaxHealth(20);
 		p.setHealth(20);
 
-		if (plugin.getArenaConfig().getBoolean("map.permanentNightVision"))
+		if (plugin.getProperties().getPermanentNightVision())
 		{
 			p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
 		}

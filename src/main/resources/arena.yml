@@ -1,35 +1,35 @@
 ﻿# This is a template for the `world/arena.yml` file.
 # Locations format: "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch", where all coordinates are decimal numbers.
 map:
-    name: "HeroBattle"
+    name: "HeroBattle" [ok]
 
-    maxPlayers: 10    # VIP(+) excluded
+    maxPlayers: 10    # VIP(+) excluded [ok]
     maxVIP: 2
 
-    minPlayers: 4     # Minimum players to start the timer
+    minPlayers: 4     # Minimum players to start the timer [ok]
 
-    waiting: 120      # Time before begining
+    waiting: 120      # Time before begining [ok]
 
     gameTime: 15      # Maximum time the game should last (in minutes)
 
-    dayTime: 6000     # Set the day period during the game
-    hubDayTime: 6000  # Set the day period in the lobby
+    dayTime: 6000     # Set the day period during the game [ok]
+    hubDayTime: 6000  # Set the day period in the lobby [ok]
 
-    hub: "0;64;0"     # "x;y;z[;yaw[;pitch]]"
+    hub: "0;64;0"     # "x;y;z[;yaw[;pitch]]" [ok]
 
-    # At least maxPlayers + maxVIP spawns
+    # At least maxPlayers + maxVIP spawns [ok]
     spawns:
       - "0;64;0"
       - "0;64;0"
 
-    # Can be empty
+    # Can be empty [ok]
     powerups:
       - "2;64;0"
       - "-2;64;0"
 
     # Can be empty
     # Total should be exactly equals to 4
-    # (recommended to add a pitch)
+    # (recommended to add a pitch)  [ok]
     tutorial:
       - "0;70;0"
       - "0;70;0"
@@ -38,7 +38,7 @@ map:
 
     # The altitude below which the players are killed when they fall.
     # 0 if the map is bottomless.
-    # The altitude of the bottom else (like the water/lava level, etc.).
+    # The altitude of the bottom else (like the water/lava level, etc.).  [ok]
     bottom: 0
 
     # Set to true to give night vision to all players during the game.
@@ -55,11 +55,11 @@ map:
 
     # For maps with teleportation portals, this is the list of the locations the players will be teleported
     # to when they enter in an End portal.
-    # The location is randomly choosen.
+    # The location is randomly choosen. [ok]
     teleportationPortalsDestinations:
      - "0;70;0"
 
-    # Play a mario-like teleportation sound?
+    # Play a mario-like teleportation sound? [ok]
     marioTeleportationSound: false
 
 game:

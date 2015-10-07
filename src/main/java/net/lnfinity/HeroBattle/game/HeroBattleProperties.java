@@ -71,8 +71,13 @@ public class HeroBattleProperties
 	private final Long hubDayTime;
 	private final Long gameDayTime;
 
+	// Toxicities
+	private final Boolean toxicWater;
+	private final Boolean toxicLava;
+
 	// Cosmetics
 	private final Boolean marioPortalsTeleportationsSound;
+	private final Boolean permanentNightVision;
 
 
 	public HeroBattleProperties() throws InvalidConfigurationException
@@ -93,6 +98,7 @@ public class HeroBattleProperties
 
 
 		/* **  Locations  ** */
+
 
 		hub = getArenaLocation("locations.hub", true);
 
@@ -122,8 +128,14 @@ public class HeroBattleProperties
 		gameDayTime = getArenaLong("times-of-day.in-game", 6000l);
 
 
+		/* **  Toxicities  ** */
+		toxicWater = getArenaBoolean("toxicities.water", false);
+		toxicLava = getArenaBoolean("toxicities.lava", false);
+
+
 		/* **  Cosmetics  ** */
-		marioPortalsTeleportationsSound = properties.getConfig("mario-portal-teleportation-sound", new JsonPrimitive(true)).getAsBoolean();
+		marioPortalsTeleportationsSound = getArenaBoolean("mario-portal-teleportation-sound", true);
+		permanentNightVision = getArenaBoolean("permanent-night-vision", false);
 	}
 
 
@@ -164,6 +176,19 @@ public class HeroBattleProperties
 	public Long getArenaLong(String key, Number defaultValue)
 	{
 		return properties.getConfig(key, new JsonPrimitive(defaultValue)).getAsLong();
+	}
+
+	/**
+	 * Returns a configuration double from the `arena.json` file.
+	 *
+	 * @param key The key.
+	 * @param defaultValue The default value.
+	 *
+	 * @return The Double value found, the default value if not set or invalid.
+	 */
+	public Boolean getArenaBoolean(String key, Boolean defaultValue)
+	{
+		return properties.getConfig(key, new JsonPrimitive(defaultValue)).getAsBoolean();
 	}
 
 	/**
@@ -333,6 +358,20 @@ public class HeroBattleProperties
 		return marioPortalsTeleportationsSound;
 	}
 
+	public Boolean getPermanentNightVision()
+	{
+		return permanentNightVision;
+	}
+
+	public Boolean isWaterToxic()
+	{
+		return toxicWater;
+	}
+
+	public Boolean isLavaToxic()
+	{
+		return toxicLava;
+	}
 
 	public class InvalidConfigurationException extends Exception
 	{

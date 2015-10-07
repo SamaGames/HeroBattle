@@ -132,7 +132,7 @@ public class SystemListener implements Listener
 			// In-water check
 			if (blockType == Material.WATER || blockType == Material.STATIONARY_WATER)
 			{
-				if (plugin.getArenaConfig().getBoolean("map.toxicWater", false))
+				if (plugin.getProperties().isWaterToxic())
 				{
 					plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.WATER);
 				}
@@ -141,7 +141,7 @@ public class SystemListener implements Listener
 			// In-lava check
 			if (blockType == Material.LAVA || blockType == Material.STATIONARY_LAVA)
 			{
-				if (plugin.getArenaConfig().getBoolean("map.toxicLava", false))
+				if (plugin.getProperties().isLavaToxic())
 				{
 					plugin.getGame().onPlayerDeath(e.getPlayer().getUniqueId(), DeathType.LAVA);
 				}

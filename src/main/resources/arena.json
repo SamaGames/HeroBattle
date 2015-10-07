@@ -29,5 +29,11 @@
 	"in-game": 6000
   },
 
-  "mario-portal-teleportation-sound": true
+  "permanent-night-vision": false,
+  "mario-portal-teleportation-sound": true,
+
+  "toxicities": {
+	"water": false,
+	"lava": false
+  }
 }

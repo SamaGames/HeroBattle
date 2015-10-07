@@ -74,7 +74,7 @@ public class PowerupManager
 		registerPowerup(new PlayersSwapPowerup(p));
 
 		final long worldTime = p.getProperties().getGameDayTime() % 24000;
-		if (worldTime >= 13500 && worldTime < 22500 && !plugin.getArenaConfig().getBoolean("map.permanentNightVision"))
+		if (worldTime >= 13500 && worldTime < 22500 && !plugin.getProperties().getPermanentNightVision())
 		{
 			registerPowerup(new NightVisionPowerup());
 		}

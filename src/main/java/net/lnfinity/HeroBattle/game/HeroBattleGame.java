@@ -138,9 +138,8 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 
 		p.getServer().getScheduler().runTaskLater(p, () -> {
 			// Toxic water
-			if (p.getArenaConfig().getBoolean("map.toxicWater", false))
+			if (p.getProperties().isWaterToxic())
 			{
-
 				// Chat
 				p.getServer().broadcastMessage("");
 				p.getServer().broadcastMessage(ChatColor.DARK_AQUA + "-----------------------------------------------------");
@@ -156,8 +155,9 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 			}
 
 			// Toxic lava
-			if (p.getArenaConfig().getBoolean("map.toxicLava", false))
+			if (p.getProperties().isLavaToxic())
 			{
+				// Chat
 				p.getServer().broadcastMessage("");
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "-----------------------------------------------------");
 				p.getServer().broadcastMessage(ChatColor.DARK_RED + "[×] " + ChatColor.GOLD + "Attention, la lave est " + ChatColor.RED + "instantanément mortelle" + ChatColor.GOLD + " ici !");
@@ -170,7 +170,6 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 					Titles.sendTitle(player, 15, 40, 15, ChatColor.DARK_RED + "\u26A0", ChatColor.GOLD + "La lave est " + ChatColor.RED + "instantanément mortelle" + ChatColor.GOLD + " !");
 				}
 			}
-
 		}, 70l);
 
 		// Anti-Camping 3000
