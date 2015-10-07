@@ -16,6 +16,8 @@
 	  "stars": {
 		"per-victory": 1
 	  }
-	}
+	},
+
+	"ranked": true
   }
 }

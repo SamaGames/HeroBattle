@@ -770,29 +770,32 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 		calculateElos(id);
 
 
-		for (final HeroBattlePlayer hbPlayer : gamePlayers.values())
+		if (p.getProperties().isGameRanked())
 		{
-			SamaGamesAPI.get().getStatsManager(getGameCodeName()).setValue(hbPlayer.getUUID(), "elo", hbPlayer.getElo());
-		}
-
-		p.getServer().getScheduler().runTaskLater(p, () -> {
-			for (HeroBattlePlayer heroBattlePlayer : gamePlayers.values())
+			for (final HeroBattlePlayer hbPlayer : gamePlayers.values())
 			{
-				Player player = p.getServer().getPlayer(heroBattlePlayer.getUUID());
-				if (player != null)
+				SamaGamesAPI.get().getStatsManager(getGameCodeName()).setValue(hbPlayer.getUUID(), "elo", hbPlayer.getElo());
+			}
+
+			p.getServer().getScheduler().runTaskLater(p, () -> {
+				for (HeroBattlePlayer heroBattlePlayer : gamePlayers.values())
 				{
-					int change = heroBattlePlayer.getElo() - heroBattlePlayer.getOriginalElo();
-					if (change >= 0)
+					Player player = p.getServer().getPlayer(heroBattlePlayer.getUUID());
+					if (player != null)
 					{
-						player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " augmente de " + ChatColor.DARK_GREEN + change + ChatColor.GREEN + " (" + ChatColor.DARK_GREEN + heroBattlePlayer.getElo() + ChatColor.GREEN + ")");
-					}
-					else if (change < 0)
-					{
-						player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " diminue de " + ChatColor.RED + Math.abs(change) + ChatColor.GREEN + " (" + ChatColor.DARK_GREEN + heroBattlePlayer.getElo() + ChatColor.GREEN + ")");
+						int change = heroBattlePlayer.getElo() - heroBattlePlayer.getOriginalElo();
+						if (change >= 0)
+						{
+							player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " augmente de " + ChatColor.DARK_GREEN + change + ChatColor.GREEN + " (" + ChatColor.DARK_GREEN + heroBattlePlayer.getElo() + ChatColor.GREEN + ")");
+						}
+						else if (change < 0)
+						{
+							player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " diminue de " + ChatColor.RED + Math.abs(change) + ChatColor.GREEN + " (" + ChatColor.DARK_GREEN + heroBattlePlayer.getElo() + ChatColor.GREEN + ")");
+						}
 					}
 				}
-			}
-		}, 3 * 20l);
+			}, 3 * 20l);
+		}
 
 
 		// TODO migrate to coherence machine
@@ -858,6 +861,8 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	 */
 	public void calculateElos(UUID winner)
 	{
+		if(!p.getProperties().isGameRanked()) return;
+
 		double total = getTotalElo();
 
 		for (HeroBattlePlayer heroBattlePlayer : gamePlayers.values())

@@ -10,7 +10,7 @@ map:
 
     waiting: 120      # Time before begining [ok]
 
-    gameTime: 15      # Maximum time the game should last (in minutes)
+    gameTime: 15      # Maximum time the game should last (in minutes) [ok]
 
     dayTime: 6000     # Set the day period during the game [ok]
     hubDayTime: 6000  # Set the day period in the lobby [ok]
