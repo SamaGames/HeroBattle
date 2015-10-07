@@ -1,4 +1,6 @@
 {
+  "game-duration": 15,
+
   "locations": {
 	"hub": "0;64;0;0;0",
 	"player-spawns": [

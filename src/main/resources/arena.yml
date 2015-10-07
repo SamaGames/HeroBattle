@@ -43,13 +43,13 @@ map:
 
     # Set to true to give night vision to all players during the game.
     # If the world time is between 12000 (included) and 24000 (excluded) and this is set to
-    # false, the NightVision powerup will be available.
+    # false, the NightVision powerup will be available. [ok]
     permanentNightVision: false
 
-    # If this is set to true, all players will loose a life if they enter in the water.
+    # If this is set to true, all players will loose a life if they enter in the water. [ok]
     toxicWater: false
 
-    # If this is set to true, all players will loose a life if they enter in the lava.
+    # If this is set to true, all players will loose a life if they enter in the lava. [ok]
     toxicLava: false
 
 

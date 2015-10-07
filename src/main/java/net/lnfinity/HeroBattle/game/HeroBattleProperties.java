@@ -79,6 +79,9 @@ public class HeroBattleProperties
 	private final Boolean marioPortalsTeleportationsSound;
 	private final Boolean permanentNightVision;
 
+	// Game duration
+	private final Integer gameDuration;
+
 
 	public HeroBattleProperties() throws InvalidConfigurationException
 	{
@@ -129,13 +132,20 @@ public class HeroBattleProperties
 
 
 		/* **  Toxicities  ** */
+
 		toxicWater = getArenaBoolean("toxicities.water", false);
 		toxicLava = getArenaBoolean("toxicities.lava", false);
 
 
 		/* **  Cosmetics  ** */
+
 		marioPortalsTeleportationsSound = getArenaBoolean("mario-portal-teleportation-sound", true);
 		permanentNightVision = getArenaBoolean("permanent-night-vision", false);
+
+
+		/* **  Game duration  ** */
+
+		gameDuration = getArenaInt("game-duration", 15);
 	}
 
 
@@ -150,6 +160,19 @@ public class HeroBattleProperties
 	public Integer getConfigInt(String key, Number defaultValue)
 	{
 		return properties.getOption(key, new JsonPrimitive(defaultValue)).getAsInt();
+	}
+
+	/**
+	 * Returns a configuration double from the `arena.json` file.
+	 *
+	 * @param key The key.
+	 * @param defaultValue The default value.
+	 *
+	 * @return The Double value found, the default value if not set or invalid.
+	 */
+	public Integer getArenaInt(String key, Number defaultValue)
+	{
+		return properties.getConfig(key, new JsonPrimitive(defaultValue)).getAsInt();
 	}
 
 	/**
@@ -372,6 +395,12 @@ public class HeroBattleProperties
 	{
 		return toxicLava;
 	}
+
+	public Integer getGameDuration()
+	{
+		return gameDuration;
+	}
+
 
 	public class InvalidConfigurationException extends Exception
 	{

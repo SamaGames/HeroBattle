@@ -111,7 +111,7 @@ public class HeroBattle extends JavaPlugin
 
 		timer = new CountdownTimer(this);
 		game = new HeroBattleGame();
-		gameTimer = new GameTimer(this, this.getArenaConfig().getInt("map.gameTime"));
+		gameTimer = new GameTimer(this, getProperties().getGameDuration());
 		classManager = new ClassManager(this);
 		scoreboardManager = new ScoreboardManager(this);
 		powerupManager = new PowerupManager(this);
