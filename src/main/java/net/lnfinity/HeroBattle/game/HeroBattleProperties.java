@@ -151,6 +151,119 @@ public class HeroBattleProperties
 	}
 
 
+	public Integer getCoinsPerKill()
+	{
+		return coinsPerKill;
+	}
+
+	public Integer getCoinsPerAssist()
+	{
+		return coinsPerAssist;
+	}
+
+	public Integer getCoinsPerVictory()
+	{
+		return coinsPerVictory;
+	}
+
+	public Integer getStarsPerVictory()
+	{
+		return starsPerVictory;
+	}
+
+	public Integer getCoinsIfFirstRanked()
+	{
+		return coinsIfFirstRanked;
+	}
+
+	public Integer getCoinsIfSecondRanked()
+	{
+		return coinsIfSecondRanked;
+	}
+
+	public Integer getCoinsIfThirdRanked()
+	{
+		return coinsIfThirdRanked;
+	}
+
+	public Location getHub()
+	{
+		return hub;
+	}
+
+	public List<Location> getPlayerSpawns()
+	{
+		return playerSpawns;
+	}
+
+	public List<Location> getPowerupSpawns()
+	{
+		return powerupSpawns;
+	}
+
+	public List<Location> getTutorialPOV()
+	{
+		return tutorialPOV;
+	}
+
+	public Double getBottomHub()
+	{
+		return bottomHub;
+	}
+
+	public Double getBottomGame()
+	{
+		return bottomGame;
+	}
+
+	public Long getHubDayTime()
+	{
+		return hubDayTime;
+	}
+
+	public Long getGameDayTime()
+	{
+		return gameDayTime;
+	}
+
+	public List<Location> getTeleportationPortalsDestinations()
+	{
+		return teleportationPortalsDestinations;
+	}
+
+	public Boolean getMarioPortalsTeleportationsSound()
+	{
+		return marioPortalsTeleportationsSound;
+	}
+
+	public Boolean getPermanentNightVision()
+	{
+		return permanentNightVision;
+	}
+
+	public Boolean isWaterToxic()
+	{
+		return toxicWater;
+	}
+
+	public Boolean isLavaToxic()
+	{
+		return toxicLava;
+	}
+
+	public Integer getGameDuration()
+	{
+		return gameDuration;
+	}
+
+	public Boolean isGameRanked()
+	{
+		return gameRanked;
+	}
+
+
+	/* **  JSON data accessors  ** */
+
 	/**
 	 * Returns a configuration integer from the `game.json` file.
 	 *
@@ -308,117 +421,6 @@ public class HeroBattleProperties
 		}
 
 		return locations;
-	}
-
-
-	public Integer getCoinsPerKill()
-	{
-		return coinsPerKill;
-	}
-
-	public Integer getCoinsPerAssist()
-	{
-		return coinsPerAssist;
-	}
-
-	public Integer getCoinsPerVictory()
-	{
-		return coinsPerVictory;
-	}
-
-	public Integer getStarsPerVictory()
-	{
-		return starsPerVictory;
-	}
-
-	public Integer getCoinsIfFirstRanked()
-	{
-		return coinsIfFirstRanked;
-	}
-
-	public Integer getCoinsIfSecondRanked()
-	{
-		return coinsIfSecondRanked;
-	}
-
-	public Integer getCoinsIfThirdRanked()
-	{
-		return coinsIfThirdRanked;
-	}
-
-	public Location getHub()
-	{
-		return hub;
-	}
-
-	public List<Location> getPlayerSpawns()
-	{
-		return playerSpawns;
-	}
-
-	public List<Location> getPowerupSpawns()
-	{
-		return powerupSpawns;
-	}
-
-	public List<Location> getTutorialPOV()
-	{
-		return tutorialPOV;
-	}
-
-	public Double getBottomHub()
-	{
-		return bottomHub;
-	}
-
-	public Double getBottomGame()
-	{
-		return bottomGame;
-	}
-
-	public Long getHubDayTime()
-	{
-		return hubDayTime;
-	}
-
-	public Long getGameDayTime()
-	{
-		return gameDayTime;
-	}
-
-	public List<Location> getTeleportationPortalsDestinations()
-	{
-		return teleportationPortalsDestinations;
-	}
-
-	public Boolean getMarioPortalsTeleportationsSound()
-	{
-		return marioPortalsTeleportationsSound;
-	}
-
-	public Boolean getPermanentNightVision()
-	{
-		return permanentNightVision;
-	}
-
-	public Boolean isWaterToxic()
-	{
-		return toxicWater;
-	}
-
-	public Boolean isLavaToxic()
-	{
-		return toxicLava;
-	}
-
-	public Integer getGameDuration()
-	{
-		return gameDuration;
-	}
-
-	public Boolean isGameRanked()
-	{
-		return gameRanked;
 	}
 
 
