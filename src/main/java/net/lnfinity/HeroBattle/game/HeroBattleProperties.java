@@ -34,8 +34,7 @@ package net.lnfinity.HeroBattle.game;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import net.lnfinity.HeroBattle.HeroBattle;
+import com.google.gson.JsonObject;
 import net.lnfinity.HeroBattle.utils.Utils;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.IGameProperties;
@@ -44,10 +43,12 @@ import org.bukkit.Location;
 import java.util.List;
 
 
+/**
+ * Models for {@code arena.json} and {@code game.json} are available in the
+ * {@code src/main/resources} directory.
+ */
 public class HeroBattleProperties
 {
-	private IGameProperties properties;
-
 	// Rewards
 	private final Integer coinsPerKill;
 	private final Integer coinsPerAssist;
@@ -84,70 +85,95 @@ public class HeroBattleProperties
 	private final Boolean gameRanked;
 
 
+	/**
+	 * @throws InvalidConfigurationException
+	 */
 	public HeroBattleProperties() throws InvalidConfigurationException
 	{
-		this.properties = SamaGamesAPI.get().getGameManager().getGameProperties();
+		IGameProperties properties = SamaGamesAPI.get().getGameManager().getGameProperties();
 
 
 		/* **  Rewards  ** */
 
-		coinsPerKill        = getConfigInt("rewards.coins.per-kill", 5);
-		coinsPerAssist      = getConfigInt("rewards.coins.per-assist", 3);
-		coinsPerVictory     = getConfigInt("rewards.coins.per-victory", 20);
-		starsPerVictory     = getConfigInt("rewards.stars.per-victory", 1);
+		JsonObject coinsRewards = null;
+		JsonObject starsRewards = null;
+		JsonObject rewards = properties.getOptions().getAsJsonObject("rewards");
+		if(rewards != null)
+		{
+			coinsRewards = rewards.getAsJsonObject("coins");
+			starsRewards = rewards.getAsJsonObject("stars");
+		}
 
-		coinsIfFirstRanked  = getConfigInt("rewards.coins.if-first-ranked", 10);
-		coinsIfSecondRanked = getConfigInt("rewards.coins.if-second-ranked", 6);
-		coinsIfThirdRanked  = getConfigInt("rewards.coins.if-third-ranked", 4);
+		coinsPerKill        = getInt(coinsRewards, "per-kill", 5);
+		coinsPerAssist      = getInt(coinsRewards, "per-assist", 3);
+		coinsPerVictory     = getInt(coinsRewards, "per-victory", 20);
+		starsPerVictory     = getInt(starsRewards, "per-victory", 1);
+
+		coinsIfFirstRanked  = getInt(coinsRewards, "if-first-ranked", 10);
+		coinsIfSecondRanked = getInt(coinsRewards, "if-second-ranked", 6);
+		coinsIfThirdRanked  = getInt(coinsRewards, "if-third-ranked", 4);
 
 
 		/* **  Locations  ** */
 
+		JsonObject locations = properties.getConfigs().getAsJsonObject("locations");
 
-		hub = getArenaLocation("locations.hub", true);
+		hub = getLocation(locations, "hub", null);
 
-		playerSpawns = getArenaLocations("locations.player-spawns", true);
-		powerupSpawns = getArenaLocations("locations.powerup-spawns", false);
+		playerSpawns = getLocations(locations, "player-spawns");
+		powerupSpawns = getLocations(locations, "powerup-spawns");
+		tutorialPOV = getLocations(locations, "tutorial-points-of-views");
+		teleportationPortalsDestinations = getLocations(locations, "teleportation-portals-destinations");
 
-		teleportationPortalsDestinations = getArenaLocations("locations.teleportation-portals-destinations", false);
-		if(teleportationPortalsDestinations.size() == 0)
-		{
-			HeroBattle.get().getLogger().info("No teleportation portal locations set in arena.yml. Feature disabled.");
-		}
 
-		tutorialPOV = getArenaLocations("locations.tutorial-points-of-views", false);
-		if(tutorialPOV.size() != 0 && tutorialPOV.size() < 4)
-		{
-			tutorialPOV.clear();
-			throw new InvalidConfigurationException("If set, at least 4 tutorial points of view are required (and the points after the 4th will be ignored).", "arena.json", "locations.tutorial-points-of-views", false);
-		}
+		JsonObject bottomAltitudes = locations.getAsJsonObject("bottom-altitude");
 
-		bottomHub = getArenaDouble("locations.bottom-altitude.waiting-lobby", 0);
-		bottomGame = getArenaDouble("locations.bottom-altitude.in-game", 0);
+		bottomHub  = getDouble(bottomAltitudes, "waiting-lobby", 0d);
+		bottomGame = getDouble(bottomAltitudes, "in-game", 0d);
 
 
 		/* **  Times of the day  ** */
 
-		hubDayTime  = getArenaLong("times-of-day.waiting-lobby", 6000l);
-		gameDayTime = getArenaLong("times-of-day.in-game", 6000l);
+		JsonObject timesOfDay = properties.getConfigs().getAsJsonObject("times-of-day");
+		hubDayTime  = getLong(timesOfDay, "waiting-lobby", 6000l);
+		gameDayTime = getLong(timesOfDay, "in-game", 6000l);
 
 
 		/* **  Toxicities  ** */
 
-		toxicWater = getArenaBoolean("toxicities.water", false);
-		toxicLava = getArenaBoolean("toxicities.lava", false);
+		JsonObject toxicities = properties.getConfigs().getAsJsonObject("toxicities");
+		toxicWater = getBoolean(toxicities, "water", false);
+		toxicLava  = getBoolean(toxicities, "lava", false);
 
 
 		/* **  Cosmetics  ** */
 
-		marioPortalsTeleportationsSound = getArenaBoolean("mario-portal-teleportation-sound", true);
-		permanentNightVision = getArenaBoolean("permanent-night-vision", false);
+		marioPortalsTeleportationsSound = getBoolean(properties.getConfigs(), "mario-portal-teleportation-sound", true);
+		permanentNightVision = getBoolean(properties.getConfigs(), "permanent-night-vision", false);
 
 
 		/* **  Game properties  ** */
 
-		gameDuration = getArenaInt("game-duration", 15);
-		gameRanked = getConfigBoolean("ranked", true);
+		gameDuration = getInt(properties.getConfigs(), "game-duration", 15);
+		gameRanked = getBoolean(properties.getOptions(), "ranked", true);
+
+
+		/* **  - Errors -  ** */
+
+		if(hub == null)
+			throw new InvalidConfigurationException("Hub location undefined!", "arena.json", "locations.hub");
+
+		if(playerSpawns.isEmpty())
+			throw new InvalidConfigurationException("No spawn points defined!", "arena.json", "locations.player-spawns");
+
+		if(teleportationPortalsDestinations.isEmpty())
+			throw new InvalidConfigurationException("No teleportation portal locations set in arena.yml. Feature disabled.", "arena.json", "locations.teleportation-portals-destinations", false);
+
+		if(!tutorialPOV.isEmpty() && tutorialPOV.size() < 4)
+		{
+			tutorialPOV.clear();
+			throw new InvalidConfigurationException("If set, at least 4 tutorial points of view are required (and the points after the 4th will be ignored).", "arena.json", "locations.tutorial-points-of-views", false);
+		}
 	}
 
 
@@ -264,139 +290,69 @@ public class HeroBattleProperties
 
 	/* **  JSON data accessors  ** */
 
-	/**
-	 * Returns a configuration integer from the `game.json` file.
-	 *
-	 * @param key The key.
-	 * @param defaultValue The default value.
-	 *
-	 * @return The Integer value found, the default value if not set or invalid.
-	 */
-	public Integer getConfigInt(String key, Number defaultValue)
+	public Integer getInt(JsonObject root, String key, Integer defaultValue)
 	{
-		return properties.getOption(key, new JsonPrimitive(defaultValue)).getAsInt();
+		if(root != null && root.has(key))
+			return root.get(key).getAsInt();
+		else
+			return defaultValue;
 	}
 
-	/**
-	 * Returns a configuration double from the `arena.json` file.
-	 *
-	 * @param key The key.
-	 * @param defaultValue The default value.
-	 *
-	 * @return The Double value found, the default value if not set or invalid.
-	 */
-	public Boolean getConfigBoolean(String key, Boolean defaultValue)
+	public Double getDouble(JsonObject root, String key, Double defaultValue)
 	{
-		return properties.getOption(key, new JsonPrimitive(defaultValue)).getAsBoolean();
+		if(root != null && root.has(key))
+			return root.get(key).getAsDouble();
+		else
+			return defaultValue;
 	}
 
-	/**
-	 * Returns a configuration double from the `arena.json` file.
-	 *
-	 * @param key The key.
-	 * @param defaultValue The default value.
-	 *
-	 * @return The Double value found, the default value if not set or invalid.
-	 */
-	public Integer getArenaInt(String key, Number defaultValue)
+	public Long getLong(JsonObject root, String key, Long defaultValue)
 	{
-		return properties.getConfig(key, new JsonPrimitive(defaultValue)).getAsInt();
+		if(root != null && root.has(key))
+			return root.get(key).getAsLong();
+		else
+			return defaultValue;
 	}
 
-	/**
-	 * Returns a configuration double from the `arena.json` file.
-	 *
-	 * @param key The key.
-	 * @param defaultValue The default value.
-	 *
-	 * @return The Double value found, the default value if not set or invalid.
-	 */
-	public Double getArenaDouble(String key, Number defaultValue)
+	public Boolean getBoolean(JsonObject root, String key, Boolean defaultValue)
 	{
-		return properties.getConfig(key, new JsonPrimitive(defaultValue)).getAsDouble();
+		if(root != null && root.has(key))
+			return root.get(key).getAsBoolean();
+		else
+			return defaultValue;
 	}
 
-	/**
-	 * Returns a configuration double from the `arena.json` file.
-	 *
-	 * @param key The key.
-	 * @param defaultValue The default value.
-	 *
-	 * @return The Double value found, the default value if not set or invalid.
-	 */
-	public Long getArenaLong(String key, Number defaultValue)
+	public Location getLocation(JsonObject root, String key, Location defaultValue)
 	{
-		return properties.getConfig(key, new JsonPrimitive(defaultValue)).getAsLong();
-	}
-
-	/**
-	 * Returns a configuration double from the `arena.json` file.
-	 *
-	 * @param key The key.
-	 * @param defaultValue The default value.
-	 *
-	 * @return The Double value found, the default value if not set or invalid.
-	 */
-	public Boolean getArenaBoolean(String key, Boolean defaultValue)
-	{
-		return properties.getConfig(key, new JsonPrimitive(defaultValue)).getAsBoolean();
-	}
-
-	/**
-	 * Returns a location from the given key in `arena.json`, using the default world.
-	 *
-	 * @param key The key.
-	 * @param disallowInvalid If true, an {@link IllegalArgumentException} will be thrown if the location is invalid.
-	 * @return The location, or {@code null} if invalid with {@code disallowInvalid = false}.
-	 */
-	public Location getArenaLocation(String key, boolean disallowInvalid)
-	{
-		return getArenaLocation(properties.getConfig(key, new JsonPrimitive("")), disallowInvalid);
-	}
-
-	/**
-	 * Returns a location from the given {@link JsonElement}, using the default world.
-	 *
-	 * @param key The {@link JsonElement}.
-	 * @param disallowInvalid If true, an {@link IllegalArgumentException} will be thrown if the location is invalid.
-	 * @return The location, or {@code null} if invalid with {@code disallowInvalid = false}.
-	 */
-	public Location getArenaLocation(JsonElement key, boolean disallowInvalid)
-	{
-		String rawLocation = key.getAsString();
-
-		if(rawLocation.isEmpty() && disallowInvalid)
-			throw new IllegalArgumentException("Invalid location in arena.json: " + key + ": " + rawLocation);
-
-		try
+		if(root != null && root.has(key))
 		{
-			return Utils.stringToLocation(rawLocation);
+			String rawLocation = root.get(key).getAsString();
+			if(rawLocation.isEmpty())
+				return defaultValue;
+
+			try
+			{
+				return Utils.stringToLocation(rawLocation);
+			}
+			catch (IllegalArgumentException e)
+			{
+				return defaultValue;
+			}
 		}
-		catch (IllegalArgumentException e)
+		else
 		{
-			if(disallowInvalid)
-				throw new IllegalArgumentException("Invalid location in arena.json: " + key + ": " + rawLocation);
-			else
-				return null;
+			return defaultValue;
 		}
 	}
 
-	/**
-	 * Returns an immutable list of locations from the given key in `arena.json`. The key MUST
-	 * point to a JSON array containing a list of strings.
-	 *
-	 * @param key The key.
-	 * @param disallowEmpty If true, an {@link InvalidConfigurationException} will be thrown if the
-	 *                      final list (the JSON list without the invalid entries) is empty.
-	 * @return The list.
-	 *
-	 * @throws InvalidConfigurationException if the final list (the JSON list without the invalid entries) is empty.
-	 */
-	public List<Location> getArenaLocations(String key, boolean disallowEmpty) throws InvalidConfigurationException
+	public List<Location> getLocations(JsonObject root, String key)
 	{
+		if(root == null || !root.has(key))
+			return ImmutableList.of();
+
 		List<Location> locations;
 
-		JsonArray rawPlayerSpawns = properties.getConfig(key, new JsonArray()).getAsJsonArray();
+		JsonArray rawPlayerSpawns = root.getAsJsonArray(key);
 		if(rawPlayerSpawns.size() == 0)
 		{
 			locations = ImmutableList.of();
@@ -407,17 +363,18 @@ public class HeroBattleProperties
 
 			for(JsonElement rawPlayerSpawn : rawPlayerSpawns)
 			{
-				Location spawn = getArenaLocation(rawPlayerSpawn, false);
+				Location spawn = null;
+				try
+				{
+					spawn = Utils.stringToLocation(rawPlayerSpawn.getAsString());
+				}
+				catch (Exception ignored) {}
+
 				if(spawn != null)
 					builder.add(spawn);
 			}
 
 			locations = builder.build();
-		}
-
-		if(disallowEmpty && locations.size() == 0)
-		{
-			throw new InvalidConfigurationException("No valid location found: " + key, "arena.json", key);
 		}
 
 		return locations;

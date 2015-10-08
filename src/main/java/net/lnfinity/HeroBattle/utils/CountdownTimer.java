@@ -23,8 +23,8 @@ public class CountdownTimer
 	{
 		p = plugin;
 
-		COUNTER_REDUCTION_WHEN_HALF_FULL = p.getArenaConfig().getInt("map.waiting") / 2;
-		COUNTER_REDUCTION_WHEN_FULL = p.getArenaConfig().getInt("map.waiting") / 5;
+		COUNTER_REDUCTION_WHEN_HALF_FULL = 30; // temp
+		COUNTER_REDUCTION_WHEN_FULL = 10;
 	}
 
 	public boolean isEnabled()
