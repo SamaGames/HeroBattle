@@ -17,14 +17,12 @@ import net.lnfinity.HeroBattle.listeners.commands.ClassSelectionCommand;
 import net.lnfinity.HeroBattle.listeners.commands.CommandListener;
 import net.lnfinity.HeroBattle.powerups.PowerupManager;
 import net.lnfinity.HeroBattle.tutorial.TutorialDisplayer;
-import net.lnfinity.HeroBattle.utils.CountdownTimer;
 import net.lnfinity.HeroBattle.utils.GameTimer;
 import net.md_5.bungee.api.ChatColor;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.shops.AbstractShopsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -49,17 +47,13 @@ public class HeroBattle extends JavaPlugin
 	private HeroBattleProperties properties;
 	private HeroBattleGame game;
 
-	private CountdownTimer timer;
 	private GameTimer gameTimer;
 
 	private ClassManager classManager;
 	private PowerupManager powerupManager;
 
 	private ScoreboardManager scoreboardManager;
-
 	private TutorialDisplayer tutorialDisplayer;
-
-	private Configuration arenaConfig;
 
 	public static HeroBattle get()
 	{
@@ -109,7 +103,6 @@ public class HeroBattle extends JavaPlugin
 		world.setFullTime(getProperties().getHubDayTime());
 
 
-		timer = new CountdownTimer(this);
 		game = new HeroBattleGame();
 		gameTimer = new GameTimer(this, getProperties().getGameDuration());
 		classManager = new ClassManager(this);
@@ -147,11 +140,6 @@ public class HeroBattle extends JavaPlugin
 		return game;
 	}
 
-	public CountdownTimer getTimer()
-	{
-		return timer;
-	}
-
 	public GameTimer getGameTimer()
 	{
 		return gameTimer;
@@ -165,11 +153,6 @@ public class HeroBattle extends JavaPlugin
 	public ScoreboardManager getScoreboardManager()
 	{
 		return scoreboardManager;
-	}
-
-	public Configuration getArenaConfig()
-	{
-		return arenaConfig;
 	}
 
 	public PowerupManager getPowerupManager()

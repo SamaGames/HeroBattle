@@ -94,10 +94,11 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	@Override
 	public Pair<Boolean, String> canJoinGame(UUID player, boolean reconnect)
 	{
-		if (HeroBattle.get().getTimer().isEnabled() && HeroBattle.get().getTimer().getSecondsLeft() < 6)
-		{
-			return Pair.of(false, ChatColor.RED + "La partie est sur le point de démarrer !");
-		}
+		// TODO Reimplement after API-side fix.
+//		if (getBeginTimer().isEnabled() && HeroBattle.get().getTimer().getSecondsLeft() < 6)
+//		{
+//			return Pair.of(false, ChatColor.RED + "La partie est sur le point de démarrer !");
+//		}
 
 		return Pair.of(true, "");
 	}
@@ -942,35 +943,6 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	{
 		return new HashMap<>(gamePlayers);
 	}
-
-
-	public int getMaxPlayers()
-	{
-		return p.getArenaConfig().getInt("map.maxPlayers");
-	}
-
-
-	public int getTotalMaxPlayers()
-	{
-		return getMaxPlayers() + getVIPSlots();
-	}
-
-
-	public int getVIPSlots()
-	{
-		return p.getArenaConfig().getInt("map.maxVIP");
-	}
-
-	public int getMinPlayers()
-	{
-		return p.getArenaConfig().getInt("map.minPlayers");
-	}
-
-	public int getCountdownTime()
-	{
-		return p.getArenaConfig().getInt("map.waiting", 120);
-	}
-
 
 	public Map<UUID, Location> getLastLightningBolts()
 	{

@@ -135,7 +135,7 @@ public class HeroBattlePlayer extends GamePlayer
 			Team playerTeam = plugin.getScoreboardManager().getScoreboard().registerNewTeam(teamName);
 			playerTeam.setDisplayName(p.getName());
 			playerTeam.setPrefix(groupColor);
-			playerTeam.addPlayer(p);
+			playerTeam.addEntry(p.getName());
 		}, 10l);
 
 		// If the player left during a tutorial, this value may be set to 0f.
@@ -149,11 +149,6 @@ public class HeroBattlePlayer extends GamePlayer
 		plugin.getGame().teleportHub(p.getUniqueId());
 
 		plugin.getClassManager().loadPlayerClasses(this);
-
-		if (!plugin.getTimer().isEnabled() && plugin.getGame().getConnectedPlayers() >= plugin.getGame().getMinPlayers())
-		{
-			plugin.getTimer().restartTimer();
-		}
 
 		p.setMaxHealth(20);
 		p.setHealth(20);
@@ -169,7 +164,7 @@ public class HeroBattlePlayer extends GamePlayer
 
 		plugin.getGame().equipPlayer(p);
 
-		if (!plugin.getTimer().isEnabled() || plugin.getTimer().getSecondsLeft() > 15)
+		if (/*!plugin.getTimer().isEnabled() || plugin.getTimer().getSecondsLeft() > 15*/true) // TODO reimplement when API fixed
 		{
 			Bukkit.getScheduler().runTaskLater(plugin, () -> {
 				if (!plugin.getTutorialDisplayer().isWatchingTutorial(p.getUniqueId()))
