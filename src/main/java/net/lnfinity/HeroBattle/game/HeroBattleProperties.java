@@ -167,7 +167,7 @@ public class HeroBattleProperties
 			throw new InvalidConfigurationException("No spawn points defined!", "arena.json", "locations.player-spawns");
 
 		if(teleportationPortalsDestinations.isEmpty())
-			throw new InvalidConfigurationException("No teleportation portal locations set in arena.yml. Feature disabled.", "arena.json", "locations.teleportation-portals-destinations", false);
+			throw new InvalidConfigurationException("No teleportation portal locations set in arena.json. Feature disabled.", "arena.json", "locations.teleportation-portals-destinations", false);
 
 		if(!tutorialPOV.isEmpty() && tutorialPOV.size() < 4)
 		{
