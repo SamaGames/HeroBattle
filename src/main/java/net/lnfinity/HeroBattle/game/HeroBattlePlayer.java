@@ -400,7 +400,7 @@ public class HeroBattlePlayer extends GamePlayer
 
 		final int percentageInflicted = (percentage - oldPercentage) * HeroBattle.get().getGame().getDamagesMultiplier();
 
-		new DamageTag(percentageInflicted, getPlayerIfOnline().getLocation()).play();
+		new DamageTag(percentageInflicted, getPlayerIfOnline().getLocation().add(0, 2, 0)).play();
 
 		if (!thornsDamages && getRemainingThorns() > 0)
 		{
