@@ -7,7 +7,6 @@ import net.lnfinity.HeroBattle.game.HeroBattleProperties;
 import net.lnfinity.HeroBattle.game.ScoreboardManager;
 import net.lnfinity.HeroBattle.gui.core.Gui;
 import net.lnfinity.HeroBattle.gui.core.GuiUtils;
-import net.lnfinity.HeroBattle.listeners.ConnectionsListener;
 import net.lnfinity.HeroBattle.listeners.GameListener;
 import net.lnfinity.HeroBattle.listeners.PowerupsListener;
 import net.lnfinity.HeroBattle.listeners.PreStartInteractionsListener;
@@ -82,7 +81,8 @@ public class HeroBattle extends JavaPlugin
 
 		PluginManager pluginManager = getServer().getPluginManager();
 
-		pluginManager.registerEvents(new ConnectionsListener(this), this);
+        // Outdated (delete ?)
+		//pluginManager.registerEvents(new ConnectionsListener(this), this);
 		pluginManager.registerEvents(new GameListener(this), this);
 		pluginManager.registerEvents(new SystemListener(this), this);
 		pluginManager.registerEvents(new PreStartInteractionsListener(), this);

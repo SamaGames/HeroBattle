@@ -25,6 +25,8 @@ public class PowerupSpawner
 
 	public void stopTimer()
 	{
+        if(!isEnabled()) return;
+
 		task.cancel();
 		task = null;
 	}
