@@ -27,7 +27,14 @@ public class DamageTag
 		final ArmorStand am = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
 		am.setVisible(false);
 		am.setGravity(false);
-		am.setMarker(true);
+        try
+        {
+            am.setMarker(true);
+        }
+        catch(NoSuchMethodError ex)
+        {
+            am.teleport(new Location(am.getWorld(), 0, 2, 0));
+        }
 
 		am.setCustomName((damage >= 0 ? ChatColor.RED + "" + ChatColor.BOLD + "+" : ChatColor.GREEN + "" + ChatColor.BOLD) + damage + " %");
 

@@ -111,9 +111,9 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 	{
 		if (getStatus() == Status.IN_GAME) return;
 
-		super.startGame();
+        p.getTutorialDisplayer().stopForAll("Le jeu démarre...");
 
-		p.getTutorialDisplayer().stopForAll("Le jeu démarre...");
+		super.startGame();
 
 		Integer partyELO = getTotalElo() / getConnectedPlayers();
 
@@ -593,13 +593,14 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 		HeroBattlePlayer gPlayer = getPlayer(id);
 		if (gPlayer == null) return;
 
+        enableSpectatorMode(player);
 
-		final int alivePlayersCount = getInGamePlayers().size();
+        gPlayer.setLives(0);
+
+        final int alivePlayersCount = getInGamePlayers().size();
 
 		if (!gPlayer.isSpectator())
 		{
-			gPlayer.setSpectator();
-			gPlayer.setLives(0);
 
 			String s = "s";
 			if (alivePlayersCount == 1)

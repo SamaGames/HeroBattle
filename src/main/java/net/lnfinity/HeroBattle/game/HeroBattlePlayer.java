@@ -177,18 +177,18 @@ public class HeroBattlePlayer extends GamePlayer
 			Bukkit.getScheduler().runTaskLater(plugin, () -> {
 				if (!plugin.getTutorialDisplayer().isWatchingTutorial(p.getUniqueId()))
 				{
-					Titles.sendTitle(p, 0, 80, 0, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "N'oubliez pas de "
+					Titles.sendTitle(p, 0, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "N'oubliez pas de "
 							+ ChatColor.LIGHT_PURPLE + "choisir une classe" + ChatColor.WHITE + " !");
 				}
-			}, 120l);
+			}, 100l);
 
-			Bukkit.getScheduler().runTaskLater(plugin, () -> {
+			/*Bukkit.getScheduler().runTaskLater(plugin, () -> {
 				if (!plugin.getTutorialDisplayer().isWatchingTutorial(p.getUniqueId()))
 				{
 					Titles.sendTitle(p, 0, 80, 10, HeroBattle.GAME_NAME_BICOLOR, ChatColor.WHITE + "Un "
 							+ ChatColor.GOLD + "tutoriel" + ChatColor.WHITE + " est mis à disposition !");
 				}
-			}, 200l);
+			}, 200l);*/
 		}
 
 		p.getServer().getOnlinePlayers().stream()
@@ -400,7 +400,7 @@ public class HeroBattlePlayer extends GamePlayer
 
 		final int percentageInflicted = (percentage - oldPercentage) * HeroBattle.get().getGame().getDamagesMultiplier();
 
-		new DamageTag(percentageInflicted, getPlayerIfOnline().getLocation().add(0, 2, 0)).play();
+		new DamageTag(percentageInflicted, getPlayerIfOnline().getLocation()).play();
 
 		if (!thornsDamages && getRemainingThorns() > 0)
 		{
