@@ -774,18 +774,17 @@ public class HeroBattleGame extends Game<HeroBattlePlayer>
 
 		if (p.getProperties().isGameRanked())
 		{
-			for (final HeroBattlePlayer hbPlayer : gamePlayers.values())
-			{
-				SamaGamesAPI.get().getStatsManager(getGameCodeName()).setValue(hbPlayer.getUUID(), "elo", hbPlayer.getElo());
-			}
 
 			p.getServer().getScheduler().runTaskLater(p, () -> {
-				for (HeroBattlePlayer heroBattlePlayer : gamePlayers.values())
+				for (final HeroBattlePlayer heroBattlePlayer : gamePlayers.values())
 				{
 					Player player = p.getServer().getPlayer(heroBattlePlayer.getUUID());
 					if (player != null)
 					{
 						int change = heroBattlePlayer.getElo() - heroBattlePlayer.getOriginalElo();
+
+                        SamaGamesAPI.get().getStatsManager(getGameCodeName()).increase(heroBattlePlayer.getUUID(), "elo", change);
+
 						if (change >= 0)
 						{
 							player.sendMessage(HeroBattle.GAME_TAG + ChatColor.GREEN + "Votre " + ChatColor.DARK_GREEN + "ELO" + ChatColor.GREEN + " augmente de " + ChatColor.DARK_GREEN + change + ChatColor.GREEN + " (" + ChatColor.DARK_GREEN + heroBattlePlayer.getElo() + ChatColor.GREEN + ")");
