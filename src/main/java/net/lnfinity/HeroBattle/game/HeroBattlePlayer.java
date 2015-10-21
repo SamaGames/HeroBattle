@@ -431,12 +431,18 @@ public class HeroBattlePlayer extends GamePlayer
 			}
 		}
 
+        if (aggressor != null)
+        {
+            setLastDamager(aggressor.getUUID());
+        }
 
 		Player player = getPlayerIfOnline();
-
 		if (getPercentage() >= getPlayerClass().getMaxResistance())
 		{
-			if (aggressor != null) setLastDamager(aggressor.getUUID());
+			if (aggressor != null)
+            {
+                setLastDamager(aggressor.getUUID());
+            }
 
 			HeroBattle.get().getGame().onPlayerDeath(getUUID(), DeathType.KO);
 
