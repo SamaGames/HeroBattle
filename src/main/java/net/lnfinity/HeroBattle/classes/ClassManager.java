@@ -116,7 +116,7 @@ public class ClassManager
 	{
 		// TODO Warning, this may cause problems if the request is lost (somehow)
 
-		final String unlockedKey = ".unlocked";
+		final String unlockedKey = "class.";
 		final String cooldownKey = ".cooldown";
 		final String powerKey = ".power";
 		final String toolsKey = ".tools";
@@ -134,7 +134,7 @@ public class ClassManager
 				}
 				else // TODO Test data loading from database
 				{
-					String data = p.getShopManager().getItemLevelForPlayer(heroBattlePlayer.getUUID(), className + unlockedKey);
+					String data = p.getShopManager().getItemLevelForPlayer(heroBattlePlayer.getUUID(), unlockedKey + className);
 
 					if ((data != null && data.equals("1")) || clazz.getType().getPrice() == PlayerClassPrice.FREE)
 					{
