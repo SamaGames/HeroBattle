@@ -136,7 +136,7 @@ public class ClassManager
 				{
 					String data = p.getShopManager().getItemLevelForPlayer(heroBattlePlayer.getUUID(), unlockedKey + className);
 
-					if ((data != null && data.equals("1")) || clazz.getType().getPrice() == PlayerClassPrice.FREE)
+					if ((data != null && data.equals("flag")) || clazz.getType().getPrice() == PlayerClassPrice.FREE)
 					{
 						try
 						{
