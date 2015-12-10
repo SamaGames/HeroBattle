@@ -40,10 +40,13 @@ public class AntiCamping implements Runnable
 			if (players.get(id) == null)
 			{
 				// Not registered. Ok. Registering you.
-				players.put(id, player.getPlayerIfOnline().getLocation());
-				damagesGiven.put(id, (int) player.getPercentageInflicted());
-				life.put(id, player.getPercentage());
-				combo.put(id, 0);
+				if (player.isOnline())
+				{
+    				players.put(id, player.getPlayerIfOnline().getLocation());
+    				damagesGiven.put(id, (int) player.getPercentageInflicted());
+    				life.put(id, player.getPercentage());
+    				combo.put(id, 0);
+				}
 			}
 			else
 			{
